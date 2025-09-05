@@ -1,0 +1,17 @@
+### GET -- kaikki käyttäjät
+GET http://localhost:8080/api/users
+Content-Type: application/json
+
+### GET -- yksittäinen käyttäjä id:llä
+GET http://localhost:8080/api/users/
+Content-Type: application/json
+
+### POST TESTI
+POST http://localhost:8080/api/users/register
+Content-Type: application/json
+
+{
+    "username": "test"
+}
+
+
