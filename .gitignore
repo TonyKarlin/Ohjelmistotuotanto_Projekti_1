@@ -25,3 +25,5 @@ replay_pid*
 
 .idea/*
 .env
+/Backend/target/
+/Frontend/target/
