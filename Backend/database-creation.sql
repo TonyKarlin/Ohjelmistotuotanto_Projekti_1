@@ -12,6 +12,45 @@ CREATE TABLE IF NOT EXISTS users
     created_at TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
+
+-- DROP TABLE IF EXISTS message_attachments;
+-- DROP TABLE IF EXISTS messages CASCADE;
+-- DROP INDEX idx_messages_sender;
+-- DROP INDEX idx_messages_receiver;
+
+-- Create messages table
+-- Stores messages sent between users
+-- Each message has a sender and a receiver, both referencing the users table
+CREATE TABLE IF NOT EXISTS messages
+(
+    id          BIGSERIAL PRIMARY KEY,
+    sender_id   BIGINT    NOT NULL,
+    receiver_id BIGINT    NOT NULL,
+    content     TEXT      NOT NULL,
+    created_at  TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_sender FOREIGN KEY (sender_id) REFERENCES users (id),
+    CONSTRAINT fk_receiver FOREIGN KEY (receiver_id) REFERENCES users (id)
+);
+
+-- Indexes for messages table
+-- Works much faster when searching for messages by sender or receiver
+-- Example: SELECT * FROM messages WHERE sender_id = 1;
+-- Example: SELECT * FROM messages WHERE receiver_id = 2;
+CREATE INDEX idx_messages_sender ON messages (sender_id);
+CREATE INDEX idx_messages_receiver ON messages (receiver_id);
+
+-- Create message_attachments table
+-- Stores attachments for messages
+-- Each attachment is linked to a message via message_id
+-- Supports multiple attachments per message
+CREATE TABLE IF NOT EXISTS message_attachments
+(
+    id         BIGSERIAL PRIMARY KEY,
+    message_id BIGINT      NOT NULL REFERENCES messages (id) ON DELETE CASCADE,
+    file_type  VARCHAR(50) NOT NULL,
+    file_data  BYTEA       NOT NULL
+);
+
 -- Create Spring Session tables
 CREATE TABLE SPRING_SESSION
 (
