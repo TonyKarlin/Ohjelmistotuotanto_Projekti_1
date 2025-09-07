@@ -11,7 +11,17 @@ POST http://localhost:8080/api/users/register
 Content-Type: application/json
 
 {
-    "username": "test"
+    "username": "test_pena"
+}
+
+### POST TESTI -- viestin lähetys
+@userId = 1
+POST http://localhost:8080/api/users/{{userId}}/messages/send
+Content-Type: application/json
+
+{
+    "participantIds": [2, 3],
+    "text": "Test message!!!"
 }
 
 

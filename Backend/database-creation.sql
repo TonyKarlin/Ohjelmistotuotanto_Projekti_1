@@ -1,5 +1,6 @@
 -- Create the database (run this separately if needed)
-CREATE DATABASE otp_project;
+-- CREATE DATABASE otp_project;
+-- DROP DATABASE IF EXISTS otp_project;
 
 -- Connect to the database (in psql, run this after creating the database)
 -- \c otp-project
@@ -24,13 +25,20 @@ CREATE TABLE IF NOT EXISTS contacts
     CONSTRAINT fk_contact_user FOREIGN KEY (contact_user_id) REFERENCES users (id)
 );
 
-
--- DROP TABLE IF EXISTS message_attachments;
+-- DROP TABLE IF EXISTS users;
+-- DROP TABLE IF EXISTS message_content;
 -- DROP TABLE IF EXISTS messages CASCADE;
--- DROP INDEX idx_messages_sender;
--- DROP INDEX idx_messages_receiver;
 -- DROP TABLE IF EXISTS conversations;
+-- DROP TABLE IF EXISTS conversation_participants;
 -- DROP TABLE IF EXISTS contacts;
+
+
+-- Create conversation table
+CREATE TABLE IF NOT EXISTS conversations
+(
+    conversation_id BIGSERIAL PRIMARY KEY
+);
+
 
 -- Create messages table
 -- Stores messages sent between users
@@ -39,14 +47,19 @@ CREATE TABLE IF NOT EXISTS messages
 (
     id              BIGSERIAL PRIMARY KEY,
     sender_id       BIGINT    NOT NULL,
-    receiver_id     BIGINT    NOT NULL,
     content         TEXT      NOT NULL,
     created_at      TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     conversation_id BIGINT    NOT NULL,
     CONSTRAINT fk_sender FOREIGN KEY (sender_id) REFERENCES users (id),
-    CONSTRAINT fk_receiver FOREIGN KEY (receiver_id) REFERENCES users (id),
     CONSTRAINT fk_conversation FOREIGN KEY (conversation_id) REFERENCES conversations (conversation_id)
 );
+
+-- CREATE TABLE IF NOT EXISTS message_receivers
+-- (
+--     message_id  BIGINT NOT NULL REFERENCES messages (id) ON DELETE CASCADE,
+--     receiver_id BIGINT NOT NULL REFERENCES users (id),
+--     PRIMARY KEY (message_id, receiver_id)
+-- );
 
 -- Create message_content table
 -- Stores binary content for messages (e.g., images, files)
@@ -64,25 +77,7 @@ CREATE TABLE message_content
 -- Example: SELECT * FROM messages WHERE sender_id = 1;
 -- Example: SELECT * FROM messages WHERE receiver_id = 2;
 CREATE INDEX idx_messages_sender ON messages (sender_id);
-CREATE INDEX idx_messages_receiver ON messages (receiver_id);
 
--- Create conversation table
-CREATE TABLE IF NOT EXISTS conversations
-(
-    conversation_id BIGSERIAL PRIMARY KEY
-);
-
--- Create message_attachments table
--- Stores attachments for messages
--- Each attachment is linked to a message via message_id
--- Supports multiple attachments per message
-CREATE TABLE IF NOT EXISTS message_attachments
-(
-    id         BIGSERIAL PRIMARY KEY,
-    message_id BIGINT      NOT NULL REFERENCES messages (id) ON DELETE CASCADE,
-    file_type  VARCHAR(50) NOT NULL,
-    file_data  BYTEA       NOT NULL
-);
 
 -- Create Spring Session tables
 CREATE TABLE SPRING_SESSION

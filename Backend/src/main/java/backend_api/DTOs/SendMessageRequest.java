@@ -1,11 +1,13 @@
 package backend_api.DTOs;
 
 
+import java.util.List;
+
 // DTO(Data Transfer Object) for sending a message with optional file attachment
 // Example usage: sendMessage(new SendMessageRequest(senderId, conversationId, "Hello World", "image/png", fileData));
 public class SendMessageRequest {
     private Long senderId;
-    private Long receiverId;
+    private List<Long> participantIds;
     private String text;
     private String fileType; // Example: "image/png", "application/pdf"
     private byte[] fileData; // Binary data for the message attachments (photos, videos, documents)
@@ -18,28 +20,20 @@ public class SendMessageRequest {
         this.senderId = senderId;
     }
 
-    public Long getReceiverId() {
-        return receiverId;
+    public List<Long> getParticipantIds() {
+        return participantIds;
     }
 
-    public void setReceiverId(Long receiverId) {
-        this.receiverId = receiverId;
+    public void setParticipantIds(List<Long> participantIds) {
+        this.participantIds = participantIds;
     }
 
     public String getText() {
         return text;
     }
 
-    public void setText(String content) {
-        this.text = content;
-    }
-
-    public String getFileType() {
-        return fileType;
-    }
-
-    public void setFileType(String fileType) {
-        this.fileType = fileType;
+    public void setText(String text) {
+        this.text = text;
     }
 
     public byte[] getFileData() {
@@ -48,5 +42,13 @@ public class SendMessageRequest {
 
     public void setFileData(byte[] fileData) {
         this.fileData = fileData;
+    }
+
+    public String getFileType() {
+        return fileType;
+    }
+
+    public void setFileType(String fileType) {
+        this.fileType = fileType;
     }
 }

@@ -19,15 +19,23 @@ public class Message {
     @JoinColumn(name = "sender_id", nullable = false)
     private User sender;
 
+//    @ManyToMany
+//    @JoinTable(
+//            name = "message_receivers",
+//            joinColumns = @JoinColumn(name = "message_id"),
+//            inverseJoinColumns = @JoinColumn(name = "receiver_id")
+//    )
+//    private List<User> receivers = new ArrayList<>();
+
     @ManyToOne
     @JoinColumn(name = "conversation_id", nullable = false)
     private Conversation conversation;
 
-    @Column(columnDefinition = "TEXT")
+    @Column(name = "content", columnDefinition = "TEXT", nullable = false)
     private String text;
 
     @OneToMany(mappedBy = "message", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<MessageContent> content = new ArrayList<>();
+    private List<MessageContent> attachments = new ArrayList<>();
 
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
@@ -35,10 +43,10 @@ public class Message {
     public Message() {
     }
 
-    public Message(User sender, Conversation conversation, List<MessageContent> content) {
+    public Message(User sender, List<User> receivers, Conversation conversation, List<MessageContent> attachments) {
         this.sender = sender;
         this.conversation = conversation;
-        this.content = content;
+        this.attachments = attachments;
     }
 
     @PrePersist
@@ -81,16 +89,16 @@ public class Message {
     }
 
     public List<MessageContent> getContent() {
-        return content;
+        return attachments;
     }
 
-    public void setContent(List<MessageContent> content) {
-        this.content = content;
+    public void setAttachments(List<MessageContent> attachments) {
+        this.attachments = attachments;
     }
 
-    public void addContent(MessageContent messageContent) {
-        content.add(messageContent);
-        messageContent.setMessage(this);
+    public void addAttachments(MessageContent messageAttachments) {
+        attachments.add(messageAttachments);
+        messageAttachments.setMessage(this);
     }
 
     public LocalDateTime getCreatedAt() {
