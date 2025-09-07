@@ -27,4 +27,24 @@ public class Conversation {
     public Conversation(List<User> participants) {
         this.participants = participants;
     }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public List<User> getParticipants() {
+        return participants;
+    }
+
+    public void setParticipants(List<User> participants) {
+        this.participants = participants;
+    }
+
+    public void addParticipant(User user) {
+        this.participants.add(user);
+    }
 }

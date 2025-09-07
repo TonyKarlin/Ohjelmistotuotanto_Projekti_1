@@ -88,6 +88,11 @@ public class Message {
         this.content = content;
     }
 
+    public void addContent(MessageContent messageContent) {
+        content.add(messageContent);
+        messageContent.setMessage(this);
+    }
+
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
