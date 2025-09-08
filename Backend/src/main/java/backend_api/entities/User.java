@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -34,6 +36,7 @@ public class User {
     private LocalDateTime createdAt;
 
     @ManyToMany(mappedBy = "participants")
+    @JsonIgnore
     private List<Conversation> conversations = new ArrayList<>();
 
     public User() {
