@@ -13,10 +13,7 @@ POST http://localhost:8080/api/users/{{userId}}/messages
 Content-Type: application/json
 
 {
-  "participantIds": [
-    2,
-    3
-  ],
+  "participantIds": [2,3],
   "text": "Test message!!!"
 }
 
@@ -35,7 +32,7 @@ POST http://localhost:8080/api/users/register
 Content-Type: application/json
 
 {
-    "username":"test",
+    "username":"3",
     "password":"1234",
     "email":"test@example.com"
 }
