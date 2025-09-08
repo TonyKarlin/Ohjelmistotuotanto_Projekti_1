@@ -6,13 +6,6 @@ Content-Type: application/json
 GET http://localhost:8080/api/users/1
 Content-Type: application/json
 
-### POST TESTI
-POST http://localhost:8080/api/users/register
-Content-Type: application/json
-
-{
-    "username": "test_pena"
-}
 
 ### POST TESTI -- viestin lähetys
 @userId = 1
@@ -24,4 +17,21 @@ Content-Type: application/json
     "text": "Test message!!!"
 }
 
+### testataan uusi rekisteröityminen
+POST http://localhost:8080/api/users/register
+Content-Type: application/json
 
+{
+    "username":"test",
+    "password":"1234",
+    "email":"test@example.com"
+}
+
+### Testataan login
+POST http://localhost:8080/api/users/login
+Content-Type: application/json
+
+{
+    "username":"test",
+    "password":"1234"
+}
