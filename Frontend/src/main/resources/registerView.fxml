@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="874.0" prefWidth="534.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.RegisterController">
+   <bottom>
+      <StackPane prefHeight="861.0" prefWidth="484.0" stylesheets="@loginAndRegisterStyle.css" BorderPane.alignment="CENTER">
+         <children>
+            <VBox alignment="CENTER" maxHeight="826.0" maxWidth="600.0" prefHeight="826.0" prefWidth="484.0" spacing="20.0" styleClass="VBox">
+               <children>
+                  <ImageView fitHeight="145.0" fitWidth="169.0" pickOnBounds="true" preserveRatio="true" styleClass="imageView">
+                     <image>
+                        <Image url="@img/img.png" />
+                     </image>
+                     <VBox.margin>
+                        <Insets bottom="10.0" />
+                     </VBox.margin>
+                  </ImageView>
+                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="50.0">
+                     <children>
+                        <ImageView fitHeight="124.0" fitWidth="151.0" pickOnBounds="true" preserveRatio="true" styleClass="imageView">
+                           <image>
+                              <Image url="@img/img_1.png" />
+                           </image>
+                        </ImageView>
+                        <Button fx:id="addPictureButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#addProfilePicture" prefHeight="76.0" prefWidth="143.0" text="Add profile Picture" textAlignment="CENTER" textFill="WHITE" wrapText="true">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets />
+                           </HBox.margin>
+                        </Button>
+                     </children>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                  </HBox>
+                  <TextField fx:id="firstNameTextField" maxHeight="40.0" maxWidth="255.0" prefHeight="40.0" prefWidth="255.0" promptText="First Name" VBox.vgrow="NEVER">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </TextField>
+                  <TextField fx:id="lastNameTextField" maxHeight="40.0" maxWidth="255.0" prefHeight="40.0" prefWidth="255.0" promptText="Last Name" VBox.vgrow="NEVER">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </TextField>
+                  <TextField fx:id="usernameTextField" layoutX="113.0" layoutY="421.0" maxWidth="255.0" prefHeight="40.0" prefWidth="255.0" promptText="username">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </TextField>
+                  <TextField fx:id="emailtextField" layoutX="113.0" layoutY="451.0" maxWidth="255.0" prefHeight="40.0" prefWidth="255.0" promptText="Email">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </TextField>
+                  <TextField fx:id="passwordTextfield" layoutX="113.0" layoutY="434.0" maxWidth="255.0" prefHeight="37.0" prefWidth="255.0" promptText="Password (6 or more characters)">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </TextField>
+                  <TextField fx:id="repeatPasswordTextField" layoutX="113.0" layoutY="548.0" maxWidth="255.0" prefHeight="37.0" prefWidth="255.0" promptText="Repeat Password">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </TextField>
+                  <Button fx:id="registerButton" maxWidth="251.0" onAction="#registerUser" prefHeight="41.0" prefWidth="251.0" text="Register Now" textAlignment="CENTER" textFill="#ebebeb">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets top="20.0" />
+                     </VBox.margin>
+                  </Button>
+                  <HBox alignment="CENTER" prefHeight="62.0" prefWidth="480.0" spacing="5">
+                     <children>
+                        <Label text="Allready a user?">
+                           <font>
+                              <Font name="System Bold" size="18.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="loginLabel" onDragDetected="#moveToLoginView" styleClass="clickable-label" text="Login">
+                           <HBox.margin>
+                              <Insets left="15.0" />
+                           </HBox.margin>
+                           <font>
+                              <Font name="System Bold" size="20.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+         </children>
+         <BorderPane.margin>
+            <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
+         </BorderPane.margin>
+      </StackPane>
+   </bottom>
+</BorderPane>
