@@ -10,7 +10,7 @@ import java.security.Key;
 import java.util.Date;
 
 public class JwtUtil {
-    private static final String JWT_KEY = "gu`RvEhBA'q6<P$9IA*dn=7\"S0mTn3$/7wNmZ|r_3V]qZ3^^5LOn#6cf+p.N??|";
+    private static final String JWT_KEY = "JWT_KEY";
     private static final long EXPIRATION_TIME = 1000 * 60 * 60 * 10; // 10 tuntia
     private static final Key SIGNING_KEY = Keys.hmacShaKeyFor(JWT_KEY.getBytes());
 
