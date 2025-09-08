@@ -1,0 +1,42 @@
+.VBox {
+    -fx-background-color: rgb(162, 162, 162);
+    -fx-background-radius: 30px;
+    -fx-border-color: rgba(0, 0, 0, 0.8);
+    -fx-border-radius: 30px;
+    -fx-border-width: 2px;
+}
+
+.imageView {
+    -fx-background-radius: 30px;
+}
+
+.text-field {
+    -fx-background-radius: 10px;
+    -fx-border-color: rgba(0, 0, 0, 0.8);
+    -fx-border-radius: 10px;
+}
+
+.button {
+    -fx-background-color: rgb(48, 48, 48);
+    -fx-background-radius: 10px;
+    -fx-border-color: rgba(0, 0, 0, 0.8);
+    -fx-border-radius: 10px;
+}
+
+.button:hover {
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.5), 10, 0, 4, 4);
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+}
+
+.clickable-label {
+    -fx-text-fill: rgb(38, 92, 163);
+}
+
+.clickable-label:hover {
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.5), 10, 0, 4, 4);
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+}
