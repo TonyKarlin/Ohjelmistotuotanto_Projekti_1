@@ -11,17 +11,25 @@ POST http://localhost:8080/api/users/register
 Content-Type: application/json
 
 {
-    "username": "test_pena"
+  "username": "test_pena"
 }
 
 ### POST TESTI -- viestin lähetys
 @userId = 1
-POST http://localhost:8080/api/users/{{userId}}/messages/send
+POST http://localhost:8080/api/users/{{userId}}/messages
 Content-Type: application/json
 
 {
-    "participantIds": [2, 3],
-    "text": "Test message!!!"
+  "participantIds": [
+    2,
+    3
+  ],
+  "text": "Test message!!!"
 }
+
+### DELETE TESTI -- viestin poistaminen
+@messageId = 10
+DELETE http://localhost:8080/api/users/{{userId}}/messages/{{messageId}}
+Content-Type: application/json
 
 

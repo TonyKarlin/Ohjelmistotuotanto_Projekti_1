@@ -29,10 +29,6 @@ public class MessageService {
         this.conversationRepository = conversationRepository;
     }
 
-    public Optional<Message> getMessageById(Long messageId, Long userId) {
-        return messageRepository.getMessageByIdAndSender_Id(messageId, userId);
-    }
-
     public Conversation createPrivateConversation(Long senderId, List<Long> participants) {
         Long receiverId = participants.stream()
                 .filter(id -> !id.equals(senderId))
@@ -96,15 +92,16 @@ public class MessageService {
         return messageRepository.save(message);
     }
 
+    public boolean deleteMessage(Long userId, Long messageId) {
+        try {
+            Message message = messageRepository
+                    .getMessageByIdAndSender_Id(messageId, userId)
+                    .orElseThrow(() -> new RuntimeException("Message not found or not owned by user"));
 
-    public List<Message> getSentMessages(Long senderId) {
-        User sender = userRepository.findById(senderId).orElseThrow(() ->
-                new RuntimeException("User not found with id: " + senderId));
-
-        return messageRepository.findBySender(sender);
+            messageRepository.delete(message);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
-
-//    public void deleteMessage(Long userId, Long messageId) {
-//        messageRepository.deleteById(userId, messageId);
-//    }
 }
