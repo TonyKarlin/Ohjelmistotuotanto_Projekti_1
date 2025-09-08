@@ -9,13 +9,26 @@ Content-Type: application/json
 
 ### POST TESTI -- viestin lähetys
 @userId = 1
-POST http://localhost:8080/api/users/{{userId}}/messages/send
+POST http://localhost:8080/api/users/{{userId}}/messages
 Content-Type: application/json
 
 {
-    "participantIds": [2, 3],
-    "text": "Test message!!!"
+  "participantIds": [
+    2,
+    3
+  ],
+  "text": "Test message!!!"
 }
+
+### DELETE TESTI -- viestin poistaminen
+@messageId = 10
+DELETE http://localhost:8080/api/users/{{userId}}/messages/{{messageId}}
+Content-Type: application/json
+
+### DELETE TESTI -- viestin poistaminen
+@messageId = 10
+DELETE http://localhost:8080/api/users/{{userId}}/messages/{{messageId}}
+Content-Type: application/json
 
 ### testataan uusi rekisteröityminen
 POST http://localhost:8080/api/users/register

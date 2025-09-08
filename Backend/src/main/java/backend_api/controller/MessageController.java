@@ -6,9 +6,13 @@ import backend_api.entities.Message;
 import backend_api.entities.User;
 import backend_api.repository.MessageRepository;
 import backend_api.services.MessageService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 
 @RestController
@@ -20,20 +24,25 @@ public class MessageController {
         this.messageService = messageService;
     }
 
-    @GetMapping("/{messageId}")
-    public Optional<Message> getMessageById(@PathVariable Long messageId, @PathVariable("userId") Long userId) {
-        return messageService.getMessageById(userId, messageId);
-    }
 
-    @PostMapping("/send")
-    public Message sendMessage(@PathVariable("userId") Long userId, @RequestBody SendMessageRequest request) {
+    @PostMapping
+    public ResponseEntity<Message> sendMessage(@PathVariable("userId") Long userId, @RequestBody SendMessageRequest request) {
         request.setSenderId(userId);
-        return messageService.sendMessage(request);
+        Message message = messageService.sendMessage(request);
+        if (message == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+        return ResponseEntity.status(HttpStatus.CREATED).body(message);
     }
 
-//    @DeleteMapping("/{messageId}/delete")
-//    public void deleteMessage(@PathVariable("userId") Long userId, @PathVariable Long messageId) {
-//        messageService.deleteMessage(messageId);
-//    }
+    @DeleteMapping("/{messageId}")
+    public ResponseEntity<?> deleteMessage(@PathVariable("userId") Long userId, @PathVariable("messageId") Long messageId) {
+        boolean result = messageService.deleteMessage(userId, messageId);
+        if (result) {
+            return ResponseEntity.ok(Map.of("message", "Message deleted successfully"));
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", "Message not found or you are not the sender"));
+        }
+    }
 
 }
