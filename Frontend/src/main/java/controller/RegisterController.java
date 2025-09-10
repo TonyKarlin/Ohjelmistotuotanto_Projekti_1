@@ -1,5 +1,6 @@
 package controller;
 
+import javafx.scene.control.PasswordField;
 import model.User;
 import service.UserApiClient;
 
@@ -33,13 +34,13 @@ public class RegisterController {
     private Label loginLabel;
 
     @FXML
-    private TextField passwordTextField;
+    private PasswordField passwordField;
 
     @FXML
     private Button registerButton;
 
     @FXML
-    private TextField repeatPasswordTextField;
+    private PasswordField repeatPasswordField;
 
     @FXML
     private TextField usernameTextField;
@@ -61,15 +62,27 @@ public class RegisterController {
         stage.show();
     }
 
+    public boolean checkPassword(String password, String repeatedPassword) {
+        if (!password.equals( repeatedPassword)) {
+            passwordField.clear();
+            repeatPasswordField.clear();
+            return false;
+        }
+        return true;
+
+    }
 
 
     @FXML
     void registerUser(ActionEvent event) {
         String username = usernameTextField.getText();
         String email = emailTextField.getText();
-        String password = passwordTextField.getText();
+        String password = passwordField.getText();
+        String repeatedPassword = repeatPasswordField.getText();
+        if (!checkPassword(password, repeatedPassword)) {
+            return;
+        }
         User user = new User(username, email, password);
-
         userApiClient.registerUser(user);
 
     }
