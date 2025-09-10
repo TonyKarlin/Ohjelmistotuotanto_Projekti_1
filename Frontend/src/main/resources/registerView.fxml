@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
@@ -13,23 +12,15 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="874.0" prefWidth="534.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.RegisterController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="658.0" prefWidth="534.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.RegisterController">
    <bottom>
-      <StackPane prefHeight="861.0" prefWidth="484.0" stylesheets="@loginAndRegisterStyle.css" BorderPane.alignment="CENTER">
+      <StackPane prefHeight="594.0" prefWidth="484.0" stylesheets="@loginAndRegisterStyle.css" BorderPane.alignment="CENTER">
          <children>
-            <VBox alignment="CENTER" maxHeight="826.0" maxWidth="600.0" prefHeight="826.0" prefWidth="484.0" spacing="20.0" styleClass="VBox">
+            <VBox alignment="CENTER" maxHeight="826.0" maxWidth="600.0" prefHeight="776.0" prefWidth="447.0" spacing="20.0" styleClass="VBox">
                <children>
-                  <ImageView fitHeight="145.0" fitWidth="169.0" pickOnBounds="true" preserveRatio="true" styleClass="imageView">
-                     <image>
-                        <Image url="@img/img.png" />
-                     </image>
-                     <VBox.margin>
-                        <Insets bottom="10.0" />
-                     </VBox.margin>
-                  </ImageView>
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="50.0">
                      <children>
-                        <ImageView fitHeight="124.0" fitWidth="151.0" pickOnBounds="true" preserveRatio="true" styleClass="imageView">
+                        <ImageView fitHeight="124.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" styleClass="imageView">
                            <image>
                               <Image url="@img/img_1.png" />
                            </image>
@@ -47,27 +38,17 @@
                         <Insets />
                      </VBox.margin>
                   </HBox>
-                  <TextField fx:id="firstNameTextField" maxHeight="40.0" maxWidth="255.0" prefHeight="40.0" prefWidth="255.0" promptText="First Name" VBox.vgrow="NEVER">
-                     <font>
-                        <Font size="15.0" />
-                     </font>
-                  </TextField>
-                  <TextField fx:id="lastNameTextField" maxHeight="40.0" maxWidth="255.0" prefHeight="40.0" prefWidth="255.0" promptText="Last Name" VBox.vgrow="NEVER">
-                     <font>
-                        <Font size="16.0" />
-                     </font>
-                  </TextField>
                   <TextField fx:id="usernameTextField" layoutX="113.0" layoutY="421.0" maxWidth="255.0" prefHeight="40.0" prefWidth="255.0" promptText="username">
                      <font>
                         <Font size="16.0" />
                      </font>
                   </TextField>
-                  <TextField fx:id="emailtextField" layoutX="113.0" layoutY="451.0" maxWidth="255.0" prefHeight="40.0" prefWidth="255.0" promptText="Email">
+                  <TextField fx:id="emailTextField" layoutX="113.0" layoutY="451.0" maxWidth="255.0" prefHeight="40.0" prefWidth="255.0" promptText="Email">
                      <font>
                         <Font size="16.0" />
                      </font>
                   </TextField>
-                  <TextField fx:id="passwordTextfield" layoutX="113.0" layoutY="434.0" maxWidth="255.0" prefHeight="37.0" prefWidth="255.0" promptText="Password (6 or more characters)">
+                  <TextField fx:id="passwordTextField" layoutX="113.0" layoutY="434.0" maxWidth="255.0" prefHeight="37.0" prefWidth="255.0" promptText="Password (6 or more characters)">
                      <font>
                         <Font size="16.0" />
                      </font>
@@ -92,7 +73,7 @@
                               <Font name="System Bold" size="18.0" />
                            </font>
                         </Label>
-                        <Label fx:id="loginLabel" onDragDetected="#moveToLoginView" styleClass="clickable-label" text="Login">
+                        <Label fx:id="loginLabel" onDragDetected="#moveToLoginView" onMouseClicked="#moveToLoginView" onMousePressed="#moveToLoginView" styleClass="clickable-label" text="Login">
                            <HBox.margin>
                               <Insets left="15.0" />
                            </HBox.margin>
