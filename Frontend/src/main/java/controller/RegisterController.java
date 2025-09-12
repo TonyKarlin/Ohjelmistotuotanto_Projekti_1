@@ -1,6 +1,6 @@
 package controller;
 
-import javafx.scene.control.PasswordField;
+import javafx.scene.control.*;
 import model.User;
 import service.UserApiClient;
 
@@ -10,9 +10,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
@@ -62,10 +59,26 @@ public class RegisterController {
         stage.show();
     }
 
+    public boolean checkTextFields(String username, String email, String password) {
+        if (username.isEmpty() || email.isEmpty() || password.isEmpty()) {
+            showAlert("Empty fields", "Please fill in all fields");
+            return false;
+        } else if (username.length() < 6) {
+            showAlert("Invalid Name", "Name should contain 6 or more characters.");
+            return false;
+        } else if (!email.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$")) {
+            showAlert("Invalid Email", "Please enter a valid email address.");
+            return false;
+        } else if (password.length() < 6) {
+            showAlert("Invalid password", "Password should contain 6 or more characters.");
+        }
+
+        return true;
+    }
+
     public boolean checkPassword(String password, String repeatedPassword) {
-        if (!password.equals( repeatedPassword)) {
-            passwordField.clear();
-            repeatPasswordField.clear();
+        if (!password.equals(repeatedPassword)) {
+            showAlert("Error", "passwords don't match");
             return false;
         }
         return true;
@@ -79,12 +92,23 @@ public class RegisterController {
         String email = emailTextField.getText();
         String password = passwordField.getText();
         String repeatedPassword = repeatPasswordField.getText();
+        if (!checkTextFields(username, email, password)) {
+            return;
+        }
         if (!checkPassword(password, repeatedPassword)) {
             return;
         }
         User user = new User(username, email, password);
         userApiClient.registerUser(user);
 
+    }
+
+    private void showAlert(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 
 }
