@@ -6,7 +6,7 @@ import java.io.IOException;
 
 public class MessageApiClient implements ApiClient {
 
-    String baseUrl = ("http://localhost:8080/api/users/s");
+    String baseUrl = ("http://localhost:8080/api/users");
     User user;
 
     public MessageApiClient() {

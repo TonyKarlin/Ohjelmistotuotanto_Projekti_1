@@ -16,9 +16,10 @@ public class UserApiClient implements ApiClient{
 
     }
 
-    public String registerUser(User user) {
+    public User registerUser(User user) {
         try {
-            return sendPostRequest(registerUrl, user);
+            String responseJson = sendPostRequest(registerUrl, user);
+            return objectMapper.readValue(responseJson, User.class);
         } catch (IOException e) {
             throw new RuntimeException("Failed to register user", e);
         }

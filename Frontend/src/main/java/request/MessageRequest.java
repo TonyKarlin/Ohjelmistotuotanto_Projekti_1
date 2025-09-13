@@ -10,13 +10,13 @@ import java.util.List;
 public class MessageRequest {
 
     private  String text;
-    private List<Integer> participantsId;
+    private List<Integer> participantIds;
 
 
     public MessageRequest() {}
 
-    public MessageRequest(List<Integer> participantsId, String text) {
-        this.participantsId = participantsId;
+    public MessageRequest(List<Integer> participantIds, String text) {
+        this.participantIds = participantIds;
         this.text = text;
     }
 }
