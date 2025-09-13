@@ -1,6 +1,7 @@
 package service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -11,6 +12,7 @@ import java.net.URL;
 public interface ApiClient {
 
     ObjectMapper objectMapper = new ObjectMapper();
+
 
     //Method needs only a right url and object as parameters
     default String sendPostRequest(String urlString, Object body) throws IOException {
