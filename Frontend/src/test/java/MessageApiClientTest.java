@@ -1,3 +1,4 @@
+import model.Message;
 import model.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -24,17 +25,21 @@ public class MessageApiClientTest {
     @Test
     public void testSendMessage() throws IOException {
         //creating new user
-        User newUser = new User("testUseeer", "testeeeer@example.com", "password123");
+        User newUser = new User("test8", "test8@example.com", "password123");
         //Register user and saves the json response to the User object
         User registeredUser = userApiClient.registerUser(newUser);
         System.out.println("User Response: " + registeredUser);
 
         MessageRequest request = new MessageRequest();
         //Make sure that you have users in your DB before sending messages
-        request.setParticipantIds(java.util.Arrays.asList(2,3)); // user id's
+        request.setParticipantIds(java.util.Arrays.asList(2,3,4,6,9,10)); // user id's
         request.setText("Test Message from JUnit!");
 
-        String messageResponse = messageApiClient.sendMessage(registeredUser, request);
-        System.out.println("Message Response: " + messageResponse);
+        Message message = messageApiClient.sendMessage(registeredUser, request);
+        for (User participants : message.getConversation().getParticipants()) {
+                System.out.println("message: " + message.getText());
+                System.out.println("participants ID: " + participants.getId());
+                System.out.println("username: "+ participants.getUsername());
+        }
     }
 }

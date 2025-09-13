@@ -2,6 +2,7 @@ package model;
 
 import lombok.Data;
 
+//When register or login creates User Object from the Json Data
 
 @Data
 public class User {
