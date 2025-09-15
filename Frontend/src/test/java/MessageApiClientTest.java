@@ -7,7 +7,6 @@ import service.MessageApiClient;
 import service.UserApiClient;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 
 public class MessageApiClientTest {
 
