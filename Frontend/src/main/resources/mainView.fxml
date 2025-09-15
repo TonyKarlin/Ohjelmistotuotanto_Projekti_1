@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.geometry.Rectangle2D?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ContextMenu?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="805.0" prefWidth="1126.0" styleClass="BorderPane" stylesheets="@mainPage.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+    <left>
+        <VBox alignment="CENTER_LEFT" maxHeight="1000.0" maxWidth="465.0" prefHeight="664.0" prefWidth="288.0" spacing="20.0" BorderPane.alignment="CENTER">
+            <children>
+            <VBox prefHeight="108.0" prefWidth="301.0" styleClass="Vbox">
+               <children>
+                  <HBox prefHeight="112.0" prefWidth="270.0">
+                     <children>
+                        <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="149.0" prefWidth="149.0" text="Profile" textAlignment="CENTER" textFill="#c9c9c9">
+                           <font>
+                              <Font size="29.0" />
+                           </font>
+                        </Label>
+                        <ImageView fx:id="userProfilePicture" fitHeight="73.0" fitWidth="68.0" onMouseClicked="#openUserProfilePage" pickOnBounds="true" preserveRatio="true" styleClass="image">
+                           <image>
+                              <Image url="@img/img_2.png" />
+                           </image>
+                           <HBox.margin>
+                              <Insets top="10.0" />
+                           </HBox.margin>
+                           <viewport>
+                              <Rectangle2D />
+                           </viewport>
+                        </ImageView>
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+            <VBox alignment="CENTER" prefHeight="529.0" prefWidth="299.0" styleClass="Vbox">
+               <children>
+                  <Label alignment="TOP_CENTER" contentDisplay="CENTER" prefHeight="48.0" prefWidth="293.0" text="Conversations" textFill="#c9c9c9">
+                     <font>
+                        <Font size="29.0" />
+                     </font>
+                  </Label>
+                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="293.0">
+                     <children>
+                        <AnchorPane prefHeight="95.0" prefWidth="482.0">
+                           <children>
+                              <Label alignment="CENTER" contentDisplay="CENTER" layoutX="119.0" layoutY="-1.0" prefHeight="78.0" prefWidth="101.0" text="Username" textFill="#c9c9c9">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font>
+                              </Label>
+                              <ImageView fx:id="contactProfilePicture" cache="true" fitHeight="60.0" fitWidth="61.0" layoutX="40.0" layoutY="9.0" onMouseClicked="#openContactProfilePage" pickOnBounds="true" preserveRatio="true" styleClass="image">
+                                 <image>
+                                    <Image url="@img/img_2.png" />
+                                 </image>
+                                 <viewport>
+                                    <Rectangle2D />
+                                 </viewport>
+                              </ImageView>
+                              <Circle fill="#3dbc4c" layoutX="90.0" layoutY="63.0" radius="10.0" stroke="BLACK" strokeType="INSIDE" />
+                           </children>
+                        </AnchorPane>
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="293.0">
+                     <children>
+                        <AnchorPane prefHeight="118.0" prefWidth="282.0">
+                           <children>
+                              <ImageView cache="true" fitHeight="63.0" fitWidth="58.0" layoutX="36.0" layoutY="12.0" pickOnBounds="true" preserveRatio="true" styleClass="image">
+                                 <image>
+                                    <Image url="@img/img_2.png" />
+                                 </image>
+                                 <viewport>
+                                    <Rectangle2D />
+                                 </viewport>
+                              </ImageView>
+                              <Circle fill="#ba3d3d" layoutX="94.0" layoutY="66.0" radius="10.0" stroke="BLACK" strokeType="INSIDE" />
+                              <Label alignment="CENTER" contentDisplay="CENTER" layoutX="119.0" layoutY="-4.0" prefHeight="78.0" prefWidth="101.0" text="Username" textFill="#c9c9c9">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </AnchorPane>
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="293.0">
+                     <children>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="293.0">
+                           <children>
+                              <AnchorPane prefHeight="118.0" prefWidth="282.0">
+                                 <children>
+                                    <ImageView cache="true" fitHeight="63.0" fitWidth="58.0" layoutX="36.0" layoutY="12.0" pickOnBounds="true" preserveRatio="true" styleClass="image">
+                                       <image>
+                                          <Image url="@img/img_2.png" />
+                                       </image>
+                                       <viewport>
+                                          <Rectangle2D />
+                                       </viewport>
+                                    </ImageView>
+                                    <Circle fill="#ba3d3d" layoutX="94.0" layoutY="66.0" radius="10.0" stroke="BLACK" strokeType="INSIDE" />
+                                    <Label alignment="CENTER" contentDisplay="CENTER" layoutX="119.0" layoutY="-4.0" prefHeight="78.0" prefWidth="101.0" text="Group1" textFill="#c9c9c9">
+                                       <font>
+                                          <Font size="16.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </AnchorPane>
+                           </children>
+                        </HBox>
+                     </children></HBox>
+                  <Separator disable="true" opacity="0.0" orientation="VERTICAL" prefHeight="175.0" prefWidth="269.0" />
+                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="30.0">
+                     <children>
+                        <Button fx:id="addFriendsButton" alignment="CENTER" contentDisplay="RIGHT" mnemonicParsing="false" prefHeight="42.0" prefWidth="100.0" text="Add Friends" textAlignment="CENTER">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                        </Button>
+                        <Button fx:id="createGroupButton" mnemonicParsing="false" prefHeight="42.0" prefWidth="100.0" text="Create Group">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                        </Button>
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+            </children>
+            <BorderPane.margin>
+                <Insets />
+            </BorderPane.margin>
+        </VBox>
+    </left>
+    <top>
+        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+            <children>
+                <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="88.0" prefWidth="263.0" text="Piscord" textAlignment="CENTER" textFill="#bcbcbc">
+                    <font>
+                        <Font name="Bauhaus 93" size="63.0" />
+                    </font>
+                </Label>
+            </children>
+        </HBox>
+    </top>
+    <opaqueInsets>
+        <Insets />
+    </opaqueInsets>
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+    </padding>
+    <right>
+        <VBox prefHeight="665.0" prefWidth="747.0" styleClass="Vbox" BorderPane.alignment="CENTER">
+            <BorderPane.margin>
+                <Insets left="20.0" />
+            </BorderPane.margin>
+            <children>
+            <HBox alignment="CENTER" prefHeight="101.0" prefWidth="741.0">
+               <children>
+                  <Separator prefHeight="102.0" prefWidth="150.0" />
+                  <Label alignment="CENTER" prefHeight="101.0" prefWidth="119.0" text="22.12.2025" textFill="#c9c9c9">
+                     <font>
+                        <Font name="System Bold" size="19.0" />
+                     </font>
+                  </Label>
+                  <Separator prefHeight="101.0" prefWidth="150.0" />
+               </children>
+            </HBox>
+            <VBox prefHeight="490.0" prefWidth="777.0">
+               <children>
+                  <HBox prefHeight="0.0" prefWidth="741.0">
+                     <children>
+                        <AnchorPane prefHeight="84.0" prefWidth="741.0">
+                           <children>
+                              <Label fx:id="userUsername" alignment="CENTER" contentDisplay="CENTER" layoutX="87.0" layoutY="10.0" prefHeight="47.0" prefWidth="173.0" text="Username" textFill="#c9c9c9">
+                                 <font>
+                                    <Font size="23.0" />
+                                 </font>
+                              </Label>
+                              <ImageView fx:id="userProfilePicture" cache="true" fitHeight="63.0" fitWidth="66.0" layoutX="20.0" layoutY="19.0" pickOnBounds="true" preserveRatio="true" styleClass="image">
+                                 <image>
+                                    <Image url="@img/img_2.png" />
+                                 </image>
+                                 <viewport>
+                                    <Rectangle2D />
+                                 </viewport>
+                              </ImageView>
+                              <Label layoutX="123.0" layoutY="57.0" prefHeight="34.0" prefWidth="51.0" text="Moi" textFill="#c9c9c9">
+                                 <font>
+                                    <Font size="23.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="messageTimeLabel" layoutX="246.0" layoutY="25.0" text="20:43" textFill="#c9c9c9" />
+                              <MenuButton alignment="CENTER" layoutX="620.0" layoutY="33.0" mnemonicParsing="false" text="MenuButton">
+                                <items>
+                                  <MenuItem fx:id="messageModifyButton" mnemonicParsing="false" onAction="#modifyMessage" text="Modify" />
+                                  <MenuItem fx:id="messageDeleteButton" mnemonicParsing="false" onAction="#deleteMessage" text="Delete" />
+                                    <MenuItem fx:id="messageReactionButton" mnemonicParsing="false" onAction="#reactMessage" text="Reaction" />
+                                </items>
+                              </MenuButton>
+                           </children>
+                        </AnchorPane>
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER" prefHeight="15.0" prefWidth="741.0">
+                     <children>
+                        <AnchorPane prefHeight="256.0" prefWidth="741.0">
+                           <children>
+                              <Label fx:id="contactUsername" alignment="CENTER" contentDisplay="CENTER" layoutX="87.0" layoutY="10.0" prefHeight="47.0" prefWidth="173.0" text="Username" textFill="#c9c9c9">
+                                 <font>
+                                    <Font size="23.0" />
+                                 </font>
+                              </Label>
+                              <ImageView fx:id="contactProfilePicture" cache="true" fitHeight="63.0" fitWidth="66.0" layoutX="24.0" layoutY="24.0" pickOnBounds="true" preserveRatio="true" styleClass="image">
+                                 <image>
+                                    <Image url="@img/img_2.png" />
+                                 </image>
+                                 <viewport>
+                                    <Rectangle2D />
+                                 </viewport>
+                              </ImageView>
+                              <Label layoutX="123.0" layoutY="57.0" prefHeight="34.0" prefWidth="51.0" text="Moi" textFill="#c9c9c9">
+                                 <font>
+                                    <Font size="23.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="246.0" layoutY="25.0" text="20:43" textFill="#c9c9c9" />
+                              <MenuButton alignment="CENTER" layoutX="622.0" layoutY="33.0" mnemonicParsing="false" text="MenuButton">
+                                 <items>
+                                    <MenuItem fx:id="messageModifyButton" mnemonicParsing="false" onAction="#modifyMessage" text="Modify" />
+                                    <MenuItem fx:id="messageDeleteButton" mnemonicParsing="false" onAction="#deleteMessage" text="Delete" />
+                                    <MenuItem fx:id="messageReactionButton" mnemonicParsing="false" onAction="#reactMessage" text="Reaction" />
+                                 </items>
+                              </MenuButton>
+                           </children>
+                        </AnchorPane>
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+                <HBox alignment="CENTER" prefHeight="55.0" prefWidth="741.0">
+                    <children>
+                        <Button fx:id="messagemenuButton" mnemonicParsing="false" prefHeight="78.0" prefWidth="57.0" text="+">
+                            <contextMenu>
+                                <ContextMenu>
+                                    <items>
+                                        <MenuItem fx:id="fileMenuItem" text="Send File" />
+                                        <MenuItem fx:id="imageMenuItem" text="Send Image" />
+                                    </items>
+                                </ContextMenu>
+                            </contextMenu>
+                     <font>
+                        <Font name="System Bold" size="22.0" />
+                     </font>
+                        </Button>
+                        <TextField fx:id="sendMessageTextField" alignment="CENTER_LEFT" prefHeight="78.0" prefWidth="413.0" promptText="Send Message">
+                            <font>
+                                <Font size="18.0" />
+                            </font>
+                        </TextField>
+                        <Button fx:id="sendButton" mnemonicParsing="false" prefHeight="67.0" prefWidth="69.0" text="Send">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </Button>
+                    </children>
+               <VBox.margin>
+                  <Insets bottom="10.0" />
+               </VBox.margin>
+                </HBox>
+            </children>
+        </VBox>
+    </right>
+</BorderPane>

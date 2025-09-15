@@ -1,0 +1,38 @@
+.BorderPane {
+    -fx-background-color: #333333;
+}
+
+.Vbox {
+    -fx-background-color: #494949;
+    -fx-background-radius: 20px;
+    -fx-border-width: 3px;
+    -fx-border-color: #878787;
+    -fx-border-radius: 20px;
+
+}
+
+.Hbox {
+    -fx-background-color: #494949;
+    -fx-background-radius: 20px 20px 0px 0px;
+    -fx-border-width: 3px;
+    -fx-border-color: #878787;
+    -fx-border-radius: 16px 16px 0px 0px;
+
+}
+
+.button {
+    -fx-background-color: rgb(64, 131, 255);
+    -fx-background-radius: 10px;
+    -fx-border-color: rgba(0, 0, 0, 0.8);
+    -fx-border-radius: 10px;
+}
+
+.button:hover {
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.5), 10, 0, 4, 4);
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+}
+
+
+
