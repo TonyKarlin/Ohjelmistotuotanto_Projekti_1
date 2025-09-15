@@ -9,6 +9,9 @@ import backend_api.services.ConversationService;
 import backend_api.services.MessageService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -28,13 +31,15 @@ public class MessageController {
 
 
     @PostMapping("/messages")
-    public ResponseEntity<Message> sendMessage(@RequestBody SendMessageRequest request) {
+    public ResponseEntity<MessageDTO> sendMessage(@RequestBody SendMessageRequest request) {
 
         Message message = messageService.sendMessage(request);
         if (message == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
-        return ResponseEntity.status(HttpStatus.CREATED).body(message);
+
+        MessageDTO dto = MessageDTO.fromMessageEntity(message);
+        return ResponseEntity.status(HttpStatus.CREATED).body(dto);
     }
 
     @GetMapping("/{conversationId}/messages")
@@ -53,14 +58,19 @@ public class MessageController {
     }
 
 
-    @DeleteMapping("/messages/{messageId}")
-    public ResponseEntity<?> deleteMessage(@PathVariable("userId") Long userId, @PathVariable("messageId") Long messageId) {
-        boolean result = messageService.deleteMessage(userId, messageId);
-        if (result) {
-            return ResponseEntity.ok(Map.of("message", "Message deleted successfully"));
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", "Message not found or you are not the sender"));
-        }
-    }
-
+    // WIP: Poistetaan viesti, jos käyttäjä on viestin lähettäjä tai keskustelun ylläpitäjä
+    // sitten kun roolit mukana kunnolla
+//    @DeleteMapping("/messages/{messageId}")
+//    public ResponseEntity<?> deleteMessage(@PathVariable Long messageId,
+//                                           @AuthenticationPrincipal UserDetails userDetails) {
+//
+//        boolean deleted = messageService.deleteMessage(messageId);
+//
+//        if (deleted) {
+//            return ResponseEntity.ok(Map.of("message", "Message deleted successfully"));
+//        } else {
+//            return ResponseEntity.status(HttpStatus.FORBIDDEN)
+//                    .body(Map.of("error", "Message not found or you are not authorized to delete it"));
+//        }
+//    }
 }
