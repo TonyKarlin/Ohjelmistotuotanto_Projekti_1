@@ -7,20 +7,39 @@ GET http://localhost:8080/api/users/1
 Content-Type: application/json
 
 
-### POST TESTI -- viestin lähetys
-@userId = 1
-POST http://localhost:8080/api/users/{{userId}}/messages
+### GET -- keskustelujen viestit
+GET http://localhost:8080/api/conversations/3/messages
+Content-Type: application/json
+
+
+#### POST TESTI -- viestin lähetys
+POST http://localhost:8080/api/conversations/messages
 Content-Type: application/json
 
 {
-  "participantIds": [2,3],
-  "text": "Test message!!!"
+  "senderId": 1,
+  "participantIds": [
+    1,
+    2,
+    3
+  ],
+  "text": "Moro Jorma!"
 }
 
-### DELETE TESTI -- viestin poistaminen
-@messageId = 10
-DELETE http://localhost:8080/api/users/{{userId}}/messages/{{messageId}}
+#### POST TESTI -- viestin lähetys olemassa olevaan keskusteluun
+POST http://localhost:8080/api/conversations/messages
 Content-Type: application/json
+
+{
+  "senderId": 1,
+  "conversationId": 2,
+  "participantIds": [
+    1,
+    2,
+    3
+  ],
+  "text": "Moi Bob!"
+}
 
 ### DELETE TESTI -- viestin poistaminen
 @messageId = 10
@@ -32,9 +51,9 @@ POST http://localhost:8080/api/users/register
 Content-Type: application/json
 
 {
-    "username":"3",
-    "password":"1234",
-    "email":"test@example.com"
+  "username": "jorma",
+  "password": "1234",
+  "email": "testii@example.com"
 }
 
 ### Testataan login
@@ -42,6 +61,6 @@ POST http://localhost:8080/api/users/login
 Content-Type: application/json
 
 {
-    "username":"test",
-    "password":"1234"
+  "username": "test",
+  "password": "1234"
 }
