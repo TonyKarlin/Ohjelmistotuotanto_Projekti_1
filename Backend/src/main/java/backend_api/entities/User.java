@@ -35,9 +35,9 @@ public class User {
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
-    @ManyToMany(mappedBy = "participants")
-    @JsonIgnore
-    private List<Conversation> conversations = new ArrayList<>();
+//    @ManyToMany(mappedBy = "participants")
+//    @JsonIgnore
+//    private List<Conversation> conversations = new ArrayList<>();
 
     public User() {
     }
@@ -94,11 +94,11 @@ public class User {
         this.createdAt = createdAt;
     }
 
-    public List<Conversation> getConversations() {
-        return conversations;
-    }
-
-    public void setConversations(List<Conversation> conversations) {
-        this.conversations = conversations;
-    }
+//    public List<Conversation> getConversations() {
+//        return conversations;
+//    }
+//
+//    public void setConversations(List<Conversation> conversations) {
+//        this.conversations = conversations;
+//    }
 }
