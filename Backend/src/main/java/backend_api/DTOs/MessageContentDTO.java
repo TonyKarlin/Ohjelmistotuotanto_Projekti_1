@@ -2,9 +2,8 @@ package backend_api.DTOs;
 
 import backend_api.entities.MessageContent;
 
-import java.time.LocalDateTime;
-import java.util.List;
-
+// DTO for transferring message content metadata (like file type and ID)
+// Used within MessageDTO to represent attachments without exposing full entity
 public class MessageContentDTO {
     private Long id;
     private String fileType;

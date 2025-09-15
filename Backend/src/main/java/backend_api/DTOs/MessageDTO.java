@@ -5,6 +5,8 @@ import backend_api.entities.Message;
 import java.time.LocalDateTime;
 import java.util.List;
 
+// MessageDTO for transferring message data including sender info and attachments
+// to avoid exposing the entire Message entity and recursive relationships.
 public class MessageDTO {
     private Long id;
     private Long senderId;
