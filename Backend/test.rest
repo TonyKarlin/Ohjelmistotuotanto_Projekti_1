@@ -23,7 +23,7 @@ Content-Type: application/json
     2,
     3
   ],
-  "text": "Moro Jorma!"
+  "text": "ÖÖ moi"
 }
 
 #### POST TESTI -- viestin lähetys olemassa olevaan keskusteluun
@@ -40,11 +40,6 @@ Content-Type: application/json
   ],
   "text": "Moi Bob!"
 }
-
-### DELETE TESTI -- viestin poistaminen
-@messageId = 10
-DELETE http://localhost:8080/api/users/{{userId}}/messages/{{messageId}}
-Content-Type: application/json
 
 ### testataan uusi rekisteröityminen
 POST http://localhost:8080/api/users/register

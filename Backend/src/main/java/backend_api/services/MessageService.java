@@ -12,6 +12,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -149,15 +150,20 @@ public class MessageService {
 
 
     public boolean deleteMessage(Long userId, Long messageId) {
-        try {
-            Message message = messageRepository
-                    .getMessageByIdAndSender_Id(messageId, userId)
-                    .orElseThrow(() -> new RuntimeException("Message not found or not owned by user"));
+        Optional<Message> messageOptional = messageRepository.findById(messageId);
 
-            messageRepository.delete(message);
-            return true;
-        } catch (Exception e) {
+        if (messageOptional.isEmpty()) {
             return false;
         }
+
+        Message message = messageOptional.get();
+
+        // Check if the user is the sender (authorization)
+        if (!message.getSender().getId().equals(userId)) {
+            return false;
+        }
+
+        messageRepository.delete(message);
+        return true;
     }
 }

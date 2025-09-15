@@ -10,9 +10,8 @@ import java.util.List;
 import java.util.Optional;
 
 public interface MessageRepository extends JpaRepository<Message, Long> {
-    Optional<Message> getMessageByIdAndSender_Id(Long messageId, Long senderId);
-
     List<Message> findMessagesByConversationId(Long conversation);
+
 
 
 }
