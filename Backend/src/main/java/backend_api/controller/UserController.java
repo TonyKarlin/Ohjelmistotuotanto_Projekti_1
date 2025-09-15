@@ -3,6 +3,7 @@ package backend_api.controller;
 import java.util.List;
 import java.util.Optional;
 
+import backend_api.utils.JwtUtil;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,9 +19,12 @@ import backend_api.DTOs.RegisterRequest;
 import backend_api.entities.User;
 import backend_api.services.UserService;
 
+import static backend_api.utils.JwtUtil.generateToken;
+
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
+    private static JwtUtil jwtUtil;
 
     private final UserService userService;
 
@@ -57,7 +61,10 @@ public class UserController {
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest request) {
         return userService.login(request.getUsername(), request.getPassword())
-                .map(user -> ResponseEntity.ok(new LoginResponse("Login successful")))
+                .map(user -> {
+                    String token = jwtUtil.generateToken(user.getUsername());
+                    return ResponseEntity.ok(new LoginResponse("Login successful", token));
+                })
                 .orElse(ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                         .body(new LoginResponse("Invalid username or password")));
     }

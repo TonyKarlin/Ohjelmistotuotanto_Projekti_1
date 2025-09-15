@@ -21,7 +21,7 @@ public class View extends Application {
             });
             stage.setTitle("Pisscord");
 
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/loginView.fxml"));
             Parent root = fxmlLoader.load();
             // root.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
             stage.setScene(new Scene(root));

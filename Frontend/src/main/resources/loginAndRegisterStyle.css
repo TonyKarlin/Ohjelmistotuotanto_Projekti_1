@@ -16,6 +16,12 @@
     -fx-border-radius: 10px;
 }
 
+.PasswordField {
+    -fx-background-radius: 10px;
+    -fx-border-color: rgba(0, 0, 0, 0.8);
+    -fx-border-radius: 10px;
+}
+
 .button {
     -fx-background-color: rgb(48, 48, 48);
     -fx-background-radius: 10px;
