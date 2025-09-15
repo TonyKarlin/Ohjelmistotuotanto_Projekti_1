@@ -12,24 +12,13 @@ public interface ConversationRepository extends JpaRepository<Conversation, Long
     @Query("""
             SELECT c
             FROM Conversation c
-            JOIN c.participants p1
-            JOIN c.participants p2
-            WHERE p1.id = :user1
-            AND p2.id = :user2
+            JOIN c.participants cp1
+            JOIN c.participants cp2
+            WHERE cp1.user.id = :user1
+              AND cp2.user.id = :user2
+              AND c.type = 'PRIVATE'
             """)
     Optional<Conversation> findPrivateConversation(@Param("user1") Long user1,
                                                    @Param("user2") Long user2);
 
-    @Query("""
-                        SELECT c
-                        FROM Conversation c
-                        JOIN c.participants p
-                        WHERE p.id IN :participants
-                        GROUP BY c.id
-                        HAVING COUNT(p.id) = :size
-                                    AND COUNT(p.id) = (SELECT COUNT(p2.id) FROM c.participants p2)
-            
-            """)
-    Optional<Conversation> findGroupConversation(@Param("participants")List<Long> participantIds,
-                                                 @Param("size") long size);
 }

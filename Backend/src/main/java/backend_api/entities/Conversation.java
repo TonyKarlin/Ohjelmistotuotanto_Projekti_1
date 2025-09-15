@@ -1,5 +1,6 @@
 package backend_api.entities;
 
+import backend_api.enums.ConversationType;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -13,21 +14,37 @@ public class Conversation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToMany
-    @JoinTable(
-            name = "conversation_participants",
-            joinColumns = @JoinColumn(name = "conversation_id"),
-            inverseJoinColumns = @JoinColumn(name = "user_id")
-    )
-    private List<User> participants = new ArrayList<>();
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private ConversationType type;
+
+    @OneToMany(mappedBy = "conversation", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ConversationParticipant> participants = new ArrayList<>();
 
     public Conversation() {
     }
 
-    public Conversation(List<User> participants) {
-        this.participants = participants;
+    public Conversation(ConversationType type) {
+        this.type = type;
     }
 
+    public void addParticipant(User user, String role) {
+        ConversationParticipant participant = new ConversationParticipant(this, user, role);
+        if (!participants.contains(participant)) participants.add(participant);
+    }
+
+
+    public void removeParticipant(ConversationParticipant participant) {
+        participants.remove(participant);
+        participant.setConversation(null);
+    }
+
+    public boolean hasParticipant(User user) {
+        return participants.stream().anyMatch(p -> p.isParticipant(user));
+    }
+
+
+    // getterit ja setterit
     public Long getId() {
         return id;
     }
@@ -36,15 +53,19 @@ public class Conversation {
         this.id = id;
     }
 
-    public List<User> getParticipants() {
+    public ConversationType getType() {
+        return type;
+    }
+
+    public void setType(ConversationType type) {
+        this.type = type;
+    }
+
+    public List<ConversationParticipant> getParticipants() {
         return participants;
     }
 
-    public void setParticipants(List<User> participants) {
+    public void setParticipants(List<ConversationParticipant> participants) {
         this.participants = participants;
-    }
-
-    public void addParticipant(User user) {
-        this.participants.add(user);
     }
 }

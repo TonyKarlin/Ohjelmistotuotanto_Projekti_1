@@ -7,6 +7,7 @@ import java.util.List;
 // Example usage: sendMessage(new SendMessageRequest(senderId, conversationId, "Hello World", "image/png", fileData));
 public class SendMessageRequest {
     private Long senderId;
+    private Long conversationId;
     private List<Long> participantIds;
     private String text;
     private String fileType; // Example: "image/png", "application/pdf"
@@ -18,6 +19,14 @@ public class SendMessageRequest {
 
     public void setSenderId(Long senderId) {
         this.senderId = senderId;
+    }
+
+    public Long getConversationId() {
+        return conversationId;
+    }
+
+    public void setConversationId(Long conversationId) {
+        this.conversationId = conversationId;
     }
 
     public List<Long> getParticipantIds() {

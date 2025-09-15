@@ -1,11 +1,10 @@
 package backend_api.services;
 
+import backend_api.DTOs.MessageContentDTO;
+import backend_api.DTOs.MessageDTO;
 import backend_api.DTOs.SendMessageRequest;
-import backend_api.controller.MessageController;
-import backend_api.entities.Conversation;
-import backend_api.entities.Message;
-import backend_api.entities.MessageContent;
-import backend_api.entities.User;
+import backend_api.entities.*;
+import backend_api.enums.ConversationType;
 import backend_api.repository.ConversationRepository;
 import backend_api.repository.MessageRepository;
 import backend_api.repository.UserRepository;
@@ -13,7 +12,6 @@ import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional
@@ -29,58 +27,18 @@ public class MessageService {
         this.conversationRepository = conversationRepository;
     }
 
-    public Conversation createPrivateConversation(Long senderId, List<Long> participants) {
-        Long receiverId = participants.stream()
-                .filter(id -> !id.equals(senderId))
-                .findFirst().orElseThrow(() -> new RuntimeException("Receiver ID not found"));
-
-        return conversationRepository.findPrivateConversation(senderId, receiverId)
-                .orElseGet(() -> {
-                    Conversation newConversation = new Conversation();
-                    User sender = userRepository.findById(senderId)
-                            .orElseThrow(() -> new RuntimeException("User not found with id: " + senderId));
-                    User receiver = userRepository.findById(receiverId)
-                            .orElseThrow(() -> new RuntimeException("User not found with id: " + receiverId));
-                    newConversation.addParticipant(sender);
-                    newConversation.addParticipant(receiver);
-                    return conversationRepository.save(newConversation);
-                });
-    }
-
-    public Conversation createGroupConversation(List<Long> participantIds) {
-        return conversationRepository.findGroupConversation(participantIds, participantIds.size())
-                .orElseGet(() -> {
-                    Conversation newConversation = new Conversation();
-                    List<User> participants = userRepository.findAllById(participantIds);
-                    if (participants.size() != participantIds.size()) {
-                        throw new RuntimeException("One or more users not found for the provided IDs");
-                    }
-                    participants.forEach(newConversation::addParticipant);
-                    return conversationRepository.save(newConversation);
-                });
-    }
-
-    public Conversation getOrCreateConversation(Long senderId, List<Long> participantIds) {
-        if (!participantIds.contains(senderId)) participantIds.add(senderId);
-        if (participantIds.size() == 2) {
-            return createPrivateConversation(senderId, participantIds);
-        } else {
-            return createGroupConversation(participantIds);
-        }
-    }
-
-
-    public Message sendMessage(SendMessageRequest request) {
-        // Check if a conversation exists. If not, create a new one.
-        Conversation conversation = getOrCreateConversation(request.getSenderId(), request.getParticipantIds());
-
-        User sender = userRepository.findById(request.getSenderId()).orElseThrow(() ->
+    public User getSender(SendMessageRequest request) {
+        return userRepository.findById(request.getSenderId()).orElseThrow(() ->
                 new RuntimeException("User not found with id: " + request.getSenderId()));
-        // Create the message entity
+    }
+
+
+    public Message createMessage(SendMessageRequest request, Conversation conversation) {
         Message message = new Message();
-        message.setSender(sender);
+        message.setSender(getSender(request));
         message.setConversation(conversation);
         message.setText(request.getText());
+
         // If there's an attachment, create a MessageContent entity and associate it with the message
         if (request.getFileData() != null) {
             MessageContent attachment = new MessageContent();
@@ -89,8 +47,106 @@ public class MessageService {
             attachment.setMessage(message);
             message.addAttachments(attachment);
         }
+        return message;
+    }
+
+
+    public void isUserPartOfConversation(SendMessageRequest request, Conversation conversation) {
+        User sender = getSender(request);
+
+        if (!conversation.hasParticipant(sender)) {
+            throw new RuntimeException("User is not a participant of the conversation");
+        }
+    }
+
+
+    public Conversation createAConversation(SendMessageRequest request) {
+        List<User> users = userRepository.findAllById(request.getParticipantIds());
+
+        if (users.size() != request.getParticipantIds().size()) {
+            throw new RuntimeException("One or more users not found for the provided participant IDs");
+        }
+
+        // Check if it's a private conversation (exactly 2 participants)!!
+        if (users.size() == 2) {
+            Long senderId = request.getSenderId();
+            Long receiverId = users.stream()
+                    .map(User::getId)
+                    .filter(id -> !id.equals(senderId))
+                    .findFirst()
+                    .orElseThrow(() -> new RuntimeException("Receiver ID not found"));
+
+            // Return existing private conversation if it exists
+            return conversationRepository.findPrivateConversation(senderId, receiverId)
+                    .orElseGet(() -> createConversationEntity(users, "PRIVATE"));
+        }
+
+        // Else create a new group conversation
+        return createConversationEntity(users, "GROUP");
+    }
+
+
+    private Conversation createConversationEntity(List<User> users, String type) {
+        Conversation conversation = new Conversation();
+        conversation.setType(type.equals("PRIVATE") ? ConversationType.PRIVATE : ConversationType.GROUP);
+
+        conversation = conversationRepository.save(conversation);
+
+        for (User user : users) {
+            ConversationParticipant participant = new ConversationParticipant(conversation, user, "MEMBER");
+            ConversationParticipantId participantId = new ConversationParticipantId(conversation.getId(), user.getId());
+            participant.setId(participantId);
+            conversation.getParticipants().add(participant);
+        }
+
+        return conversationRepository.save(conversation);
+    }
+
+    public void validateParticipants(SendMessageRequest request) {
+        if (request.getParticipantIds() == null || request.getParticipantIds().isEmpty()) {
+            throw new RuntimeException("No participants specified for new conversation");
+        }
+    }
+
+    public void ensureSenderInParticipants(SendMessageRequest request) {
+        if (!request.getParticipantIds().contains(request.getSenderId())) {
+            request.getParticipantIds().add(request.getSenderId());
+        }
+    }
+
+
+    public Message sendMessage(SendMessageRequest request) {
+        // Check if a conversation exists. If not, create a new one.
+        Conversation conversation;
+
+        if (request.getConversationId() != null) {
+            conversation = conversationRepository.findById(request.getConversationId())
+                    .orElseThrow(() -> new RuntimeException("Conversation not found"));
+        } else {
+            validateParticipants(request);
+            ensureSenderInParticipants(request);
+
+            conversation = createAConversation(request);
+        }
+        return createAndSaveMessage(request, conversation);
+    }
+
+    private Message createAndSaveMessage(SendMessageRequest request, Conversation conversation) {
+        // Validate that sender is part of the conversation
+        isUserPartOfConversation(request, conversation);
+
+        // Create message entity
+        Message message = createMessage(request, conversation);
+
+        // Save and return
         return messageRepository.save(message);
     }
+
+
+    public List<Message> getMessagesByConversationId(Long conversationId) {
+        return messageRepository.findMessagesByConversationId(conversationId);
+    }
+
 
     public boolean deleteMessage(Long userId, Long messageId) {
         try {

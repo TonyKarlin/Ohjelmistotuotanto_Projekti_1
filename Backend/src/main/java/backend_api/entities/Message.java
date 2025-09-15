@@ -19,14 +19,6 @@ public class Message {
     @JoinColumn(name = "sender_id", nullable = false)
     private User sender;
 
-//    @ManyToMany
-//    @JoinTable(
-//            name = "message_receivers",
-//            joinColumns = @JoinColumn(name = "message_id"),
-//            inverseJoinColumns = @JoinColumn(name = "receiver_id")
-//    )
-//    private List<User> receivers = new ArrayList<>();
-
     @ManyToOne
     @JoinColumn(name = "conversation_id", nullable = false)
     private Conversation conversation;
