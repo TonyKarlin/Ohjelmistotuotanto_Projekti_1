@@ -27,19 +27,27 @@ CREATE TABLE IF NOT EXISTS contacts
     CONSTRAINT fk_contact_user FOREIGN KEY (contact_user_id) REFERENCES users (id)
 );
 
--- DROP TABLE IF EXISTS users;
--- DROP TABLE IF EXISTS message_content;
--- DROP TABLE IF EXISTS messages CASCADE;
--- DROP TABLE IF EXISTS conversations;
--- DROP TABLE IF EXISTS conversation_participants;
--- DROP TABLE IF EXISTS contacts;
-
 
 -- Create conversation table
 CREATE TABLE IF NOT EXISTS conversations
 (
-    conversation_id BIGSERIAL PRIMARY KEY
+    conversation_id BIGSERIAL PRIMARY KEY,
+    type            VARCHAR(20) NOT NULL DEFAULT 'PRIVATE',
+    created_at      TIMESTAMP   NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
+
+-- Create conversation_participants table
+CREATE TABLE IF NOT EXISTS conversation_participants
+(
+    conversation_id BIGINT      NOT NULL,
+    user_id         BIGINT      NOT NULL,
+    role            VARCHAR(50) NOT NULL DEFAULT 'MEMBER',
+    joined_at       TIMESTAMP   NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (conversation_id, user_id),
+    CONSTRAINT fk_conversation FOREIGN KEY (conversation_id) REFERENCES conversations (conversation_id) ON DELETE CASCADE,
+    CONSTRAINT fk_user FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
+);
+
 
 
 -- Create messages table
@@ -51,17 +59,9 @@ CREATE TABLE IF NOT EXISTS messages
     sender_id       BIGINT    NOT NULL,
     content         TEXT      NOT NULL,
     created_at      TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    conversation_id BIGINT    NOT NULL,
-    CONSTRAINT fk_sender FOREIGN KEY (sender_id) REFERENCES users (id),
-    CONSTRAINT fk_conversation FOREIGN KEY (conversation_id) REFERENCES conversations (conversation_id)
+    conversation_id BIGINT    NOT NULL REFERENCES conversations (conversation_id) ON DELETE CASCADE,
+    CONSTRAINT fk_sender FOREIGN KEY (sender_id) REFERENCES users (id) ON DELETE CASCADE
 );
-
--- CREATE TABLE IF NOT EXISTS message_receivers
--- (
---     message_id  BIGINT NOT NULL REFERENCES messages (id) ON DELETE CASCADE,
---     receiver_id BIGINT NOT NULL REFERENCES users (id),
---     PRIMARY KEY (message_id, receiver_id)
--- );
 
 -- Create message_content table
 -- Stores binary content for messages (e.g., images, files)
