@@ -3,10 +3,13 @@ package service;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import dto.LoginResponse;
 import request.LoginRequest;
 import model.User;
 
-public class UserApiClient implements ApiClient{
+public class UserApiClient implements ApiClient {
 
     String registerUrl = ("http://localhost:8080/api/users/register");
     String loginUrl = ("http://localhost:8080/api/users/login");
@@ -18,18 +21,27 @@ public class UserApiClient implements ApiClient{
 
     public User registerUser(User user) {
         try {
-            String responseJson = sendPostRequest(registerUrl, user);
-            return objectMapper.readValue(responseJson, User.class);
+            HttpResponse response = sendPostRequest(registerUrl, user);
+            if (response.statusCode >= 200 && response.statusCode < 300) {
+                return objectMapper.readValue(response.body, User.class);
+            } else {
+                System.err.println("Failed to register user. Status: " + response.statusCode + ", Response: " + response.body);
+                return null;
+            }
         } catch (IOException e) {
             throw new RuntimeException("Failed to register user", e);
         }
-
     }
 
     public User loginUser(LoginRequest loginRequest) {
         try {
-            String responseJson = sendPostRequest(loginUrl, loginRequest);
-            return objectMapper.readValue(responseJson, User.class);
+            HttpResponse response = sendPostRequest(loginUrl, loginRequest);
+            if (response.statusCode >= 200 && response.statusCode < 300) {
+                return objectMapper.readValue(response.body, User.class);
+            } else {
+                System.err.println("Failed to login. Status: " + response.statusCode + ", Response: " + response.body);
+                return null;
+            }
         } catch (IOException e) {
             throw new RuntimeException("Failed to login", e);
         }
@@ -42,7 +54,6 @@ public class UserApiClient implements ApiClient{
             throw new RuntimeException(e);
         }
     }
-
 
 
 }
