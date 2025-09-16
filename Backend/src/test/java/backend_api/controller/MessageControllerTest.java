@@ -10,8 +10,6 @@ import backend_api.DTOs.SendMessageRequest;
 import backend_api.entities.Message;
 import backend_api.entities.User;
 import backend_api.services.MessageService;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -47,6 +45,7 @@ public class MessageControllerTest {
         MessageService service = mock(MessageService.class);
         MessageController controller = new MessageController(service);
 
+        // Simulate failure in sending message
         when(service.sendMessage(org.mockito.ArgumentMatchers.any())).thenReturn(null);
         ResponseEntity<MessageDTO> response = controller.sendMessage(new SendMessageRequest());
 
@@ -88,6 +87,7 @@ public class MessageControllerTest {
         MessageService service = mock(MessageService.class);
         MessageController controller = new MessageController(service);
 
+        // Simulate no messages found
         when(service.getMessagesByConversationId(1L)).thenReturn(List.of());
         ResponseEntity<List<MessageDTO>> response = controller.getMessages(1L);
 
@@ -121,6 +121,7 @@ public class MessageControllerTest {
         MessageService service = mock(MessageService.class);
         MessageController controller = new MessageController(service);
 
+        // Simulate message not found
         when(service.getMessageByIdAndConversationId(12L, 8L)).thenReturn(Optional.empty());
         ResponseEntity<MessageDTO> response = controller.getMessageById(8L, 12L);
 
