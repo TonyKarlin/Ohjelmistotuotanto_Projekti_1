@@ -5,6 +5,7 @@ import backend_api.DTOs.MessageDTO;
 import backend_api.DTOs.SendMessageRequest;
 import backend_api.entities.*;
 import backend_api.enums.ConversationType;
+import backend_api.enums.ParticipantRole;
 import backend_api.repository.ConversationRepository;
 import backend_api.repository.MessageRepository;
 import backend_api.repository.UserRepository;
@@ -18,6 +19,8 @@ import java.util.Optional;
 @Transactional
 public class MessageService {
 
+    // Kaipaa vielä refaktoroimista, on aika monimutkainen tällä hetkellä
+    // Jaetaan pienempiin osiin ja logiikkaa siirretään sopivimpiin serviceihin.
     private final MessageRepository messageRepository;
     private final UserRepository userRepository;
     private final ConversationRepository conversationRepository;
@@ -91,10 +94,11 @@ public class MessageService {
         Conversation conversation = new Conversation();
         conversation.setType(type.equals("PRIVATE") ? ConversationType.PRIVATE : ConversationType.GROUP);
 
-        conversation = conversationRepository.save(conversation);
+        // Reistaili aluksi, mutta pitäisi toimia ilman tätäkin. (Testaillaan lisää)
+//        conversation = conversationRepository.save(conversation);
 
         for (User user : users) {
-            ConversationParticipant participant = new ConversationParticipant(conversation, user, "MEMBER");
+            ConversationParticipant participant = new ConversationParticipant(conversation, user, ParticipantRole.MEMBER);
             ConversationParticipantId participantId = new ConversationParticipantId(conversation.getId(), user.getId());
             participant.setId(participantId);
             conversation.getParticipants().add(participant);
@@ -145,11 +149,19 @@ public class MessageService {
 
 
     public List<Message> getMessagesByConversationId(Long conversationId) {
+        Optional<Conversation> conversationOpt = conversationRepository.findById(conversationId);
+        if (conversationOpt.isEmpty()) {
+            throw new RuntimeException("Conversation not found with id: " + conversationId);
+        }
         return messageRepository.findMessagesByConversationId(conversationId);
     }
 
+    public Optional<Message> getMessageByIdAndConversationId(Long messageId, Long conversationId) {
+        return messageRepository.findByIdAndConversationId(messageId, conversationId);
+    }
 
-    public boolean deleteMessage(Long userId, Long messageId) {
+
+    public boolean deleteMessage(Long userId, Long messageId, Long conversationId) {
         Optional<Message> messageOptional = messageRepository.findById(messageId);
 
         if (messageOptional.isEmpty()) {
@@ -158,10 +170,10 @@ public class MessageService {
 
         Message message = messageOptional.get();
 
-        // Check if the user is the sender (authorization)
-        if (!message.getSender().getId().equals(userId)) {
-            return false;
-        }
+        // Katsotaan onko käyttäjä viestin lähettäjä
+        if (!message.getSender().getId().equals(userId)) return false;
+        // Katsotaan kuuluuko viesti oikeaan keskusteluun
+        if (!message.getConversation().getId().equals(conversationId)) return false;
 
         messageRepository.delete(message);
         return true;

@@ -1,5 +1,6 @@
 package controller;
 
+import dto.LoginResponse;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -56,8 +57,8 @@ public class LoginController {
                 return;
             }
             LoginRequest loginRequest = new LoginRequest(username, password);
-            User loggedinUser = userApiClient.loginUser(loginRequest);
-            System.out.println(loggedinUser.getUsername());
+            User loginResponse = userApiClient.loginUser(loginRequest);
+
         } catch (Exception e) {
             showAlert("Check credential", "Username or password is wrong");
             throw new RuntimeException(e);

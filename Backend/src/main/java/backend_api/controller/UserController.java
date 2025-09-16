@@ -1,6 +1,8 @@
 package backend_api.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import backend_api.utils.JwtUtil;
@@ -63,9 +65,15 @@ public class UserController {
         return userService.login(request.getUsername(), request.getPassword())
                 .map(user -> {
                     String token = jwtUtil.generateToken(user.getUsername());
-                    return ResponseEntity.ok(new LoginResponse("Login successful", token));
+                    Map<String, Object> response = new HashMap<>();
+                    response.put("username", user.getUsername());
+                    response.put("email", user.getEmail());
+                    response.put("id", user.getId());
+                    response.put("token", token);
+                    return ResponseEntity.ok(response);
+
                 })
                 .orElse(ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                        .body(new LoginResponse("Invalid username or password")));
+                        .body(Map.of("message", "Invalid username or password")));
     }
 }

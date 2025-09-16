@@ -15,7 +15,7 @@ public interface ApiClient {
 
 
     //Method needs only a right url and object as parameters
-    default String sendPostRequest(String urlString, Object body) throws IOException {
+    default HttpResponse sendPostRequest(String urlString, Object body) throws IOException {
 
         // Opens connection to the backend endpoint
         URL url = new URL(urlString);
@@ -34,7 +34,9 @@ public interface ApiClient {
         try (OutputStream os = http.getOutputStream()) {
             os.write(json.getBytes("utf-8"));
         }
-        return readResponse(http);
+        int code = http.getResponseCode();
+        String responseBody = readResponse(http);
+        return new HttpResponse(code, responseBody);
     }
 
     default String sendGetRequest(String urlString) throws IOException {

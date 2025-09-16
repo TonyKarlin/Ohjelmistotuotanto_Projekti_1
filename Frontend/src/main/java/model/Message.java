@@ -12,13 +12,13 @@ import java.util.List;
 public class Message {
 
     private int id;
-    private User sender;
-    private Conversation conversation;
+    private int senderId;
+    private String senderUsername;
     private String text;
     private String createdAt;
 
-    @JsonProperty("content")
-    private List<MessageContent> messageContent;
+    @JsonProperty("attachments")
+    private List<MessageAttachment> messageAttachments;
 
     public Message() {}
 

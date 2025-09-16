@@ -1,6 +1,8 @@
 package backend_api.services;
 
+import backend_api.DTOs.SendMessageRequest;
 import backend_api.entities.Conversation;
+import backend_api.entities.User;
 import backend_api.repository.ConversationRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
@@ -20,4 +22,5 @@ public class ConversationService {
     public Optional<Conversation> findById(Long id) {
         return conversationRepository.findById(id);
     }
+
 }

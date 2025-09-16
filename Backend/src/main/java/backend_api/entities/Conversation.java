@@ -1,6 +1,7 @@
 package backend_api.entities;
 
 import backend_api.enums.ConversationType;
+import backend_api.enums.ParticipantRole;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -28,7 +29,7 @@ public class Conversation {
         this.type = type;
     }
 
-    public void addParticipant(User user, String role) {
+    public void addParticipant(User user, ParticipantRole role) {
         ConversationParticipant participant = new ConversationParticipant(this, user, role);
         if (!participants.contains(participant)) participants.add(participant);
     }
