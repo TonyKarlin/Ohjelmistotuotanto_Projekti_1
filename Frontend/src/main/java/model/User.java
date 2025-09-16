@@ -11,6 +11,7 @@ public class User {
     private String password;
     private int id;
     private String createdAt;
+    private String token;
 
     //Empty construct for Object mapper
     public User() {
