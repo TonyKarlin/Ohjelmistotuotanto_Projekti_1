@@ -18,7 +18,7 @@
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="805.0" prefWidth="1126.0" styleClass="BorderPane" stylesheets="@mainPage.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="805.0" prefWidth="1126.0" styleClass="BorderPane" stylesheets="@mainPage.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ChatDashboardController">
     <left>
         <VBox alignment="CENTER_LEFT" maxHeight="1000.0" maxWidth="465.0" prefHeight="664.0" prefWidth="288.0" spacing="20.0" BorderPane.alignment="CENTER">
             <children>

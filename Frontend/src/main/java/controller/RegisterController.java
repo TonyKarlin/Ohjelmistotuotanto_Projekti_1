@@ -18,8 +18,12 @@ import java.net.MalformedURLException;
 
 public class RegisterController {
 
-    UserApiClient userApiClient = new UserApiClient();
+    UserApiClient userApiClient;
     User user;
+
+    public void setController(UserApiClient userApiClient) {
+        this.userApiClient = userApiClient;
+    }
 
     @FXML
     private Button addPictureButton;
@@ -54,6 +58,8 @@ public class RegisterController {
     void moveToLoginView(MouseEvent event) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/LoginView.fxml"));
         Parent root = fxmlLoader.load();
+        LoginController controller = fxmlLoader.getController();
+        controller.setController(this.userApiClient);
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.setScene(new Scene(root));
         stage.show();

@@ -25,11 +25,10 @@ public class UserApiClientTest {
 
     @Test
     public void postUserTest() {
-        user.setUsername("Testiiiii");
+        user.setUsername("Testopipp");
         user.setEmail("test@hotmail.fi");
         user.setPassword("1234");
         userApiClient.registerUser(user);
-
 
     }
 

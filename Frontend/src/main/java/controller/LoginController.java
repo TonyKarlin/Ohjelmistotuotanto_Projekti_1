@@ -1,6 +1,5 @@
 package controller;
 
-import dto.LoginResponse;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -21,8 +20,12 @@ public class LoginController {
 
     UserApiClient userApiClient;
 
-    public LoginController() throws MalformedURLException {
-            this.userApiClient = new UserApiClient();
+    public LoginController()  {
+
+    }
+
+    public void setController(UserApiClient userApiClient) {
+        this.userApiClient = userApiClient;
     }
 
     @FXML
@@ -39,16 +42,18 @@ public class LoginController {
 
 
     @FXML
-    void moveToRegisterView(MouseEvent event) throws IOException {
+    public void moveToRegisterView(MouseEvent event) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/registerView.fxml"));
         Parent root = fxmlLoader.load();
+        RegisterController controller = fxmlLoader.getController();
+        controller.setController(this.userApiClient);
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.setScene(new Scene(root));
         stage.show();
     }
 
     @FXML
-    void login() {
+    public void login() {
         try {
             String username = userNameTextField.getText();
             String password = passwordTextField.getText();
@@ -57,13 +62,26 @@ public class LoginController {
                 return;
             }
             LoginRequest loginRequest = new LoginRequest(username, password);
-            User loginResponse = userApiClient.loginUser(loginRequest);
+            User user = userApiClient.loginUser(loginRequest);
+            moveToMainView(user);
+            Stage stage = (Stage) loginButton.getScene().getWindow();
+            stage.close();
 
         } catch (Exception e) {
             showAlert("Check credential", "Username or password is wrong");
             throw new RuntimeException(e);
         }
+    }
 
+    public void moveToMainView(User user) throws IOException {
+
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/mainView.fxml"));
+        Parent root = fxmlLoader.load();
+        ChatDashboardController controller = fxmlLoader.getController();
+        controller.setController(user, this.userApiClient);
+        Stage stage = new Stage();
+        stage.setScene(new Scene(root));
+        stage.show();
     }
 
     private void showAlert(String title, String message) {

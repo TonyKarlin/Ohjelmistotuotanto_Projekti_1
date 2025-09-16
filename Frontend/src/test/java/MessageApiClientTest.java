@@ -1,4 +1,5 @@
 import dto.LoginResponse;
+import model.Conversation;
 import model.Message;
 import model.User;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,12 +16,15 @@ public class MessageApiClientTest {
     private MessageApiClient messageApiClient;
     private UserApiClient userApiClient;
     private LoginRequest loginRequest;
+    private Conversation conversation;
 
     @BeforeEach
     public void setUp() throws Exception{
         messageApiClient = new MessageApiClient();
         userApiClient = new UserApiClient();
         loginRequest = new LoginRequest();
+        conversation = new Conversation();
+
     }
 
     //Test to send messages using methods from the frontend
@@ -32,15 +36,24 @@ public class MessageApiClientTest {
         User user = userApiClient.loginUser(loginRequest);
         MessageRequest request = new MessageRequest();
         //Make sure that you have users in your DB before sending messages
-        request.setParticipantIds(java.util.Arrays.asList(1, 2, 3)); // user id's
+        request.setParticipantIds(java.util.Arrays.asList(1, 3)); // user id's
         request.setText("Test Message from JUnit!");
         request.setSenderId(user.getId());
-
         Message message = messageApiClient.sendMessage(request);
-        System.out.println("Message ID: " + message.getId());
-        System.out.println("Sender Username: " + message.getSenderUsername());
-        System.out.println("Text: " + message.getText());
-        System.out.println("Created At: " + message.getCreatedAt());
+        System.out.println(message.getText());
+
+
+    }
+
+    @Test
+    public void testMessageDelete() throws IOException, InterruptedException {
+        loginRequest = new LoginRequest("test", "1234");
+        User user = userApiClient.loginUser(loginRequest);
+        Message message = new Message();
+        message.setId(48);
+        conversation.setId(20);
+        messageApiClient.deleteMessage(conversation, message, user);
+
     }
 
 }

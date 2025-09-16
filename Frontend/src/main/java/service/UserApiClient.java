@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import dto.LoginResponse;
 import request.LoginRequest;
 import model.User;
 
@@ -21,39 +20,46 @@ public class UserApiClient implements ApiClient {
 
     public User registerUser(User user) {
         try {
-            HttpResponse response = sendPostRequest(registerUrl, user);
-            if (response.statusCode >= 200 && response.statusCode < 300) {
+            ApiResponse response =  sendPostRequest(registerUrl, user);
+            if (response.isSuccess()) {
+                System.out.println(response.body);
                 return objectMapper.readValue(response.body, User.class);
             } else {
-                System.err.println("Failed to register user. Status: " + response.statusCode + ", Response: " + response.body);
+                System.out.println("Failed to register user. Status: "
+                        + response.statusCode + ", Response: " + response.body);
                 return null;
             }
-        } catch (IOException e) {
+        } catch (IOException | InterruptedException e) {
             throw new RuntimeException("Failed to register user", e);
         }
     }
 
     public User loginUser(LoginRequest loginRequest) {
         try {
-            HttpResponse response = sendPostRequest(loginUrl, loginRequest);
-            if (response.statusCode >= 200 && response.statusCode < 300) {
+            ApiResponse response = sendPostRequest(loginUrl, loginRequest);
+            if (response.isSuccess()) {
                 return objectMapper.readValue(response.body, User.class);
             } else {
-                System.err.println("Failed to login. Status: " + response.statusCode + ", Response: " + response.body);
+                JsonNode jsonNode = objectMapper.readTree(response.getBody());
+                String errorMessage = jsonNode.has("message")
+                        ? jsonNode.get("message").asText()
+                        : response.getBody();
+                System.out.println(errorMessage);
                 return null;
             }
-        } catch (IOException e) {
+        } catch (IOException | InterruptedException e) {
             throw new RuntimeException("Failed to login", e);
         }
+
     }
 
-    public void getUsers() {
-        try {
-            System.out.println(sendGetRequest(usersUrl));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
+//    public void getUsers() {
+//        try {
+//            System.out.println(sendGetRequest(usersUrl));
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        }
+//    }
 
 
 }
