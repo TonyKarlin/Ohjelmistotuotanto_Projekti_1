@@ -23,11 +23,9 @@ import java.util.Optional;
 @RequestMapping("api/conversations")
 public class MessageController {
     private final MessageService messageService;
-    private final ConversationService conversationService;
 
-    public MessageController(MessageService messageService, ConversationService conversationService) {
+    public MessageController(MessageService messageService) {
         this.messageService = messageService;
-        this.conversationService = conversationService;
     }
 
 
@@ -47,10 +45,10 @@ public class MessageController {
     public ResponseEntity<List<MessageDTO>> getMessages(@PathVariable("conversationId") Long conversationId) {
         List<Message> messages = messageService.getMessagesByConversationId(conversationId);
 
-        Optional<Conversation> conversationOpt = conversationService.findById(conversationId);
-        if (conversationOpt.isEmpty()) {
-            return ResponseEntity.notFound().build();
+        if (messages.isEmpty()) {
+            return ResponseEntity.noContent().build();
         }
+
         List<MessageDTO> dtos = messages.stream()
                 .map(MessageDTO::fromMessageEntity)
                 .toList();

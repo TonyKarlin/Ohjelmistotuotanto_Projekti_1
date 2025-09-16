@@ -149,6 +149,10 @@ public class MessageService {
 
 
     public List<Message> getMessagesByConversationId(Long conversationId) {
+        Optional<Conversation> conversationOpt = conversationRepository.findById(conversationId);
+        if (conversationOpt.isEmpty()) {
+            throw new RuntimeException("Conversation not found with id: " + conversationId);
+        }
         return messageRepository.findMessagesByConversationId(conversationId);
     }
 
