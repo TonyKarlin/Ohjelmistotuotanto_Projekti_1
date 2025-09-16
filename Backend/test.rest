@@ -11,6 +11,10 @@ Content-Type: application/json
 GET http://localhost:8080/api/conversations/3/messages
 Content-Type: application/json
 
+### GET -- haluttu viesti keskustelusta
+GET http://localhost:8080/api/conversations/8/messages/12
+Content-Type: application/json
+
 
 #### POST TESTI -- viestin lähetys
 POST http://localhost:8080/api/conversations/messages
@@ -20,10 +24,9 @@ Content-Type: application/json
   "senderId": 1,
   "participantIds": [
     1,
-    2,
     3
   ],
-  "text": "ÖÖ moi"
+  "text": "test test kommentoidulla koodin osuudella"
 }
 
 #### POST TESTI -- viestin lähetys olemassa olevaan keskusteluun
@@ -31,15 +34,19 @@ POST http://localhost:8080/api/conversations/messages
 Content-Type: application/json
 
 {
-  "senderId": 1,
-  "conversationId": 2,
+  "senderId": 2,
+  "conversationId": 3,
   "participantIds": [
     1,
     2,
     3
   ],
-  "text": "Moi Bob!"
+  "text": "Testataan lisää xd"
 }
+
+### DELETE -- viestin poisto
+DELETE http://localhost:8080/api/conversations/3/messages/4
+Content-Type: application/json
 
 ### testataan uusi rekisteröityminen
 POST http://localhost:8080/api/users/register

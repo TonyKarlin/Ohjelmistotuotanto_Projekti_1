@@ -11,7 +11,7 @@ import java.util.Optional;
 
 public interface MessageRepository extends JpaRepository<Message, Long> {
     List<Message> findMessagesByConversationId(Long conversation);
-
+    Optional<Message> findByIdAndConversationId(Long messageId, Long conversationId);
 
 
 }
