@@ -84,6 +84,19 @@ public class MessageControllerTest {
     }
 
     @Test
+    void getMessages_NoContent() {
+        MessageService service = mock(MessageService.class);
+        MessageController controller = new MessageController(service);
+
+        when(service.getMessagesByConversationId(1L)).thenReturn(List.of());
+        ResponseEntity<List<MessageDTO>> response = controller.getMessages(1L);
+
+        // Asserts
+        assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode(), "Expected HTTP status 204 No Content");
+        assertNull(response.getBody(), "Expected response body to be null");
+    }
+
+    @Test
     void getMessageById() {
         MessageService service = mock(MessageService.class);
         MessageController controller = new MessageController(service);
@@ -101,5 +114,18 @@ public class MessageControllerTest {
         // Asserts
         assertEquals(HttpStatus.OK, response.getStatusCode(), "Expected HTTP status 200 OK");
         assertEquals(12L, response.getBody().getId(), "Expected message ID to be 12");
+    }
+
+    @Test
+    void getMessageById_NotFound() {
+        MessageService service = mock(MessageService.class);
+        MessageController controller = new MessageController(service);
+
+        when(service.getMessageByIdAndConversationId(12L, 8L)).thenReturn(Optional.empty());
+        ResponseEntity<MessageDTO> response = controller.getMessageById(8L, 12L);
+
+        // Asserts
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode(), "Expected HTTP status 404 Not Found");
+        assertNull(response.getBody(), "Expected response body to be null");
     }
 }
