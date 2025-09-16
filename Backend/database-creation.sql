@@ -36,6 +36,8 @@ CREATE TABLE IF NOT EXISTS conversations
     created_at      TIMESTAMP   NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
+CREATE TYPE conversation_type AS ENUM ('PRIVATE', 'GROUP');
+
 -- Create conversation_participants table
 CREATE TABLE IF NOT EXISTS conversation_participants
 (
@@ -47,6 +49,8 @@ CREATE TABLE IF NOT EXISTS conversation_participants
     CONSTRAINT fk_conversation FOREIGN KEY (conversation_id) REFERENCES conversations (conversation_id) ON DELETE CASCADE,
     CONSTRAINT fk_user FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
 );
+
+CREATE TYPE conversation_role AS ENUM ('ADMIN', 'OWNER', 'MODERATOR', 'MEMBER');
 
 
 
