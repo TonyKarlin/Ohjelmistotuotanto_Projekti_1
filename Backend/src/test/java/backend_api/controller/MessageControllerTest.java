@@ -5,6 +5,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import backend_api.DTOs.MessageDTO;
+import backend_api.DTOs.SendMessageRequest;
 import backend_api.entities.Message;
 import backend_api.entities.User;
 import backend_api.services.MessageService;
@@ -25,6 +26,22 @@ public class MessageControllerTest {
 
     @Test
     void sendMessage() {
+        MessageService service = mock(MessageService.class);
+        MessageController controller = new MessageController(service);
+
+        Message mockMessage = new Message();
+        mockMessage.setId(1L); // Setting Message ID to 1
+
+        backend_api.entities.User sender = new User(); // Creates a mock sender
+        sender.setId(1L);                              // Cannot be null
+        mockMessage.setSender(sender);
+
+        when(service.sendMessage(org.mockito.ArgumentMatchers.any())).thenReturn(mockMessage);
+        ResponseEntity<MessageDTO> response = controller.sendMessage(new SendMessageRequest());
+
+        // Asserts
+        assertEquals(201, response.getStatusCodeValue(), "Expected HTTP status 201 Created");
+        assertEquals(1L, response.getBody().getId(), "Expected message ID to be 1");
     }
 
     @Test
