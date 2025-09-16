@@ -1,5 +1,6 @@
 package backend_api.entities;
 
+import backend_api.enums.ParticipantRole;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -21,13 +22,14 @@ public class ConversationParticipant {
     @JoinColumn(name = "user_id")
     private User user;
 
-    private String role;
+    @Enumerated
+    private ParticipantRole role = ParticipantRole.MEMBER;
     private LocalDateTime joinedAt = LocalDateTime.now();
 
     public ConversationParticipant() {
     }
 
-    public ConversationParticipant(Conversation newConversation, User user, String role) {
+    public ConversationParticipant(Conversation newConversation, User user, ParticipantRole role) {
         this.conversation = newConversation;
         this.user = user;
         this.role = role;
@@ -59,11 +61,11 @@ public class ConversationParticipant {
         this.conversation = conversation;
     }
 
-    public String getRole() {
+    public ParticipantRole getRole() {
         return role;
     }
 
-    public void setRole(String role) {
+    public void setRole(ParticipantRole role) {
         this.role = role;
     }
 
