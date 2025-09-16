@@ -32,8 +32,10 @@ public class MessageControllerTest {
         MessageService service = mock(MessageService.class);
         MessageController controller = new MessageController(service);
 
-        List<Message> messages = List.of(new Message(), new Message());
-        List<User> senders = List.of(new User(), new User());
+        List<Message> messages = List.of(new Message(), new Message()); // Create two mock messages
+        List<User> senders = List.of(new User(), new User()); // Create two mock senders
+
+        // Set up IDs and associations
         senders.get(0).setId(1L);
         senders.get(1).setId(2L);
 
@@ -42,12 +44,12 @@ public class MessageControllerTest {
         messages.get(1).setId(2L);
         messages.get(1).setSender(senders.get(1));
 
+        // Mock the service method
         when(service.getMessagesByConversationId(1L)).thenReturn(messages);
-
         ResponseEntity<List<MessageDTO>> response = controller.getMessages(1L);
 
-        assertEquals(2, response.getBody().size());
-        assertEquals(200, response.getStatusCodeValue());
+        assertEquals(2, response.getBody().size(), "Expected 2 messages in the response");
+        assertEquals(200, response.getStatusCodeValue(), "Expected HTTP status 200 OK");
 
         assertEquals(1L, response.getBody().get(0).getSenderId(), "Expected sender ID to be 1");
         assertEquals(2L, response.getBody().get(1).getSenderId(), "Expected sender ID to be 2");
