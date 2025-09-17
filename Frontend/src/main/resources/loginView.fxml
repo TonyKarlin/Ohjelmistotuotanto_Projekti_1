@@ -12,45 +12,70 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.LoginController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="724.0" prefWidth="721.0" styleClass="parent" stylesheets="@loginAndRegisterStyle.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.LoginController">
     <center>
-        <StackPane prefHeight="645.0" prefWidth="450.0" stylesheets="@loginAndRegisterStyle.css" BorderPane.alignment="CENTER">
+        <StackPane prefHeight="796.0" prefWidth="783.0" stylesheets="@loginAndRegisterStyle.css" BorderPane.alignment="CENTER">
             <children>
-                <VBox alignment="CENTER" maxHeight="650.0" maxWidth="600.0" prefHeight="590.0" prefWidth="450.0" spacing="20.0" styleClass="VBox" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="0.0">
-                    <Label text="Welcome To Piscord">
+                <VBox alignment="CENTER" maxHeight="550.0" maxWidth="550.0" prefHeight="550.0" prefWidth="781.0" styleClass="VBox" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="0.0">
+                    <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="116.0" prefWidth="280.0" text="Welcome To Piscord" textAlignment="CENTER" textFill="#c3c3c3" wrapText="true">
                         <font>
-                            <Font name="Bauhaus 93" size="35.0" />
+                            <Font name="Bauhaus 93" size="41.0" />
                         </font>
                         <VBox.margin>
-                            <Insets bottom="40.0" />
+                            <Insets bottom="20.0" />
                         </VBox.margin>
                     </Label>
-                    <TextField fx:id="userNameTextField" maxWidth="270.0" prefHeight="40.0" prefWidth="270.0" promptText="Username" VBox.vgrow="NEVER">
+               <Label maxWidth="405.0" prefHeight="21.0" prefWidth="405.0" text="USERNAME" textFill="#c3c3c3">
                   <font>
                      <Font size="15.0" />
-                  </font></TextField>
-               <PasswordField fx:id="passwordTextField" maxWidth="270.0" prefHeight="40.0" prefWidth="270.0" promptText="Password" styleClass="PasswordField">
+                  </font>
+                  <VBox.margin>
+                     <Insets bottom="10.0" />
+                  </VBox.margin>
+               </Label>
+                    <TextField fx:id="userNameTextField" maxWidth="405.0" prefHeight="40.0" prefWidth="405.0" VBox.vgrow="NEVER">
+                  <font>
+                     <Font size="15.0" />
+                  </font>
+                  <VBox.margin>
+                     <Insets bottom="20.0" />
+                  </VBox.margin></TextField>
+               <Label layoutX="165.0" layoutY="190.0" maxWidth="405.0" prefHeight="25.0" prefWidth="405.0" text="PASSWORD" textFill="#c3c3c3">
+                  <font>
+                     <Font size="16.0" />
+                  </font>
+                  <VBox.margin>
+                     <Insets bottom="10.0" />
+                  </VBox.margin>
+               </Label>
+               <PasswordField fx:id="passwordTextField" maxWidth="405.0" prefHeight="40.0" prefWidth="405.0" styleClass="PasswordField">
                   <font>
                      <Font size="16.0" />
                   </font>
                </PasswordField>
-                    <Label styleClass="clickable-label" text="Forgot your password?">
+                    <Label prefHeight="27.0" prefWidth="406.0" styleClass="clickable-label" text="Forgot your password?" textFill="#705eff">
                   <font>
-                     <Font name="System Bold" size="20.0" />
-                  </font></Label>
-                    <Button fx:id="loginButton" maxWidth="150.0" onAction="#login" text="Login" textAlignment="CENTER" textFill="#ebebeb">
+                     <Font name="System Bold" size="18.0" />
+                  </font>
+                  <VBox.margin>
+                     <Insets top="5.0" />
+                  </VBox.margin></Label>
+                    <Button fx:id="loginButton" maxWidth="413.0" onAction="#login" prefHeight="41.0" prefWidth="413.0" text="Login" textAlignment="CENTER" textFill="#ebebeb">
                   <font>
                      <Font size="18.0" />
                   </font>
+                  <VBox.margin>
+                     <Insets top="10.0" />
+                  </VBox.margin>
                </Button>
                     <HBox alignment="CENTER" prefHeight="86.0" prefWidth="418.0" spacing="5">
                         <children>
-                            <Label text="Not a user? Sign up here">
+                            <Label text="Not a user? Sign up here" textFill="#c3c3c3">
                         <font>
                            <Font size="18.0" />
                         </font>
                      </Label>
-                            <Label fx:id="signUpLabel" onMouseClicked="#moveToRegisterView" onMousePressed="#moveToRegisterView" styleClass="clickable-label" text="Sign up">
+                            <Label fx:id="signUpLabel" onMouseClicked="#moveToRegisterView" onMousePressed="#moveToRegisterView" styleClass="clickable-label" text="Sign up" textFill="#705eff">
                         <HBox.margin>
                            <Insets left="15.0" />
                         </HBox.margin>
@@ -61,7 +86,7 @@
                         </children>
                     </HBox>
                <StackPane.margin>
-                  <Insets />
+                  <Insets bottom="50.0" left="50.0" right="50.0" top="50.0" />
                </StackPane.margin>
 
                 </VBox>
