@@ -1,6 +1,14 @@
 package controller;
 
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.StackPane;
+import javafx.scene.shape.Circle;
+import javafx.stage.FileChooser;
 import model.User;
 import service.UserApiClient;
 
@@ -13,8 +21,8 @@ import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
 
 public class RegisterController {
 
@@ -22,10 +30,17 @@ public class RegisterController {
 
     public void setController(UserApiClient userApiClient) {
         this.userApiClient = userApiClient;
+        makeImageViewRound();
     }
 
     @FXML
     private Button addPictureButton;
+
+    @FXML
+    private ImageView userProfilePicture;
+
+    @FXML
+    private StackPane profilePictureContainer;
 
     @FXML
     private TextField emailTextField;
@@ -48,10 +63,12 @@ public class RegisterController {
     public RegisterController()  {
     }
 
-    @FXML
-    void addProfilePicture(ActionEvent event) {
-
+    public void makeImageViewRound() {
+        double radius = profilePictureContainer.getPrefWidth() / 2;
+        Circle clip = new Circle(radius, radius, radius);
+        userProfilePicture.setClip(clip);
     }
+
 
     @FXML
     void moveToLoginView(MouseEvent event) throws IOException {
@@ -87,9 +104,27 @@ public class RegisterController {
             return false;
         }
         return true;
-
     }
 
+
+    @FXML
+    void addProfilePicture(ActionEvent event) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Select Profile Picture");
+        fileChooser.getExtensionFilters().addAll(
+        new FileChooser.ExtensionFilter
+                        ("image Files",
+                        "*.png", "*.jpg", ".jpeg")
+        );
+        File selectedPicture = fileChooser.showOpenDialog(addPictureButton.getScene().getWindow());
+        if (selectedPicture != null) {
+            Image image = new Image(selectedPicture.toURI().toString());
+            userProfilePicture.setImage(image);
+            userProfilePicture.setFitWidth(profilePictureContainer.getPrefWidth());
+            userProfilePicture.setFitHeight(profilePictureContainer.getPrefHeight());
+            userProfilePicture.setPreserveRatio(false);
+        }
+    }
 
     @FXML
     void registerUser() {
@@ -105,14 +140,13 @@ public class RegisterController {
         }
         try {
             User user = new User(username, email, password);
-            User oasdjsdj= userApiClient.registerUser(user);
-            if (oasdjsdj==null) {
+            User checkIfUserExist= userApiClient.registerUser(user);
+            if (checkIfUserExist==null) {
                 showAlert("Existing User", "User already exists");
             }
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-
     }
 
     private void showAlert(String title, String message) {
