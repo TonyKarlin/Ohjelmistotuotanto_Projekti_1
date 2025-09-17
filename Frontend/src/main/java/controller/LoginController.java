@@ -53,8 +53,7 @@ public class LoginController {
     }
 
     @FXML
-    public void login() {
-        try {
+    public void login() throws IOException {
             String username = userNameTextField.getText();
             String password = passwordTextField.getText();
             if (username.isEmpty() || password.isEmpty()) {
@@ -63,14 +62,13 @@ public class LoginController {
             }
             LoginRequest loginRequest = new LoginRequest(username, password);
             User user = userApiClient.loginUser(loginRequest);
-            moveToMainView(user);
-            Stage stage = (Stage) loginButton.getScene().getWindow();
-            stage.close();
-
-        } catch (Exception e) {
-            showAlert("Check credential", "Username or password is wrong");
-            throw new RuntimeException(e);
-        }
+            if (user != null) {
+                moveToMainView(user);
+                Stage stage = (Stage) loginButton.getScene().getWindow();
+                stage.close();
+            } else {
+                showAlert("Check credential", "Username or password is wrong");
+            }
     }
 
     public void moveToMainView(User user) throws IOException {

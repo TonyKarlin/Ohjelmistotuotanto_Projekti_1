@@ -12,11 +12,11 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="724.0" prefWidth="721.0" styleClass="parent" stylesheets="@loginAndRegisterStyle.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.LoginController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="720.0" styleClass="parent" stylesheets="@loginAndRegisterStyle.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.LoginController">
     <center>
-        <StackPane prefHeight="796.0" prefWidth="783.0" stylesheets="@loginAndRegisterStyle.css" BorderPane.alignment="CENTER">
+        <StackPane prefHeight="800.0" prefWidth="800.0" stylesheets="@loginAndRegisterStyle.css" BorderPane.alignment="CENTER">
             <children>
-                <VBox alignment="CENTER" maxHeight="550.0" maxWidth="550.0" prefHeight="550.0" prefWidth="781.0" styleClass="VBox" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="0.0">
+                <VBox alignment="CENTER" maxHeight="550.0" maxWidth="550.0" prefHeight="550.0" prefWidth="800.0" styleClass="VBox" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="0.0">
                     <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="116.0" prefWidth="280.0" text="Welcome To Piscord" textAlignment="CENTER" textFill="#c3c3c3" wrapText="true">
                         <font>
                             <Font name="Bauhaus 93" size="41.0" />
@@ -27,7 +27,7 @@
                     </Label>
                <Label maxWidth="405.0" prefHeight="21.0" prefWidth="405.0" text="USERNAME" textFill="#c3c3c3">
                   <font>
-                     <Font size="15.0" />
+                     <Font name="System Bold" size="15.0" />
                   </font>
                   <VBox.margin>
                      <Insets bottom="10.0" />
@@ -42,7 +42,7 @@
                   </VBox.margin></TextField>
                <Label layoutX="165.0" layoutY="190.0" maxWidth="405.0" prefHeight="25.0" prefWidth="405.0" text="PASSWORD" textFill="#c3c3c3">
                   <font>
-                     <Font size="16.0" />
+                     <Font name="System Bold Italic" size="16.0" />
                   </font>
                   <VBox.margin>
                      <Insets bottom="10.0" />

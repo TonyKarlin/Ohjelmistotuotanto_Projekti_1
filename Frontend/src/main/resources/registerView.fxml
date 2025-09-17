@@ -14,11 +14,11 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="922.0" prefWidth="679.0" styleClass="parent" stylesheets="@loginAndRegisterStyle.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.RegisterController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1000.0" prefWidth="720.0" styleClass="parent" stylesheets="@loginAndRegisterStyle.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.RegisterController">
    <center>
-      <StackPane prefHeight="680.0" prefWidth="461.0" stylesheets="@loginAndRegisterStyle.css" BorderPane.alignment="CENTER">
+      <StackPane prefHeight="800.0" prefWidth="800.0" stylesheets="@loginAndRegisterStyle.css" BorderPane.alignment="CENTER">
          <children>
-            <VBox alignment="CENTER" maxHeight="826.0" maxWidth="600.0" prefHeight="685.0" prefWidth="481.0" styleClass="VBox">
+            <VBox alignment="CENTER" maxHeight="820.0" maxWidth="550.0" prefHeight="550.0" prefWidth="800.0" styleClass="VBox">
                <children>
                   <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="30.0" prefWidth="316.0" text="Create a user" textFill="#d3d3d3">
                      <font>

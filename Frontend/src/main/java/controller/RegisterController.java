@@ -19,7 +19,6 @@ import java.net.MalformedURLException;
 public class RegisterController {
 
     UserApiClient userApiClient;
-    User user;
 
     public void setController(UserApiClient userApiClient) {
         this.userApiClient = userApiClient;
@@ -46,7 +45,7 @@ public class RegisterController {
     @FXML
     private TextField usernameTextField;
 
-    public RegisterController() throws MalformedURLException {
+    public RegisterController()  {
     }
 
     @FXML
@@ -93,7 +92,7 @@ public class RegisterController {
 
 
     @FXML
-    void registerUser(ActionEvent event) {
+    void registerUser() {
         String username = usernameTextField.getText();
         String email = emailTextField.getText();
         String password = passwordField.getText();
@@ -104,8 +103,15 @@ public class RegisterController {
         if (!checkPassword(password, repeatedPassword)) {
             return;
         }
-        User user = new User(username, email, password);
-        userApiClient.registerUser(user);
+        try {
+            User user = new User(username, email, password);
+            User oasdjsdj= userApiClient.registerUser(user);
+            if (oasdjsdj==null) {
+                showAlert("Existing User", "User already exists");
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
 
     }
 
