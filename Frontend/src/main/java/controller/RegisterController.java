@@ -72,7 +72,7 @@ public class RegisterController {
 
     @FXML
     void moveToLoginView(MouseEvent event) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/LoginView.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/loginView.fxml"));
         Parent root = fxmlLoader.load();
         LoginController controller = fxmlLoader.getController();
         controller.setController(this.userApiClient);

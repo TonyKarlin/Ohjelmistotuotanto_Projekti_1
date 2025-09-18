@@ -13,7 +13,7 @@ import model.User;
 import service.UserApiClient;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
+
 
 
 public class LoginController {
@@ -43,7 +43,7 @@ public class LoginController {
 
     @FXML
     public void moveToRegisterView(MouseEvent event) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/registerView.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/registerView.fxml"));
         Parent root = fxmlLoader.load();
         RegisterController controller = fxmlLoader.getController();
         controller.setController(this.userApiClient);
@@ -73,7 +73,7 @@ public class LoginController {
 
     public void moveToMainView(User user) throws IOException {
 
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/mainView.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/chatDashboardView.fxml"));
         Parent root = fxmlLoader.load();
         ChatDashboardController controller = fxmlLoader.getController();
         controller.setController(user, this.userApiClient);

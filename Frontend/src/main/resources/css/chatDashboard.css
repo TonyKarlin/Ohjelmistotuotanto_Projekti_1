@@ -1,12 +1,15 @@
-.BorderPane {
-    -fx-background-color: #333333;
+.parent {
+    -fx-background-color: rgba(0, 0, 0, 0.95);
+    -fx-background-size: cover;
+    -fx-background-position: center;
+
 }
 
 .Vbox {
-    -fx-background-color: #494949;
+    -fx-background-color: rgba(37, 37, 37, 0.78);
     -fx-background-radius: 20px;
     -fx-border-width: 3px;
-    -fx-border-color: #878787;
+    -fx-border-color: rgba(0, 0, 0, 0.8);
     -fx-border-radius: 20px;
 
 }
@@ -20,8 +23,16 @@
 
 }
 
+.text-field {
+    -fx-background-color: rgba(19, 19, 19, 0.95);
+    -fx-background-radius: 10px;
+    -fx-border-color: rgba(0, 0, 0, 0.8);
+    -fx-border-radius: 10px;
+    -fx-text-fill: #c3c3c3;
+}
+
 .button {
-    -fx-background-color: rgb(64, 131, 255);
+    -fx-background-color: rgb(99, 101, 220);
     -fx-background-radius: 10px;
     -fx-border-color: rgba(0, 0, 0, 0.8);
     -fx-border-radius: 10px;
@@ -33,6 +44,7 @@
     -fx-scale-x: 1.05;
     -fx-scale-y: 1.05;
 }
+
 
 
 

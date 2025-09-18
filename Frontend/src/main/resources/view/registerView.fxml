@@ -14,9 +14,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1000.0" prefWidth="720.0" styleClass="parent" stylesheets="@loginAndRegisterStyle.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.RegisterController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1000.0" prefWidth="720.0" styleClass="parent" stylesheets="@../css/loginAndRegisterStyle.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.RegisterController">
    <center>
-      <StackPane prefHeight="800.0" prefWidth="800.0" stylesheets="@loginAndRegisterStyle.css" BorderPane.alignment="CENTER">
+      <StackPane prefHeight="800.0" prefWidth="800.0" BorderPane.alignment="CENTER">
          <children>
             <VBox alignment="CENTER" maxHeight="820.0" maxWidth="550.0" prefHeight="550.0" prefWidth="800.0" styleClass="VBox">
                <children>
@@ -34,7 +34,7 @@
                            <children>
                               <ImageView fx:id="userProfilePicture" fitHeight="120.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" styleClass="imageView">
                                  <image>
-                                    <Image url="@img/img_2.png" />
+                                    <Image url="@../img/img_2.png" />
                                  </image>
                               </ImageView>
                            </children>

@@ -12,9 +12,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="720.0" styleClass="parent" stylesheets="@loginAndRegisterStyle.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.LoginController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="720.0" styleClass="parent" stylesheets="@../css/loginAndRegisterStyle.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.LoginController">
     <center>
-        <StackPane prefHeight="800.0" prefWidth="800.0" stylesheets="@loginAndRegisterStyle.css" BorderPane.alignment="CENTER">
+        <StackPane prefHeight="800.0" prefWidth="800.0" BorderPane.alignment="CENTER">
             <children>
                 <VBox alignment="CENTER" maxHeight="550.0" maxWidth="550.0" prefHeight="550.0" prefWidth="800.0" styleClass="VBox" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="0.0">
                     <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="116.0" prefWidth="280.0" text="Welcome To Piscord" textAlignment="CENTER" textFill="#c3c3c3" wrapText="true">

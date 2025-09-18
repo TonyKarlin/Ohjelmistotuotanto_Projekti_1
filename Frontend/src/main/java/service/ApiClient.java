@@ -19,16 +19,21 @@ public interface ApiClient {
 
     //Method needs only a right url and object as parameters
     default ApiResponse sendPostRequest(String urlString, Object body) throws IOException, InterruptedException {
-        String requestBody = objectMapper.writeValueAsString(body);
+        try {
+            String requestBody = objectMapper.writeValueAsString(body);
 
-        HttpRequest request = HttpRequest.newBuilder().
-                POST(HttpRequest.BodyPublishers.ofString(requestBody))
-                .uri(URI.create(urlString))
-                .header("Content-Type", "Application/json")
-                .build();
+            HttpRequest request = HttpRequest.newBuilder().
+                    POST(HttpRequest.BodyPublishers.ofString(requestBody))
+                    .uri(URI.create(urlString))
+                    .header("Content-Type", "Application/json")
+                    .build();
 
-        java.net.http.HttpResponse<String> response = HttpClient.newHttpClient().send(request, java.net.http.HttpResponse.BodyHandlers.ofString());
+            HttpResponse<String> response = HttpClient.newHttpClient().
+                    send(request, HttpResponse.BodyHandlers.ofString());
             return new ApiResponse(response.statusCode(), response.body());
+        } catch (IOException | InterruptedException e) {
+            return new ApiResponse(503, "Service unavailable: " + e.getMessage());
+        }
     }
 
     default void sendGetRequest(String urlString) throws IOException {
