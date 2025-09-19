@@ -1,4 +1,5 @@
 import model.Conversation;
+import model.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import request.LoginRequest;
@@ -26,6 +27,20 @@ public class ConversationApiClientTest {
         conversationApiClient = new ConversationApiClient();
 
     }
+
+    @Test
+    public void testGetConversationByUserId() throws IOException, InterruptedException {
+        User user = new User();
+        user.setId(1);
+        List <Conversation> conversations = conversationApiClient.getConversationsById(user);
+        for (Conversation c : conversations) {
+            System.out.println("Conversation ID: " + c.getId());
+            System.out.println("Conversation Type:: " + c.getType());
+            System.out.println("Conversation Name:: " + c.getName());
+            System.out.println("Conversation Created By: " + c.getCreatedBy());
+            System.out.println("Conversation Created At: " + c.getCreatedAt());
+            System.out.println("");
+    }}
 
     @Test
     public void testGetAllConversations() throws IOException, InterruptedException {

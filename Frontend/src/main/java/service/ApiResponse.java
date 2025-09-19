@@ -3,6 +3,8 @@ package service;
 
 import lombok.Data;
 
+//object to save the status code and response body
+
 @Data
 public class ApiResponse {
     int statusCode;
@@ -13,6 +15,7 @@ public class ApiResponse {
         this.body = body;
     }
 
+    //Checker if request is success
     public boolean isSuccess() {
         return statusCode >= 200 && statusCode <300;
     }

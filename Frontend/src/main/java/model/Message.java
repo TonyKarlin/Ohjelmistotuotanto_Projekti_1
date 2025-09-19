@@ -3,11 +3,12 @@ package model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
-// Message object
-// Turns Json Data to Message Object
 
 import java.util.List;
 
+// Message object
+// Turns Json Data to Message Object
+//Using lombok dependency that creates automatically setters and getters
 @Data
 public class Message {
 
@@ -21,6 +22,7 @@ public class Message {
     @JsonProperty("attachments")
     private List<MessageAttachment> messageAttachments;
 
+    //Empty construct for Object mapper
     public Message() {}
 
 

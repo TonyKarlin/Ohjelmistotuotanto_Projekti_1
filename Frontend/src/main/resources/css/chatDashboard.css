@@ -1,12 +1,12 @@
 .parent {
-    -fx-background-color: rgba(0, 0, 0, 0.95);
+    -fx-background-color: rgb(14, 14, 14);
     -fx-background-size: cover;
     -fx-background-position: center;
 
 }
 
 .Vbox {
-    -fx-background-color: rgba(37, 37, 37, 0.78);
+    -fx-background-color: rgb(32, 32, 32);
     -fx-background-radius: 20px;
     -fx-border-width: 3px;
     -fx-border-color: rgba(0, 0, 0, 0.8);

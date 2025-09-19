@@ -10,6 +10,7 @@ import service.MessageApiClient;
 import service.UserApiClient;
 
 import java.io.IOException;
+import java.util.List;
 
 public class MessageApiClientTest {
 
@@ -39,6 +40,15 @@ public class MessageApiClientTest {
         System.out.println(message.getText());
 
 
+    }
+
+    @Test
+    public void testGetConversationMessages() throws IOException, InterruptedException {
+        conversation.setId(29);
+        List<Message> messages = messageApiClient.getConversationMessages(conversation);
+        for (Message m : messages) {
+            System.out.println(m.getText());
+        }
     }
 
     @Test

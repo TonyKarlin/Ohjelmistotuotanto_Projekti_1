@@ -1,5 +1,6 @@
 package service;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import model.Conversation;
 import model.Message;
 import model.User;
@@ -7,6 +8,7 @@ import request.ConversationRequest;
 import request.MessageRequest;
 
 import java.io.IOException;
+import java.util.List;
 
 public class MessageApiClient implements ApiClient {
 
@@ -30,6 +32,19 @@ public class MessageApiClient implements ApiClient {
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException("Failed to register user", e);
 
+        }
+    }
+
+    public List<Message> getConversationMessages(Conversation conversation) throws IOException, InterruptedException {
+        String messageUrl = baseUrl + "/" + conversation.getId() + "/messages";
+        ApiResponse response = sendGetRequest(messageUrl);
+        if (response.isSuccess()) {
+            return objectMapper.readValue(response.body, new TypeReference<List<Message>>() {
+            });
+        } else {
+            System.out.println("Failed to get conversation: "+ conversation.getId() +" " +
+                    "messages" +response.statusCode +", Response: " + response.body);
+            return null;
         }
     }
 
