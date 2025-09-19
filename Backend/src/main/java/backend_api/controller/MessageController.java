@@ -20,7 +20,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("api/conversations")
+@RequestMapping("/api/conversations/{conversationId}/messages")
 public class MessageController {
     private final MessageService messageService;
 
@@ -29,10 +29,14 @@ public class MessageController {
     }
 
 
-    @PostMapping("/messages")
-    public ResponseEntity<MessageDTO> sendMessage(@RequestBody SendMessageRequest request) {
+    @PostMapping
+    public ResponseEntity<MessageDTO> sendMessage(
+            @PathVariable("conversationId") Long conversationId,
+            @RequestBody SendMessageRequest request) {
 
+        request.setConversationId(conversationId);
         Message message = messageService.sendMessage(request);
+
         if (message == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
@@ -41,7 +45,7 @@ public class MessageController {
         return ResponseEntity.status(HttpStatus.CREATED).body(dto);
     }
 
-    @GetMapping("/{conversationId}/messages")
+    @GetMapping
     public ResponseEntity<List<MessageDTO>> getMessages(@PathVariable("conversationId") Long conversationId) {
         List<Message> messages = messageService.getMessagesByConversationId(conversationId);
 
@@ -49,14 +53,15 @@ public class MessageController {
             return ResponseEntity.noContent().build();
         }
 
-        List<MessageDTO> dtos = messages.stream()
-                .map(MessageDTO::fromMessageEntity)
-                .toList();
+        List<MessageDTO> dtos =
+                messages.stream()
+                        .map(MessageDTO::fromMessageEntity)
+                        .toList();
 
         return ResponseEntity.ok(dtos);
     }
 
-    @GetMapping("/{conversationId}/messages/{messageId}")
+    @GetMapping("/{messageId}")
     public ResponseEntity<MessageDTO> getMessageById(@PathVariable("conversationId") Long conversationId,
                                                      @PathVariable("messageId") Long messageId) {
         Optional<Message> messageOptional = messageService.getMessageByIdAndConversationId(messageId, conversationId);
@@ -72,12 +77,12 @@ public class MessageController {
     // WIP: Poistetaan viesti, jos käyttäjä on viestin lähettäjä tai keskustelun ylläpitäjä
     // sitten kun roolit mukana kunnolla. Tällä hetkellä vain viestin lähettäjä voi poistaa oman viestinsä.
     // Ei toimi ennen kuin JWT auth on kunnossa.
-    @DeleteMapping("{conversationId}/messages/{messageId}")
+    @DeleteMapping("/{messageId}")
     public ResponseEntity<?> deleteMessage(@PathVariable("conversationId") Long conversationId,
                                            @PathVariable("messageId") Long messageId,
-                                           @AuthenticationPrincipal UserDetails userDetails) {
+                                           @AuthenticationPrincipal CustomUserDetails userDetails) {
 
-        Long userId = ((CustomUserDetails) userDetails).getId();
+        Long userId = userDetails.getId();
         System.out.println("User ID from token: " + userId);
 
         boolean deleted = messageService.deleteMessage(userId, messageId, conversationId);
@@ -88,10 +93,6 @@ public class MessageController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN)
                     .body(Map.of("error", "Message not found or you are not authorized to delete it"));
         }
-    }
-
-    public static void main(String[] args) {
-
     }
 }
 

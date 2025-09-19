@@ -1,5 +1,6 @@
 package backend_api.services;
 
+import backend_api.DTOs.ConversationRequest;
 import backend_api.DTOs.SendMessageRequest;
 import backend_api.entities.*;
 import backend_api.repository.MessageRepository;
@@ -43,13 +44,22 @@ public class MessageService {
 
 
     public Message sendMessage(SendMessageRequest request) {
-        // Check if a conversation exists. If not, create a new one.
-        Conversation conversation = (request.conversationExists()) ?
-                conversationService.getConversationById(request.getConversationId()) :
-                conversationService.createAConversation(request);
+        Conversation conversation;
+
+        if (request.conversationExists()) {
+            conversation = conversationService.getConversationById(request.getConversationId());
+        } else {
+            // Convert SendMessageRequest -> ConversationRequest
+            ConversationRequest convRequest = new ConversationRequest();
+            convRequest.setCreatorId(request.getSenderId());
+            convRequest.setParticipantIds(request.getParticipantIds());
+
+            conversation = conversationService.createAConversation(convRequest);
+        }
 
         return createAndSaveMessage(request, conversation);
     }
+
 
     private Message createAndSaveMessage(SendMessageRequest request, Conversation conversation) {
         // Validate that sender is part of the conversation
