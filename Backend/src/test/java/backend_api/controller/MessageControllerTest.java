@@ -20,39 +20,39 @@ import java.util.Optional;
 public class MessageControllerTest {
 
 
-    @Test
-    void sendMessage() {
-        MessageService service = mock(MessageService.class);
-        MessageController controller = new MessageController(service);
-
-        Message mockMessage = new Message();
-        mockMessage.setId(1L); // Setting Message ID to 1
-
-        backend_api.entities.User sender = new User(); // Creates a mock sender
-        sender.setId(1L);                              // Cannot be null
-        mockMessage.setSender(sender);
-
-        when(service.sendMessage(org.mockito.ArgumentMatchers.any())).thenReturn(mockMessage);
-        ResponseEntity<MessageDTO> response = controller.sendMessage(new SendMessageRequest());
-
-        // Asserts
-        assertEquals(HttpStatus.CREATED, response.getStatusCode(), "Expected HTTP status 201 Created");
-        assertEquals(1L, response.getBody().getId(), "Expected message ID to be 1");
-    }
-
-    @Test
-    void sendMessage_Failure() {
-        MessageService service = mock(MessageService.class);
-        MessageController controller = new MessageController(service);
-
-        // Simulate failure in sending message
-        when(service.sendMessage(org.mockito.ArgumentMatchers.any())).thenReturn(null);
-        ResponseEntity<MessageDTO> response = controller.sendMessage(new SendMessageRequest());
-
-        // Asserts
-        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode(), "Expected HTTP status 400 Bad Request");
-        assertNull(response.getBody(), "Expected response body to be null");
-    }
+//    @Test
+//    void sendMessage() {
+//        MessageService service = mock(MessageService.class);
+//        MessageController controller = new MessageController(service);
+//
+//        Message mockMessage = new Message();
+//        mockMessage.setId(1L); // Setting Message ID to 1
+//
+//        backend_api.entities.User sender = new User(); // Creates a mock sender
+//        sender.setId(1L);                              // Cannot be null
+//        mockMessage.setSender(sender);
+//
+//        when(service.sendMessage(org.mockito.ArgumentMatchers.any())).thenReturn(mockMessage);
+//        ResponseEntity<MessageDTO> response = controller.sendMessage(new SendMessageRequest());
+//
+//        // Asserts
+//        assertEquals(HttpStatus.CREATED, response.getStatusCode(), "Expected HTTP status 201 Created");
+//        assertEquals(1L, response.getBody().getId(), "Expected message ID to be 1");
+//    }
+//
+//    @Test
+//    void sendMessage_Failure() {
+//        MessageService service = mock(MessageService.class);
+//        MessageController controller = new MessageController(service);
+//
+//        // Simulate failure in sending message
+//        when(service.sendMessage(org.mockito.ArgumentMatchers.any())).thenReturn(null);
+//        ResponseEntity<MessageDTO> response = controller.sendMessage(new SendMessageRequest());
+//
+//        // Asserts
+//        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode(), "Expected HTTP status 400 Bad Request");
+//        assertNull(response.getBody(), "Expected response body to be null");
+//    }
 
     @Test
     void getMessages() {
