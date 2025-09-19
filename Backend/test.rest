@@ -8,44 +8,49 @@ Content-Type: application/json
 
 
 ### GET -- keskustelujen viestit
-GET http://localhost:8080/api/conversations/3/messages
+GET http://localhost:8080/api/conversations/1/messages
 Content-Type: application/json
 
 ### GET -- haluttu viesti keskustelusta
-GET http://localhost:8080/api/conversations/8/messages/12
+GET http://localhost:8080/api/conversations/1/messages/2
 Content-Type: application/json
 
 
-#### POST TESTI -- viestin lähetys
-POST http://localhost:8080/api/conversations/messages
-Content-Type: application/json
-
-{
-  "senderId": 1,
-  "participantIds": [
-    1,
-    3
-  ],
-  "text": "test test kommentoidulla koodin osuudella"
-}
-
-#### POST TESTI -- viestin lähetys olemassa olevaan keskusteluun
-POST http://localhost:8080/api/conversations/messages
+### POST -- uusi keskustelu
+POST http://localhost:8080/api/conversations
 Content-Type: application/json
 
 {
-  "senderId": 2,
-  "conversationId": 3,
+  "creatorId": 1,
+  "name": "dirre",
   "participantIds": [
     1,
     2,
     3
-  ],
-  "text": "Testataan lisää xd"
+  ]
+}
+
+### GET -- kaikki keskustelut
+GET http://localhost:8080/api/conversations
+Content-Type: application/json
+
+### GET -- yksittaisen käyttäjän keskustelut
+@userId = 1
+GET http://localhost:8080/api/conversations/user/{{userId}}
+
+
+#### POST TESTI -- viestin lähetys
+@conversationId = 5
+POST http://localhost:8080/api/conversations/{{conversationId}}/messages
+Content-Type: application/json
+
+{
+  "senderId": 1,
+  "text": "toimisko?"
 }
 
 ### DELETE -- viestin poisto
-DELETE http://localhost:8080/api/conversations/3/messages/4
+DELETE http://localhost:8080/api/conversations/9/messages/16
 Content-Type: application/json
 
 ### testataan uusi rekisteröityminen
@@ -54,8 +59,8 @@ Content-Type: application/json
 
 {
   "username": "jorma",
-  "password": "1234",
-  "email": "testii@example.com"
+  "password": "12345",
+  "email": "jorma@example.com"
 }
 
 ### Testataan login
