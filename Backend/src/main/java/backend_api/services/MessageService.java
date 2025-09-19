@@ -12,9 +12,6 @@ import java.util.Optional;
 @Service
 @Transactional
 public class MessageService {
-
-    // Kaipaa vielä refaktoroimista, on aika monimutkainen tällä hetkellä
-    // Jaetaan pienempiin osiin ja logiikkaa siirretään sopivimpiin serviceihin.
     private final MessageRepository messageRepository;
     private final ConversationService conversationService;
     private final UserService userService;
