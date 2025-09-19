@@ -13,6 +13,17 @@ public class SendMessageRequest {
     private String fileType; // Example: "image/png", "application/pdf"
     private byte[] fileData; // Binary data for the message attachments (photos, videos, documents)
 
+    public SendMessageRequest() {
+    }
+
+    public boolean conversationExists() {
+        return conversationId != null;
+    }
+
+    public boolean hasAttachment() {
+        return fileData != null && fileType != null && !fileType.isEmpty();
+    }
+
     public Long getSenderId() {
         return senderId;
     }

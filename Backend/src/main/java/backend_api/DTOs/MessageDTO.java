@@ -9,6 +9,7 @@ import java.util.List;
 // to avoid exposing the entire Message entity and recursive relationships.
 public class MessageDTO {
     private Long id;
+    private Long conversationId;
     private Long senderId;
     private String senderUsername;
     private String text;
@@ -21,6 +22,7 @@ public class MessageDTO {
     public static MessageDTO fromMessageEntity(Message message) {
         MessageDTO dto = new MessageDTO();
         dto.setId(message.getId());
+        dto.setConversationId(message.getConversation().getId());
         dto.setSenderId(message.getSender().getId());
         dto.setSenderUsername(message.getSender().getUsername());
         dto.setText(message.getText());
@@ -38,6 +40,14 @@ public class MessageDTO {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Long getConversationId() {
+        return conversationId;
+    }
+
+    public void setConversationId(Long conversationId) {
+        this.conversationId = conversationId;
     }
 
     public Long getSenderId() {

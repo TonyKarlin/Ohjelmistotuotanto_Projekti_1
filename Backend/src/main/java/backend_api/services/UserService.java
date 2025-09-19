@@ -3,6 +3,7 @@ package backend_api.services;
 import java.util.List;
 import java.util.Optional;
 
+import backend_api.DTOs.SendMessageRequest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -41,5 +42,14 @@ public class UserService {
     public Optional<User> login(String username, String rawPassword) {
         return userRepository.findByUsername(username)
                 .filter(u -> passwordEncoder.matches(rawPassword, u.getPassword()));
+    }
+
+    public User getSender(Long id) {
+        return userRepository.findById(id).orElseThrow(() ->
+                new RuntimeException("User not found with id: " + id));
+    }
+
+    public List<User> getConversationParticipants(SendMessageRequest request) {
+        return userRepository.findAllById(request.getParticipantIds());
     }
 }
