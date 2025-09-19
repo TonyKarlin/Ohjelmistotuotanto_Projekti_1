@@ -7,6 +7,7 @@ import static org.mockito.Mockito.when;
 
 import backend_api.DTOs.MessageDTO;
 import backend_api.DTOs.SendMessageRequest;
+import backend_api.entities.Conversation;
 import backend_api.entities.Message;
 import backend_api.entities.User;
 import backend_api.services.MessageService;
@@ -61,6 +62,7 @@ public class MessageControllerTest {
 
         List<Message> messages = List.of(new Message(), new Message()); // Create two mock messages
         List<User> senders = List.of(new User(), new User()); // Create two mock senders
+        Conversation conversation = new Conversation();
 
         // Set up IDs and associations
         senders.get(0).setId(1L);
@@ -70,6 +72,8 @@ public class MessageControllerTest {
         messages.get(0).setSender(senders.get(0));
         messages.get(1).setId(2L);
         messages.get(1).setSender(senders.get(1));
+        messages.get(0).setConversation(conversation);
+        messages.get(1).setConversation(conversation);
 
         // Mock the service method
         when(service.getMessagesByConversationId(1L)).thenReturn(messages);
@@ -100,9 +104,11 @@ public class MessageControllerTest {
     void getMessageById() {
         MessageService service = mock(MessageService.class);
         MessageController controller = new MessageController(service);
-
+        Conversation conversation = new Conversation();
         Message mockMessage = new Message();
-        mockMessage.setId(12L); // Setting Message ID to 12
+        mockMessage.setId(12L);
+        conversation.setId(8L);
+        mockMessage.setConversation(conversation); // Setting Message
 
         backend_api.entities.User sender = new User(); // Creates a mock sender
         sender.setId(1L);                              // Cannot be null
