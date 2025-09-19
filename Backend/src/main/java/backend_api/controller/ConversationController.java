@@ -1,10 +1,58 @@
 package backend_api.controller;
 
 
-import org.springframework.web.bind.annotation.RestController;
+import backend_api.DTOs.ConversationDTO;
+import backend_api.DTOs.ConversationRequest;
+import backend_api.entities.Conversation;
+import backend_api.services.ConversationService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
-@RestController("/api/")
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/conversations")
 public class ConversationController {
     // TODO: Implement conversation-related endpoints
+    private final ConversationService conversationService;
+
+    public ConversationController(ConversationService conversationService) {
+        this.conversationService = conversationService;
+    }
+
+    @PostMapping
+    public ResponseEntity<ConversationDTO> createConversation(@RequestBody ConversationRequest request) {
+        Conversation conversation = conversationService.createAConversation(request);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(ConversationDTO.fromConversationEntity(conversation));
+    }
+
+    @GetMapping("/{conversationId}")
+    public ResponseEntity<ConversationDTO> getConversationById(@PathVariable Long conversationId) {
+        Conversation conversation = conversationService.getConversationById(conversationId);
+        if (conversation == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+        return ResponseEntity.ok(ConversationDTO.fromConversationEntity(conversation));
+    }
+
+    @GetMapping
+    public ResponseEntity<List<ConversationDTO>> getAllConversations() {
+        List<Conversation> conversations = conversationService.getAllConversations();
+        List<ConversationDTO> dtos = conversations.stream()
+                .map(ConversationDTO::fromConversationEntity)
+                .toList();
+        return ResponseEntity.ok(dtos);
+    }
+
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<List<ConversationDTO>> getConversationsByUserId(@PathVariable("userId") Long userId) {
+        List<Conversation> conversations = conversationService.getConversationsByUserId(userId);
+        List<ConversationDTO> dtos = conversations.stream()
+                .map(ConversationDTO::fromConversationEntity)
+                .toList();
+        return ResponseEntity.ok(dtos);
+    }
 
 }

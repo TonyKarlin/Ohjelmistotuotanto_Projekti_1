@@ -1,5 +1,6 @@
 package backend_api.services;
 
+import backend_api.DTOs.ConversationRequest;
 import backend_api.DTOs.SendMessageRequest;
 import backend_api.entities.Conversation;
 import backend_api.entities.ConversationParticipant;
@@ -9,6 +10,7 @@ import backend_api.enums.ConversationType;
 import backend_api.enums.ParticipantRole;
 import backend_api.repository.ConversationRepository;
 import jakarta.transaction.Transactional;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,10 +26,17 @@ public class ConversationService {
         this.userService = userService;
     }
 
-    // TODO: Implement conversation-related business logic
     public Conversation getConversationById(Long id) {
         return conversationRepository.findById(id).orElseThrow(() ->
                 new RuntimeException("Conversation not found with id: " + id));
+    }
+
+    public List<Conversation> getConversationsByUserId(Long userId) {
+        return conversationRepository.findByUserId(userId);
+    }
+
+    public List<Conversation> getAllConversations() {
+        return conversationRepository.findAll();
     }
 
     // Validates Conversation Entity (DB)
@@ -44,18 +53,16 @@ public class ConversationService {
     }
 
     // Checks request object to ensure sender is in participant list
-    public void ensureSenderInParticipants(SendMessageRequest request, User sender) {
+    public void ensureSenderInParticipants(ConversationRequest request, User sender) {
         if (!request.getParticipantIds().contains(sender.getId())) {
-            request.getParticipantIds().add(request.getSenderId());
+            request.getParticipantIds().add(request.getCreatorId());
         }
     }
 
-    private Conversation createConversationEntity(List<User> users, String type) {
-        Conversation conversation = new Conversation();
-        conversation.setType(type.equals("PRIVATE") ? ConversationType.PRIVATE : ConversationType.GROUP);
-
-        // Reistaili aluksi, mutta pitäisi toimia ilman tätäkin. (Testaillaan lisää)
-        // conversation = conversationRepository.save(conversation);
+    private Conversation createConversationEntity(List<User> users, String type, String name, Long creatorId) {
+        Conversation conversation = new Conversation(ConversationType.valueOf(type));
+        conversation.setName(name);
+        conversation.setCreatedBy(creatorId);
 
         for (User user : users) {
             ConversationParticipant participant = new ConversationParticipant(conversation, user, ParticipantRole.MEMBER);
@@ -67,12 +74,13 @@ public class ConversationService {
         return conversationRepository.save(conversation);
     }
 
-    public Conversation createAConversation(SendMessageRequest request) {
-        User sender = userService.getSender(request.getSenderId());
+    public Conversation createAConversation(ConversationRequest request) {
+        User sender = userService.getSender(request.getCreatorId());
         // Ensures that the sender is part of the participants
         ensureSenderInParticipants(request, sender);
 
-        List<User> users = userService.getConversationParticipants(request);
+        List<User> users = userService.getConversationParticipants(request.getParticipantIds());
+        String type = users.size() == 2 ? "PRIVATE" : "GROUP";
 
         if (users.size() != request.getParticipantIds().size()) {
             throw new RuntimeException("One or more users not found for the provided participant IDs");
@@ -80,20 +88,23 @@ public class ConversationService {
 
         // Check if it's a private conversation (exactly 2 participants)!!
         if (users.size() == 2) {
-            Long senderId = request.getSenderId();
-            Long receiverId = users.stream()
-                    .map(User::getId)
-                    .filter(id -> !id.equals(senderId))
+            Long senderId = request.getCreatorId();
+            // Get the "other" user (the receiver)
+            User receiver = users.stream()
+                    .filter(user -> !user.getId().equals(senderId)) // keep only the "other" user
                     .findFirst()
-                    .orElseThrow(() -> new RuntimeException("Receiver ID not found"));
+                    .orElseThrow(() -> new UsernameNotFoundException("Receiver not found"));
+
 
             // Return existing private conversation if it exists
-            return conversationRepository.findPrivateConversation(senderId, receiverId)
-                    .orElseGet(() -> createConversationEntity(users, "PRIVATE"));
+            return conversationRepository.findPrivateConversation(senderId, receiver.getId())
+                    .orElseGet(() -> createConversationEntity(users, type, receiver.getUsername(), null));
         }
 
         // Else create a new group conversation
-        return createConversationEntity(users, "GROUP");
+        String groupName = request.getName() != null && !request.getName().isEmpty() ? request.getName() : null;
+        Long creatorId = request.getCreatorId() != null ? request.getCreatorId() : null;
+        return createConversationEntity(users, type, groupName, type.equals("GROUP") ? creatorId : null);
     }
 
 }

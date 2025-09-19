@@ -32,7 +32,9 @@ CREATE TABLE IF NOT EXISTS contacts
 CREATE TABLE IF NOT EXISTS conversations
 (
     conversation_id BIGSERIAL PRIMARY KEY,
+    name            VARCHAR(100),
     type            VARCHAR(20) NOT NULL DEFAULT 'PRIVATE',
+    created_by      BIGINT,
     created_at      TIMESTAMP   NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 

@@ -4,6 +4,7 @@ import backend_api.enums.ConversationType;
 import backend_api.enums.ParticipantRole;
 import jakarta.persistence.*;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,12 +16,21 @@ public class Conversation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column
+    private String name;
+
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private ConversationType type;
 
     @OneToMany(mappedBy = "conversation", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ConversationParticipant> participants = new ArrayList<>();
+
+    @Column
+    private Long createdBy;
+
+    @Column
+    private LocalDateTime createdAt = LocalDateTime.now();
 
     public Conversation() {
     }
@@ -54,6 +64,14 @@ public class Conversation {
         this.id = id;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public ConversationType getType() {
         return type;
     }
@@ -69,4 +87,25 @@ public class Conversation {
     public void setParticipants(List<ConversationParticipant> participants) {
         this.participants = participants;
     }
+
+    public Long getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(Long createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public boolean isGroup() {
+        return this.type == ConversationType.GROUP;
+    }
+
 }
