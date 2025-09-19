@@ -36,10 +36,13 @@ public interface ApiClient {
         }
     }
 
-    default void sendGetRequest(String urlString) throws IOException {
-        URL url = new URL(urlString);
-        HttpURLConnection http = (HttpURLConnection) url.openConnection();
-        http.setRequestMethod("GET");
+    default ApiResponse sendGetRequest(String urlString) throws IOException, InterruptedException {
+        HttpRequest request = HttpRequest.newBuilder().
+                GET()
+                .uri(URI.create(urlString))
+                .build();
+        HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
+        return new ApiResponse(response.statusCode(), response.body());
     }
 
     default ApiResponse sendDeleteRequest(String urlString, String token) throws IOException, InterruptedException {

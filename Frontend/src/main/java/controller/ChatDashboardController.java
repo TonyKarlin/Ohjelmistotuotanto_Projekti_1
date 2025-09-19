@@ -1,13 +1,19 @@
 package controller;
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.shape.Circle;
+import javafx.stage.Stage;
 import model.User;
 import service.UserApiClient;
+
+import java.io.IOException;
 
 public class ChatDashboardController {
 
@@ -59,6 +65,17 @@ public class ChatDashboardController {
 
     public void setUpUsername() {
         loggedInUsername.setText(loggedInUser.getUsername());
+    }
+
+    @FXML
+    public void openAddFriendsView() throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/popup/addFriendsView.fxml"));
+        Parent root = fxmlLoader.load();
+        AddFriendsController controller = fxmlLoader.getController();
+        controller.setController(loggedInUser, this.userApiClient);
+        Stage stage = new Stage();
+        stage.setScene(new Scene(root));
+        stage.show();
     }
 
 }

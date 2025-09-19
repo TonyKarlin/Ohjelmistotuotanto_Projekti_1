@@ -9,7 +9,13 @@ import java.util.List;
 public class Conversation {
 
     private int id;
-    private List<User> participants;
+    private String type;
+    private String name;
+    private  int createdBy;
+    private String createdAt;
+
+    public Conversation() {}
+
 
 
 }

@@ -22,6 +22,15 @@
     -fx-border-radius: 16px 16px 0px 0px;
 
 }
+.messageHbox {
+    -fx-border-width: 0 0 3px 0;
+    -fx-border-color: #131313F2;
+}
+
+.messageHbox:hover {
+    -fx-cursor: hand;
+    -fx-background-color: rgba(19, 19, 19, 0.95);
+}
 
 .text-field {
     -fx-background-color: rgba(19, 19, 19, 0.95);

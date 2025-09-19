@@ -3,6 +3,7 @@ package service;
 import model.Conversation;
 import model.Message;
 import model.User;
+import request.ConversationRequest;
 import request.MessageRequest;
 
 import java.io.IOException;
@@ -14,9 +15,10 @@ public class MessageApiClient implements ApiClient {
     public MessageApiClient() {
     }
 
-    public Message sendMessage(MessageRequest request) {
+
+    public Message sendMessage(MessageRequest request, Conversation conversation) {
         try {
-            String messageUrl = baseUrl + "/messages";
+            String messageUrl = baseUrl + "/" + conversation.getId() + "/messages";
             ApiResponse response = sendPostRequest(messageUrl, request);
             if ((response.isSuccess())) {
                 return objectMapper.readValue(response.body, Message.class);

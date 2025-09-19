@@ -1,8 +1,8 @@
-import dto.LoginResponse;
+
 import model.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
+
 import request.LoginRequest;
 import service.UserApiClient;
 
