@@ -17,5 +17,5 @@ Content-Type: application/json
 }
 
 ### DELETE -- viestin poisto
-DELETE http://localhost:8080/api/conversations/9/messages/16
+DELETE http://localhost:8080/api/conversations/5/messages/3?userId=2
 Content-Type: application/json
