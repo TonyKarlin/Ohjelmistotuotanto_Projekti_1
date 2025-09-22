@@ -7,11 +7,9 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="892.0" prefWidth="1242.0" styleClass="parent" stylesheets="@../css/chatDashboard.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ChatDashboardController">
@@ -52,121 +50,7 @@
             <Insets bottom="10.0" right="10.0" />
          </BorderPane.margin>
          <center>
-            <VBox prefHeight="692.0" prefWidth="988.0" spacing="10.0" BorderPane.alignment="CENTER">
-               <children>
-                  <HBox alignment="CENTER_LEFT" prefHeight="49.0" prefWidth="988.0">
-                     <children>
-                        <ImageView fx:id="userProfilePicture" fitHeight="42.0" fitWidth="48.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../img/img_2.png" />
-                           </image>
-                           <HBox.margin>
-                              <Insets left="20.0" />
-                           </HBox.margin>
-                        </ImageView>
-                        <VBox alignment="CENTER_LEFT" prefHeight="55.0" prefWidth="811.0">
-                           <children>
-                              <Label fx:id="loggedInUsername" prefHeight="30.0" prefWidth="253.0" text="Username" textFill="WHITE">
-                                 <font>
-                                    <Font size="16.0" />
-                                 </font>
-                                 <VBox.margin>
-                                    <Insets left="10.0" top="5.0" />
-                                 </VBox.margin>
-                              </Label>
-                              <Label fx:id="messageLabel" prefHeight="63.0" prefWidth="396.0" text="No moro Pekka! Miten meneeee?!" textFill="WHITE">
-                                 <font>
-                                    <Font size="16.0" />
-                                 </font>
-                                 <padding>
-                                    <Insets left="10.0" />
-                                 </padding>
-                              </Label>
-                           </children>
-                        </VBox>
-                        <Label fx:id="messageTimeLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="64.0" prefWidth="111.0" text="12:38" textFill="WHITE">
-                           <font>
-                              <Font size="16.0" />
-                           </font>
-                        </Label>
-                     </children>
-                  </HBox>
-                  <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="10.0" prefHeight="49.0" prefWidth="988.0">
-                     <children>
-                        <ImageView fitHeight="42.0" fitWidth="48.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../img/img_2.png" />
-                           </image>
-                           <HBox.margin>
-                              <Insets left="20.0" />
-                           </HBox.margin>
-                        </ImageView>
-                        <VBox alignment="CENTER_LEFT" prefHeight="55.0" prefWidth="811.0">
-                           <children>
-                              <Label prefHeight="30.0" prefWidth="253.0" text="Username" textFill="WHITE">
-                                 <font>
-                                    <Font size="16.0" />
-                                 </font>
-                                 <VBox.margin>
-                                    <Insets left="10.0" top="5.0" />
-                                 </VBox.margin>
-                              </Label>
-                              <Label prefHeight="63.0" prefWidth="396.0" text="No moro Pekka! Miten meneeee?!" textFill="WHITE">
-                                 <font>
-                                    <Font size="16.0" />
-                                 </font>
-                                 <padding>
-                                    <Insets left="10.0" />
-                                 </padding>
-                              </Label>
-                           </children>
-                        </VBox>
-                        <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="64.0" prefWidth="111.0" text="12:38" textFill="WHITE">
-                           <font>
-                              <Font size="16.0" />
-                           </font>
-                        </Label>
-                     </children>
-                  </HBox>
-                  <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="10.0" prefHeight="49.0" prefWidth="988.0">
-                     <children>
-                        <ImageView fitHeight="42.0" fitWidth="48.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../img/img_2.png" />
-                           </image>
-                           <HBox.margin>
-                              <Insets left="20.0" />
-                           </HBox.margin>
-                        </ImageView>
-                        <VBox alignment="CENTER_LEFT" prefHeight="55.0" prefWidth="811.0">
-                           <children>
-                              <Label prefHeight="30.0" prefWidth="253.0" text="Username" textFill="WHITE">
-                                 <font>
-                                    <Font size="16.0" />
-                                 </font>
-                                 <VBox.margin>
-                                    <Insets left="10.0" top="5.0" />
-                                 </VBox.margin>
-                              </Label>
-                              <Label prefHeight="63.0" prefWidth="396.0" text="No moro Pekka! Miten meneeee?!" textFill="WHITE">
-                                 <font>
-                                    <Font size="16.0" />
-                                 </font>
-                                 <padding>
-                                    <Insets left="10.0" />
-                                 </padding>
-                              </Label>
-                           </children>
-                        </VBox>
-                        <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="64.0" prefWidth="111.0" text="12:38" textFill="WHITE">
-                           <font>
-                              <Font size="16.0" />
-                           </font>
-                        </Label>
-                     </children>
-                  </HBox>
-               </children>
-            </VBox>
+            <VBox fx:id="messageVBox" prefHeight="692.0" prefWidth="988.0" spacing="10.0" BorderPane.alignment="CENTER" />
          </center>
       </BorderPane>
    </center>
@@ -196,7 +80,7 @@
                   </Label>
                </children>
             </HBox>
-            <VBox alignment="TOP_CENTER" prefHeight="612.0" prefWidth="188.0" styleClass="Vbox" VBox.vgrow="ALWAYS">
+            <VBox fx:id="contactVBox" alignment="TOP_CENTER" prefHeight="612.0" prefWidth="188.0" styleClass="Vbox" VBox.vgrow="ALWAYS">
                <VBox.margin>
                   <Insets bottom="10.0" left="10.0" right="10.0" />
                </VBox.margin>
@@ -214,83 +98,6 @@
                         <Insets left="20.0" right="20.0" top="10.0" />
                      </VBox.margin>
                   </Separator>
-                  <HBox alignment="CENTER" prefHeight="70.0" prefWidth="212.0">
-                     <VBox.margin>
-                        <Insets top="10.0" />
-                     </VBox.margin>
-                     <children>
-                        <AnchorPane prefHeight="79.0" prefWidth="55.0">
-                           <children>
-                              <ImageView fx:id="contactUserPicture" fitHeight="55.0" fitWidth="63.0" layoutY="23.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../img/img_2.png" />
-                                 </image>
-                              </ImageView>
-                              <Circle fx:id="contactUserStatus" fill="#40c351" layoutX="48.0" layoutY="71.0" radius="7.0" stroke="BLACK" strokeType="INSIDE" />
-                           </children>
-                        </AnchorPane>
-                        <Label fx:id="contactUsername" alignment="TOP_LEFT" contentDisplay="CENTER" prefHeight="55.0" prefWidth="131.0" text="Username" textFill="#c3c3c3">
-                           <font>
-                              <Font name="System Bold" size="17.0" />
-                           </font>
-                           <padding>
-                              <Insets top="5.0" />
-                           </padding>
-                           <HBox.margin>
-                              <Insets left="10.0" />
-                           </HBox.margin>
-                        </Label>
-                     </children>
-                  </HBox>
-                  <HBox alignment="CENTER" layoutX="13.0" layoutY="95.0" prefHeight="52.0" prefWidth="212.0">
-                     <children>
-                        <AnchorPane prefHeight="39.0" prefWidth="49.0">
-                           <children>
-                              <ImageView fitHeight="55.0" fitWidth="63.0" layoutY="23.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../img/img_2.png" />
-                                 </image>
-                              </ImageView>
-                              <Circle fill="#c25340" layoutX="48.0" layoutY="71.0" radius="7.0" stroke="BLACK" strokeType="INSIDE" />
-                           </children>
-                        </AnchorPane>
-                        <Label alignment="TOP_LEFT" contentDisplay="CENTER" prefHeight="34.0" prefWidth="131.0" text="Username" textFill="#c3c3c3">
-                           <font>
-                              <Font name="System Bold" size="17.0" />
-                           </font>
-                           <padding>
-                              <Insets top="5.0" />
-                           </padding>
-                           <HBox.margin>
-                              <Insets left="10.0" />
-                           </HBox.margin>
-                        </Label>
-                     </children>
-                  </HBox>
-                  <HBox alignment="CENTER" layoutX="13.0" layoutY="173.0" prefHeight="52.0" prefWidth="212.0">
-                     <children>
-                        <AnchorPane prefHeight="39.0" prefWidth="49.0">
-                           <children>
-                              <ImageView fitHeight="55.0" fitWidth="63.0" layoutY="23.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../img/img_2.png" />
-                                 </image>
-                              </ImageView>
-                           </children>
-                        </AnchorPane>
-                        <Label alignment="TOP_LEFT" contentDisplay="CENTER" prefHeight="34.0" prefWidth="131.0" text="Group1" textFill="#c3c3c3">
-                           <font>
-                              <Font name="System Bold" size="17.0" />
-                           </font>
-                           <padding>
-                              <Insets top="5.0" />
-                           </padding>
-                           <HBox.margin>
-                              <Insets left="10.0" />
-                           </HBox.margin>
-                        </Label>
-                     </children>
-                  </HBox>
                </children>
             </VBox>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0" styleClass="Vbox">
@@ -298,7 +105,7 @@
                   <Insets bottom="10.0" left="10.0" right="10.0" />
                </VBox.margin>
                <children>
-                  <Button fx:id="addFriendsButton" mnemonicParsing="false" prefHeight="61.0" prefWidth="77.0" text="Add Friends" textAlignment="CENTER" textFill="#fffafa" wrapText="true">
+                  <Button fx:id="addFriendsButton" mnemonicParsing="false" onAction="#openAddFriendsView" prefHeight="61.0" prefWidth="77.0" text="Add Friends" textAlignment="CENTER" textFill="#fffafa" wrapText="true">
                      <font>
                         <Font name="System Bold" size="15.0" />
                      </font>

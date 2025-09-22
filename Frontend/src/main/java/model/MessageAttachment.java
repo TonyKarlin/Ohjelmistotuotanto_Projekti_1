@@ -2,6 +2,7 @@ package model;
 
 import lombok.Data;
 
+//Using lombok dependency that creates automatically setters and getters
 @Data
 public class MessageAttachment {
 
@@ -9,5 +10,6 @@ public class MessageAttachment {
     private String fileType;
     private int messageId;
 
+    //Empty construct for Object mapper
     public MessageAttachment() {}
 }

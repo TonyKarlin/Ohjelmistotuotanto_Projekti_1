@@ -1,4 +1,4 @@
-import dto.LoginResponse;
+
 import model.Conversation;
 import model.Message;
 import model.User;
@@ -10,6 +10,7 @@ import service.MessageApiClient;
 import service.UserApiClient;
 
 import java.io.IOException;
+import java.util.List;
 
 public class MessageApiClientTest {
 
@@ -31,18 +32,23 @@ public class MessageApiClientTest {
     //Can only perform once because only one user with same username can be existing in the DB
     @Test
     public void testSendMessage() throws IOException {
-        loginRequest = new LoginRequest("test", "1234");
-
-        User user = userApiClient.loginUser(loginRequest);
         MessageRequest request = new MessageRequest();
-        //Make sure that you have users in your DB before sending messages
-        request.setParticipantIds(java.util.Arrays.asList(1, 3)); // user id's
+        conversation.setId(24);
         request.setText("Test Message from JUnit!");
-        request.setSenderId(user.getId());
-        Message message = messageApiClient.sendMessage(request);
+        request.setSenderId(1);
+        Message message = messageApiClient.sendMessage(request, conversation);
         System.out.println(message.getText());
 
 
+    }
+
+    @Test
+    public void testGetConversationMessages() throws IOException, InterruptedException {
+        conversation.setId(29);
+        List<Message> messages = messageApiClient.getConversationMessages(conversation);
+        for (Message m : messages) {
+            System.out.println(m.getText());
+        }
     }
 
     @Test

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<HBox alignment="CENTER_LEFT" styleClass="messageHbox" stylesheets="@../css/messageHBox.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.component.MessageHBoxController">
+   <children>
+      <ImageView fx:id="userProfilePicture" fitHeight="42.0" fitWidth="48.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../img/img_2.png" />
+         </image>
+         <HBox.margin>
+            <Insets left="10.0" />
+         </HBox.margin>
+      </ImageView>
+      <VBox alignment="CENTER_LEFT" prefHeight="55.0" prefWidth="811.0">
+         <children>
+            <Label fx:id="senderUsername" prefHeight="30.0" prefWidth="253.0" text="Username" textFill="WHITE">
+               <font>
+                  <Font size="16.0" />
+               </font>
+               <VBox.margin>
+                  <Insets left="10.0" top="5.0" />
+               </VBox.margin>
+            </Label>
+            <Label fx:id="messageLabel" prefHeight="28.0" prefWidth="396.0" text="No moro Pekka! Miten meneeee?!" textFill="WHITE">
+               <font>
+                  <Font size="16.0" />
+               </font>
+               <padding>
+                  <Insets left="10.0" />
+               </padding>
+            </Label>
+         </children>
+      </VBox>
+      <Region prefHeight="55.0" prefWidth="98.0" HBox.hgrow="ALWAYS" />
+      <Label fx:id="messageTimeLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="25.0" prefWidth="105.0" text="12:38" textAlignment="CENTER" textFill="WHITE" HBox.hgrow="ALWAYS">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
+   </children>
+</HBox>
