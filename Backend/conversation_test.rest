@@ -1,0 +1,44 @@
+### POST -- uusi keskustelu
+POST http://localhost:8080/api/conversations
+Content-Type: application/json
+
+{
+  "creatorId": 1,
+  "name": "dirre",
+  "participantIds": [
+    1,
+    2,
+    3
+  ]
+}
+
+### PUT -- keskustelun nimen muokkaus
+PUT http://localhost:8080/api/conversations/2/update
+Content-Type: application/json
+
+{
+  "name": "Dirre ja sen jenkins"
+}
+
+### PUT -- käyttäjän lisääminen keskusteluun
+PUT http://localhost:8080/api/conversations/2/participants/4
+Content-Type: application/json
+
+### DELETE -- keskustelun poisto
+DELETE http://localhost:8080/api/conversations/3?requesterId=1
+Content-Type: application/json
+
+
+### DELETE -- käyttäjän poistaminen keskustelusta
+DELETE http://localhost:8080/api/conversations/5/participants/3
+Content-Type: application/json
+
+
+### GET -- kaikki keskustelut
+GET http://localhost:8080/api/conversations
+Content-Type: application/json
+
+
+### GET -- yksittaisen käyttäjän keskustelut
+@userId = 1
+GET http://localhost:8080/api/conversations/user/{{userId}}

@@ -2,9 +2,12 @@ package backend_api.controller;
 
 
 import backend_api.DTOs.ConversationDTO;
+import backend_api.DTOs.ConversationParticipantResponse;
 import backend_api.DTOs.ConversationRequest;
 import backend_api.entities.Conversation;
 import backend_api.services.ConversationService;
+import backend_api.utils.customexceptions.InvalidConversationRequestException;
+import backend_api.utils.customexceptions.UserNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -55,16 +58,50 @@ public class ConversationController {
         return ResponseEntity.ok(dtos);
     }
 
+    @PutMapping("/{conversationId}/update")
+    public ResponseEntity<?> updateConversation(@PathVariable Long conversationId, @RequestBody ConversationRequest request) {
+        Conversation updatedConversation = conversationService.updateConversation(conversationId, request);
+        return ResponseEntity.ok(ConversationDTO.fromConversationEntity(updatedConversation));
+    }
+
+
+    @PutMapping("/{conversationId}/participants/{userId}")
+    public ResponseEntity<ConversationParticipantResponse> addUserToConversation(@PathVariable Long conversationId,
+                                                                                 @PathVariable Long userId) {
+
+        conversationService.addUserToConversation(conversationId, userId);
+        ConversationParticipantResponse message = new ConversationParticipantResponse(
+                conversationId,
+                userId,
+                "User added to conversation successfully");
+
+        return ResponseEntity.ok(message);
+    }
+
+
     @DeleteMapping("/{conversationId}/participants/{userId}")
-    public ResponseEntity<?> removeUserFromConversation(@PathVariable Long conversationId,
-                                                        @PathVariable Long userId) {
+    public ResponseEntity<?> removeUserFromConversation(
+            @PathVariable Long conversationId,
+            @PathVariable Long userId) {
 
         boolean removed = conversationService.removeUserFromConversation(conversationId, userId);
+
         if (removed) {
-            String message = String.format("User (id): %d \nRemoved from conversation(id): %d", userId, conversationId);
-            return ResponseEntity.ok(message);
+            ConversationParticipantResponse response = new ConversationParticipantResponse(
+                    conversationId,
+                    userId,
+                    "User removed from conversation successfully"
+            );
+            return ResponseEntity.ok(response);
         } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Conversation or User not found");
+            throw new UserNotFoundException("User with id " + userId + " not found in conversation " + conversationId);
         }
+    }
+
+    @DeleteMapping("/{conversationId}")
+    public ResponseEntity<?> deleteConversation(@PathVariable Long conversationId,
+                                                @RequestParam Long requesterId) {
+        conversationService.deleteConversation(conversationId, requesterId);
+        return ResponseEntity.ok("Conversation deleted successfully");
     }
 }

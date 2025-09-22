@@ -6,66 +6,14 @@ Content-Type: application/json
 GET http://localhost:8080/api/users/1
 Content-Type: application/json
 
-
-### GET -- keskustelujen viestit
-GET http://localhost:8080/api/conversations/1/messages
-Content-Type: application/json
-
-### GET -- haluttu viesti keskustelusta
-GET http://localhost:8080/api/conversations/1/messages/2
-Content-Type: application/json
-
-
-### POST -- uusi keskustelu
-POST http://localhost:8080/api/conversations
-Content-Type: application/json
-
-{
-  "creatorId": 1,
-  "name": "dirre",
-  "participantIds": [
-    1,
-    2,
-    3
-  ]
-}
-
-
-### DELETE -- käyttäjän poistaminen keskustelusta
-DELETE http://localhost:8080/api/conversations/5/participants/3
-Content-Type: application/json
-
-### GET -- kaikki keskustelut
-GET http://localhost:8080/api/conversations
-Content-Type: application/json
-
-### GET -- yksittaisen käyttäjän keskustelut
-@userId = 1
-GET http://localhost:8080/api/conversations/user/{{userId}}
-
-
-#### POST TESTI -- viestin lähetys
-@conversationId = 5
-POST http://localhost:8080/api/conversations/{{conversationId}}/messages
-Content-Type: application/json
-
-{
-  "senderId": 1,
-  "text": "toimisko?"
-}
-
-### DELETE -- viestin poisto
-DELETE http://localhost:8080/api/conversations/9/messages/16
-Content-Type: application/json
-
 ### testataan uusi rekisteröityminen
 POST http://localhost:8080/api/users/register
 Content-Type: application/json
 
 {
-  "username": "jorma",
+  "username": "ilpo",
   "password": "12345",
-  "email": "jorma@example.com"
+  "email": "ilpo@example.com"
 }
 
 ### Testataan login

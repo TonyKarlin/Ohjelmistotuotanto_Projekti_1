@@ -1,0 +1,21 @@
+### GET -- keskustelujen viestit
+GET http://localhost:8080/api/conversations/1/messages
+Content-Type: application/json
+
+### GET -- haluttu viesti keskustelusta
+GET http://localhost:8080/api/conversations/1/messages/2
+Content-Type: application/json
+
+#### POST TESTI -- viestin lähetys
+@conversationId = 5
+POST http://localhost:8080/api/conversations/{{conversationId}}/messages
+Content-Type: application/json
+
+{
+  "senderId": 1,
+  "text": "toimisko?"
+}
+
+### DELETE -- viestin poisto
+DELETE http://localhost:8080/api/conversations/9/messages/16
+Content-Type: application/json

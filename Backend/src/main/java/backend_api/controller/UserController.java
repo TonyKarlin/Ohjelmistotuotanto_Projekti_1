@@ -5,8 +5,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import backend_api.DTOs.ConversationDTO;
-import backend_api.entities.Conversation;
 import backend_api.utils.JwtUtil;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,12 +16,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import backend_api.DTOs.LoginRequest;
-import backend_api.DTOs.LoginResponse;
 import backend_api.DTOs.RegisterRequest;
 import backend_api.entities.User;
 import backend_api.services.UserService;
-
-import static backend_api.utils.JwtUtil.generateToken;
 
 @RestController
 @RequestMapping("/api/users")
