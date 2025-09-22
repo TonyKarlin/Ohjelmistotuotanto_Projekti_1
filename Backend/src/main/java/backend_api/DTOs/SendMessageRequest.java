@@ -71,4 +71,8 @@ public class SendMessageRequest {
     public void setFileType(String fileType) {
         this.fileType = fileType;
     }
+
+    public boolean isFileDataValid() {
+        return fileData != null && fileData.length > 0;
+    }
 }

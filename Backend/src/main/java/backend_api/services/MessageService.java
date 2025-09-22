@@ -27,20 +27,30 @@ public class MessageService {
 
     }
 
-
-    public Message createMessage(SendMessageRequest request, Conversation conversation) {
+    public Message setNewMessage(SendMessageRequest request, Conversation conversation) {
         Message message = new Message();
         message.setSender(userService.getSender(request.getSenderId()));
         message.setConversation(conversation);
         message.setText(request.getText());
+        return message;
+    }
+
+    public Message addAttachmentToMessage(SendMessageRequest request, Message message) {
+        MessageContent attachment = new MessageContent();
+        attachment.setFileType(request.getFileType());
+        attachment.setData(request.getFileData());
+        attachment.setMessage(message);
+        message.addAttachments(attachment);
+        return message;
+    }
+
+
+    public Message createMessage(SendMessageRequest request, Conversation conversation) {
+        Message message = setNewMessage(request, conversation);
 
         // If there's an attachment, create a MessageContent entity and associate it with the message
-        if (request.getFileData() != null) {
-            MessageContent attachment = new MessageContent();
-            attachment.setFileType(request.getFileType());
-            attachment.setData(request.getFileData());
-            attachment.setMessage(message);
-            message.addAttachments(attachment);
+        if (request.isFileDataValid()) {
+            return addAttachmentToMessage(request, message);
         }
         return message;
     }
