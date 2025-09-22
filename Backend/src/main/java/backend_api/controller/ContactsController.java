@@ -39,8 +39,8 @@ public class ContactsController {
         return ResponseEntity.ok(contacts);
     }
 
-    @GetMapping
-    public ResponseEntity<ContactResponseDTO> getContactById(@RequestParam Long userId, @RequestParam Long contactUserId) {
+    @GetMapping("/{userId}/contact/{contactUserId}")
+    public ResponseEntity<ContactResponseDTO> getContactById(@PathVariable Long userId, @PathVariable Long contactUserId) {
         ContactResponseDTO response = contactsService.getContactByUserId(userId, contactUserId);
         return ResponseEntity.ok(response);
     }
