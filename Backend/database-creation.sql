@@ -20,11 +20,16 @@ CREATE TABLE IF NOT EXISTS users
 -- Each contact is a reference to another user in the users table
 CREATE TABLE IF NOT EXISTS contacts
 (
-    contact_id      BIGSERIAL PRIMARY KEY,
-    user_id         BIGINT NOT NULL,
-    contact_user_id BIGINT NOT NULL,
-    CONSTRAINT fk_user FOREIGN KEY (user_id) REFERENCES users (id),
-    CONSTRAINT fk_contact_user FOREIGN KEY (contact_user_id) REFERENCES users (id)
+    id              BIGSERIAL PRIMARY KEY,
+    user_id         BIGINT      NOT NULL,
+    contact_user_id BIGINT      NOT NULL,
+    status          VARCHAR(20) NOT NULL DEFAULT 'PENDING',
+    created_at      TIMESTAMP   NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at      TIMESTAMP   NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT uq_user_contact UNIQUE (user_id, contact_user_id),
+    CONSTRAINT fk_user FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
+    CONSTRAINT fk_contact_user FOREIGN KEY (contact_user_id) REFERENCES users (id) ON DELETE CASCADE
 );
 
 
@@ -46,6 +51,7 @@ CREATE TABLE IF NOT EXISTS conversation_participants
     conversation_id BIGINT      NOT NULL,
     user_id         BIGINT      NOT NULL,
     role            VARCHAR(50) NOT NULL DEFAULT 'MEMBER',
+    display_name    VARCHAR(100),
     joined_at       TIMESTAMP   NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (conversation_id, user_id),
     CONSTRAINT fk_conversation FOREIGN KEY (conversation_id) REFERENCES conversations (conversation_id) ON DELETE CASCADE,
