@@ -24,6 +24,10 @@ Content-Type: application/json
 PUT http://localhost:8080/api/conversations/2/participants/4
 Content-Type: application/json
 
+### PATCH -- keskustelusta poistuminen
+PATCH http://localhost:8080/api/conversations/4/leave?userId=3
+Content-Type: application/json
+
 ### DELETE -- keskustelun poisto
 DELETE http://localhost:8080/api/conversations/3?requesterId=1
 Content-Type: application/json

@@ -39,6 +39,17 @@ public class Conversation {
         this.type = type;
     }
 
+    @PrePersist
+    @PreUpdate
+    private void validateConversation() {
+        if (!hasSingleOwner()) {
+            throw new IllegalStateException("Conversation must have exactly one owner.");
+        }
+        if (isPrivate() && this.participants.size() > 2) {
+            throw new IllegalStateException("Private conversations must have exactly two participants.");
+        }
+    }
+
     public void addParticipant(User user, ParticipantRole role) {
         ConversationParticipant participant = new ConversationParticipant(this, user, role);
         if (!participants.contains(participant)) participants.add(participant);
@@ -104,8 +115,32 @@ public class Conversation {
         this.createdAt = createdAt;
     }
 
-    public boolean isGroup() {
+    public boolean isPrivate() {
+        return this.type == ConversationType.PRIVATE;
+    }
+
+    public boolean isAGroup() {
         return this.type == ConversationType.GROUP;
+    }
+
+    public boolean isParticipant(Long userId) {
+        return participants.stream().anyMatch(p ->
+                p.getUser().getId().equals(userId));
+    }
+
+    public boolean isCreator(Long userId) {
+        return this.createdBy.equals(userId);
+    }
+
+    public boolean isCreatorParticipant(Long userId) {
+        return participants.stream().anyMatch(p ->
+                p.getUser().getId().equals(userId) && p.getRole() == ParticipantRole.OWNER);
+    }
+
+    public boolean hasSingleOwner() {
+        return participants.stream()
+                .filter(p -> p.getRole() == ParticipantRole.OWNER)
+                .count() == 1;
     }
 
 }

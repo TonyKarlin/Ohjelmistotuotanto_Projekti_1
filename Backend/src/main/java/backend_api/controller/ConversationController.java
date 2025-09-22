@@ -17,7 +17,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/conversations")
 public class ConversationController {
-    // TODO: Implement conversation-related endpoints
     private final ConversationService conversationService;
 
     public ConversationController(ConversationService conversationService) {
@@ -96,6 +95,15 @@ public class ConversationController {
         } else {
             throw new UserNotFoundException("User with id " + userId + " not found in conversation " + conversationId);
         }
+    }
+
+    @PatchMapping("/{conversationId}/leave")
+    public ResponseEntity<?> leaveConversation(@PathVariable Long conversationId,
+                                               @RequestParam Long userId) {
+        conversationService.leaveConversation(conversationId, userId);
+
+        return ResponseEntity.ok("User with id " + userId +
+                " has left the conversation " + conversationId);
     }
 
     @DeleteMapping("/{conversationId}")

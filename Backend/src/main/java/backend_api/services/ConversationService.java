@@ -28,7 +28,7 @@ public class ConversationService {
     }
 
     public void createParticipant(Conversation conversation, User user, ParticipantRole role) {
-        ConversationParticipant newParticipant = new ConversationParticipant(conversation, user, ParticipantRole.MEMBER);
+        ConversationParticipant newParticipant = new ConversationParticipant(conversation, user, role);
         ConversationParticipantId participantId = new ConversationParticipantId(conversation.getId(), user.getId());
         newParticipant.setId(participantId);
         conversation.getParticipants().add(newParticipant);
@@ -60,7 +60,7 @@ public class ConversationService {
         Conversation conversation = conversationRepository.findById(conversationId).orElseThrow(() ->
                 new ConversationNotFoundException("Conversation not found with id: " + conversationId));
 
-        if (conversation.getType() != ConversationType.GROUP) {
+        if (conversation.isPrivate()) {
             throw new PrivateConversationException("Cannot update a private conversation");
         }
 
@@ -77,15 +77,16 @@ public class ConversationService {
             throw new ConversationNotFoundException("Conversation not found with id: " + conversationId);
         }
 
-        if (conversation.getType() != ConversationType.GROUP) {
+        if (conversation.isPrivate()) {
             throw new PrivateConversationException("Cannot add user to a private conversation");
         }
 
         User user = userService.getUserById(userId).orElseThrow(() ->
                 new UserNotFoundException("User not found with id: " + userId));
 
-        if (isAlreadyParticipant(conversation, user)) throw new UserAlreadyParticipantException(
-                "User is already a participant in the conversation");
+        if (isAlreadyParticipant(conversation, user)) {
+            throw new UserAlreadyParticipantException("User is already a participant in the conversation");
+        }
 
         createParticipant(conversation, user, ParticipantRole.MEMBER);
 
@@ -98,7 +99,7 @@ public class ConversationService {
             throw new ConversationNotFoundException("Conversation not found with id: " + conversationId);
         }
 
-        if (conversation.getType() != ConversationType.GROUP) {
+        if (conversation.isPrivate()) {
             throw new PrivateConversationException("Cannot remove user from a private conversation");
         }
 
@@ -107,6 +108,34 @@ public class ConversationService {
             conversationRepository.save(conversation);
         }
         return removed;
+    }
+
+    public void leaveConversation(Long conversationId, Long userId) {
+        Conversation conversation = conversationRepository.findById(conversationId).orElse(null);
+        if (conversation == null) {
+            throw new ConversationNotFoundException("Conversation not found with id: " + conversationId);
+        }
+
+        if (!conversation.isParticipant(userId)) {
+            throw new InvalidConversationRequestException("User with id " + userId +
+                    " is not a participant in the conversation " + conversationId + "\nUser must" +
+                    " remove the contact instead");
+        }
+
+        if (conversation.isPrivate()) {
+            throw new PrivateConversationException("Cannot leave a private conversation");
+        }
+
+        boolean removed = conversation.getParticipants().removeIf(participant ->
+                participant.getUser().getId().equals(userId));
+
+        if (removed) {
+            conversationRepository.save(conversation);
+
+        } else {
+            throw new InvalidConversationRequestException("User with id " + userId +
+                    " cannot leave the conversation " + conversationId);
+        }
     }
 
     // Validates Conversation Entity (DB)
@@ -129,14 +158,23 @@ public class ConversationService {
         }
     }
 
-    private Conversation createConversationEntity(List<User> users, String type, String name, Long creatorId) {
-        Conversation conversation = new Conversation(ConversationType.valueOf(type));
+    private Conversation createGroupConversationEntity(List<User> users, ConversationType type, String name, Long creatorId) {
+        Conversation conversation = new Conversation(type);
         conversation.setName(name);
         conversation.setCreatedBy(creatorId);
 
-        for (User user : users) {
-            createParticipant(conversation, user, ParticipantRole.MEMBER);
+        if (type != ConversationType.GROUP) {
+            throw new InvalidConversationRequestException("Only group conversations can be created with this method");
         }
+
+        for (User user : users) {
+            if (conversation.isCreator(user.getId())) {
+                createParticipant(conversation, user, ParticipantRole.OWNER);
+            } else {
+                createParticipant(conversation, user, ParticipantRole.MEMBER);
+            }
+        }
+
 
         return conversationRepository.save(conversation);
     }
@@ -147,42 +185,27 @@ public class ConversationService {
         ensureSenderInParticipants(request, sender);
 
         List<User> users = userService.getConversationParticipants(request.getParticipantIds());
-        String type = users.size() == 2 ? "PRIVATE" : "GROUP";
 
         if (users.size() != request.getParticipantIds().size()) {
             throw new UserNotFoundException("One or more users not found in the participant list");
         }
 
-        // Check if it's a private conversation (exactly 2 participants)!!
-        if (users.size() == 2) {
-            Long senderId = request.getCreatorId();
-            // Get the "other" user (the receiver)
-            User receiver = users.stream()
-                    .filter(user -> !user.getId().equals(senderId)) // keep only the "other" user
-                    .findFirst()
-                    .orElseThrow(() -> new UsernameNotFoundException("Receiver not found"));
-
-
-            // Return existing private conversation if it exists
-            return conversationRepository.findPrivateConversation(senderId, receiver.getId())
-                    .orElseGet(() -> createConversationEntity(users, type, receiver.getUsername(), null));
-        }
-
-        // Else create a new group conversation
+        ConversationType type = ConversationType.GROUP;
         String groupName = request.getName() != null && !request.getName().isEmpty() ? request.getName() : null;
         Long creatorId = request.getCreatorId() != null ? request.getCreatorId() : null;
-        return createConversationEntity(users, type, groupName, type.equals("GROUP") ? creatorId : null);
+
+        return createGroupConversationEntity(users, type, groupName, creatorId);
     }
 
     public void deleteConversation(Long conversationId, Long requesterId) {
         Conversation conversation = conversationRepository.findById(conversationId)
                 .orElseThrow(() -> new ConversationNotFoundException("Conversation not found with id: " + conversationId));
 
-        if (conversation.getType() != ConversationType.GROUP) {
+        if (conversation.isPrivate()) {
             throw new PrivateConversationException("Cannot delete a private conversation");
         }
 
-        if (!conversation.getCreatedBy().equals(requesterId)) {
+        if (!conversation.isCreator(requesterId)) {
             throw new UnauthorizedActionException("Only the creator can delete the conversation");
         }
 
