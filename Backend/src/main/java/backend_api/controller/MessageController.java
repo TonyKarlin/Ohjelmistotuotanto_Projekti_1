@@ -2,12 +2,14 @@ package backend_api.controller;
 
 
 import backend_api.DTOs.MessageDTO;
+import backend_api.DTOs.MessageResponse;
 import backend_api.DTOs.SendMessageRequest;
 import backend_api.entities.Conversation;
 import backend_api.entities.Message;
 import backend_api.services.ConversationService;
 import backend_api.services.MessageService;
 import backend_api.utils.CustomUserDetails;
+import backend_api.utils.customexceptions.UnauthorizedActionException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -78,21 +80,22 @@ public class MessageController {
     // sitten kun roolit mukana kunnolla. Tällä hetkellä vain viestin lähettäjä voi poistaa oman viestinsä.
     // Ei toimi ennen kuin JWT auth on kunnossa.
     @DeleteMapping("/{messageId}")
-    public ResponseEntity<?> deleteMessage(@PathVariable("conversationId") Long conversationId,
-                                           @PathVariable("messageId") Long messageId,
-                                           @AuthenticationPrincipal CustomUserDetails userDetails) {
+    public ResponseEntity<MessageResponse> deleteMessage(@PathVariable("conversationId") Long conversationId,
+                                                         @PathVariable("messageId") Long messageId,
+                                                         @RequestParam(required = false) Long userId) {
 
-        Long userId = userDetails.getId();
-        System.out.println("User ID from token: " + userId);
-
-        boolean deleted = messageService.deleteMessage(userId, messageId, conversationId);
-
-        if (deleted) {
-            return ResponseEntity.ok(Map.of("message", "Message deleted successfully"));
-        } else {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN)
-                    .body(Map.of("error", "Message not found or you are not authorized to delete it"));
+        // Temporary user ID for testing if not provided
+        if (userId == null) {
+            userId = 1L;
         }
+
+        messageService.deleteMessage(userId, messageId, conversationId);
+        MessageResponse response = new MessageResponse(
+                messageId,
+                userId,
+                "Message deleted successfully");
+
+        return ResponseEntity.ok(response);
     }
 }
 

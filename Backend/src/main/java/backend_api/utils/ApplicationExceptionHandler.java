@@ -46,5 +46,12 @@ public class ApplicationExceptionHandler {
     public ResponseEntity<String> handleUnauthorizedException(UnauthorizedActionException e) {
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Unauthorized: " + e.getMessage());
     }
+
+    @ExceptionHandler(MessageNotFoundException.class)
+    public ResponseEntity<String> handleMessageNotFound(MessageNotFoundException e) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not Found: " + e.getMessage());
+    }
+
+
 }
 

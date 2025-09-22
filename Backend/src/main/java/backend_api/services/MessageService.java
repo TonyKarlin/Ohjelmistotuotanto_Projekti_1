@@ -4,6 +4,9 @@ import backend_api.DTOs.ConversationRequest;
 import backend_api.DTOs.SendMessageRequest;
 import backend_api.entities.*;
 import backend_api.repository.MessageRepository;
+import backend_api.utils.customexceptions.InvalidConversationRequestException;
+import backend_api.utils.customexceptions.MessageNotFoundException;
+import backend_api.utils.customexceptions.UnauthorizedActionException;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -87,21 +90,19 @@ public class MessageService {
     }
 
 
-    public boolean deleteMessage(Long userId, Long messageId, Long conversationId) {
-        Optional<Message> messageOptional = messageRepository.findById(messageId);
+    public void deleteMessage(Long userId, Long messageId, Long conversationId) {
+        Message message = messageRepository.findById(messageId)
+                .orElseThrow(() -> new MessageNotFoundException("Message not found with id: " + messageId));
 
-        if (messageOptional.isEmpty()) {
-            return false;
+        if (!message.getSender().getId().equals(userId)) {
+            throw new UnauthorizedActionException("You are not allowed to delete this message");
         }
 
-        Message message = messageOptional.get();
-
-        // Katsotaan onko käyttäjä viestin lähettäjä
-        if (!message.getSender().getId().equals(userId)) return false;
-        // Katsotaan kuuluuko viesti oikeaan keskusteluun
-        if (!message.getConversation().getId().equals(conversationId)) return false;
+        if (!message.getConversation().getId().equals(conversationId)) {
+            throw new InvalidConversationRequestException("Message does not belong to the given conversation");
+        }
 
         messageRepository.delete(message);
-        return true;
     }
+
 }
