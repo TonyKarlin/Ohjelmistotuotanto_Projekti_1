@@ -27,11 +27,12 @@ public class ConversationService {
         this.userService = userService;
     }
 
-    public void createParticipant(Conversation conversation, User user, ParticipantRole role) {
+    public ConversationParticipant createParticipant(Conversation conversation, User user, ParticipantRole role) {
         ConversationParticipant newParticipant = new ConversationParticipant(conversation, user, role);
         ConversationParticipantId participantId = new ConversationParticipantId(conversation.getId(), user.getId());
         newParticipant.setId(participantId);
         conversation.getParticipants().add(newParticipant);
+        return newParticipant;
     }
 
     public boolean isAlreadyParticipant(Conversation conversation, User user) {
@@ -158,6 +159,33 @@ public class ConversationService {
         }
     }
 
+    private void setDisplayNameForPrivateConversation(ConversationParticipant participant, User contactUser) {
+        participant.setDisplayName(contactUser.getUsername());
+    }
+
+    private Conversation createPrivateConversation(User user, User contactUser) {
+        // Creates a private conversation between two users with both as admins
+        // Sets display name as the contact user's username for the user and vice versa
+        Conversation conversation = new Conversation(ConversationType.PRIVATE);
+        conversationRepository.saveAndFlush(conversation);
+
+        ConversationParticipant uParticipant = createParticipant(conversation, user, ParticipantRole.ADMIN);
+        ConversationParticipant cParticipant = createParticipant(conversation, contactUser, ParticipantRole.ADMIN);
+
+        setDisplayNameForPrivateConversation(uParticipant, contactUser);
+        setDisplayNameForPrivateConversation(cParticipant, user);
+
+        return conversation;
+    }
+
+    public Conversation createPrivateConversationForNewContacts(User user, User contactUser) {
+        return conversationRepository.findPrivateConversation(user.getId(), contactUser.getId())
+                .orElseGet(() -> {
+                    Conversation conversation = createPrivateConversation(user, contactUser);
+                    return conversationRepository.save(conversation);
+                });
+    }
+
     private Conversation createGroupConversationEntity(List<User> users, ConversationType type, String name, Long creatorId) {
         Conversation conversation = new Conversation(type);
         conversation.setName(name);
@@ -168,11 +196,8 @@ public class ConversationService {
         }
 
         for (User user : users) {
-            if (conversation.isCreator(user.getId())) {
-                createParticipant(conversation, user, ParticipantRole.OWNER);
-            } else {
-                createParticipant(conversation, user, ParticipantRole.MEMBER);
-            }
+            ParticipantRole role = user.getId().equals(creatorId) ? ParticipantRole.OWNER : ParticipantRole.MEMBER;
+            conversation.addParticipant(user, role, name);
         }
 
 

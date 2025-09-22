@@ -43,15 +43,16 @@ public class Conversation {
     @PreUpdate
     private void validateConversation() {
         if (!hasSingleOwner()) {
-            throw new IllegalStateException("Conversation must have exactly one owner.");
+            throw new IllegalStateException("Conversation must have one or fewer owners.");
         }
         if (isPrivate() && this.participants.size() > 2) {
             throw new IllegalStateException("Private conversations must have exactly two participants.");
         }
     }
 
-    public void addParticipant(User user, ParticipantRole role) {
+    public void addParticipant(User user, ParticipantRole role, String displayName) {
         ConversationParticipant participant = new ConversationParticipant(this, user, role);
+        participant.setDisplayName(displayName);
         if (!participants.contains(participant)) participants.add(participant);
     }
 
@@ -140,7 +141,7 @@ public class Conversation {
     public boolean hasSingleOwner() {
         return participants.stream()
                 .filter(p -> p.getRole() == ParticipantRole.OWNER)
-                .count() == 1;
+                .count() <= 1;
     }
 
 }

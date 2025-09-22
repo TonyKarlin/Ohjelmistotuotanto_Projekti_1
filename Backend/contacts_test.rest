@@ -1,0 +1,16 @@
+### GET -- kaikki kontaktit
+GET http://localhost:8080/api/contacts/1
+Accept: application/json
+
+
+### GET -- yksittäinen kontakti
+GET http://localhost:8080/api/contacts/1/1
+
+
+### POST -- uusi kontakti
+POST http://localhost:8080/api/contacts/add?userId=1&contactUserId=3
+Content-Type: application/json
+
+### POST -- hyväksytään kontakti
+POST http://localhost:8080/api/contacts/accept?userId=1&contactUserId=2
+Content-Type: application/json

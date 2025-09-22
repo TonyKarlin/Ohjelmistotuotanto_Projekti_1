@@ -24,6 +24,9 @@ public class ConversationParticipant {
 
     @Enumerated
     private ParticipantRole role = ParticipantRole.MEMBER;
+
+    // Used in Private conversations to display the other user's name.
+    private String displayName; // optional, can be null and probably will be null in group conversations.
     private LocalDateTime joinedAt = LocalDateTime.now();
 
     public ConversationParticipant() {
@@ -71,6 +74,14 @@ public class ConversationParticipant {
 
     public boolean isParticipant(User user) {
         return this.user.equals(user);
+    }
+
+    public String getDisplayName() {
+        return displayName;
+    }
+
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
     }
 
     public LocalDateTime getJoinedAt() {
