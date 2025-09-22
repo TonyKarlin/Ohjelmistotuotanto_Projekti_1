@@ -1,6 +1,7 @@
 package backend_api.controller;
 
 
+import backend_api.DTOs.EditMessageRequest;
 import backend_api.DTOs.MessageDTO;
 import backend_api.DTOs.MessageResponse;
 import backend_api.DTOs.SendMessageRequest;
@@ -73,6 +74,21 @@ public class MessageController {
 
         MessageDTO dto = MessageDTO.fromMessageEntity(messageOptional.get());
         return ResponseEntity.ok(dto);
+    }
+
+    @PutMapping("/{messageId}")
+    public ResponseEntity<?> editMessage(@PathVariable("messageId") Long messageId,
+                                         @PathVariable("conversationId") Long conversationId,
+                                         @RequestBody EditMessageRequest request,
+                                         @RequestParam(required = false) Long userId) {
+
+        // Temporary user ID for testing if not provided
+        if (userId == null) {
+            userId = 1L;
+        }
+
+        Message updatedMessage = messageService.editMessage(conversationId, messageId, userId, request.getText());
+        return ResponseEntity.ok(MessageDTO.fromMessageEntity(updatedMessage));
     }
 
 

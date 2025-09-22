@@ -13,7 +13,15 @@ Content-Type: application/json
 
 {
   "senderId": 1,
-  "text": "toimisko?"
+  "text": "katsotaas"
+}
+
+### PUT -- viestin muokkaus
+PUT http://localhost:8080/api/conversations/5/messages/6
+Content-Type: application/json
+
+{
+  "text": "muokkaus"
 }
 
 ### DELETE -- viestin poisto

@@ -76,6 +76,22 @@ public class MessageService {
         return messageRepository.save(message);
     }
 
+    public Message editMessage(Long conversationId, Long messageId, Long userId, String newText) {
+        Message message = messageRepository.findById(messageId).orElseThrow(() ->
+                new MessageNotFoundException("Message not found with id: " + messageId));
+
+        if (!message.getSender().getId().equals(userId)) {
+            throw new UnauthorizedActionException("You are not allowed to edit this message");
+        }
+
+        if (!message.getConversation().getId().equals(conversationId)) {
+            throw new InvalidConversationRequestException("Message does not belong to the given conversation");
+        }
+
+        message.setText(newText);
+        return messageRepository.save(message);
+    }
+
 
     public List<Message> getMessagesByConversationId(Long conversationId) {
         // Varmistetaan että id on olemassa ja käytetään sitä (Throws RuntimeException jos ei löydy)
