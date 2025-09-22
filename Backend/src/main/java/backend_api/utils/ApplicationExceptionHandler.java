@@ -52,6 +52,14 @@ public class ApplicationExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not Found: " + e.getMessage());
     }
 
+    @ExceptionHandler
+    public ResponseEntity<String> handleContactAlreadyExistsException(ContactAlreadyExistsException e) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body("Conflict: " + e.getMessage());
+    }
 
+    @ExceptionHandler
+    public ResponseEntity<String> handleContactNotFoundException(ContactNotFoundException e) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not Found: " + e.getMessage());
+    }
 }
 
