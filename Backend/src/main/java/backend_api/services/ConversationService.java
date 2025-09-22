@@ -39,6 +39,23 @@ public class ConversationService {
         return conversationRepository.findAll();
     }
 
+    public boolean removeUserFromConversation(Long conversationId, Long userId) {
+        Conversation conversation = conversationRepository.findById(conversationId).orElse(null);
+        if (conversation == null) {
+            throw new RuntimeException("Conversation not found with id: " + conversationId);
+        }
+
+        if (conversation.getType() != ConversationType.GROUP) {
+            throw new RuntimeException("Cannot remove user from a private conversation");
+        }
+
+        boolean removed = conversation.getParticipants().removeIf(participant -> participant.getUser().getId().equals(userId));
+        if (removed) {
+            conversationRepository.save(conversation);
+        }
+        return removed;
+    }
+
     // Validates Conversation Entity (DB)
     public void validateUserIsParticipant(User sender, Conversation conversation) {
         if (!conversation.hasParticipant(sender)) {

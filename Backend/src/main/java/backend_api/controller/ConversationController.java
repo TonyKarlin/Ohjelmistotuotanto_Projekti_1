@@ -55,4 +55,16 @@ public class ConversationController {
         return ResponseEntity.ok(dtos);
     }
 
+    @DeleteMapping("/{conversationId}/participants/{userId}")
+    public ResponseEntity<?> removeUserFromConversation(@PathVariable Long conversationId,
+                                                        @PathVariable Long userId) {
+
+        boolean removed = conversationService.removeUserFromConversation(conversationId, userId);
+        if (removed) {
+            String message = String.format("User (id): %d \nRemoved from conversation(id): %d", userId, conversationId);
+            return ResponseEntity.ok(message);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Conversation or User not found");
+        }
+    }
 }

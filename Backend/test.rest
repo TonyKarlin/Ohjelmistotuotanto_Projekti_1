@@ -30,6 +30,11 @@ Content-Type: application/json
   ]
 }
 
+
+### DELETE -- käyttäjän poistaminen keskustelusta
+DELETE http://localhost:8080/api/conversations/5/participants/3
+Content-Type: application/json
+
 ### GET -- kaikki keskustelut
 GET http://localhost:8080/api/conversations
 Content-Type: application/json
