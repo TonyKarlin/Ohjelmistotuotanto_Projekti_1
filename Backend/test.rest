@@ -11,9 +11,9 @@ POST http://localhost:8080/api/users/register
 Content-Type: application/json
 
 {
-  "username": "ilpo",
+  "username": "bob",
   "password": "12345",
-  "email": "ilpo@example.com"
+  "email": "pena@example.com"
 }
 
 ### Testataan login
