@@ -24,7 +24,7 @@ class ConversationTest {
         Conversation conversation = new Conversation();
 
         // Add participant
-        conversation.addParticipant(user1, ParticipantRole.MEMBER);
+        conversation.addParticipant(user1, ParticipantRole.MEMBER, null);
         assertTrue(conversation.hasParticipant(user1));
         assertFalse(conversation.hasParticipant(user2));
 
@@ -36,7 +36,7 @@ class ConversationTest {
         assertNull(participant.getConversation());
 
         // Add another participant
-        conversation.addParticipant(user2, ParticipantRole.MEMBER);
+        conversation.addParticipant(user2, ParticipantRole.MEMBER, null);
         ConversationParticipant participant2 = conversation.getParticipants().get(0);
 
         assertEquals(1, conversation.getParticipants().size());
