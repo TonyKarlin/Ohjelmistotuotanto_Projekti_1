@@ -13,6 +13,16 @@
     -fx-border-width: 2px;
 }
 
+
+.HBox {
+    -fx-background-color: #494949;
+    -fx-background-radius: 20px 20px 0px 0px;
+    -fx-border-width: 3px;
+    -fx-border-color: #878787;
+    -fx-border-radius: 16px 16px 0px 0px;
+
+}
+
 .imageView {
     -fx-background-radius: 30px;
 }
@@ -67,4 +77,37 @@
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.5), 10, 0, 4, 4);
     -fx-scale-x: 1.05;
     -fx-scale-y: 1.05;
+}
+
+.ConversationHBox {
+    -fx-background-color: rgb(32, 32, 32);
+}
+
+.ImageView {
+
+}
+
+.ImageView:hover {
+    -fx-cursor: hand;
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+
+}
+
+.messageHBox {
+    -fx-background-color: rgb(32, 32, 32);
+    -fx-border-width: 0 0 3px 0;
+    -fx-border-color: #131313F2;
+}
+
+.messageHBox:hover {
+    -fx-cursor: hand;
+    -fx-background-color: rgba(19, 19, 19, 0.95);
+}
+
+.VBoxAddFriends {
+    -fx-background-color: rgba(0, 0, 0, 0.90);
+    -fx-border-radius: 2px;
+    -fx-border-width: 2px;
+    -fx-border-color: black;
 }

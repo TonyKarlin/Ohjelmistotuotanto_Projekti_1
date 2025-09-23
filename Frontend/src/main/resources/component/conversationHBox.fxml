@@ -9,7 +9,7 @@
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 
-<HBox alignment="CENTER" prefHeight="70.0" prefWidth="212.0" styleClass="HBox" stylesheets="@../css/conversationHBox.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.component.ConversationHBoxController">
+<HBox alignment="CENTER" prefHeight="70.0" prefWidth="212.0" styleClass="ConversationHBox" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.component.ConversationHBoxController">
    <children>
       <AnchorPane prefHeight="79.0" prefWidth="55.0">
          <children>

@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<HBox alignment="CENTER_LEFT" styleClass="messageHbox" stylesheets="@../css/messageHBox.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.component.MessageHBoxController">
+<HBox alignment="CENTER_LEFT" styleClass="messageHBox" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.component.MessageHBoxController">
    <children>
       <ImageView fx:id="userProfilePicture" fitHeight="42.0" fitWidth="48.0" pickOnBounds="true" preserveRatio="true">
          <image>

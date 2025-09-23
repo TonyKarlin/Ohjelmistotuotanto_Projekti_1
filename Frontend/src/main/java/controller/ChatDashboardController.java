@@ -121,7 +121,7 @@ public class ChatDashboardController {
 
     @FXML
     public void openAddFriendsView() throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/popup/addFriendsView.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/addFriendsView.fxml"));
         Parent root = fxmlLoader.load();
         AddFriendsController controller = fxmlLoader.getController();
         controller.setController(loggedInUser, this.userApiClient);
