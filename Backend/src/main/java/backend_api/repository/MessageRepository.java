@@ -1,17 +1,16 @@
 package backend_api.repository;
 
-import backend_api.entities.Conversation;
-import backend_api.entities.Message;
-import backend_api.entities.User;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.repository.query.Param;
-
 import java.util.List;
 import java.util.Optional;
 
-public interface MessageRepository extends JpaRepository<Message, Long> {
-    List<Message> findMessagesByConversationId(Long conversation);
-    Optional<Message> findByIdAndConversationId(Long messageId, Long conversationId);
+import org.springframework.data.jpa.repository.JpaRepository;
 
+import backend_api.entities.Message;
+
+public interface MessageRepository extends JpaRepository<Message, Long> {
+
+    List<Message> findMessagesByConversationId(Long conversation);
+
+    Optional<Message> findByIdAndConversationId(Long messageId, Long conversationId);
 
 }
