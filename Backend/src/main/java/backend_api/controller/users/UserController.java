@@ -37,8 +37,6 @@ import backend_api.utils.JwtUtil;
 @RequestMapping("/api/users")
 public class UserController {
 
-    private static JwtUtil jwtUtil;
-
     private final UserService userService;
 
     public UserController(UserService userService) {
@@ -85,7 +83,7 @@ public class UserController {
     public ResponseEntity<?> login(@RequestBody LoginRequest request) {
         return userService.login(request.getUsername(), request.getPassword())
                 .map(user -> {
-                    String token = jwtUtil.generateToken(user.getUsername());
+                    String token = JwtUtil.generateToken(user.getUsername());
                     Map<String, Object> response = new HashMap<>();
                     response.put("username", user.getUsername());
                     response.put("email", user.getEmail());
