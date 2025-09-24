@@ -3,6 +3,7 @@ package backend_api.utils;
 import java.security.Key;
 import java.util.Date;
 
+import io.github.cdimascio.dotenv.Dotenv;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -10,8 +11,11 @@ import io.jsonwebtoken.security.Keys;
 
 public class JwtUtil {
 
-    private static final String JWT_KEY = "JABNGFIJBNADIPGBNIADBNGIPBADIHGBIAPDNFANJSODJOIA!#%¤!#%&/()=?`´+*~^<>";
-    private static final long EXPIRATION_TIME = 1000 * 60 * 60 * 10; // 10 tuntia
+    private static final Dotenv dotenv = Dotenv.configure()
+            .directory("Backend")
+            .load();
+    private static final String JWT_KEY = dotenv.get("JWT_KEY");
+    private static final long EXPIRATION_TIME = 1000 * 60 * 60 * 10; // 10 hours
     private static final Key SIGNING_KEY = Keys.hmacShaKeyFor(JWT_KEY.getBytes());
 
     private JwtUtil() {
