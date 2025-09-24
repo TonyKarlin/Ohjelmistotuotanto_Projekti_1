@@ -1,15 +1,15 @@
 package backend_api.utils;
 
+import java.security.Key;
+import java.util.Date;
+
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 
-
-import java.security.Key;
-import java.util.Date;
-
 public class JwtUtil {
+
     private static final String JWT_KEY = "JABNGFIJBNADIPGBNIADBNGIPBADIHGBIAPDNFANJSODJOIA!#%¤!#%&/()=?`´+*~^<>";
     private static final long EXPIRATION_TIME = 1000 * 60 * 60 * 10; // 10 tuntia
     private static final Key SIGNING_KEY = Keys.hmacShaKeyFor(JWT_KEY.getBytes());
@@ -18,8 +18,7 @@ public class JwtUtil {
         throw new IllegalStateException("Utility class");
     }
 
-
-    public static String generateToken(String username) {
+    public String generateToken(String username) {
         return Jwts.builder()
                 .setSubject(username)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
