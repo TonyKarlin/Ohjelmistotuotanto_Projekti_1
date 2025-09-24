@@ -5,7 +5,7 @@ public class LoginResponse {
     private final String message;
     private String token;
     private Long id;
-    private  String username;
+    private String username;
     private String email;
     private String profilePictureUrl;
 
@@ -13,7 +13,7 @@ public class LoginResponse {
         this.message = message;
     }
 
-    public LoginResponse(String message, String token,long id, String username, String email, String profilePictureUrl) {
+    public LoginResponse(String message, String token, long id, String username, String email, String profilePictureUrl) {
         this.message = message;
         this.token = token;
         this.id = id;
@@ -32,5 +32,29 @@ public class LoginResponse {
 
     public String getProfilePictureUrl() {
         return profilePictureUrl;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }
