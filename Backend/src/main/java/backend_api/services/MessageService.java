@@ -1,7 +1,7 @@
 package backend_api.services;
 
-import backend_api.DTOs.ConversationRequest;
-import backend_api.DTOs.SendMessageRequest;
+import backend_api.DTOs.conversations.ConversationRequest;
+import backend_api.DTOs.messages.SendMessageRequest;
 import backend_api.entities.*;
 import backend_api.repository.MessageRepository;
 import backend_api.utils.customexceptions.InvalidConversationRequestException;

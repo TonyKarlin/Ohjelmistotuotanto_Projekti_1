@@ -1,5 +1,7 @@
 package backend_api.DTOs;
 
+import backend_api.DTOs.messages.MessageContentDTO;
+import backend_api.DTOs.messages.MessageDTO;
 import backend_api.entities.Conversation;
 import backend_api.entities.Message;
 import backend_api.entities.MessageContent;

@@ -1,5 +1,6 @@
 package backend_api.DTOs;
 
+import backend_api.DTOs.conversations.ConversationRequest;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

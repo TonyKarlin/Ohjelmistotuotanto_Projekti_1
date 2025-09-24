@@ -1,7 +1,7 @@
 package backend_api.controller;
 
-import backend_api.DTOs.AcceptContactDTO;
-import backend_api.DTOs.ContactResponseDTO;
+import backend_api.DTOs.contacts.AcceptContactDTO;
+import backend_api.DTOs.contacts.ContactResponseDTO;
 import backend_api.services.ContactsService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

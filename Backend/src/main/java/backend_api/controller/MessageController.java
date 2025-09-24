@@ -1,25 +1,17 @@
 package backend_api.controller;
 
 
-import backend_api.DTOs.EditMessageRequest;
-import backend_api.DTOs.MessageDTO;
-import backend_api.DTOs.MessageResponse;
-import backend_api.DTOs.SendMessageRequest;
-import backend_api.entities.Conversation;
+import backend_api.DTOs.messages.EditMessageRequest;
+import backend_api.DTOs.messages.MessageDTO;
+import backend_api.DTOs.messages.MessageResponse;
+import backend_api.DTOs.messages.SendMessageRequest;
 import backend_api.entities.Message;
-import backend_api.services.ConversationService;
 import backend_api.services.MessageService;
-import backend_api.utils.CustomUserDetails;
-import backend_api.utils.customexceptions.UnauthorizedActionException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @RestController

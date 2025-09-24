@@ -1,9 +1,10 @@
-package backend_api.DTOs;
+package backend_api.DTOs.user;
 
-public class LoginRequest {
+public class RegisterRequest {
 
     private String username;
     private String password;
+    private String email;
 
     // getterit & setterit
     public String getUsername() {
@@ -20,5 +21,13 @@ public class LoginRequest {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

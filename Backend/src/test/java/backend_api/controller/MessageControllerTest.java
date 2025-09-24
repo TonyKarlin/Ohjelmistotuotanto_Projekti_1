@@ -5,8 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import backend_api.DTOs.MessageDTO;
-import backend_api.DTOs.SendMessageRequest;
+import backend_api.DTOs.messages.MessageDTO;
 import backend_api.entities.Conversation;
 import backend_api.entities.Message;
 import backend_api.entities.User;

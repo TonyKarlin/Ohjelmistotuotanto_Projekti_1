@@ -1,7 +1,7 @@
 package backend_api.services;
 
-import backend_api.DTOs.ConversationRequest;
-import backend_api.DTOs.SendMessageRequest;
+import backend_api.DTOs.conversations.ConversationRequest;
+import backend_api.DTOs.messages.SendMessageRequest;
 import backend_api.entities.Conversation;
 import backend_api.entities.ConversationParticipant;
 import backend_api.entities.ConversationParticipantId;

@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import backend_api.DTOs.LoginRequest;
-import backend_api.DTOs.RegisterRequest;
+import backend_api.DTOs.user.LoginRequest;
+import backend_api.DTOs.user.RegisterRequest;
 import backend_api.entities.User;
 import backend_api.services.UserService;
 

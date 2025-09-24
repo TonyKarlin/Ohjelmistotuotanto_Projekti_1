@@ -1,8 +1,6 @@
-package backend_api.DTOs;
+package backend_api.DTOs.conversations;
 
 import backend_api.entities.Conversation;
-import backend_api.entities.ConversationParticipant;
-import backend_api.entities.User;
 
 import java.time.LocalDateTime;
 import java.util.List;

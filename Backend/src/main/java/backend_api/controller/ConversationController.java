@@ -1,12 +1,11 @@
 package backend_api.controller;
 
 
-import backend_api.DTOs.ConversationDTO;
-import backend_api.DTOs.ConversationParticipantResponse;
-import backend_api.DTOs.ConversationRequest;
+import backend_api.DTOs.conversations.ConversationDTO;
+import backend_api.DTOs.conversations.ConversationParticipantResponse;
+import backend_api.DTOs.conversations.ConversationRequest;
 import backend_api.entities.Conversation;
 import backend_api.services.ConversationService;
-import backend_api.utils.customexceptions.InvalidConversationRequestException;
 import backend_api.utils.customexceptions.UserNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
