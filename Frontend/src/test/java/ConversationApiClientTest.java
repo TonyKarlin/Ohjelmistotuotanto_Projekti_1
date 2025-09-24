@@ -1,57 +1,107 @@
+import model.Contact;
 import model.Conversation;
 import model.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import request.ConversationRequest;
 import request.ConversationUpdateRequest;
-import request.LoginRequest;
 import service.ConversationApiClient;
-import service.MessageApiClient;
-import service.UserApiClient;
+
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 public class ConversationApiClientTest {
 
-    private MessageApiClient messageApiClient;
-    private UserApiClient userApiClient;
-    private LoginRequest loginRequest;
+
     private Conversation conversation;
+    private ConversationRequest conversationRequest;
     private ConversationApiClient conversationApiClient;
     ConversationUpdateRequest conversationUpdateRequest;
+    User user;
 
     @BeforeEach
     public void setUp() throws Exception {
-        messageApiClient = new MessageApiClient();
-        userApiClient = new UserApiClient();
-        loginRequest = new LoginRequest();
         conversation = new Conversation();
         conversationApiClient = new ConversationApiClient();
         conversationUpdateRequest = new ConversationUpdateRequest();
+        user = new User();
+
+    }
+
+    @Test
+    public void testCreateConversation() throws IOException, InterruptedException {
+        user.setId(1);
+        List<Integer> participantIds = Arrays.asList(2, 3);
+        String name = "toimiko";
+        conversationRequest = new ConversationRequest(user.getId(), name, participantIds);
+        conversation = conversationApiClient.createConversation(conversationRequest);
+        System.out.println(conversation.getName());
+    }
+
+    @Test
+    public void testChangeConversationName() throws IOException, InterruptedException {
+        conversation.setId(3);
+        conversationUpdateRequest = new ConversationUpdateRequest("prööt");
+        conversation = conversationApiClient.changeConversationName(conversationUpdateRequest, conversation);
+        System.out.println(conversation.getParticipants());
+        for (User p : conversation.getParticipants()) {
+            System.out.println(p.getUsername());
+        }
+
+    }
+
+    @Test
+    public void testAddUserToConversation() throws IOException, InterruptedException {
+        Contact contact = new Contact();
+        contact.setContactId(4);
+        conversation.setId(4);
+        conversationApiClient.addUserToConversation(conversation, contact);
+
+    }
+
+    @Test
+    public void testLeaveConversation() throws IOException, InterruptedException {
+        user.setId(4);
+        conversation.setId(4);
+        conversationApiClient.leaveConversation(conversation, user);
+    }
+
+    @Test
+    public void testDeleteConversation() throws IOException, InterruptedException {
+        user.setId(1);
+        conversation.setId(5);
+        conversationApiClient.deleteConversation(conversation, user);
+    }
+
+    @Test
+    public void testRemoveUserFromConversation() throws IOException, InterruptedException {
+        conversation.setId(3);
+        user.setUserId(3);
+        conversationApiClient.removeUserFromConversation(conversation, user);
 
     }
 
     @Test
     public void testGetConversationByUserId() throws IOException, InterruptedException {
-        User user = new User();
         user.setId(1);
-        List <Conversation> conversations = conversationApiClient.getConversationsById(user);
+        List<Conversation> conversations = conversationApiClient.getConversationsById(user);
         for (Conversation c : conversations) {
             System.out.println("Conversation ID: " + c.getId());
             System.out.println("Conversation Type:: " + c.getType());
             System.out.println("Conversation Name:: " + c.getName());
             System.out.println("Conversation Created By: " + c.getCreatedBy());
             System.out.println("Conversation Created At: " + c.getCreatedAt());
-            System.out.println("");
-    }}
+            for (User u : c.getParticipants()) {
+                System.out.println(" ");
+                System.out.println("userId: "+ u.getUserId());
+                System.out.println("username: "+ u.getUsername());
+                System.out.println("role: "+ u.getRole());
 
-    @Test
-    public void testChangeConversationName() throws IOException, InterruptedException {
-        conversation.setId(2);
-        conversationUpdateRequest = new ConversationUpdateRequest("prööt");
-        conversation= conversationApiClient.changeConversationName(conversationUpdateRequest,conversation);
-        System.out.println(conversation.getName());
-
+            }
+            System.out.println(" ");
+        }
     }
 
     @Test

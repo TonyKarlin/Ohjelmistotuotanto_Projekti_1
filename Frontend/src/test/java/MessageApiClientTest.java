@@ -18,6 +18,8 @@ public class MessageApiClientTest {
     private UserApiClient userApiClient;
     private LoginRequest loginRequest;
     private Conversation conversation;
+    private Message message;
+    private MessageRequest messageRequest;
 
     @BeforeEach
     public void setUp() throws Exception{
@@ -25,6 +27,8 @@ public class MessageApiClientTest {
         userApiClient = new UserApiClient();
         loginRequest = new LoginRequest();
         conversation = new Conversation();
+        message = new Message();
+        messageRequest = new MessageRequest();
 
     }
 
@@ -32,11 +36,10 @@ public class MessageApiClientTest {
     //Can only perform once because only one user with same username can be existing in the DB
     @Test
     public void testSendMessage() throws IOException {
-        MessageRequest request = new MessageRequest();
-        conversation.setId(24);
-        request.setText("Test Message from JUnit!");
-        request.setSenderId(1);
-        Message message = messageApiClient.sendMessage(request, conversation);
+        conversation.setId(3);
+        messageRequest.setText("Test Message from JUnit!");
+        messageRequest.setSenderId(1);
+        Message message = messageApiClient.sendMessage(messageRequest, conversation);
         System.out.println(message.getText());
 
 
@@ -44,7 +47,7 @@ public class MessageApiClientTest {
 
     @Test
     public void testGetConversationMessages() throws IOException, InterruptedException {
-        conversation.setId(29);
+        conversation.setId(3);
         List<Message> messages = messageApiClient.getConversationMessages(conversation);
         for (Message m : messages) {
             System.out.println(m.getText());
@@ -52,12 +55,33 @@ public class MessageApiClientTest {
     }
 
     @Test
+    public void testModifyMessage() throws IOException, InterruptedException {
+        conversation.setId(3);
+        message.setId(2);
+        String text = "prööt";
+        MessageRequest messageRequest = new MessageRequest(conversation.getId(), text, message.getId());
+        Message message1 = messageApiClient.modifyMessage(messageRequest);
+        if (message1 != null) {
+            System.out.println(message1.getMessageAttachments());
+            System.out.println(message1.getSenderId());
+            System.out.println(message1.getId());
+            System.out.println(message1.getCreatedAt());
+            System.out.println(message1.getSenderUsername());
+            System.out.println(message1.getText());
+
+        }else {
+            System.out.println("Message is null");
+        }
+    }
+
+
+    @Test
     public void testMessageDelete() throws IOException, InterruptedException {
-        loginRequest = new LoginRequest("test", "1234");
+        loginRequest = new LoginRequest("joni", "1234");
         User user = userApiClient.loginUser(loginRequest);
         Message message = new Message();
-        message.setId(48);
-        conversation.setId(20);
+        message.setId(1);
+        conversation.setId(3);
         messageApiClient.deleteMessage(conversation, message, user);
 
     }

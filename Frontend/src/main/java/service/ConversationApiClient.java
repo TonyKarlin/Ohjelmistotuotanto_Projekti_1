@@ -1,6 +1,7 @@
 package service;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import model.Contact;
 import model.Conversation;
 import model.User;
 import request.ConversationRequest;
@@ -42,52 +43,51 @@ public class ConversationApiClient implements ApiClient {
         return null;
     }
 
-    public Conversation addUserToConversation(Conversation conversation, User user) throws IOException, InterruptedException {
-        String conversationUrl = baseUrl + "/" + conversation.getId() + "/participants/" + user.getId();
-        ApiResponse response = sendPutRequestOnlyUrl(conversationUrl);
+    public void addUserToConversation(Conversation conversation, Contact Contact) throws IOException, InterruptedException {
+        String conversationUrl = baseUrl + "/" + conversation.getId() + "/participants/" + Contact.getContactId();
+        ApiResponse response = sendPutRequestWithoutObject(conversationUrl);
         if (response.isSuccess()) {
             System.out.println("Response: " + response.body);
-            return objectMapper.readValue(response.body, Conversation.class);
+
+        }else {
+            System.out.println("Failed to add user to conversation. Status: " + response.statusCode
+                    + ", Response: " + response.body);
         }
-        System.out.println("Failed to change conversation name. Status: " + response.statusCode
-                + ", Response: " + response.body);
-        return null;
     }
 
-    public Conversation leaveConversation(Conversation conversation, User user) throws IOException, InterruptedException {
+    public void leaveConversation(Conversation conversation, User user) throws IOException, InterruptedException {
         String conversationUrl = baseUrl + "/" + conversation.getId() + "/leave?userId=" + user.getId();
         ApiResponse response = sendPatchRequest(conversationUrl);
         if (response.isSuccess()) {
             System.out.println("Response: " + response.body);
-            return objectMapper.readValue(response.body, Conversation.class);
-        }
+
+        }else {
         System.out.println("Failed to leave conversation. Status: " + response.statusCode
                 + ", Response: " + response.body);
-        return null;
-    }
+    }}
 
-    public Conversation deleteConversation(Conversation conversation, User user) throws IOException, InterruptedException {
+    public void deleteConversation(Conversation conversation, User user) throws IOException, InterruptedException {
         String conversationUrl = baseUrl + "/" + conversation.getId() + "?requesterId=" + user.getId();
-        ApiResponse response = sendDeleteRequest(conversationUrl, user.getToken());
+        ApiResponse response = sendDeleteRequestWithoutToken(conversationUrl);
         if (response.isSuccess()) {
             System.out.println("Response: " + response.body);
-            return objectMapper.readValue(response.body, Conversation.class);
+
+        }else {
+            System.out.println("Failed to delete conversation. Status: " + response.statusCode
+                    + ", Response: " + response.body);
         }
-        System.out.println("Failed to delete conversation. Status: " + response.statusCode
-                + ", Response: " + response.body);
-        return null;
     }
 
-    public Conversation removeUserFromConversation(Conversation conversation, User user) throws IOException, InterruptedException {
-        String conversationUrl = baseUrl + "/" + conversation.getId() + "/participants/" + user.getId();
-        ApiResponse response = sendDeleteRequest(conversationUrl, user.getToken());
+    public void removeUserFromConversation(Conversation conversation, User user) throws IOException, InterruptedException {
+        String conversationUrl = baseUrl + "/" + conversation.getId() + "/participants/" + user.getUserId();
+        ApiResponse response = sendDeleteRequestWithoutToken(conversationUrl);
         if (response.isSuccess()) {
             System.out.println("Response: " + response.body);
-            return objectMapper.readValue(response.body, Conversation.class);
+
+        }else {
+            System.out.println("Failed to remove User from conversation. Status: " + response.statusCode
+                    + ", Response: " + response.body);
         }
-        System.out.println("Failed to remove User from conversation. Status: " + response.statusCode
-                + ", Response: " + response.body);
-        return null;
     }
 
     public List<Conversation> getAllConversations() throws IOException, InterruptedException {
