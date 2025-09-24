@@ -61,5 +61,10 @@ public class ApplicationExceptionHandler {
     public ResponseEntity<String> handleContactNotFoundException(ContactNotFoundException e) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not Found: " + e.getMessage());
     }
+
+    @ExceptionHandler
+    public ResponseEntity<String> handleBadMessageRequestException(BadMessageRequestException e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Bad Request: " + e.getMessage());
+    }
 }
 

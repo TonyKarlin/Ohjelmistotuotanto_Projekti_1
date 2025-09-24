@@ -1,12 +1,13 @@
 package backend_api.controller.messaging;
 
 
-import backend_api.DTOs.messages.EditMessageRequest;
+import backend_api.DTOs.messages.EditMessageTextRequest;
 import backend_api.DTOs.messages.MessageDTO;
 import backend_api.DTOs.messages.MessageResponse;
 import backend_api.DTOs.messages.SendMessageRequest;
 import backend_api.entities.Message;
 import backend_api.services.MessageService;
+import backend_api.utils.customexceptions.BadMessageRequestException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -33,7 +34,7 @@ public class MessageController {
         Message message = messageService.sendMessage(request);
 
         if (message == null) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+            throw new BadMessageRequestException("Failed to send message. Please check the request data.");
         }
 
         MessageDTO dto = MessageDTO.fromMessageEntity(message);
@@ -45,7 +46,7 @@ public class MessageController {
         List<Message> messages = messageService.getMessagesByConversationId(conversationId);
 
         if (messages.isEmpty()) {
-            return ResponseEntity.noContent().build();
+            throw new BadMessageRequestException("No messages found for this conversation.");
         }
 
         List<MessageDTO> dtos =
@@ -61,7 +62,7 @@ public class MessageController {
                                                      @PathVariable("messageId") Long messageId) {
         Optional<Message> messageOptional = messageService.getMessageByIdAndConversationId(messageId, conversationId);
         if (messageOptional.isEmpty()) {
-            return ResponseEntity.notFound().build();
+            throw new BadMessageRequestException("Message not found in this conversation.");
         }
 
         MessageDTO dto = MessageDTO.fromMessageEntity(messageOptional.get());
@@ -71,12 +72,11 @@ public class MessageController {
     @PutMapping("/{messageId}")
     public ResponseEntity<?> editMessage(@PathVariable("messageId") Long messageId,
                                          @PathVariable("conversationId") Long conversationId,
-                                         @RequestBody EditMessageRequest request,
+                                         @RequestBody EditMessageTextRequest request,
                                          @RequestParam(required = false) Long userId) {
 
-        // Temporary user ID for testing if not provided
-        if (userId == null) {
-            userId = 1L;
+        if (request.getText() == null || request.getText().trim().isEmpty()) {
+            throw new BadMessageRequestException("Message text cannot be empty");
         }
 
         Message updatedMessage = messageService.editMessage(conversationId, messageId, userId, request.getText());
@@ -92,10 +92,6 @@ public class MessageController {
                                                          @PathVariable("messageId") Long messageId,
                                                          @RequestParam(required = false) Long userId) {
 
-        // Temporary user ID for testing if not provided
-        if (userId == null) {
-            userId = 1L;
-        }
 
         messageService.deleteMessage(userId, messageId, conversationId);
         MessageResponse response = new MessageResponse(

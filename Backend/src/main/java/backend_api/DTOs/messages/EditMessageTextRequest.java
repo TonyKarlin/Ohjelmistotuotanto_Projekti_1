@@ -1,6 +1,6 @@
 package backend_api.DTOs.messages;
 
-public class EditMessageRequest {
+public class EditMessageTextRequest {
     private String text;
 
 
