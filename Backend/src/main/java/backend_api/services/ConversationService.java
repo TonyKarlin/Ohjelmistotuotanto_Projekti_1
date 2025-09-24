@@ -197,7 +197,7 @@ public class ConversationService {
 
         for (User user : users) {
             ParticipantRole role = user.getId().equals(creatorId) ? ParticipantRole.OWNER : ParticipantRole.MEMBER;
-            conversation.addParticipant(user, role, name);
+            createParticipant(conversation, user, role);
         }
 
 
