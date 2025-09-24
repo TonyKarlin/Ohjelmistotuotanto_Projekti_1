@@ -28,7 +28,7 @@ public class JwtUtil {
     }
 
     public static String getUsernameFromToken(String token) {
-        Claims claims = Jwts.parser()
+        Claims claims = Jwts.parserBuilder()
                 .setSigningKey(SIGNING_KEY)
                 .build()
                 .parseClaimsJws(token)
@@ -38,13 +38,13 @@ public class JwtUtil {
 
     public static boolean isTokenValid(String token) {
         try {
-            Claims claims = Jwts.parser()
+            Claims claims = Jwts.parserBuilder()
                     .setSigningKey(SIGNING_KEY)
                     .build()
                     .parseClaimsJws(token)
                     .getBody();
             return !claims.getExpiration().before(new Date());
-        } catch (Exception e) {
+        } catch (io.jsonwebtoken.security.SecurityException | io.jsonwebtoken.MalformedJwtException | io.jsonwebtoken.ExpiredJwtException | IllegalArgumentException e) {
             return false;
         }
     }
