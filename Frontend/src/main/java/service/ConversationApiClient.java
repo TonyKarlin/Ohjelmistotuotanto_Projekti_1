@@ -5,7 +5,6 @@ import model.Contact;
 import model.Conversation;
 import model.User;
 import request.ConversationRequest;
-import request.ConversationUpdateRequest;
 
 import java.io.IOException;
 import java.util.List;
@@ -31,9 +30,9 @@ public class ConversationApiClient implements ApiClient {
         }
     }
 
-    public Conversation changeConversationName(ConversationUpdateRequest updateRequest, Conversation conversation) throws IOException, InterruptedException {
+    public Conversation changeConversationName(ConversationRequest conversationRequest, Conversation conversation) throws IOException, InterruptedException {
         String conversationUrl = baseUrl + "/" + conversation.getId() + "/update";
-        ApiResponse response = sendPutRequestWithObject(conversationUrl, updateRequest);
+        ApiResponse response = sendPutRequestWithObject(conversationUrl, conversationRequest);
         if (response.isSuccess()) {
             System.out.println("Response: " + response.body);
             return objectMapper.readValue(response.body, Conversation.class);

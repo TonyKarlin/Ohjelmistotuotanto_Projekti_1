@@ -15,9 +15,15 @@ public class ConversationRequest {
 
     public ConversationRequest() {}
 
+    //Construct for creating a conversation
     public ConversationRequest(int creatorId, String name,List<Integer> participantIds) {
         this.creatorId = creatorId;
         this.name = name;
         this.participantIds = participantIds;
+    }
+
+    //Construct for changing name in conversation
+    public ConversationRequest(String name) {
+        this.name = name;
     }
 }

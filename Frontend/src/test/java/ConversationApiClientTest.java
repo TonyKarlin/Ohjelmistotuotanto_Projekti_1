@@ -4,7 +4,6 @@ import model.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import request.ConversationRequest;
-import request.ConversationUpdateRequest;
 import service.ConversationApiClient;
 
 import java.io.IOException;
@@ -16,14 +15,12 @@ public class ConversationApiClientTest {
     private Conversation conversation;
     private ConversationRequest conversationRequest;
     private ConversationApiClient conversationApiClient;
-    ConversationUpdateRequest conversationUpdateRequest;
     User user;
 
     @BeforeEach
     public void setUp() throws Exception {
         conversation = new Conversation();
         conversationApiClient = new ConversationApiClient();
-        conversationUpdateRequest = new ConversationUpdateRequest();
         user = new User();
     }
 
@@ -46,8 +43,8 @@ public class ConversationApiClientTest {
     @Test
     public void testChangeConversationName() throws IOException, InterruptedException {
         conversation.setId(3);
-        conversationUpdateRequest = new ConversationUpdateRequest("prööt");
-        conversation = conversationApiClient.changeConversationName(conversationUpdateRequest, conversation);
+        conversationRequest = new ConversationRequest("prööt");
+        conversation = conversationApiClient.changeConversationName(conversationRequest, conversation);
         System.out.println(conversation.getParticipants());
         for (User p : conversation.getParticipants()) {
             System.out.println(p.getUsername());
