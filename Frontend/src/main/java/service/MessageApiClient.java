@@ -35,9 +35,9 @@ public class MessageApiClient implements ApiClient {
         }
     }
 
-    public Message modifyMessage(Conversation conversation, Message message) throws IOException, InterruptedException {
-        String messageUrl = baseUrl + "/" + conversation.getId() + "/messages" + message.getId();
-        ApiResponse response = sendPutRequestOnlyUrl(messageUrl);
+    public Message modifyMessage(MessageRequest messageRequest) throws IOException, InterruptedException {
+        String messageUrl = baseUrl + "/" + messageRequest.getConversationId() + "/messages/" + messageRequest.getMessageId();
+        ApiResponse response = sendPutRequestWithObject(messageUrl, messageRequest);
         if (response.isSuccess()) {
             return objectMapper.readValue(response.body, Message.class);
         }else {
@@ -63,7 +63,7 @@ public class MessageApiClient implements ApiClient {
     public void deleteMessage(Conversation conversation, Message message, User user) throws IOException, InterruptedException {
         String messageUrl = baseUrl + "/" + conversation.getId() + "/messages/" + message.getId()+"?userId="+user.getId();
         String token = user.getToken();
-        ApiResponse response = sendDeleteRequest(messageUrl, token);
+        ApiResponse response = sendDeleteRequestWithToken(messageUrl, token);
         if ((response.isSuccess())) {
             System.out.println(response.body);
         } else {

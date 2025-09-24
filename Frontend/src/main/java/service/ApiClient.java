@@ -64,7 +64,7 @@ public interface ApiClient {
 
     }
 
-    default ApiResponse sendPutRequestOnlyUrl(String urlString) throws IOException, InterruptedException {
+    default ApiResponse sendPutRequestWithoutObject(String urlString) throws IOException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder()
                 .PUT(HttpRequest.BodyPublishers.noBody())
                 .uri(URI.create(urlString))
@@ -90,12 +90,25 @@ public interface ApiClient {
     }
 
 
-    //Delete Method needs only right url
-    default ApiResponse sendDeleteRequest(String urlString, String token) throws IOException, InterruptedException {
+    //Delete Method needs only right url and token
+    default ApiResponse sendDeleteRequestWithToken(String urlString, String token) throws IOException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder()
                 .DELETE()
                 .uri(URI.create(urlString))
                 .header("Authorization", "Bearer " + token)
+                .build();
+
+        HttpResponse<String> response = HttpClient.newHttpClient()
+                .send(request, HttpResponse.BodyHandlers.ofString());
+        return new ApiResponse(response.statusCode(), response.body());
+
+    }
+
+    //Delete Method without token
+    default ApiResponse sendDeleteRequestWithoutToken(String urlString) throws IOException, InterruptedException {
+        HttpRequest request = HttpRequest.newBuilder()
+                .DELETE()
+                .uri(URI.create(urlString))
                 .build();
 
         HttpResponse<String> response = HttpClient.newHttpClient()

@@ -13,7 +13,6 @@ import java.util.List;
 public class Message {
 
     private int id;
-    private int conversationId;
     private int senderId;
     private String senderUsername;
     private String text;

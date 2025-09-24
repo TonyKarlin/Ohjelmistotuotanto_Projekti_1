@@ -35,9 +35,7 @@ public class UserApiClientTest {
     @Test
     public void loginUserTest() {
         loginRequest = new LoginRequest("test", "1234");
-
         User user = userApiClient.loginUser(loginRequest);
-
         System.out.println("Username: " + user.getUsername());
         System.out.println("Id: " + user.getId());
         System.out.println("JWT Token: " + user.getToken());
