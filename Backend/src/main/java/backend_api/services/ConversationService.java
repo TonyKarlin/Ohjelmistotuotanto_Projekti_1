@@ -11,7 +11,6 @@ import backend_api.enums.ParticipantRole;
 import backend_api.repository.ConversationRepository;
 import backend_api.utils.customexceptions.*;
 import jakarta.transaction.Transactional;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -27,12 +26,11 @@ public class ConversationService {
         this.userService = userService;
     }
 
-    public ConversationParticipant createParticipant(Conversation conversation, User user, ParticipantRole role) {
+    public void createParticipant(Conversation conversation, User user, ParticipantRole role) {
         ConversationParticipant newParticipant = new ConversationParticipant(conversation, user, role);
         ConversationParticipantId participantId = new ConversationParticipantId(conversation.getId(), user.getId());
         newParticipant.setId(participantId);
         conversation.getParticipants().add(newParticipant);
-        return newParticipant;
     }
 
     public boolean isAlreadyParticipant(Conversation conversation, User user) {
@@ -159,9 +157,6 @@ public class ConversationService {
         }
     }
 
-    private void setDisplayNameForPrivateConversation(ConversationParticipant participant, User contactUser) {
-        participant.setDisplayName(contactUser.getUsername());
-    }
 
     private Conversation createPrivateConversation(User user, User contactUser) {
         // Creates a private conversation between two users with both as admins
@@ -169,11 +164,8 @@ public class ConversationService {
         Conversation conversation = new Conversation(ConversationType.PRIVATE);
         conversationRepository.saveAndFlush(conversation);
 
-        ConversationParticipant uParticipant = createParticipant(conversation, user, ParticipantRole.ADMIN);
-        ConversationParticipant cParticipant = createParticipant(conversation, contactUser, ParticipantRole.ADMIN);
-
-        setDisplayNameForPrivateConversation(uParticipant, contactUser);
-        setDisplayNameForPrivateConversation(cParticipant, user);
+        createParticipant(conversation, user, ParticipantRole.ADMIN);
+        createParticipant(conversation, contactUser, ParticipantRole.ADMIN);
 
         return conversation;
     }
