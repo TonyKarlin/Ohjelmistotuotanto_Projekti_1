@@ -28,6 +28,10 @@ public class UserService {
         return userRepository.findById(id);
     }
 
+    public Optional<User> getUserByUsername(String username) {
+        return userRepository.findByUsername(username);
+    }
+
     public User register(User user) {
         // Checkataan ettei käyttäjänimeä ole otettu jo
         if (userRepository.findByUsername(user.getUsername()).isPresent()) {
@@ -44,8 +48,8 @@ public class UserService {
     }
 
     public User getSender(Long id) {
-        return userRepository.findById(id).orElseThrow(() ->
-                new RuntimeException("User not found with id: " + id));
+        return userRepository.findById(id).orElseThrow(()
+                -> new RuntimeException("User not found with id: " + id));
     }
 
     public List<User> getConversationParticipants(List<Long> participants) {
@@ -58,5 +62,9 @@ public class UserService {
 
     public String encodePassword(String rawPassword) {
         return passwordEncoder.encode(rawPassword);
+    }
+
+    public Optional<User> getUserbyUsername(String username) {
+        return userRepository.findByUsername(username);
     }
 }

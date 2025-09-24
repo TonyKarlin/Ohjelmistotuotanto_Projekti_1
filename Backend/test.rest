@@ -31,3 +31,8 @@ Content-Type: multipart/form-data
 Accept: application/json
 
 file=@C:\Users\karki\Desktop\kuvat\tonninseteli.jpg
+
+
+### Get by username
+
+GET http://localhost:8080/api/users/username/onni123

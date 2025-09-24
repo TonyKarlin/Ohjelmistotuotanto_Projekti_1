@@ -1,32 +1,42 @@
 package backend_api.controller.users;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import backend_api.DTOs.UpdateUserRequest;
-import backend_api.DTOs.UserDTO;
-import backend_api.utils.JwtUtil;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
+import backend_api.DTOs.UpdateUserRequest;
+import backend_api.DTOs.UserDTO;
 import backend_api.DTOs.user.LoginRequest;
 import backend_api.DTOs.user.RegisterRequest;
 import backend_api.entities.User;
 import backend_api.services.UserService;
-import org.springframework.web.multipart.MultipartFile;
+import backend_api.utils.JwtUtil;
 
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
+
     private static JwtUtil jwtUtil;
 
     private final UserService userService;
@@ -51,6 +61,13 @@ public class UserController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    @GetMapping("/username/{username}")
+    public ResponseEntity<UserDTO> getUserByUsername(@PathVariable("username") String username) {
+        Optional<User> user = userService.getUserbyUsername(username);
+        return user.map(value -> ResponseEntity.ok(new UserDTO(value)))
+                .orElse(ResponseEntity.notFound().build());
+    }
+
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody RegisterRequest request) {
         try {
@@ -64,7 +81,6 @@ public class UserController {
         }
     }
 
-    @SuppressWarnings("unused")
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest request) {
         return userService.login(request.getUsername(), request.getPassword())
@@ -132,11 +148,6 @@ public class UserController {
         }
     }
 
-
-
-
-
-
     @PostMapping("/{id}/profile-picture")
     public ResponseEntity<?> uploadProfilePicture(
             @PathVariable Long id,
@@ -154,7 +165,9 @@ public class UserController {
 
             // Directory exists
             File dir = new File(uploadDir);
-            if (!dir.exists()) dir.mkdirs();
+            if (!dir.exists()) {
+                dir.mkdirs();
+            }
 
             // Unique filename
             String filename = id + "_" + System.currentTimeMillis() + "_" + file.getOriginalFilename();
@@ -167,7 +180,7 @@ public class UserController {
 
             return ResponseEntity.ok(new UserDTO(user));
 
-        } catch (Exception e) {
+        } catch (IOException | IllegalStateException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Error uploading profile picture: " + e.getMessage());
         }
@@ -187,7 +200,7 @@ public class UserController {
                     .header("Content-Type", contentType != null ? contentType : "application/octet-stream")
                     .body(resource);
 
-        } catch (Exception e) {
+        } catch (IOException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
