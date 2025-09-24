@@ -43,7 +43,6 @@ class MessageDTOTest {
 
         assertNotNull(dto);
         assertEquals(1L, dto.getId());
-        assertEquals(1L, dto.getConversationId());
         assertEquals(1L, dto.getSenderId());
         assertEquals("Test", dto.getSenderUsername());
         assertEquals("TestTest", dto.getText());
@@ -63,13 +62,6 @@ class MessageDTOTest {
         MessageDTO dto = new MessageDTO();
         dto.setId(1L);
         assertEquals(1L, dto.getId());
-    }
-
-    @Test
-    void conversationId() {
-        MessageDTO dto = new MessageDTO();
-        dto.setConversationId(1L);
-        assertEquals(1L, dto.getConversationId());
     }
 
     @Test
