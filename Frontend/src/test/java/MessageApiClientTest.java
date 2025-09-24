@@ -1,4 +1,3 @@
-
 import model.Conversation;
 import model.Message;
 import model.User;
@@ -15,36 +14,38 @@ import java.util.List;
 public class MessageApiClientTest {
 
     private MessageApiClient messageApiClient;
-    private UserApiClient userApiClient;
-    private LoginRequest loginRequest;
+
     private Conversation conversation;
     private Message message;
     private MessageRequest messageRequest;
+    private User user;
 
     @BeforeEach
-    public void setUp() throws Exception{
+    public void setUp() {
         messageApiClient = new MessageApiClient();
-        userApiClient = new UserApiClient();
-        loginRequest = new LoginRequest();
         conversation = new Conversation();
         message = new Message();
         messageRequest = new MessageRequest();
-
+        user = new User();
     }
 
-    //Test to send messages using methods from the frontend
-    //Can only perform once because only one user with same username can be existing in the DB
+    /**
+     * Tests sending a new message to a conversation.
+     * Requires an existing conversation and a valid sender.
+     * ⚠ Can only be executed once per unique user since usernames must be unique in the DB.
+     */
     @Test
-    public void testSendMessage() throws IOException {
+    public void testSendMessage() {
         conversation.setId(3);
         messageRequest.setText("Test Message from JUnit!");
         messageRequest.setSenderId(1);
         Message message = messageApiClient.sendMessage(messageRequest, conversation);
         System.out.println(message.getText());
-
-
     }
 
+    /**
+     * Tests fetching all messages from a conversation.
+     */
     @Test
     public void testGetConversationMessages() throws IOException, InterruptedException {
         conversation.setId(3);
@@ -54,6 +55,9 @@ public class MessageApiClientTest {
         }
     }
 
+    /**
+     * Tests modifying an existing message in a conversation.
+     */
     @Test
     public void testModifyMessage() throws IOException, InterruptedException {
         conversation.setId(3);
@@ -68,22 +72,19 @@ public class MessageApiClientTest {
             System.out.println(message1.getCreatedAt());
             System.out.println(message1.getSenderUsername());
             System.out.println(message1.getText());
-
-        }else {
+        } else {
             System.out.println("Message is null");
         }
     }
 
-
+    /**
+     * Tests deleting a message from a conversation.
+     */
     @Test
     public void testMessageDelete() throws IOException, InterruptedException {
-        loginRequest = new LoginRequest("joni", "1234");
-        User user = userApiClient.loginUser(loginRequest);
-        Message message = new Message();
-        message.setId(1);
+        user.setId(1);
+        message.setId(3);
         conversation.setId(3);
         messageApiClient.deleteMessage(conversation, message, user);
-
     }
-
 }
