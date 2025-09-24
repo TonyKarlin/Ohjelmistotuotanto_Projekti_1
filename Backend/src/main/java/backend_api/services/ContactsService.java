@@ -1,7 +1,7 @@
 package backend_api.services;
 
-import backend_api.DTOs.AcceptContactDTO;
-import backend_api.DTOs.ContactResponseDTO;
+import backend_api.DTOs.contacts.AcceptContactDTO;
+import backend_api.DTOs.contacts.ContactResponseDTO;
 import backend_api.entities.Contacts;
 import backend_api.entities.Conversation;
 import backend_api.entities.User;

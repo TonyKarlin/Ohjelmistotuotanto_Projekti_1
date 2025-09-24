@@ -17,6 +17,7 @@ public class Conversation {
     private Long id;
 
     @Column
+    // Comes from the request or is null for private chats. Private chats name will be generated on the frontend.
     private String name;
 
     @Column(nullable = false)
@@ -50,9 +51,8 @@ public class Conversation {
         }
     }
 
-    public void addParticipant(User user, ParticipantRole role, String displayName) {
+    public void addParticipant(User user, ParticipantRole role) {
         ConversationParticipant participant = new ConversationParticipant(this, user, role);
-        participant.setDisplayName(displayName);
         if (!participants.contains(participant)) participants.add(participant);
     }
 

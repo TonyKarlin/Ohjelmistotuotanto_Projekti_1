@@ -1,4 +1,4 @@
-package backend_api.DTOs;
+package backend_api.DTOs.contacts;
 
 import backend_api.entities.Conversation;
 

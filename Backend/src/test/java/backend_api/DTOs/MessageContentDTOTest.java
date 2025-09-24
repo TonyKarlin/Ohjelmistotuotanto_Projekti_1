@@ -1,5 +1,6 @@
 package backend_api.DTOs;
 
+import backend_api.DTOs.messages.MessageContentDTO;
 import backend_api.entities.MessageContent;
 import org.junit.jupiter.api.Test;
 

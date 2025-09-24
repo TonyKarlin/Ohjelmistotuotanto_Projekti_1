@@ -18,8 +18,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import backend_api.DTOs.LoginRequest;
-import backend_api.DTOs.RegisterRequest;
+import backend_api.DTOs.user.LoginRequest;
+import backend_api.DTOs.user.RegisterRequest;
 import backend_api.entities.User;
 import backend_api.services.UserService;
 import org.springframework.web.multipart.MultipartFile;

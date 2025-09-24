@@ -3,8 +3,6 @@ package backend_api.services;
 import java.util.List;
 import java.util.Optional;
 
-import backend_api.DTOs.ConversationRequest;
-import backend_api.DTOs.SendMessageRequest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 

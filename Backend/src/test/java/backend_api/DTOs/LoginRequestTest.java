@@ -1,6 +1,6 @@
 package backend_api.DTOs;
 
-import backend_api.entities.User;
+import backend_api.DTOs.user.LoginRequest;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

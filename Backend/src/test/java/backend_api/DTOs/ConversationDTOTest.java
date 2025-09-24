@@ -1,5 +1,6 @@
 package backend_api.DTOs;
 
+import backend_api.DTOs.conversations.ConversationDTO;
 import backend_api.entities.Conversation;
 import backend_api.enums.ConversationType;
 import org.junit.jupiter.api.Test;

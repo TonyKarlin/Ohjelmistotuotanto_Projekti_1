@@ -1,4 +1,4 @@
-package backend_api.DTOs;
+package backend_api.DTOs.messages;
 
 public class EditMessageRequest {
     private String text;
