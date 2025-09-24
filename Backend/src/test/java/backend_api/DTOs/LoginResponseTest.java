@@ -14,7 +14,7 @@ class LoginResponseTest {
 
     @Test
     void getToken() {
-        LoginResponse response = new LoginResponse("Success", "Token", 1L, "Username", "Email");
+        LoginResponse response = new LoginResponse("Success", "Token", 1L, "Username", "Email", null);
         assertEquals("Token", response.getToken());
     }
 }

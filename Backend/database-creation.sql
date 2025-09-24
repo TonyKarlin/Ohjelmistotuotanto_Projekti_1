@@ -12,7 +12,8 @@ CREATE TABLE IF NOT EXISTS users
     username   VARCHAR(255) NOT NULL,
     password   VARCHAR(255) NOT NULL,
     email      VARCHAR(255) NOT NULL,
-    created_at TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP
+    created_at TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    profile_picture VARCHAR(255)
 );
 
 -- Create contacts table

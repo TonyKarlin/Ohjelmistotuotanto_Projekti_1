@@ -31,6 +31,17 @@ public class User {
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
+    @Column(name = "profile_picture")
+    private String profilePicture;
+
+    public String getProfilePicture() {
+        return profilePicture;
+    }
+
+    public void setProfilePicture(String profilePicture) {
+        this.profilePicture = profilePicture;
+    }
+
 //    @ManyToMany(mappedBy = "participants")
 //    @JsonIgnore
 //    private List<Conversation> conversations = new ArrayList<>();

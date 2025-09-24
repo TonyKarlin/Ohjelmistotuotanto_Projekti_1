@@ -4,6 +4,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import backend_api.DTOs.UserDTO;
 import org.junit.jupiter.api.Test;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -20,7 +22,7 @@ class UserControllerTest {
         UserController controller = new UserController(userService);
         List<User> users = Arrays.asList(new User(), new User());
         when(userService.getAllUsers()).thenReturn(users);
-        ResponseEntity<List<User>> response = controller.getAllUsers();
+        ResponseEntity<List<UserDTO>> response = controller.getAllUsers();
         assertEquals(2, response.getBody().size());
         assertEquals(200, response.getStatusCodeValue());
     }

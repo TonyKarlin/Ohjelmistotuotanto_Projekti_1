@@ -53,4 +53,12 @@ public class UserService {
     public List<User> getConversationParticipants(List<Long> participants) {
         return userRepository.findAllById(participants);
     }
+
+    public User save(User user) {
+        return userRepository.save(user);
+    }
+
+    public String encodePassword(String rawPassword) {
+        return passwordEncoder.encode(rawPassword);
+    }
 }
