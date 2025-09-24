@@ -1,7 +1,10 @@
 package controller;
 
-import controller.component.MessageHBoxController;
+import java.io.IOException;
+import java.util.List;
+
 import controller.component.ConversationHBoxController;
+import controller.component.MessageHBoxController;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -18,15 +21,14 @@ import javafx.scene.shape.Circle;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import model.Contact;
 import model.Conversation;
 import model.Message;
 import model.User;
+import service.ContactApiClient;
 import service.ConversationApiClient;
 import service.MessageApiClient;
 import service.UserApiClient;
-
-import java.io.IOException;
-import java.util.List;
 
 public class ChatDashboardController {
 
@@ -34,14 +36,20 @@ public class ChatDashboardController {
     UserApiClient userApiClient;
     ConversationApiClient conversationApiClient = new ConversationApiClient();
     List<Conversation> conversations;
+
     MessageApiClient messageApiClient = new MessageApiClient();
+
+    ContactApiClient contactApiClient = new ContactApiClient();
+    List<Contact> contacts;
 
     public void setController(User loggedInUser, UserApiClient userApiClient) throws IOException, InterruptedException {
         this.loggedInUser = loggedInUser;
         this.userApiClient = userApiClient;
         setUpUsername();
         conversations = getUserConversations();
-        //addConversation();
+        contacts = getUserContacts();
+        // addConversation();
+        addFriendsToFriendsList();
 
     }
 
@@ -90,12 +98,19 @@ public class ChatDashboardController {
     @FXML
     private VBox contactVBox;
 
+    @FXML
+    private VBox friendsList;
+
     public void setUpUsername() {
         loggedInUsername.setText(loggedInUser.getUsername());
     }
 
     public List<Conversation> getUserConversations() throws IOException, InterruptedException {
         return conversationApiClient.getConversationsById(loggedInUser);
+    }
+
+    public List<Contact> getUserContacts() throws IOException, InterruptedException {
+        return contactApiClient.getAllUserContacts(loggedInUser);
     }
 
     @FXML
@@ -118,7 +133,7 @@ public class ChatDashboardController {
             MessageHBoxController controller = fxmlLoader.getController();
             controller.setController(m);
             controller.setId(m.getId());
-            controller.setMessageInformation(m.getText(),m.getCreatedAt(), m.getSenderUsername());
+            controller.setMessageInformation(m.getText(), m.getCreatedAt(), m.getSenderUsername());
 
             VBoxContentPane.getChildren().add(messageHBox);
         }
@@ -126,7 +141,6 @@ public class ChatDashboardController {
         HBox sendMessageHBox = fxmlLoader.load();
         contentBorderPane.setBottom(sendMessageHBox);
     }
-
 
     public void addConversation() throws IOException {
         for (Conversation c : conversations) {
@@ -137,7 +151,12 @@ public class ChatDashboardController {
             controller.setUsername(c.getName());
             contactVBox.getChildren().add(userConversationHBox);
         }
+    }
 
+    public void addFriendsToFriendsList() throws IOException {
+        for (Contact c : contacts) {
+            friendsList.getChildren().add(new Label(c.getContactUsername()));
+        }
     }
 
     @FXML
