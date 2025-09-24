@@ -18,7 +18,7 @@ public class JwtUtil {
         throw new IllegalStateException("Utility class");
     }
 
-    public String generateToken(String username) {
+    public static String generateToken(String username) {
         return Jwts.builder()
                 .setSubject(username)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
