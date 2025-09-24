@@ -35,6 +35,18 @@ public class MessageApiClient implements ApiClient {
         }
     }
 
+    public Message modifyMessage(Conversation conversation, Message message) throws IOException, InterruptedException {
+        String messageUrl = baseUrl + "/" + conversation.getId() + "/messages" + message.getId();
+        ApiResponse response = sendPutRequestOnlyUrl(messageUrl);
+        if (response.isSuccess()) {
+            return objectMapper.readValue(response.body, Message.class);
+        }else {
+            System.out.println("Failed to Modify  message. Status: "
+                    + response.statusCode + ", Response: " + response.body);
+            return null;
+        }
+    }
+
     public List<Message> getConversationMessages(Conversation conversation) throws IOException, InterruptedException {
         String messageUrl = baseUrl + "/" + conversation.getId() + "/messages";
         ApiResponse response = sendGetRequest(messageUrl);
@@ -49,7 +61,7 @@ public class MessageApiClient implements ApiClient {
     }
 
     public void deleteMessage(Conversation conversation, Message message, User user) throws IOException, InterruptedException {
-        String messageUrl = baseUrl + "/" + conversation.getId() + "/messages/" + message.getId();
+        String messageUrl = baseUrl + "/" + conversation.getId() + "/messages/" + message.getId()+"?userId="+user.getId();
         String token = user.getToken();
         ApiResponse response = sendDeleteRequest(messageUrl, token);
         if ((response.isSuccess())) {

@@ -2,6 +2,7 @@ import model.Conversation;
 import model.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import request.ConversationUpdateRequest;
 import request.LoginRequest;
 import service.ConversationApiClient;
 import service.MessageApiClient;
@@ -17,6 +18,7 @@ public class ConversationApiClientTest {
     private LoginRequest loginRequest;
     private Conversation conversation;
     private ConversationApiClient conversationApiClient;
+    ConversationUpdateRequest conversationUpdateRequest;
 
     @BeforeEach
     public void setUp() throws Exception {
@@ -25,6 +27,7 @@ public class ConversationApiClientTest {
         loginRequest = new LoginRequest();
         conversation = new Conversation();
         conversationApiClient = new ConversationApiClient();
+        conversationUpdateRequest = new ConversationUpdateRequest();
 
     }
 
@@ -41,6 +44,15 @@ public class ConversationApiClientTest {
             System.out.println("Conversation Created At: " + c.getCreatedAt());
             System.out.println("");
     }}
+
+    @Test
+    public void testChangeConversationName() throws IOException, InterruptedException {
+        conversation.setId(2);
+        conversationUpdateRequest = new ConversationUpdateRequest("prööt");
+        conversation= conversationApiClient.changeConversationName(conversationUpdateRequest,conversation);
+        System.out.println(conversation.getName());
+
+    }
 
     @Test
     public void testGetAllConversations() throws IOException, InterruptedException {

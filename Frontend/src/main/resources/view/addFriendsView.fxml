@@ -8,11 +8,11 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="175.0" prefWidth="400.0" stylesheets="@../css/loginAndRegisterStyle.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AddFriendsController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="193.0" prefWidth="412.0" styleClass="parent" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AddFriendsController">
    <center>
-      <VBox maxHeight="185.0" maxWidth="450.0" prefHeight="185.0" prefWidth="450.0" styleClass="Vbox" stylesheets="@../css/popup.css" BorderPane.alignment="CENTER">
+      <VBox maxHeight="185.0" maxWidth="450.0" prefHeight="185.0" prefWidth="450.0" BorderPane.alignment="CENTER">
          <children>
-            <Label prefHeight="59.0" prefWidth="158.0" text="Search by username" textFill="#c3c3c3">
+            <Label prefHeight="36.0" prefWidth="158.0" text="Search by username" textFill="#c3c3c3">
                <font>
                   <Font name="System Bold" size="15.0" />
                </font>
@@ -36,4 +36,14 @@
          </children>
       </VBox>
    </center>
+   <top>
+      <Button fx:id="closeButton" contentDisplay="RIGHT" mnemonicParsing="false" onAction="#closeWindow" prefHeight="16.0" prefWidth="37.0" text="X" textAlignment="CENTER" textFill="WHITE" BorderPane.alignment="CENTER">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+         <BorderPane.margin>
+            <Insets left="350.0" top="5.0" />
+         </BorderPane.margin>
+      </Button>
+   </top>
 </BorderPane>
