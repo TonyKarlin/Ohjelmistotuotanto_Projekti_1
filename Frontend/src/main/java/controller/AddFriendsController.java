@@ -4,6 +4,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 import model.User;
 import service.UserApiClient;
 
@@ -12,6 +13,11 @@ public class AddFriendsController {
     User loggedInuser;
     UserApiClient userApiClient;
 
+    public void setController(User loggedInuser, UserApiClient userApiClient) {
+        this.loggedInuser = loggedInuser;
+        this.userApiClient = userApiClient;
+    }
+
     @FXML
     private Button friendRequestButton;
 
@@ -19,13 +25,18 @@ public class AddFriendsController {
     private TextField searchFriendTextField;
 
     @FXML
+    private Button closeButton;
+
+    @FXML
     void sendFriendRequest(ActionEvent event) {
 
     }
 
-    public void setController(User loggedInuser, UserApiClient userApiClient) {
-        this.loggedInuser = loggedInuser;
-        this.userApiClient = userApiClient;
+    @FXML
+    public void closeWindow() {
+        Stage stage = (Stage) closeButton.getScene().getWindow();
+        stage.close();
     }
+
 
 }

@@ -1,16 +1,28 @@
 .parent {
-    -fx-background-color: rgba(0, 0, 0, 0.95);
+    -fx-background-color: rgb(14, 14, 14);
     -fx-background-size: cover;
     -fx-background-position: center;
 
 }
 
 .VBox {
-    -fx-background-color: rgba(37, 37, 37, 0.78);
+    -fx-background-color: rgba(37, 37, 37);
     -fx-background-radius: 30px;
     -fx-border-color: rgba(0, 0, 0, 0.8);
     -fx-border-radius: 30px;
     -fx-border-width: 2px;
+}
+
+.userProfile {
+    -fx-background-color: rgba(37, 37, 37);
+}
+
+.statusCircle{}
+.statusCircle:hover {
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.5), 10, 0, 4, 4);
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
 }
 
 
@@ -23,12 +35,9 @@
 
 }
 
-.imageView {
-    -fx-background-radius: 30px;
-}
 
 .text-field {
-    -fx-background-color: rgba(19, 19, 19, 0.95);
+    -fx-background-color: rgba(19, 19, 19);
     -fx-background-radius: 10px;
     -fx-border-color: rgba(0, 0, 0, 0.8);
     -fx-border-radius: 10px;
@@ -37,7 +46,7 @@
 
 .PasswordField {
     -fx-background-radius: 10px;
-    -fx-border-color: rgba(0, 0, 0, 0.8);
+    -fx-border-color: rgba(0, 0, 0);
     -fx-border-radius: 10px;
 }
 
@@ -55,10 +64,8 @@
     -fx-scale-y: 1.05;
 }
 
-.check-box {
 
-}
-
+.check-box {}
 .check-box:hover {
     -fx-cursor: hand;
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.5), 10, 0, 4, 4);
@@ -68,10 +75,7 @@
 
 }
 
-.clickable-label {
-
-}
-
+.clickable-label {}
 .clickable-label:hover {
     -fx-cursor: hand;
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.5), 10, 0, 4, 4);
@@ -83,15 +87,11 @@
     -fx-background-color: rgb(32, 32, 32);
 }
 
-.ImageView {
-
-}
-
+.ImageView {}
 .ImageView:hover {
     -fx-cursor: hand;
     -fx-scale-x: 1.05;
     -fx-scale-y: 1.05;
-
 }
 
 .messageHBox {
@@ -106,7 +106,7 @@
 }
 
 .VBoxAddFriends {
-    -fx-background-color: rgba(0, 0, 0, 0.90);
+    -fx-background-color: rgba(0, 0, 0);
     -fx-border-radius: 2px;
     -fx-border-width: 2px;
     -fx-border-color: black;

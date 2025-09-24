@@ -9,6 +9,7 @@ import model.Message;
 
 @Data
 public class MessageHBoxController {
+    int id;
 
     Message message;
 
@@ -16,10 +17,6 @@ public class MessageHBoxController {
         this.message = message;
     }
 
-    int id;
-    Image image;
-    Label text;
-    Label createdAt;
 
     @FXML
     private Label messageLabel;
@@ -37,15 +34,9 @@ public class MessageHBoxController {
 
     }
 
-    public void setText(String text) {
+    public void setMessageInformation(String text,String createdAt, String senderUsername) {
         messageLabel.setText(text);
-    }
-
-    public void setTime(String createdAt) {
         messageTimeLabel.setText(createdAt);
-    }
-
-    public void setSenderUsername(String senderUsername) {
         senderUsernameLabel.setText(senderUsername);
     }
 

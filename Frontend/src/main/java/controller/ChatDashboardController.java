@@ -10,10 +10,14 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import model.Conversation;
 import model.Message;
 import model.User;
@@ -37,7 +41,7 @@ public class ChatDashboardController {
         this.userApiClient = userApiClient;
         setUpUsername();
         conversations = getUserConversations();
-        addConversation();
+        //addConversation();
 
     }
 
@@ -78,7 +82,10 @@ public class ChatDashboardController {
     private ImageView userProfilePicture;
 
     @FXML
-    private VBox messageVBox;
+    private BorderPane contentBorderPane;
+
+    @FXML
+    private VBox VBoxContentPane;
 
     @FXML
     private VBox contactVBox;
@@ -91,21 +98,35 @@ public class ChatDashboardController {
         return conversationApiClient.getConversationsById(loggedInUser);
     }
 
+    @FXML
+    public void openUserProfile(MouseEvent event) throws IOException {
+        VBoxContentPane.getChildren().clear();
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/userProfileView.fxml"));
+        VBox userProfile = fxmlLoader.load();
+        UserProfileController controller = fxmlLoader.getController();
+        controller.setController(loggedInUser);
+        VBoxContentPane.getChildren().add(userProfile);
+
+    }
+
     public void showConversationMessages(Conversation conversation) throws IOException, InterruptedException {
-        messageVBox.getChildren().clear();
-        List<Message>  messages = messageApiClient.getConversationMessages(conversation);
+        VBoxContentPane.getChildren().clear();
+        List<Message> messages = messageApiClient.getConversationMessages(conversation);
         for (Message m : messages) {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/component/messageHBox.fxml"));
             HBox messageHBox = fxmlLoader.load();
             MessageHBoxController controller = fxmlLoader.getController();
             controller.setController(m);
             controller.setId(m.getId());
-            controller.setText(m.getText());
-            controller.setTime(m.getCreatedAt());
-            messageVBox.getChildren().add(messageHBox);
+            controller.setMessageInformation(m.getText(),m.getCreatedAt(), m.getSenderUsername());
 
+            VBoxContentPane.getChildren().add(messageHBox);
         }
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/component/sendMessageHBox.fxml"));
+        HBox sendMessageHBox = fxmlLoader.load();
+        contentBorderPane.setBottom(sendMessageHBox);
     }
+
 
     public void addConversation() throws IOException {
         for (Conversation c : conversations) {
@@ -126,6 +147,8 @@ public class ChatDashboardController {
         AddFriendsController controller = fxmlLoader.getController();
         controller.setController(loggedInUser, this.userApiClient);
         Stage stage = new Stage();
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.initStyle(StageStyle.UNDECORATED);
         stage.setScene(new Scene(root));
         stage.show();
     }
