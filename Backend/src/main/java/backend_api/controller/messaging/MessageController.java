@@ -1,4 +1,4 @@
-package backend_api.controller;
+package backend_api.controller.messaging;
 
 
 import backend_api.DTOs.messages.EditMessageRequest;

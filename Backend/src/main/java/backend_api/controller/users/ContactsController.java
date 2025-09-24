@@ -1,4 +1,4 @@
-package backend_api.controller;
+package backend_api.controller.users;
 
 import backend_api.DTOs.contacts.AcceptContactDTO;
 import backend_api.DTOs.contacts.ContactResponseDTO;

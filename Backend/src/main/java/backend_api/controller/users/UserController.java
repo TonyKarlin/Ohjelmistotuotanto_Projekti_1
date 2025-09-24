@@ -1,4 +1,4 @@
-package backend_api.controller;
+package backend_api.controller.users;
 
 import java.io.File;
 import java.nio.file.Path;

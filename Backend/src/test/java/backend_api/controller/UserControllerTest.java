@@ -6,6 +6,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import backend_api.DTOs.UserDTO;
+import backend_api.controller.users.UserController;
 import org.junit.jupiter.api.Test;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
