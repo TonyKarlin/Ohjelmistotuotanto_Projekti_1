@@ -2,6 +2,7 @@ package backend_api.services;
 
 import backend_api.DTOs.contacts.AcceptContactDTO;
 import backend_api.DTOs.contacts.ContactResponseDTO;
+import backend_api.DTOs.conversations.ConversationDTO;
 import backend_api.entities.Contacts;
 import backend_api.entities.Conversation;
 import backend_api.entities.User;
@@ -76,8 +77,9 @@ public class ContactsService {
         contactsRepository.save(contact);
 
         Conversation conversation = conversationService.createPrivateConversationForNewContacts(user, contactUser);
+        ConversationDTO dto = ConversationDTO.fromConversationEntity(conversation);
 
-        return new AcceptContactDTO(convertToDTO(contact), conversation);
+        return new AcceptContactDTO(convertToDTO(contact), dto);
     }
 
     public List<Contacts> getContacts(Long userId) {
