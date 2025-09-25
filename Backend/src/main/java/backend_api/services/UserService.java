@@ -32,6 +32,11 @@ public class UserService {
         return userRepository.findByUsername(username);
     }
 
+    public User getUserOrThrow(Long id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found with id: " + id));
+    }
+
     public User register(User user) {
         // Checkataan ettei käyttäjänimeä ole otettu jo
         if (userRepository.findByUsername(user.getUsername()).isPresent()) {

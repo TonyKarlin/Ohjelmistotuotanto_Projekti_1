@@ -9,5 +9,8 @@ import java.util.Optional;
 
 public interface ContactsRepository extends JpaRepository<Contacts, Long> {
     Optional<Contacts> findByUserAndContact(User user, User contact);
+
     List<Contacts> findAllByUser(User user);
+
+    List<Contacts> findAllByContact(User contactUser);
 }

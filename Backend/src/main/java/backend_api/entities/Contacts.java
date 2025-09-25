@@ -57,7 +57,7 @@ public class Contacts {
         this.user = user;
     }
 
-    public User getContact() {
+    public User getContactId() {
         return contact;
     }
 

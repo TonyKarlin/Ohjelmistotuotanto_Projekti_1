@@ -3,6 +3,7 @@ package backend_api.controller.users;
 import backend_api.DTOs.contacts.AcceptContactDTO;
 import backend_api.DTOs.contacts.ContactResponseDTO;
 import backend_api.services.ContactsService;
+import backend_api.services.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,9 +14,11 @@ import java.util.List;
 public class ContactsController {
 
     private final ContactsService contactsService;
+    private final UserService userService;
 
-    public ContactsController(ContactsService contactsService) {
+    public ContactsController(ContactsService contactsService, UserService userService) {
         this.contactsService = contactsService;
+        this.userService = userService;
     }
 
     @PostMapping("/add")
@@ -30,16 +33,18 @@ public class ContactsController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/{userId}")
+    @GetMapping("/user/{userId}")
     public ResponseEntity<List<ContactResponseDTO>> getContacts(@PathVariable Long userId) {
         List<ContactResponseDTO> contacts = contactsService.getContacts(userId)
                 .stream()
-                .map(contactsService::convertToDTO)
+                .map(c -> contactsService.convertToDTO(c,
+                        userService.getUserOrThrow(userId)))
                 .toList();
         return ResponseEntity.ok(contacts);
     }
 
-    @GetMapping("/{userId}/contact/{contactUserId}")
+
+    @GetMapping("/user/{userId}/contact/{contactUserId}")
     public ResponseEntity<ContactResponseDTO> getContactById(@PathVariable Long userId, @PathVariable Long contactUserId) {
         ContactResponseDTO response = contactsService.getContactByUserId(userId, contactUserId);
         return ResponseEntity.ok(response);

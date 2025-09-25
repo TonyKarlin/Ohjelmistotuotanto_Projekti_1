@@ -15,6 +15,7 @@ import backend_api.utils.customexceptions.UserNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -30,11 +31,15 @@ public class ContactsService {
         this.conversationService = conversationService;
     }
 
-    public ContactResponseDTO convertToDTO(Contacts contact) {
+    public ContactResponseDTO convertToDTO(Contacts contact, User currentUser) {
+        User contactUser = contact.getUserId().equals(currentUser)
+                ? contact.getContactId()
+                : contact.getUserId();
+
         return new ContactResponseDTO(
                 contact.getId(),
-                contact.getContact().getId(),      // Contact user ID
-                contact.getContact().getUsername(),// Contact username
+                contactUser.getId(),      // Contact user ID
+                contactUser.getUsername(),// Contact username
                 contact.getStatus()
         );
     }
@@ -59,7 +64,7 @@ public class ContactsService {
         });
 
         Contacts contact = createContactBetweenUsers(user, contactUser);
-        return convertToDTO(contact);
+        return convertToDTO(contact, user);
     }
 
     public AcceptContactDTO acceptContact(Long userId, Long contactUserId) {
@@ -69,9 +74,9 @@ public class ContactsService {
         User contactUser = userRepository.findById(contactUserId).orElseThrow(() ->
                 new UserNotFoundException("Contact user not found with id: " + contactUserId));
 
-        Contacts contact = contactsRepository.findByUserAndContact(user, contactUser).orElseThrow(() ->
-                new ContactNotFoundException("Contact request not found between user " + userId +
-                        " and contact " + contactUserId));
+        Contacts contact = contactsRepository.findByUserAndContact(contactUser, user)
+                .or(() -> contactsRepository.findByUserAndContact(user, contactUser))
+                .orElseThrow(() -> new ContactNotFoundException("Contact request not found"));
 
         contact.setStatus(ContactStatus.ACCEPTED);
         contactsRepository.save(contact);
@@ -79,13 +84,21 @@ public class ContactsService {
         Conversation conversation = conversationService.createPrivateConversationForNewContacts(user, contactUser);
         ConversationDTO dto = ConversationDTO.fromConversationEntity(conversation);
 
-        return new AcceptContactDTO(convertToDTO(contact), dto);
+        return new AcceptContactDTO(convertToDTO(contact, user), dto);
     }
 
     public List<Contacts> getContacts(Long userId) {
         User user = userRepository.findById(userId).orElseThrow(() ->
                 new UserNotFoundException("User not found with id: " + userId));
-        return contactsRepository.findAllByUser(user);
+
+        List<Contacts> sent = contactsRepository.findAllByUser(user);
+        List<Contacts> received = contactsRepository.findAllByContact(user);
+
+        List<Contacts> allContacts = new ArrayList<>();
+        allContacts.addAll(sent);
+        allContacts.addAll(received);
+
+        return allContacts;
     }
 
     public ContactResponseDTO getContactByUserId(Long userId, Long contactId) {
@@ -93,13 +106,14 @@ public class ContactsService {
                 new UserNotFoundException("User not found with id: " + userId));
 
         User contactUser = userRepository.findById(contactId).orElseThrow(() ->
-                new UserNotFoundException("Contact user not found with id: " + contactId));
+                new UserNotFoundException("User not found with id: " + contactId));
 
+        Contacts contact = contactsRepository.findByUserAndContact(user, contactUser)
+                .or(() -> contactsRepository.findByUserAndContact(contactUser, user))
+                .orElseThrow(() -> new ContactNotFoundException(
+                        "Contact not found between user " + userId + " and contact " + contactId));
 
-        Contacts contact = contactsRepository.findByUserAndContact(user, contactUser).orElseThrow(() ->
-                new ContactNotFoundException("Contact not found between user " + userId +
-                        " and contact " + contactId));
-
-        return convertToDTO(contact);
+        return convertToDTO(contact, user);
     }
+
 }
