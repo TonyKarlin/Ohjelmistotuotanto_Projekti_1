@@ -35,7 +35,7 @@ public class ContactsController {
     }
 
     @DeleteMapping
-    public ResponseEntity<Map<String, String>> declineContact(@RequestParam Long userId, @RequestParam Long contactUserId) {
+    public ResponseEntity<Map<String, String>> deleteContact(@RequestParam Long userId, @RequestParam Long contactUserId) {
         String response = contactsService.declineContact(userId, contactUserId);
         return ResponseEntity.ok(Map.of("message", response));
     }
