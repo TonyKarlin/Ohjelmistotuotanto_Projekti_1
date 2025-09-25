@@ -13,20 +13,13 @@ import model.User;
 import service.ConversationApiClient;
 import service.MessageApiClient;
 import service.UserApiClient;
-
 import java.io.IOException;
-
-
 
 public class LoginController {
 
     private UserApiClient userApiClient;
     private ConversationApiClient conversationApiClient;
     private MessageApiClient messageApiClient;
-
-    public LoginController()  {
-
-    }
 
     public void setController(UserApiClient userApiClient) {
         this.userApiClient = userApiClient;

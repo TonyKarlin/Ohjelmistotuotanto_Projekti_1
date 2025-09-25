@@ -6,8 +6,10 @@ import java.util.List;
 import controller.component.ConversationHBoxController;
 import controller.component.MessageHBoxController;
 import controller.component.SendMessageHBoxController;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -132,6 +134,22 @@ public class ChatDashboardController {
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.initStyle(StageStyle.UNDECORATED);
         stage.setScene(new Scene(root));
+        stage.show();
+    }
+
+    @FXML
+    public void logoutUser(ActionEvent event) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/loginView.fxml"));
+        Parent root = fxmlLoader.load();
+        Stage stage = new Stage();
+        stage.setScene(new Scene(root));
+        loggedInUser = null;
+        conversations = null;
+        contacts = null;
+        Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        currentStage.close();
+        LoginController controller = fxmlLoader.getController();
+        controller.setController(this.userApiClient);
         stage.show();
     }
 

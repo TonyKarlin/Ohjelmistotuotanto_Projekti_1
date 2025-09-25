@@ -19,7 +19,7 @@
             <Insets />
          </BorderPane.margin>
          <right>
-            <Button alignment="CENTER" contentDisplay="RIGHT" mnemonicParsing="false" prefHeight="43.0" prefWidth="100.0" text="Log out" textAlignment="CENTER" textFill="WHITE" BorderPane.alignment="CENTER_RIGHT">
+            <Button fx:id="logoutButton" alignment="CENTER" contentDisplay="RIGHT" mnemonicParsing="false" onAction="#logoutUser" prefHeight="43.0" prefWidth="100.0" text="Log out" textAlignment="CENTER" textFill="WHITE" BorderPane.alignment="CENTER_RIGHT">
                <font>
                   <Font name="System Bold" size="17.0" />
                </font>
