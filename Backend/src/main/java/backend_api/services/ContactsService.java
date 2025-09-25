@@ -101,7 +101,7 @@ public class ContactsService {
         return new AcceptContactDTO(convertToDTO(contact, user), dto);
     }
 
-    public String declineContact(Long userId, Long contactId) {
+    public String deleteContact(Long userId, Long contactId) {
         User user = userRepository.findById(userId).orElseThrow(() ->
                 new UserNotFoundException("User not found with id: " + userId));
 
