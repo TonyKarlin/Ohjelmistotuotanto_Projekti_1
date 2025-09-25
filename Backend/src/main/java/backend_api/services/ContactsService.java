@@ -10,7 +10,7 @@ import backend_api.enums.ContactStatus;
 import backend_api.repository.ContactsRepository;
 import backend_api.repository.UserRepository;
 import backend_api.utils.customexceptions.ContactAlreadyExistsException;
-import backend_api.utils.customexceptions.ContactNotFoundException;
+import backend_api.utils.customexceptions.InvalidStatusException;
 import backend_api.utils.customexceptions.UserNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
@@ -44,6 +44,22 @@ public class ContactsService {
         );
     }
 
+    public List<Contacts> fetchAllContacts(User user) {
+        List<Contacts> sent = contactsRepository.findAllByUser(user);
+        List<Contacts> received = contactsRepository.findAllByContact(user);
+
+        List<Contacts> allContacts = new ArrayList<>();
+        allContacts.addAll(sent);
+        allContacts.addAll(received);
+        return allContacts;
+    }
+
+    private Contacts searchForExistingContact(User user, User contactUser) {
+        return contactsRepository.findByUserAndContact(contactUser, user)
+                .or(() -> contactsRepository.findByUserAndContact(user, contactUser))
+                .orElse(null);
+    }
+
     private Contacts createContactBetweenUsers(User user, User contactUser) {
         Contacts newContact = new Contacts();
         newContact.setUserId(user);
@@ -74,9 +90,7 @@ public class ContactsService {
         User contactUser = userRepository.findById(contactUserId).orElseThrow(() ->
                 new UserNotFoundException("Contact user not found with id: " + contactUserId));
 
-        Contacts contact = contactsRepository.findByUserAndContact(contactUser, user)
-                .or(() -> contactsRepository.findByUserAndContact(user, contactUser))
-                .orElseThrow(() -> new ContactNotFoundException("Contact request not found"));
+        Contacts contact = searchForExistingContact(user, contactUser);
 
         contact.setStatus(ContactStatus.ACCEPTED);
         contactsRepository.save(contact);
@@ -87,18 +101,33 @@ public class ContactsService {
         return new AcceptContactDTO(convertToDTO(contact, user), dto);
     }
 
+    public String declineContact(Long userId, Long contactId) {
+        User user = userRepository.findById(userId).orElseThrow(() ->
+                new UserNotFoundException("User not found with id: " + userId));
+
+        User contactUser = userRepository.findById(contactId).orElseThrow(() ->
+                new UserNotFoundException("Contact user not found with id: " + contactId));
+
+        Contacts contact = searchForExistingContact(user, contactUser);
+
+        String message;
+        if (contact.getStatus() == ContactStatus.PENDING) {
+            message = "Contact request declined";
+        } else if (contact.getStatus() == ContactStatus.ACCEPTED) {
+            message = "Contact removed";
+        } else {
+            throw new InvalidStatusException("Invalid contact status for declining/removing contact");
+        }
+
+        contactsRepository.delete(contact);
+        return message;
+    }
+
     public List<Contacts> getContacts(Long userId) {
         User user = userRepository.findById(userId).orElseThrow(() ->
                 new UserNotFoundException("User not found with id: " + userId));
 
-        List<Contacts> sent = contactsRepository.findAllByUser(user);
-        List<Contacts> received = contactsRepository.findAllByContact(user);
-
-        List<Contacts> allContacts = new ArrayList<>();
-        allContacts.addAll(sent);
-        allContacts.addAll(received);
-
-        return allContacts;
+        return fetchAllContacts(user);
     }
 
     public ContactResponseDTO getContactByUserId(Long userId, Long contactId) {
@@ -108,10 +137,7 @@ public class ContactsService {
         User contactUser = userRepository.findById(contactId).orElseThrow(() ->
                 new UserNotFoundException("User not found with id: " + contactId));
 
-        Contacts contact = contactsRepository.findByUserAndContact(user, contactUser)
-                .or(() -> contactsRepository.findByUserAndContact(contactUser, user))
-                .orElseThrow(() -> new ContactNotFoundException(
-                        "Contact not found between user " + userId + " and contact " + contactId));
+        Contacts contact = searchForExistingContact(user, contactUser);
 
         return convertToDTO(contact, user);
     }

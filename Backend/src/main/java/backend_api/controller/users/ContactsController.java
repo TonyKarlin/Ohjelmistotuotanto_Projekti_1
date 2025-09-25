@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/contacts")
@@ -31,6 +32,12 @@ public class ContactsController {
     public ResponseEntity<AcceptContactDTO> acceptContact(@RequestParam Long userId, @RequestParam Long contactUserId) {
         AcceptContactDTO response = contactsService.acceptContact(userId, contactUserId);
         return ResponseEntity.ok(response);
+    }
+
+    @DeleteMapping
+    public ResponseEntity<Map<String, String>> declineContact(@RequestParam Long userId, @RequestParam Long contactUserId) {
+        String response = contactsService.declineContact(userId, contactUserId);
+        return ResponseEntity.ok(Map.of("message", response));
     }
 
     @GetMapping("/user/{userId}")

@@ -66,5 +66,10 @@ public class ApplicationExceptionHandler {
     public ResponseEntity<String> handleBadMessageRequestException(BadMessageRequestException e) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Bad Request: " + e.getMessage());
     }
+
+    @ExceptionHandler
+    public ResponseEntity<String> handleInvalidStatus(InvalidStatusException e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Bad Request: " + e.getMessage());
+    }
 }
 
