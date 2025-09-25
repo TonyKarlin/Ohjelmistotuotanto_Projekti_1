@@ -49,7 +49,7 @@
             <Insets bottom="10.0" right="10.0" />
          </BorderPane.margin>
          <center>
-            <VBox fx:id="VBoxContentPane" alignment="CENTER" prefHeight="692.0" prefWidth="988.0" spacing="10.0" BorderPane.alignment="CENTER" />
+            <VBox fx:id="VBoxContentPane" alignment="TOP_CENTER" prefHeight="692.0" prefWidth="988.0" BorderPane.alignment="CENTER" />
          </center>
       </BorderPane>
    </center>

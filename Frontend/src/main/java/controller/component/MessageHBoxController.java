@@ -10,8 +10,11 @@ import model.Message;
 @Data
 public class MessageHBoxController {
     int id;
+    int senderId;
 
     Message message;
+
+    public MessageHBoxController() {}
 
     public void setController(Message message) {
         this.message = message;
@@ -30,9 +33,6 @@ public class MessageHBoxController {
     @FXML
     private ImageView userProfilePicture;
 
-    public MessageHBoxController() {
-
-    }
 
     public void setMessageInformation(String text,String createdAt, String senderUsername) {
         messageLabel.setText(text);

@@ -15,9 +15,10 @@ public class MessageRequest {
 
 
     //Construct to send message to conversation
-    public MessageRequest(String text, int senderId) {
+    public MessageRequest(String text, int senderId, int conversationId) {
         this.text = text;
         this.senderId = senderId;
+        this.conversationId = conversationId;
 
     }
     //Construct to modify message in a conversation

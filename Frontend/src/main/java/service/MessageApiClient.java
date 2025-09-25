@@ -18,9 +18,9 @@ public class MessageApiClient implements ApiClient {
     public MessageApiClient() {
     }
 
-    public Message sendMessage(MessageRequest request, Conversation conversation) {
+    public Message sendMessage(MessageRequest request) {
         try {
-            String messageUrl = baseUrl + "/" + conversation.getId() + "/messages";
+            String messageUrl = baseUrl + "/" + request.getConversationId() + "/messages";
             ApiResponse response = sendPostRequest(messageUrl, request);
             if ((response.isSuccess())) {
                 return objectMapper.readValue(response.body, Message.class);

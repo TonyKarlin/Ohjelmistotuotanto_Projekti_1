@@ -21,7 +21,7 @@
       </ImageView>
       <VBox alignment="CENTER_LEFT" prefHeight="55.0" prefWidth="811.0">
          <children>
-            <Label fx:id="senderUsername" prefHeight="30.0" prefWidth="253.0" text="Username" textFill="WHITE">
+            <Label fx:id="senderUsernameLabel" prefHeight="30.0" prefWidth="253.0" text="Username" textFill="WHITE">
                <font>
                   <Font size="16.0" />
                </font>

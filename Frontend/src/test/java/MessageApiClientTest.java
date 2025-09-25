@@ -36,10 +36,10 @@ public class MessageApiClientTest {
      */
     @Test
     public void testSendMessage() {
-        conversation.setId(3);
+        messageRequest.setConversationId(3);
         messageRequest.setText("Test Message from JUnit!");
         messageRequest.setSenderId(1);
-        Message message = messageApiClient.sendMessage(messageRequest, conversation);
+        Message message = messageApiClient.sendMessage(messageRequest);
         System.out.println(message.getText());
     }
 
@@ -48,10 +48,14 @@ public class MessageApiClientTest {
      */
     @Test
     public void testGetConversationMessages() throws IOException, InterruptedException {
-        conversation.setId(3);
+        conversation.setId(12);
         List<Message> messages = messageApiClient.getConversationMessages(conversation);
         for (Message m : messages) {
-            System.out.println(m.getText());
+            System.out.println(m.getId());
+            System.out.println(m.getSenderId());
+            System.out.println(m.getSenderUsername());
+            System.out.println(m.getCreatedAt());
+            System.out.println(m.getMessageAttachments());
         }
     }
 
