@@ -1,16 +1,7 @@
 package controller;
 
-import javafx.scene.control.*;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.StackPane;
-import javafx.scene.shape.Circle;
-import javafx.stage.FileChooser;
-import model.User;
-import service.UserApiClient;
+import java.io.File;
+import java.io.IOException;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -18,11 +9,20 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.StackPane;
+import javafx.scene.shape.Circle;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-
-import java.io.File;
-import java.io.IOException;
+import model.User;
+import service.UserApiClient;
 
 public class RegisterController {
 
@@ -61,7 +61,7 @@ public class RegisterController {
     @FXML
     private TextField usernameTextField;
 
-    public RegisterController()  {
+    public RegisterController() {
     }
 
     //Can't use css to make images round this method will do
@@ -111,7 +111,6 @@ public class RegisterController {
         return true;
     }
 
-
     //right now change the image in register view but don't send it to the server
     @FXML
     void addProfilePicture(ActionEvent event) {
@@ -119,8 +118,7 @@ public class RegisterController {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Select Profile Picture");
         fileChooser.getExtensionFilters().addAll(
-        new FileChooser.ExtensionFilter
-                        ("image Files",
+                new FileChooser.ExtensionFilter("image Files",
                         "*.png", "*.jpg", ".jpeg")
         );
         // when image is selected from file explorer change it in the register view and make it also a round
@@ -151,10 +149,23 @@ public class RegisterController {
             //creates user object from the user inputs
             User user = new User(username, email, password);
             //Sends the user object to the server and creates another user from the backend response
-            User checkIfUserExist= userApiClient.registerUser(user);
+            User checkIfUserExist = userApiClient.registerUser(user);
             //If response is not user information but response message, user is null so send this alert message
-            if (checkIfUserExist==null) {
+            if (checkIfUserExist == null) {
                 showAlert("Existing User", "User already exists");
+            } else {
+                // Registration successful, move to login view
+                try {
+                    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/loginView.fxml"));
+                    Parent root = fxmlLoader.load();
+                    LoginController controller = fxmlLoader.getController();
+                    controller.setController(this.userApiClient);
+                    Stage stage = (Stage) registerButton.getScene().getWindow();
+                    stage.setScene(new Scene(root));
+                    stage.show();
+                } catch (IOException e) {
+                    showAlert("Error", "Could not load login view.");
+                }
             }
         } catch (Exception e) {
             throw new RuntimeException(e);
