@@ -142,4 +142,39 @@ public class ContactsService {
         return convertToDTO(contact, user);
     }
 
+    // Only for the receiver of the contact request
+    public List<ContactResponseDTO> getPendingContacts(Long userId) {
+        User user = userRepository.findById(userId).orElseThrow(() ->
+                new UserNotFoundException("User not found with id: " + userId));
+
+        List<Contacts> allContacts = fetchAllContacts(user);
+
+        List<Contacts> pendingContactRequests = allContacts
+                .stream()
+                .filter(contact ->
+                        contact.getStatus() == ContactStatus.PENDING && contact.getContactId().equals(user))
+                .toList();
+
+        return pendingContactRequests
+                .stream()
+                .map(c -> convertToDTO(c, user))
+                .toList();
+    }
+
+
+    // Only for the sender of the contact request
+    public List<ContactResponseDTO> getSentRequests(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException("User not found with id: " + userId));
+
+        List<Contacts> sentRequests = contactsRepository.findAllByUser(user).stream()
+                .filter(contact -> contact.getStatus() == ContactStatus.PENDING)
+                .toList();
+
+        return sentRequests.stream()
+                .map(contact -> convertToDTO(contact, user))
+                .toList();
+    }
+
+
 }

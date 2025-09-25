@@ -1,10 +1,17 @@
 ### GET -- kaikki kontaktit
-GET http://localhost:8080/api/contacts/user/8
+GET http://localhost:8080/api/contacts/user/7
 Accept: application/json
-
 
 ### GET -- yksittäinen kontakti
 GET http://localhost:8080/api/contacts/user/4/contact/7
+Accept: application/json
+
+### GET -- kaikki tulleet ja odottavat / pending kontaktipyynnöt
+GET http://localhost:8080/api/contacts/user/9/pending
+Accept: application/json
+
+### GET -- kaikki lähetetyt odottavat / pending kontaktipyynnöt
+GET http://localhost:8080/api/contacts/user/9/sent
 Accept: application/json
 
 ### POST -- uusi kontakti
