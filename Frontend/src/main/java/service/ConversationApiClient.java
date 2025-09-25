@@ -5,13 +5,14 @@ import model.Contact;
 import model.Conversation;
 import model.User;
 import request.ConversationRequest;
+import utils.ApiUrl;
 
 import java.io.IOException;
 import java.util.List;
 
 public class ConversationApiClient implements ApiClient {
 
-    String baseUrl = "http://localhost:8080/api/conversations";
+    String baseUrl = ApiUrl.getApiUrl() + "/conversations";
 
     public ConversationApiClient() {
 
@@ -48,7 +49,7 @@ public class ConversationApiClient implements ApiClient {
         if (response.isSuccess()) {
             System.out.println("Response: " + response.body);
 
-        }else {
+        } else {
             System.out.println("Failed to add user to conversation. Status: " + response.statusCode
                     + ", Response: " + response.body);
         }
@@ -60,10 +61,11 @@ public class ConversationApiClient implements ApiClient {
         if (response.isSuccess()) {
             System.out.println("Response: " + response.body);
 
-        }else {
-        System.out.println("Failed to leave conversation. Status: " + response.statusCode
-                + ", Response: " + response.body);
-    }}
+        } else {
+            System.out.println("Failed to leave conversation. Status: " + response.statusCode
+                    + ", Response: " + response.body);
+        }
+    }
 
     public void deleteConversation(Conversation conversation, User user) throws IOException, InterruptedException {
         String conversationUrl = baseUrl + "/" + conversation.getId() + "?requesterId=" + user.getId();
@@ -71,7 +73,7 @@ public class ConversationApiClient implements ApiClient {
         if (response.isSuccess()) {
             System.out.println("Response: " + response.body);
 
-        }else {
+        } else {
             System.out.println("Failed to delete conversation. Status: " + response.statusCode
                     + ", Response: " + response.body);
         }
@@ -83,7 +85,7 @@ public class ConversationApiClient implements ApiClient {
         if (response.isSuccess()) {
             System.out.println("Response: " + response.body);
 
-        }else {
+        } else {
             System.out.println("Failed to remove User from conversation. Status: " + response.statusCode
                     + ", Response: " + response.body);
         }

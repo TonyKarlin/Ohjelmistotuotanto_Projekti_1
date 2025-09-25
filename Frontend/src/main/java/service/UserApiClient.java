@@ -1,18 +1,19 @@
 package service;
 
-
 import java.io.IOException;
 import java.net.MalformedURLException;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import request.LoginRequest;
+
 import model.User;
+import request.LoginRequest;
+import utils.ApiUrl;
 
 public class UserApiClient implements ApiClient {
 
-    String registerUrl = ("http://localhost:8080/api/users/register");
-    String loginUrl = ("http://localhost:8080/api/users/login");
-    String usersUrl = ("http://localhost:8080/api/users");
+    String registerUrl = ApiUrl.getApiUrl() + "/users/register";
+    String loginUrl = ApiUrl.getApiUrl() + "/users/login";
+    String usersUrl = ApiUrl.getApiUrl() + "/users";
 
     public UserApiClient() throws MalformedURLException {
 
@@ -20,7 +21,7 @@ public class UserApiClient implements ApiClient {
 
     public User registerUser(User user) {
         try {
-            ApiResponse response =  sendPostRequest(registerUrl, user);
+            ApiResponse response = sendPostRequest(registerUrl, user);
             if (response.isSuccess()) {
                 System.out.println(response.body);
                 return objectMapper.readValue(response.body, User.class);
@@ -60,6 +61,4 @@ public class UserApiClient implements ApiClient {
 //            throw new RuntimeException(e);
 //        }
 //    }
-
-
 }
