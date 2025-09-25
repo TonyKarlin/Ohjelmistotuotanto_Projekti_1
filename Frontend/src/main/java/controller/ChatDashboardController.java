@@ -47,9 +47,9 @@ public class ChatDashboardController {
         this.userApiClient = userApiClient;
         setUpUsername();
         conversations = getUserConversations();
-        contacts = getUserContacts();
-        // addConversation();
-        addFriendsToFriendsList();
+        // contacts = getUserContacts();
+        // // addConversation();
+        // addFriendsToFriendsList();
 
     }
 

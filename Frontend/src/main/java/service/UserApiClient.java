@@ -51,14 +51,22 @@ public class UserApiClient implements ApiClient {
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException("Failed to login", e);
         }
-
     }
 
-//    public void getUsers() {
-//        try {
-//            System.out.println(sendGetRequest(usersUrl));
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
-//    }
+    public User getUserByUsername(String username) {
+        try {
+            ApiResponse response = sendGetRequest(usersUrl + "/username/" + username);
+            if (response.isSuccess()) {
+                System.out.println(response.body);
+                return objectMapper.readValue(response.body, User.class);
+            } else {
+                System.out.println("Failed to fetch a User. Status: "
+                        + response.statusCode + ", Response: " + response.body);
+                return null;
+            }
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException("Failed to GET a user", e);
+        }
+    }
+
 }

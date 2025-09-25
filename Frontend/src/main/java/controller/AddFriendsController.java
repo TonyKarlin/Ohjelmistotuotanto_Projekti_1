@@ -30,6 +30,12 @@ public class AddFriendsController {
     @FXML
     void sendFriendRequest(ActionEvent event) {
 
+        String username = searchFriendTextField.getText();
+
+        if (username != null) {
+            System.out.println(userApiClient.getUserByUsername(username));
+        }
+
     }
 
     @FXML
@@ -37,6 +43,5 @@ public class AddFriendsController {
         Stage stage = (Stage) closeButton.getScene().getWindow();
         stage.close();
     }
-
 
 }
