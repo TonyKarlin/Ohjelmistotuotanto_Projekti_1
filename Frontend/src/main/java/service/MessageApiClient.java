@@ -6,17 +6,17 @@ import model.Message;
 import model.User;
 import request.ConversationRequest;
 import request.MessageRequest;
+import utils.ApiUrl;
 
 import java.io.IOException;
 import java.util.List;
 
 public class MessageApiClient implements ApiClient {
 
-    String baseUrl = ("http://localhost:8080/api/conversations");
+    String baseUrl = ApiUrl.getApiUrl() + "/conversations";
 
     public MessageApiClient() {
     }
-
 
     public Message sendMessage(MessageRequest request, Conversation conversation) {
         try {
@@ -40,7 +40,7 @@ public class MessageApiClient implements ApiClient {
         ApiResponse response = sendPutRequestWithObject(messageUrl, messageRequest);
         if (response.isSuccess()) {
             return objectMapper.readValue(response.body, Message.class);
-        }else {
+        } else {
             System.out.println("Failed to Modify  message. Status: "
                     + response.statusCode + ", Response: " + response.body);
             return null;
@@ -54,14 +54,14 @@ public class MessageApiClient implements ApiClient {
             return objectMapper.readValue(response.body, new TypeReference<List<Message>>() {
             });
         } else {
-            System.out.println("Failed to get conversation: "+ conversation.getId() +" " +
-                    "messages" +response.statusCode +", Response: " + response.body);
+            System.out.println("Failed to get conversation: " + conversation.getId() + " "
+                    + "messages" + response.statusCode + ", Response: " + response.body);
             return null;
         }
     }
 
     public void deleteMessage(Conversation conversation, Message message, User user) throws IOException, InterruptedException {
-        String messageUrl = baseUrl + "/" + conversation.getId() + "/messages/" + message.getId()+"?userId="+user.getId();
+        String messageUrl = baseUrl + "/" + conversation.getId() + "/messages/" + message.getId() + "?userId=" + user.getId();
         String token = user.getToken();
         ApiResponse response = sendDeleteRequestWithToken(messageUrl, token);
         if ((response.isSuccess())) {
@@ -71,6 +71,5 @@ public class MessageApiClient implements ApiClient {
                     + response.statusCode + ", Response: " + response.body);
         }
     }
-
 
 }

@@ -7,10 +7,11 @@ import com.fasterxml.jackson.core.type.TypeReference;
 
 import model.Contact;
 import model.User;
+import utils.ApiUrl;
 
 public class ContactApiClient implements ApiClient {
 
-    String baseUrl = "http://localhost:8080/api/contacts/";
+    String baseUrl = ApiUrl.getApiUrl() + "/contacts";
 
     public ContactApiClient() {
 
@@ -18,7 +19,7 @@ public class ContactApiClient implements ApiClient {
 
     // Get a list of contacts(friends) of the current user
     public List<Contact> getAllUserContacts(User user) throws IOException, InterruptedException {
-        ApiResponse response = sendGetRequest(baseUrl + user.getId());
+        ApiResponse response = sendGetRequest(baseUrl + "/" + user.getId());
         System.out.println(baseUrl + "/" + user.getId());
         if (response.isSuccess()) {
             System.out.println("Response: " + response.body);
