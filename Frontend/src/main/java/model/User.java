@@ -1,13 +1,12 @@
 package model;
 
-
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 //When register or login creates User Object from the Json Data
 //Using lombok dependency that creates automatically setters and getters
 @Data
 public class User {
+
     private String username;
     private String email;
     private String password;
@@ -16,6 +15,7 @@ public class User {
     private String token;
     private String role;
     private int userId;
+    private String profilePictureUrl;
 
     // Default constructor (needed for Jackson/ObjectMapper)
     public User() {
