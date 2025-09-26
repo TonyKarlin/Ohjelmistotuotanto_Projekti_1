@@ -42,7 +42,6 @@ public class ConversationHBoxController {
         contactUserPicture.setImage(image);
     }
 
-
     @FXML
     public void openMessages() throws IOException, InterruptedException {
         parentController.showConversationMessages(conversation);

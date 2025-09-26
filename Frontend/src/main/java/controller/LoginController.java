@@ -13,6 +13,8 @@ import model.User;
 import service.ConversationApiClient;
 import service.MessageApiClient;
 import service.UserApiClient;
+import utils.UIAlert;
+
 import java.io.IOException;
 
 public class LoginController {
@@ -20,6 +22,7 @@ public class LoginController {
     private UserApiClient userApiClient;
     private ConversationApiClient conversationApiClient;
     private MessageApiClient messageApiClient;
+    private UIAlert alert = new UIAlert();
 
     public void setController(UserApiClient userApiClient) {
         this.userApiClient = userApiClient;
@@ -55,7 +58,7 @@ public class LoginController {
             String username = userNameTextField.getText();
             String password = passwordTextField.getText();
             if (username.isEmpty() || password.isEmpty()) {
-                showAlert("Empty fields", "Username or password field is empty");
+                alert.showErrorAlert("Empty fields", "Username or password field is empty");
                 return;
             }
             //Gets username and password from the text fields and calls the loginRequest method
@@ -69,7 +72,7 @@ public class LoginController {
                 stage.close();
             //If user is null show this error alert
             } else {
-                showAlert("Check credential", "Username or password is wrong");
+                alert.showErrorAlert("Check credential", "Username or password is wrong");
             }
     }
 
@@ -84,13 +87,5 @@ public class LoginController {
         stage.show();
     }
 
-    //alert method to show user error messages
-    private void showAlert(String title, String message) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
-    }
 
 }

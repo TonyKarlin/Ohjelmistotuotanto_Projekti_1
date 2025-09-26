@@ -16,6 +16,7 @@ public class User {
     private String role;
     private int userId;
     private String profilePictureUrl;
+    private String profilePicture;
 
     // Default constructor (needed for Jackson/ObjectMapper)
     public User() {
@@ -23,10 +24,11 @@ public class User {
     }
 
     // Constructor for creating/registering a new user
-    public User(String username, String email, String password) {
+    public User(String username, String email, String password, String profilePicture) {
         this.username = username;
         this.email = email;
         this.password = password;
+        this.profilePicture = profilePicture;
     }
 
     // Constructor for mapping a conversation participant

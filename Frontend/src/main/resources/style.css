@@ -32,9 +32,7 @@
     -fx-border-width: 3px;
     -fx-border-color: #878787;
     -fx-border-radius: 16px 16px 0px 0px;
-
 }
-
 
 .text-field {
     -fx-background-color: rgba(19, 19, 19);
@@ -95,14 +93,16 @@
 }
 
 .messageHBox {
-    -fx-background-color: rgb(32, 32, 32);
+    -fx-background-radius: 20px 20px 0px 0px;
+    -fx-background-color: rgba(37, 37, 37);
     -fx-border-width: 0 0 3px 0;
     -fx-border-color: #131313F2;
 }
 
 .messageHBox:hover {
+    -fx-background-radius: 0px;
     -fx-cursor: hand;
-    -fx-background-color: rgba(19, 19, 19, 0.95);
+    -fx-background-color: rgb(25, 25, 25);
 }
 
 .VBoxAddFriends {
@@ -110,4 +110,40 @@
     -fx-border-radius: 2px;
     -fx-border-width: 2px;
     -fx-border-color: black;
+}
+
+.modifyMessageBox {
+    -fx-background-color: rgba(37, 37, 37);
+    -fx-border-width: 1px;
+    -fx-border-color: #0e0e0e;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+}
+
+.menu-button {
+    -fx-background-color: rgb(99, 101, 220);
+    -fx-background-radius: 10px;
+    -fx-border-color: rgba(0, 0, 0, 0.8);
+    -fx-border-radius: 10px;
+}
+
+.menu-button:hover {
+    -fx-cursor: hand;
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+}
+
+.menu-item {
+    -fx-background-color: rgba(50, 50, 50);
+    -fx-text-fill: #c9c9c9;
+    -fx-font-size: 14px;
+}
+
+.menu-item .label {
+    -fx-text-fill: white;
+}
+
+.menu-item:hover {
+    -fx-background-color: rgba(30, 30, 30);
+    -fx-cursor: hand;
 }

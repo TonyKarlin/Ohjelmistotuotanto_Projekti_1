@@ -23,15 +23,19 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import model.User;
 import service.UserApiClient;
+import utils.ImageRounder;
+import utils.UIAlert;
 
 public class RegisterController {
 
-    UserApiClient userApiClient;
+    private UserApiClient userApiClient;
+    private ImageRounder imageRounder;
+    private UIAlert alert = new UIAlert();
 
     //Controller to set instances. Is called when changing to this view.
     public void setController(UserApiClient userApiClient) {
         this.userApiClient = userApiClient;
-        makeImageViewRound();
+        imageRounder = new ImageRounder(profilePictureContainer, userProfilePicture);
     }
 
     @FXML
@@ -64,13 +68,6 @@ public class RegisterController {
     public RegisterController() {
     }
 
-    //Can't use css to make images round this method will do
-    public void makeImageViewRound() {
-        double radius = profilePictureContainer.getPrefWidth() / 2;
-        Circle clip = new Circle(radius, radius, radius);
-        userProfilePicture.setClip(clip);
-    }
-
     //To move back to login view
     @FXML
     void moveToLoginView(MouseEvent event) throws IOException {
@@ -87,16 +84,16 @@ public class RegisterController {
     // Check the user inputs that hey are valid. Gets alert if something is wrong
     public boolean checkTextFields(String username, String email, String password) {
         if (username.isEmpty() || email.isEmpty() || password.isEmpty()) {
-            showAlert("Empty fields", "Please fill in all fields");
+            alert.showErrorAlert("Empty fields", "Please fill in all fields");
             return false;
         } else if (username.length() < 6) {
-            showAlert("Invalid Name", "Name should contain 6 or more characters.");
+            alert.showErrorAlert("Invalid Name", "Name should contain 6 or more characters.");
             return false;
         } else if (!email.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$")) {
-            showAlert("Invalid Email", "Please enter a valid email address.");
+            alert.showErrorAlert("Invalid Email", "Please enter a valid email address.");
             return false;
         } else if (password.length() < 6) {
-            showAlert("Invalid password", "Password should contain 6 or more characters.");
+            alert.showErrorAlert("Invalid password", "Password should contain 6 or more characters.");
         }
 
         return true;
@@ -105,7 +102,7 @@ public class RegisterController {
     //Check that the password user inputs match with each other
     public boolean checkPassword(String password, String repeatedPassword) {
         if (!password.equals(repeatedPassword)) {
-            showAlert("Error", "passwords don't match");
+            alert.showErrorAlert("Error", "passwords don't match");
             return false;
         }
         return true;
@@ -139,6 +136,7 @@ public class RegisterController {
         String email = emailTextField.getText();
         String password = passwordField.getText();
         String repeatedPassword = repeatPasswordField.getText();
+        String profilePicture = String.valueOf(userProfilePicture);
         if (!checkTextFields(username, email, password)) {
             return;
         }
@@ -147,15 +145,16 @@ public class RegisterController {
         }
         try {
             //creates user object from the user inputs
-            User user = new User(username, email, password);
+            User user = new User(username, email, password, profilePicture);
             //Sends the user object to the server and creates another user from the backend response
             User checkIfUserExist = userApiClient.registerUser(user);
             //If response is not user information but response message, user is null so send this alert message
             if (checkIfUserExist == null) {
-                showAlert("Existing User", "User already exists");
+                alert.showErrorAlert("Existing User", "User already exists");
             } else {
                 // Registration successful, move to login view
                 try {
+                    alert.showSuccessAlert("Success", "User created successfully ✅");
                     FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/loginView.fxml"));
                     Parent root = fxmlLoader.load();
                     LoginController controller = fxmlLoader.getController();
@@ -164,20 +163,12 @@ public class RegisterController {
                     stage.setScene(new Scene(root));
                     stage.show();
                 } catch (IOException e) {
-                    showAlert("Error", "Could not load login view.");
+                    alert.showErrorAlert("Error", "Could not load login view.");
                 }
             }
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-    }
-
-    private void showAlert(String title, String message) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
     }
 
 }
