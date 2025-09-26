@@ -8,6 +8,8 @@ import lombok.Data;
 import model.Message;
 import request.MessageRequest;
 import service.MessageApiClient;
+import utils.ImageRounder;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -19,14 +21,16 @@ public class MessageHBoxController {
     private int senderId;
     private int conversationId;
     private ChatDashboardController parentController;
+    private ImageRounder imagerounder;
 
-    Message message;
+    private Message message;
 
     public MessageHBoxController() {}
 
     public void setController(Message message, ChatDashboardController parentController) {
         this.message = message;
         this.parentController = parentController;
+        imagerounder = new ImageRounder(userProfilePicture);
     }
 
 
@@ -47,6 +51,7 @@ public class MessageHBoxController {
         senderUsernameLabel.setText(senderUsername);
         String formattedTime = formatTime(createdAt);
         messageTimeLabel.setText(formattedTime);
+
     }
 
     public String formatTime(String createdAt) {

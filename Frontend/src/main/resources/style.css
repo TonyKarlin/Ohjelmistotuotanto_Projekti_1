@@ -15,6 +15,9 @@
 
 .userProfile {
     -fx-background-color: rgba(37, 37, 37);
+    -fx-background-radius: 30px;
+    -fx-border-radius: 30px;
+    -fx-border-width: 2px;
 }
 
 .statusCircle{}

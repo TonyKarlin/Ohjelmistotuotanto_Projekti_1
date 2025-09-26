@@ -35,7 +35,7 @@ public class RegisterController {
     //Controller to set instances. Is called when changing to this view.
     public void setController(UserApiClient userApiClient) {
         this.userApiClient = userApiClient;
-        imageRounder = new ImageRounder(profilePictureContainer, userProfilePicture);
+        imageRounder = new ImageRounder(userProfilePicture);
     }
 
     @FXML

@@ -19,6 +19,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
 import javafx.stage.Modality;
@@ -33,6 +34,7 @@ import service.ContactApiClient;
 import service.ConversationApiClient;
 import service.MessageApiClient;
 import service.UserApiClient;
+import utils.ImageRounder;
 
 @Data
 public class ChatDashboardController {
@@ -44,6 +46,7 @@ public class ChatDashboardController {
     MessageApiClient messageApiClient = new MessageApiClient();
     ContactApiClient contactApiClient = new ContactApiClient();
     List<Contact> contacts;
+    private ImageRounder imageRounder;
 
     public void setController(User loggedInUser, UserApiClient userApiClient) throws IOException, InterruptedException {
         this.loggedInUser = loggedInUser;
@@ -53,8 +56,14 @@ public class ChatDashboardController {
         contacts = getUserContacts();
         addConversation();
         addFriendsToFriendsList();
-        System.out.println(loggedInUser.getId());
+        imageRounder = new ImageRounder(userProfilePicture);
     }
+
+    @FXML
+    private ImageView userProfilePicture;
+
+    @FXML
+    private StackPane userProfileContent;
 
     @FXML
     private Button addFriendsButton;
@@ -89,8 +98,6 @@ public class ChatDashboardController {
     @FXML
     private TextField sendMessageTextField;
 
-    @FXML
-    private ImageView userProfilePicture;
 
     @FXML
     private BorderPane contentBorderPane;
@@ -106,6 +113,7 @@ public class ChatDashboardController {
 
     public void setUpUsername() {
         loggedInUsername.setText(loggedInUser.getUsername());
+
     }
 
     public List<Conversation> getUserConversations() throws IOException, InterruptedException {
@@ -118,6 +126,7 @@ public class ChatDashboardController {
 
     @FXML
     public void openUserProfile(MouseEvent event) throws IOException {
+        contentBorderPane.setBottom(null);
         VBoxContentPane.getChildren().clear();
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/userProfileView.fxml"));
         VBox userProfile = fxmlLoader.load();
