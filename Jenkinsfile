@@ -9,17 +9,23 @@ pipeline {
         }
         stage('Build') {
             steps {
-                bat 'mvnw.cmd clean install'
+                dir('Backend') {
+                    bat 'mvnw.cmd clean install'
+                }
             }
         }
         stage('Test') {
             steps {
-                bat 'mvnw.cmd test'
+                dir('Backend') {
+                    bat 'mvnw.cmd test'
+                }
             }
         }
         stage('Code Coverage') {
             steps {
-                bat 'mvnw.cmd jacoco:report'
+                dir('Backend') {
+                    bat 'mvnw.cmd jacoco:report'
+                }
             }
         }
     }
