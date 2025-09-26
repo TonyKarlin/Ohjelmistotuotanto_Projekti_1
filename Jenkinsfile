@@ -17,7 +17,7 @@ pipeline {
         stage('Frontend Build') {
             steps {
                 dir('Frontend') {
-                    bat 'mvn clean install'
+                    bat 'mvnw.cmd clean install'
                 }
             }
         }
@@ -31,7 +31,7 @@ pipeline {
         stage('Frontend Test') {
             steps {
                 dir('Frontend') {
-                    bat 'mvn test'
+                    bat 'mvnw.cmd test'
                 }
             }
         }
@@ -45,7 +45,7 @@ pipeline {
         stage('Frontend Code Coverage') {
             steps {
                 dir('Frontend') {
-                    bat 'mvn jacoco:report'
+                    bat 'mvnw.cmd jacoco:report'
                 }
             }
         }
