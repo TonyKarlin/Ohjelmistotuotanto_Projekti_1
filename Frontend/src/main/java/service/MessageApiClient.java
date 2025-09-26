@@ -36,7 +36,9 @@ public class MessageApiClient implements ApiClient {
     }
 
     public Message modifyMessage(MessageRequest messageRequest) throws IOException, InterruptedException {
-        String messageUrl = baseUrl + "/" + messageRequest.getConversationId() + "/messages/" + messageRequest.getMessageId();
+        String messageUrl = baseUrl + "/" + messageRequest.getConversationId() +
+                "/messages/" + messageRequest.getMessageId() +
+                "?userId=" + messageRequest.getUserId();
         ApiResponse response = sendPutRequestWithObject(messageUrl, messageRequest);
         if (response.isSuccess()) {
             return objectMapper.readValue(response.body, Message.class);

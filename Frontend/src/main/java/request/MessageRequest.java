@@ -23,10 +23,11 @@ public class MessageRequest {
 
     }
     //Construct to modify message in a conversation
-    public MessageRequest(int conversationId, String text, int messageId) {
+    public MessageRequest(int conversationId, String text, int messageId, int userId) {
         this.conversationId = conversationId;
         this.text = text;
         this.messageId = messageId;
+        this.userId = userId;
     }
 
     //Construct to delete message in conversation

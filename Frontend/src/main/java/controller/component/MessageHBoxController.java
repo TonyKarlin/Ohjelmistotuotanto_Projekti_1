@@ -3,7 +3,11 @@ package controller.component;
 import controller.ChatDashboardController;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuButton;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
 import lombok.Data;
 import model.Message;
 import request.MessageRequest;
@@ -31,20 +35,56 @@ public class MessageHBoxController {
         this.message = message;
         this.parentController = parentController;
         imagerounder = new ImageRounder(userProfilePicture);
+        setTextInModifyField();
     }
 
+    @FXML
+    private MenuItem deleteMenuitem;
+
+    @FXML
+    private TextField editTextField;
 
     @FXML
     private Label messageLabel;
 
     @FXML
+    private MenuButton messageOptionButton;
+
+    @FXML
     private Label messageTimeLabel;
+
+    @FXML
+    private MenuItem modifyMenuItem;
+
+    @FXML
+    private HBox rootHbox;
 
     @FXML
     private Label senderUsernameLabel;
 
     @FXML
     private ImageView userProfilePicture;
+
+    @FXML
+    private void showMenuOption() {
+        messageOptionButton.setVisible(true);
+
+    }
+
+    @FXML
+    private void hideMenuOption() {
+        if (!messageOptionButton.isShowing()) {
+            messageOptionButton.setVisible(false);
+        }
+
+
+    }
+
+    public void setTextInModifyField() {
+        String text = message.getText();
+        editTextField.setText(text);
+    }
+
 
     public void setMessageInformation(String text,String createdAt, String senderUsername) {
         messageLabel.setText(text);
@@ -68,8 +108,13 @@ public class MessageHBoxController {
         client.deleteMessage(request);
     }
 
-    @FXML
-    public void modifyMessage() {
 
+    @FXML
+    public void modifyMessage() throws IOException, InterruptedException {
+        int loggedInUserId = parentController.getLoggedInUser().getId();
+        String modifiedText = editTextField.getText();
+        MessageRequest request = new MessageRequest(conversationId,modifiedText, message.getId(), loggedInUserId);
+        MessageApiClient client = new MessageApiClient();
+        client.modifyMessage(request);
     }
 }
