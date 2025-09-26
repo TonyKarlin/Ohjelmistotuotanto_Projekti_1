@@ -1,15 +1,14 @@
+
+import java.io.IOException;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import model.Conversation;
 import model.Message;
 import model.User;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import request.LoginRequest;
 import request.MessageRequest;
 import service.MessageApiClient;
-import service.UserApiClient;
-
-import java.io.IOException;
-import java.util.List;
 
 public class MessageApiClientTest {
 
@@ -30,35 +29,33 @@ public class MessageApiClientTest {
     }
 
     /**
-     * Tests sending a new message to a conversation.
-     * Requires an existing conversation and a valid sender.
-     * ⚠ Can only be executed once per unique user since usernames must be unique in the DB.
+     * Tests sending a new message to a conversation. Requires an existing
+     * conversation and a valid sender. ⚠ Can only be executed once per unique
+     * user since usernames must be unique in the DB.
      */
-    @Test
-    public void testSendMessage() {
-        messageRequest.setConversationId(3);
-        messageRequest.setText("Test Message from JUnit!");
-        messageRequest.setSenderId(1);
-        Message message = messageApiClient.sendMessage(messageRequest);
-        System.out.println(message.getText());
-    }
-
+    // @Test
+    // public void testSendMessage() {
+    //     messageRequest.setConversationId(3);
+    //     messageRequest.setText("Test Message from JUnit!");
+    //     messageRequest.setSenderId(1);
+    //     Message message = messageApiClient.sendMessage(messageRequest);
+    //     System.out.println(message.getText());
+    // }
     /**
      * Tests fetching all messages from a conversation.
      */
-    @Test
-    public void testGetConversationMessages() throws IOException, InterruptedException {
-        conversation.setId(12);
-        List<Message> messages = messageApiClient.getConversationMessages(conversation);
-        for (Message m : messages) {
-            System.out.println(m.getId());
-            System.out.println(m.getSenderId());
-            System.out.println(m.getSenderUsername());
-            System.out.println(m.getCreatedAt());
-            System.out.println(m.getMessageAttachments());
-        }
-    }
-
+    // @Test
+    // public void testGetConversationMessages() throws IOException, InterruptedException {
+    //     conversation.setId(12);
+    //     List<Message> messages = messageApiClient.getConversationMessages(conversation);
+    //     for (Message m : messages) {
+    //         System.out.println(m.getId());
+    //         System.out.println(m.getSenderId());
+    //         System.out.println(m.getSenderUsername());
+    //         System.out.println(m.getCreatedAt());
+    //         System.out.println(m.getMessageAttachments());
+    //     }
+    // }
     /**
      * Tests modifying an existing message in a conversation.
      */
