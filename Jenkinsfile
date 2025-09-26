@@ -7,24 +7,17 @@ pipeline {
                 checkout scm
             }
         }
-        stage('Build') {
+        stage('Backend Test & Coverage') {
             steps {
                 dir('Backend') {
-                    bat 'mvnw.cmd clean install'
+                    bat 'mvnw.cmd clean test jacoco:report'
                 }
             }
         }
-        stage('Test') {
+        stage('Frontend Test & Coverage') {
             steps {
-                dir('Backend') {
-                    bat 'mvnw.cmd test'
-                }
-            }
-        }
-        stage('Code Coverage') {
-            steps {
-                dir('Backend') {
-                    bat 'mvnw.cmd jacoco:report'
+                dir('Frontend') {
+                    bat 'mvnw.cmd clean test jacoco:report'
                 }
             }
         }
