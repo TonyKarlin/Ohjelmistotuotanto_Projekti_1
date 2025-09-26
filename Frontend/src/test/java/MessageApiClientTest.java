@@ -89,6 +89,7 @@ public class MessageApiClientTest {
         user.setId(1);
         message.setId(3);
         conversation.setId(3);
-        messageApiClient.deleteMessage(conversation, message, user);
+        MessageRequest messageRequest1 = new MessageRequest(user.getId(), message.getId(), conversation.getId());
+        messageApiClient.deleteMessage(messageRequest1);
     }
 }

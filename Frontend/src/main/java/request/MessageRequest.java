@@ -6,6 +6,7 @@ import lombok.Data;
 public class MessageRequest {
 
     private String text;
+    private int userId;
     private int senderId;
     private int conversationId;
     private int messageId;
@@ -25,6 +26,13 @@ public class MessageRequest {
     public MessageRequest(int conversationId, String text, int messageId) {
         this.conversationId = conversationId;
         this.text = text;
+        this.messageId = messageId;
+    }
+
+    //Construct to delete message in conversation
+    public MessageRequest(int conversationId, int userId, int messageId) {
+        this.conversationId = conversationId;
+        this.userId= userId;
         this.messageId = messageId;
     }
 

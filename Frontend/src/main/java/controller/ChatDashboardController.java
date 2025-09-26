@@ -24,6 +24,7 @@ import javafx.scene.shape.Circle;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import lombok.Data;
 import model.Contact;
 import model.Conversation;
 import model.Message;
@@ -33,6 +34,7 @@ import service.ConversationApiClient;
 import service.MessageApiClient;
 import service.UserApiClient;
 
+@Data
 public class ChatDashboardController {
 
     User loggedInUser;
@@ -51,6 +53,7 @@ public class ChatDashboardController {
         contacts = getUserContacts();
         addConversation();
         addFriendsToFriendsList();
+        System.out.println(loggedInUser.getId());
     }
 
     @FXML
@@ -161,7 +164,8 @@ public class ChatDashboardController {
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/component/messageHBox.fxml"));
                 HBox messageHBox = fxmlLoader.load();
                 MessageHBoxController controller = fxmlLoader.getController();
-                controller.setController(m);
+                controller.setController(m, this);
+                controller.setConversationId(conversation.getId());
                 controller.setId(m.getId());
                 controller.setSenderId(m.getSenderId());
                 controller.setMessageInformation(m.getText(), m.getCreatedAt(), m.getSenderUsername());

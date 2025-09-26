@@ -60,10 +60,9 @@ public class MessageApiClient implements ApiClient {
         }
     }
 
-    public void deleteMessage(Conversation conversation, Message message, User user) throws IOException, InterruptedException {
-        String messageUrl = baseUrl + "/" + conversation.getId() + "/messages/" + message.getId() + "?userId=" + user.getId();
-        String token = user.getToken();
-        ApiResponse response = sendDeleteRequestWithToken(messageUrl, token);
+    public void deleteMessage(MessageRequest request) throws IOException, InterruptedException {
+        String messageUrl = baseUrl + "/" + request.getConversationId() + "/messages/" + request.getMessageId() + "?userId=" + request.getUserId();
+        ApiResponse response = sendDeleteRequestWithoutToken(messageUrl);
         if ((response.isSuccess())) {
             System.out.println(response.body);
         } else {
