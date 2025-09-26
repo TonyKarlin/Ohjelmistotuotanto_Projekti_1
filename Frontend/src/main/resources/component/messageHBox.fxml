@@ -27,12 +27,12 @@
                <children>
                   <Label fx:id="senderUsernameLabel" prefHeight="30.0" prefWidth="112.0" text="Username" textFill="WHITE">
                      <font>
-                        <Font size="16.0" />
+                        <Font name="System Bold" size="16.0" />
                      </font>
                   </Label>
                   <Label fx:id="messageTimeLabel" contentDisplay="CENTER" prefHeight="40.0" prefWidth="174.0" text="12:38" textAlignment="CENTER" textFill="WHITE">
                      <font>
-                        <Font size="13.0" />
+                        <Font size="11.0" />
                      </font>
                   </Label>
                </children>

@@ -6,9 +6,9 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<HBox alignment="CENTER" prefHeight="76.0" prefWidth="988.0" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.component.SendMessageHBoxController">
+<HBox alignment="CENTER" prefHeight="74.0" prefWidth="880.0" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.component.SendMessageHBoxController">
    <children>
-      <Button fx:id="messageOptionsButton" mnemonicParsing="false" prefHeight="37.0" prefWidth="39.0" text="+" textFill="WHITE">
+      <Button fx:id="messageOptionsButton" mnemonicParsing="false" text="+" textFill="WHITE">
          <font>
             <Font name="System Bold" size="15.0" />
          </font>
@@ -16,11 +16,18 @@
             <Insets left="100.0" />
          </HBox.margin>
       </Button>
-      <TextField fx:id="sendMessageTextField" prefHeight="38.0" prefWidth="532.0" promptText="Send Message" HBox.hgrow="ALWAYS" />
-      <Button fx:id="sendMessageButton" mnemonicParsing="false" onAction="#sendMessageToConversation" prefHeight="36.0" prefWidth="50.0" text="Send" textFill="WHITE">
+      <TextField fx:id="sendMessageTextField" promptText="Send Message" HBox.hgrow="ALWAYS">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </TextField>
+      <Button fx:id="sendMessageButton" mnemonicParsing="false" onAction="#sendMessageToConversation" text="Send" textAlignment="CENTER" textFill="WHITE">
          <HBox.margin>
             <Insets right="100.0" />
          </HBox.margin>
+         <font>
+            <Font size="16.0" />
+         </font>
       </Button>
    </children>
 </HBox>

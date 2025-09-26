@@ -124,7 +124,6 @@ public class ChatDashboardController {
         UserProfileController controller = fxmlLoader.getController();
         controller.setController(loggedInUser);
         VBoxContentPane.getChildren().add(userProfile);
-
     }
 
     @FXML

@@ -34,6 +34,7 @@ public class SendMessageHBoxController {
         MessageRequest messageRequest = new MessageRequest(message, loggedInUser.getId(), conversation.getId());
         MessageApiClient messageApiClient = new MessageApiClient();
         messageApiClient.sendMessage(messageRequest);
+        sendMessageTextField.clear();
 
 
     }
