@@ -14,6 +14,13 @@ pipeline {
                 }
             }
         }
+        stage('Start Backend') {
+            steps {
+                dir('Backend') {
+                    bat 'start /b mvnw.cmd spring-boot:run'
+                }
+            }
+        }
         stage('Frontend Build') {
             steps {
                 dir('Frontend') {
