@@ -7,24 +7,45 @@ pipeline {
                 checkout scm
             }
         }
-        stage('Build') {
+        stage('Backend Build') {
             steps {
                 dir('Backend') {
                     bat 'mvnw.cmd clean install'
                 }
             }
         }
-        stage('Test') {
+        stage('Frontend Build') {
+            steps {
+                dir('Frontend') {
+                    bat 'mvn clean install'
+                }
+            }
+        }
+        stage('Backend Test') {
             steps {
                 dir('Backend') {
                     bat 'mvnw.cmd test'
                 }
             }
         }
-        stage('Code Coverage') {
+        stage('Frontend Test') {
+            steps {
+                dir('Frontend') {
+                    bat 'mvn test'
+                }
+            }
+        }
+        stage('Backend Code Coverage') {
             steps {
                 dir('Backend') {
                     bat 'mvnw.cmd jacoco:report'
+                }
+            }
+        }
+        stage('Frontend Code Coverage') {
+            steps {
+                dir('Frontend') {
+                    bat 'mvn jacoco:report'
                 }
             }
         }
@@ -33,9 +54,10 @@ pipeline {
                 junit '**/target/surefire-reports/*.xml'
             }
         }
-        stage('Publish Coverage Report') {
+        stage('Archive Coverage Report') {
             steps {
-                jacoco()
+                archiveArtifacts artifacts: 'Backend/target/site/jacoco/**'
+                archiveArtifacts artifacts: 'Frontend/target/site/jacoco/**'
             }
         }
     }
