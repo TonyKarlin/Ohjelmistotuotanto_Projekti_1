@@ -3,6 +3,7 @@ package controller;
 import java.io.IOException;
 import java.util.List;
 
+import controller.component.ContactHboxController;
 import controller.component.ConversationHBoxController;
 import controller.component.MessageHBoxController;
 import controller.component.SendMessageHBoxController;
@@ -217,18 +218,13 @@ public class ChatDashboardController {
     }
 
     public void addFriendsToFriendsList() throws IOException {
-        if (contacts != null) {
-            for (Contact c : contacts) {
-                Label contactLabel = new Label(c.getContactUsername());
-
-                if ("PENDING".equals(c.getStatus())) {
-                    contactLabel.setStyle("-fx-text-fill: orange;");
-                } else {
-                    contactLabel.setStyle("-fx-text-fill: green;");
-                }
-
-                friendsList.getChildren().add(contactLabel);
-            }
+        for (Contact contact : contacts) {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/component/contactHBox.fxml"));
+            HBox userContactsHbox = loader.load();
+            ContactHboxController controller = loader.getController();
+            controller.setController(contact, this);
+            controller.setUsername(contact.getContactUsername());
+            friendsList.getChildren().add(userContactsHbox);
         }
     }
 }

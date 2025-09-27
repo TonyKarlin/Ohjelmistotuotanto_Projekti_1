@@ -1,152 +1,163 @@
 .parent {
-    -fx-background-color: rgb(14, 14, 14);
-    -fx-background-size: cover;
-    -fx-background-position: center;
-
+  -fx-background-color: rgb(14, 14, 14);
+  -fx-background-size: cover;
+  -fx-background-position: center;
 }
 
 .VBox {
-    -fx-background-color: rgba(37, 37, 37);
-    -fx-background-radius: 30px;
-    -fx-border-color: rgba(0, 0, 0, 0.8);
-    -fx-border-radius: 30px;
-    -fx-border-width: 2px;
+  -fx-background-color: rgba(37, 37, 37);
+  -fx-background-radius: 30px;
+  -fx-border-color: rgba(0, 0, 0, 0.8);
+  -fx-border-radius: 30px;
+  -fx-border-width: 2px;
 }
 
 .userProfile {
-    -fx-background-color: rgba(37, 37, 37);
-    -fx-background-radius: 30px;
-    -fx-border-radius: 30px;
-    -fx-border-width: 2px;
+  -fx-background-color: rgba(37, 37, 37);
+  -fx-background-radius: 30px;
+  -fx-border-radius: 30px;
+  -fx-border-width: 2px;
 }
 
-.statusCircle{}
+.statusCircle {
+}
 .statusCircle:hover {
-    -fx-cursor: hand;
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.5), 10, 0, 4, 4);
-    -fx-scale-x: 1.05;
-    -fx-scale-y: 1.05;
+  -fx-cursor: hand;
+  -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.5), 10, 0, 4, 4);
+  -fx-scale-x: 1.05;
+  -fx-scale-y: 1.05;
 }
-
 
 .HBox {
-    -fx-background-color: #494949;
-    -fx-background-radius: 20px 20px 0px 0px;
-    -fx-border-width: 3px;
-    -fx-border-color: #878787;
-    -fx-border-radius: 16px 16px 0px 0px;
+  -fx-background-color: #494949;
+  -fx-background-radius: 20px 20px 0px 0px;
+  -fx-border-width: 3px;
+  -fx-border-color: #878787;
+  -fx-border-radius: 16px 16px 0px 0px;
 }
 
 .text-field {
-    -fx-background-color: rgba(19, 19, 19);
-    -fx-background-radius: 10px;
-    -fx-border-color: rgba(0, 0, 0, 0.8);
-    -fx-border-radius: 10px;
-    -fx-text-fill: #c3c3c3;
+  -fx-background-color: rgba(19, 19, 19);
+  -fx-background-radius: 10px;
+  -fx-border-color: rgba(0, 0, 0, 0.8);
+  -fx-border-radius: 10px;
+  -fx-text-fill: #c3c3c3;
 }
 
 .PasswordField {
-    -fx-background-radius: 10px;
-    -fx-border-color: rgba(0, 0, 0);
-    -fx-border-radius: 10px;
+  -fx-background-radius: 10px;
+  -fx-border-color: rgba(0, 0, 0);
+  -fx-border-radius: 10px;
 }
 
 .button {
-    -fx-background-color: rgb(99, 101, 220);
-    -fx-background-radius: 10px;
-    -fx-border-color: rgba(0, 0, 0, 0.8);
-    -fx-border-radius: 10px;
+  -fx-background-color: rgb(99, 101, 220);
+  -fx-background-radius: 10px;
+  -fx-border-color: rgba(0, 0, 0, 0.8);
+  -fx-border-radius: 10px;
 }
 
 .button:hover {
-    -fx-cursor: hand;
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.5), 10, 0, 4, 4);
-    -fx-scale-x: 1.05;
-    -fx-scale-y: 1.05;
+  -fx-cursor: hand;
+  -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.5), 10, 0, 4, 4);
+  -fx-scale-x: 1.05;
+  -fx-scale-y: 1.05;
 }
 
-
-.check-box {}
+.check-box {
+}
 .check-box:hover {
-    -fx-cursor: hand;
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.5), 10, 0, 4, 4);
-    -fx-scale-x: 1.05;
-    -fx-scale-y: 1.05;
-    -fx-color: rgb(99, 101, 220);
-
+  -fx-cursor: hand;
+  -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.5), 10, 0, 4, 4);
+  -fx-scale-x: 1.05;
+  -fx-scale-y: 1.05;
+  -fx-color: rgb(99, 101, 220);
 }
 
-.clickable-label {}
+.clickable-label {
+}
 .clickable-label:hover {
-    -fx-cursor: hand;
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.5), 10, 0, 4, 4);
-    -fx-scale-x: 1.05;
-    -fx-scale-y: 1.05;
+  -fx-cursor: hand;
+  -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.5), 10, 0, 4, 4);
+  -fx-scale-x: 1.05;
+  -fx-scale-y: 1.05;
 }
 
 .ConversationHBox {
-    -fx-background-color: rgb(32, 32, 32);
+  -fx-background-color: rgb(32, 32, 32);
 }
 
-.ImageView {}
+.ImageView {
+}
 .ImageView:hover {
-    -fx-cursor: hand;
-    -fx-scale-x: 1.05;
-    -fx-scale-y: 1.05;
+  -fx-cursor: hand;
+  -fx-scale-x: 1.05;
+  -fx-scale-y: 1.05;
 }
 
 .messageHBox {
-    -fx-background-radius: 20px 20px 0px 0px;
-    -fx-background-color: rgba(37, 37, 37);
-    -fx-border-width: 0 0 3px 0;
-    -fx-border-color: #131313F2;
+  -fx-background-radius: 20px 20px 0px 0px;
+  -fx-background-color: rgba(37, 37, 37);
+  -fx-border-width: 0 0 3px 0;
+  -fx-border-color: #131313f2;
 }
 
 .messageHBox:hover {
-    -fx-background-radius: 0px;
-    -fx-cursor: hand;
-    -fx-background-color: rgb(25, 25, 25);
+  -fx-background-radius: 0px;
+  -fx-cursor: hand;
+  -fx-background-color: rgb(25, 25, 25);
 }
 
 .VBoxAddFriends {
-    -fx-background-color: rgba(0, 0, 0);
-    -fx-border-radius: 2px;
-    -fx-border-width: 2px;
-    -fx-border-color: black;
+  -fx-background-color: rgba(0, 0, 0);
+  -fx-border-radius: 2px;
+  -fx-border-width: 2px;
+  -fx-border-color: black;
 }
 
 .modifyMessageBox {
-    -fx-background-color: rgba(37, 37, 37);
-    -fx-border-width: 1px;
-    -fx-border-color: #0e0e0e;
-    -fx-border-radius: 10px;
-    -fx-background-radius: 10px;
+  -fx-background-color: rgba(37, 37, 37);
+  -fx-border-width: 1px;
+  -fx-border-color: #0e0e0e;
+  -fx-border-radius: 10px;
+  -fx-background-radius: 10px;
 }
 
 .menu-button {
-    -fx-background-color: rgb(99, 101, 220);
-    -fx-background-radius: 10px;
-    -fx-border-color: rgba(0, 0, 0, 0.8);
-    -fx-border-radius: 10px;
+  -fx-background-color: rgb(99, 101, 220);
+  -fx-background-radius: 10px;
+  -fx-border-color: rgba(0, 0, 0, 0.8);
+  -fx-border-radius: 10px;
 }
 
 .menu-button:hover {
-    -fx-cursor: hand;
-    -fx-scale-x: 1.05;
-    -fx-scale-y: 1.05;
+  -fx-cursor: hand;
+  -fx-scale-x: 1.05;
+  -fx-scale-y: 1.05;
 }
 
 .menu-item {
-    -fx-background-color: rgba(50, 50, 50);
-    -fx-text-fill: #c9c9c9;
-    -fx-font-size: 14px;
+  -fx-background-color: rgba(50, 50, 50);
+  -fx-text-fill: #c9c9c9;
+  -fx-font-size: 14px;
 }
 
 .menu-item .label {
-    -fx-text-fill: white;
+  -fx-text-fill: white;
 }
 
 .menu-item:hover {
-    -fx-background-color: rgba(30, 30, 30);
-    -fx-cursor: hand;
+  -fx-background-color: rgba(30, 30, 30);
+  -fx-cursor: hand;
+}
+
+.ContactView {
+}
+.ContactView:hover {
+  -fx-cursor: hand;
+  -fx-scale-x: 1.05;
+  -fx-scale-y: 1.05;
+  -fx-border-color: rgb(99, 101, 220);
+  -fx-border-width: 2px;
+  -fx-border-radius: 10px;
 }
