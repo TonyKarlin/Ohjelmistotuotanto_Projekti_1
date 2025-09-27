@@ -42,9 +42,9 @@ public class ChatDashboardController {
     User loggedInUser;
     UserApiClient userApiClient;
     ConversationApiClient conversationApiClient = new ConversationApiClient();
-    List<Conversation> conversations;
     MessageApiClient messageApiClient = new MessageApiClient();
     ContactApiClient contactApiClient = new ContactApiClient();
+    List<Conversation> conversations;
     List<Contact> contacts;
     private ImageRounder imageRounder;
 
@@ -98,7 +98,6 @@ public class ChatDashboardController {
     @FXML
     private TextField sendMessageTextField;
 
-
     @FXML
     private BorderPane contentBorderPane;
 
@@ -140,7 +139,7 @@ public class ChatDashboardController {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/addFriendsView.fxml"));
         Parent root = fxmlLoader.load();
         AddFriendsController controller = fxmlLoader.getController();
-        controller.setController(loggedInUser, this.userApiClient);
+        controller.setController(loggedInUser, this.userApiClient, this.contactApiClient);
         Stage stage = new Stage();
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.initStyle(StageStyle.UNDECORATED);
@@ -206,10 +205,19 @@ public class ChatDashboardController {
     public void addFriendsToFriendsList() throws IOException {
         if (contacts != null) {
             for (Contact c : contacts) {
-                friendsList.getChildren().add(new Label(c.getContactUsername()));
+                Label contactLabel = new Label(c.getContactUsername());
+                if ("ACCEPTED".equals(c.getStatus())) {
+                    contactLabel.setStyle("-fx-text-fill: green;");
+                }
+
+                if ("PENDING".equals(c.getStatus())) {
+                    contactLabel.setStyle("-fx-text-fill: orange;");
+                } else {
+                    // BLOCKED
+                    contactLabel.setStyle("-fx-text-fill: red;");
+                }
+                friendsList.getChildren().add(contactLabel);
             }
         }
     }
-
-
 }
