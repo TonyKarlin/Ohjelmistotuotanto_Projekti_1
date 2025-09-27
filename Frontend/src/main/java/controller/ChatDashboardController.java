@@ -56,13 +56,14 @@ public class ChatDashboardController implements ContactUpdateCallback {
         this.loggedInUser = loggedInUser;
         this.userApiClient = userApiClient;
         setUpUsername();
-
         this.conversations = getUserConversations();
         this.contacts = getUserContacts();
-
+        this.pendingContacts = getPendingUserContacts();
+        this.sentContacts = getSentUserContacts();
+        imageRounder = new ImageRounder(userProfilePicture);
+        setUpUsername();
         addConversation();
         addFriendsToFriendsList();
-        imageRounder = new ImageRounder(userProfilePicture);
     }
 
     @FXML
@@ -118,7 +119,6 @@ public class ChatDashboardController implements ContactUpdateCallback {
 
     public void setUpUsername() {
         loggedInUsername.setText(loggedInUser.getUsername());
-
     }
 
     public List<Conversation> getUserConversations() throws IOException, InterruptedException {
@@ -136,7 +136,7 @@ public class ChatDashboardController implements ContactUpdateCallback {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/userProfileView.fxml"));
         VBox userProfile = fxmlLoader.load();
         UserProfileController controller = fxmlLoader.getController();
-        controller.setController(loggedInUser, this.userApiClient);
+        controller.setController(loggedInUser, this.userApiClient, this);
         VBoxContentPane.getChildren().add(userProfile);
     }
 

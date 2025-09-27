@@ -138,7 +138,18 @@ public class UserController {
 
             userService.save(user);
 
-            return ResponseEntity.ok(new UserDTO(user));
+            String newToken = JwtUtil.generateToken(user.getUsername());
+
+            Map<String, Object> response = new HashMap<>();
+            response.put("id", user.getId());
+            response.put("username", user.getUsername());
+            response.put("email", user.getEmail());
+            response.put("profilePictureUrl", user.getProfilePicture() != null
+                    ? "http://localhost:8080/uploads/" + user.getProfilePicture()
+                    : null);
+            response.put("token", newToken);
+
+            return ResponseEntity.ok(response);
 
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)

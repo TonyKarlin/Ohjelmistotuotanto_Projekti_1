@@ -32,7 +32,7 @@ public class UserApiClientTest {
 
     @Test
     public void loginUserTest() {
-        loginRequest = new LoginRequest("Testopipp", "1234");
+        loginRequest = new LoginRequest("pekkaaa", "1234");
         User loggedInUser = userApiClient.loginUser(loginRequest);
         System.out.println("Username: " + loggedInUser.getUsername());
         System.out.println("Id: " + loggedInUser.getId());
