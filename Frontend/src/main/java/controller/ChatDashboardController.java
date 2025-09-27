@@ -58,8 +58,6 @@ public class ChatDashboardController implements ContactUpdateCallback {
         setUpUsername();
         this.conversations = getUserConversations();
         this.contacts = getUserContacts();
-        this.pendingContacts = getPendingUserContacts();
-        this.sentContacts = getSentUserContacts();
         imageRounder = new ImageRounder(userProfilePicture);
         setUpUsername();
         addConversation();
