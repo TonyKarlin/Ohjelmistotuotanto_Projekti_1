@@ -127,25 +127,15 @@
    <right>
       <VBox alignment="CENTER_LEFT" prefHeight="808.0" prefWidth="238.0" BorderPane.alignment="CENTER">
          <children>
+            <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="31.0" prefWidth="374.0" text="Friends" textFill="#c3c3c3" VBox.vgrow="ALWAYS">
+               <font>
+                  <Font name="System Bold" size="21.0" />
+               </font>
+            </Label>
             <VBox fx:id="friendsList" alignment="TOP_CENTER" prefHeight="612.0" prefWidth="188.0" styleClass="VBox" VBox.vgrow="ALWAYS">
                <VBox.margin>
                   <Insets bottom="10.0" left="10.0" right="10.0" />
                </VBox.margin>
-               <children>
-                  <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="42.0" prefWidth="154.0" text="Friends" textFill="#c3c3c3">
-                     <font>
-                        <Font name="System Bold" size="21.0" />
-                     </font>
-                     <VBox.margin>
-                        <Insets top="10.0" />
-                     </VBox.margin>
-                  </Label>
-                  <Separator prefHeight="10.0" prefWidth="10.0">
-                     <VBox.margin>
-                        <Insets left="20.0" right="20.0" top="10.0" />
-                     </VBox.margin>
-                  </Separator>
-               </children>
             </VBox>
          </children>
       </VBox>
