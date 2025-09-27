@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -54,9 +55,22 @@ public class ContactsService {
         return allContacts;
     }
 
+    private void checkForExistingContact(User user, User contactUser) {
+        contactsRepository.findByUserAndContact(contactUser, user)
+                .or(() -> contactsRepository.findByUserAndContact(user, contactUser))
+                .ifPresent(c -> {
+                    throw new ContactAlreadyExistsException("Contact already exists or request pending between users");
+                });
+    }
+
     private Contacts searchForExistingContact(User user, User contactUser) {
         return contactsRepository.findByUserAndContact(contactUser, user)
                 .or(() -> contactsRepository.findByUserAndContact(user, contactUser))
+                .orElse(null);
+    }
+
+    public Contacts searchForIncomingRequest(User user, User sender) {
+        return contactsRepository.findByUserAndContact(sender, user)
                 .orElse(null);
     }
 
@@ -74,10 +88,7 @@ public class ContactsService {
         User contactUser = userRepository.findById(contactUserId).orElseThrow(() ->
                 new UserNotFoundException("Contact user not found with id: " + contactUserId));
 
-        contactsRepository.findByUserAndContact(user, contactUser).ifPresent(contact -> {
-            throw new ContactAlreadyExistsException("Contact already exists between user " + userId +
-                    " and contact " + contactUserId);
-        });
+        checkForExistingContact(user, contactUser);
 
         Contacts contact = createContactBetweenUsers(user, contactUser);
         return convertToDTO(contact, user);
@@ -90,7 +101,8 @@ public class ContactsService {
         User contactUser = userRepository.findById(contactUserId).orElseThrow(() ->
                 new UserNotFoundException("Contact user not found with id: " + contactUserId));
 
-        Contacts contact = searchForExistingContact(user, contactUser);
+
+        Contacts contact = searchForIncomingRequest(user, contactUser);
 
         contact.setStatus(ContactStatus.ACCEPTED);
         contactsRepository.save(contact);
