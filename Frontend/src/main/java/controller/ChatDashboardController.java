@@ -3,6 +3,7 @@ package controller;
 import java.io.IOException;
 import java.util.List;
 
+import callback.ContactUpdateCallback;
 import controller.component.ContactHboxController;
 import controller.component.ConversationHBoxController;
 import controller.component.MessageHBoxController;
@@ -38,7 +39,7 @@ import service.UserApiClient;
 import utils.ImageRounder;
 
 @Data
-public class ChatDashboardController {
+public class ChatDashboardController implements ContactUpdateCallback {
 
     User loggedInUser;
     UserApiClient userApiClient;
@@ -58,8 +59,6 @@ public class ChatDashboardController {
 
         this.conversations = getUserConversations();
         this.contacts = getUserContacts();
-        this.pendingContacts = getPendingUserContacts();
-        this.sentContacts = getSentUserContacts();
 
         addConversation();
         addFriendsToFriendsList();
@@ -130,14 +129,6 @@ public class ChatDashboardController {
         return contactApiClient.getAllUserContacts(loggedInUser);
     }
 
-    public List<Contact> getPendingUserContacts() throws IOException, InterruptedException {
-        return contactApiClient.getAllPendingUserContacts(loggedInUser);
-    }
-
-    public List<Contact> getSentUserContacts() throws IOException, InterruptedException {
-        return contactApiClient.getAllSentUserContacts(loggedInUser);
-    }
-
     @FXML
     public void openUserProfile(MouseEvent event) throws IOException {
         contentBorderPane.setBottom(null);
@@ -154,7 +145,7 @@ public class ChatDashboardController {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/addFriendsView.fxml"));
         Parent root = fxmlLoader.load();
         AddFriendsController controller = fxmlLoader.getController();
-        controller.setController(loggedInUser, this.userApiClient, this.contactApiClient, this.contacts, this.pendingContacts, this.sentContacts);
+        controller.setController(loggedInUser, this.userApiClient, this.contactApiClient, this.contacts, this);
         Stage stage = new Stage();
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.initStyle(StageStyle.UNDECORATED);
@@ -219,12 +210,26 @@ public class ChatDashboardController {
 
     public void addFriendsToFriendsList() throws IOException {
         for (Contact contact : contacts) {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/component/contactHBox.fxml"));
-            HBox userContactsHbox = loader.load();
-            ContactHboxController controller = loader.getController();
-            controller.setController(contact, this);
-            controller.setUsername(contact.getContactUsername());
-            friendsList.getChildren().add(userContactsHbox);
+            if ("ACCEPTED".equals(contact.getStatus())) {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/component/contactHBox.fxml"));
+                HBox userContactsHbox = loader.load();
+                ContactHboxController controller = loader.getController();
+                controller.setController(contact, this);
+                controller.setUsername(contact.getContactUsername());
+                friendsList.getChildren().add(userContactsHbox);
+            }
         }
+    }
+
+    @Override
+    public void onContactsUpdated(List<Contact> updatedContacts) throws IOException {
+        // Update the local contacts list
+        this.contacts = updatedContacts;
+
+        // Clear the current friends list UI
+        friendsList.getChildren().clear();
+
+        // Refresh the friends list UI with updated contacts
+        addFriendsToFriendsList();
     }
 }
