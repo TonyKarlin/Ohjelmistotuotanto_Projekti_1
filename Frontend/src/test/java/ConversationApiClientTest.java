@@ -1,6 +1,8 @@
 
 import java.io.IOException;
+import java.util.List;
 
+import model.ConversationParticipant;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -15,12 +17,14 @@ public class ConversationApiClientTest {
     private ConversationRequest conversationRequest;
     private ConversationApiClient conversationApiClient;
     User user;
+    ConversationParticipant participant;
 
     @BeforeEach
     public void setUp() throws Exception {
         conversation = new Conversation();
         conversationApiClient = new ConversationApiClient();
         user = new User();
+        ConversationParticipant participant = new ConversationParticipant();
     }
 
     /**
@@ -84,32 +88,32 @@ public class ConversationApiClientTest {
     @Test
     public void testRemoveUserFromConversation() throws IOException, InterruptedException {
         conversation.setId(3);
-        user.setUserId(3);
-        conversationApiClient.removeUserFromConversation(conversation, user);
+        participant.setUserId(3);
+        conversationApiClient.removeUserFromConversation(conversation, participant);
     }
 
     /**
      * Tests fetching all conversations that a user participates in.
      */
-    // @Test
-    // public void testGetConversationByUserId() throws IOException, InterruptedException {
-    //     user.setId(1);
-    //     List<Conversation> conversations = conversationApiClient.getConversationsById(user);
-    //     for (Conversation c : conversations) {
-    //         System.out.println("Conversation ID: " + c.getId());
-    //         System.out.println("Conversation Type:: " + c.getType());
-    //         System.out.println("Conversation Name:: " + c.getName());
-    //         System.out.println("Conversation Created By: " + c.getCreatedBy());
-    //         System.out.println("Conversation Created At: " + c.getCreatedAt());
-    //         for (User u : c.getParticipants()) {
-    //             System.out.println(" ");
-    //             System.out.println("userId: " + u.getUserId());
-    //             System.out.println("username: " + u.getUsername());
-    //             System.out.println("role: " + u.getRole());
-    //         }
-    //         System.out.println(" ");
-    //     }
-    // }
+     @Test
+     public void testGetConversationByUserId() throws IOException, InterruptedException {
+         user.setId(1);
+         List<Conversation> conversations = conversationApiClient.getConversationsById(user);
+         for (Conversation c : conversations) {
+             System.out.println("Conversation ID: " + c.getId());
+             System.out.println("Conversation Type:: " + c.getType());
+             System.out.println("Conversation Name:: " + c.getName());
+             System.out.println("Conversation Created By: " + c.getCreatedBy());
+             System.out.println("Conversation Created At: " + c.getCreatedAt());
+             for (ConversationParticipant u : c.getParticipants()) {
+                 System.out.println(" ");
+                 System.out.println("userId: " + u.getUserId());
+                 System.out.println("username: " + u.getUsername());
+                 System.out.println("role: " + u.getRole());
+             }
+             System.out.println(" ");
+         }
+     }
     /**
      * Tests fetching all conversations in the system.
      */

@@ -21,12 +21,14 @@ public class UserProfileController {
 
     User loggedInUser;
     UserApiClient client;
+    ChatDashboardController parentController;
     UIAlert uiAlert = new UIAlert();
 
 
-    public void setController(User loggedInUser, UserApiClient client) {
+    public void setController(User loggedInUser, UserApiClient client, ChatDashboardController parentController) {
         this.loggedInUser = loggedInUser;
         this.client = client;
+        this.parentController = parentController;
         addUserInformation(loggedInUser);
     }
 
@@ -68,16 +70,22 @@ public class UserProfileController {
 
     @FXML
     public void changeInformation(ActionEvent event) {
+        System.out.println(loggedInUser.getToken());
+        System.out.println(loggedInUser.getId());
         String newUsername = usernameTextField.getText();
         String newEmail = emailTextField.getText();
-        String oldPassword = passwordField.getText();
-        String newPassword = repeatPasswordField.getText();
+        String newPassword = passwordField.getText();
+        UpdateUserRequest request = new UpdateUserRequest(newUsername, newEmail, newPassword);
+        User updatedUser = client.updateUser(request, loggedInUser);
+        if(updatedUser != null) {
+            String token = loggedInUser.getToken();
+            loggedInUser = updatedUser;
+            loggedInUser.setToken(token);
+            parentController.setLoggedInUser(loggedInUser);
+            parentController.setUpUsername();
+            addUserInformation(loggedInUser);
 
-        UpdateUserRequest request = new UpdateUserRequest(newUsername, newEmail,loggedInUser.getUserId(), oldPassword, newPassword);
-        this.loggedInUser = client.updateUser(request, loggedInUser);
-        System.out.println(loggedInUser.getUsername());
-
-
+        }
     }
 
     @FXML

@@ -38,7 +38,7 @@ public class UserApiClient implements ApiClient {
 
     public User updateUser(UpdateUserRequest request, User user) {
         try {
-            String url = usersUrl + "/"+ request.getUserId();
+            String url = usersUrl + "/"+ user.getId();
             String token = user.getToken();
             ApiResponse response = sendPutRequestWithObjectAndToken(url, request, token);
             if (response.isSuccess()) {

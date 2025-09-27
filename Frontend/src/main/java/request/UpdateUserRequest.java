@@ -7,17 +7,13 @@ public class UpdateUserRequest {
 
     private String username;
     private String email;
-    private int userId;
-    private String oldPassword;
-    private String newPassword;
+    private String password;
 
     public UpdateUserRequest() {}
 
-    public UpdateUserRequest(String username, String email, int userId, String oldPassword, String newPassword) {
+    public UpdateUserRequest(String username, String email, String password) {
         this.username = username;
         this.email = email;
-        this.userId = userId;
-        this.oldPassword = oldPassword;
-        this. newPassword = newPassword;
+        this.password = password;
     }
 }
