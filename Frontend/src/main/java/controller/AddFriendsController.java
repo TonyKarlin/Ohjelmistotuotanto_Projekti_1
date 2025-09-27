@@ -52,7 +52,7 @@ public class AddFriendsController {
                     List<Contact> contacts = contactApiClient.getAllUserContacts(loggedInuser);
                     boolean alreadyContact = false;
                     if (contacts != null) {
-                        for (model.Contact contact : contacts) {
+                        for (Contact contact : contacts) {
                             if (contact.getContactUserId() == foundUser.getId()) {
                                 alreadyContact = true;
                                 break;
@@ -60,6 +60,7 @@ public class AddFriendsController {
                         }
                     }
                     if (alreadyContact) {
+                        System.out.println();
                         System.out.println("You are already friends with this user.");
                         return;
                     }
