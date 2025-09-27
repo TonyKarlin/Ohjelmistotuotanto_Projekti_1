@@ -3,8 +3,6 @@ package service;
 import com.fasterxml.jackson.core.type.TypeReference;
 import model.Conversation;
 import model.Message;
-import model.User;
-import request.ConversationRequest;
 import request.MessageRequest;
 import utils.ApiUrl;
 

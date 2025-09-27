@@ -10,14 +10,23 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Circle;
 import model.User;
+import request.UpdateUserRequest;
+import service.UserApiClient;
+import utils.UIAlert;
+
+import java.util.Objects;
 
 
 public class UserProfileController {
 
     User loggedInUser;
+    UserApiClient client;
+    UIAlert uiAlert = new UIAlert();
 
-    public void setController(User loggedInUser) {
+
+    public void setController(User loggedInUser, UserApiClient client) {
         this.loggedInUser = loggedInUser;
+        this.client = client;
         addUserInformation(loggedInUser);
     }
 
@@ -59,20 +68,28 @@ public class UserProfileController {
 
     @FXML
     public void changeInformation(ActionEvent event) {
+        String newUsername = usernameTextField.getText();
+        String newEmail = emailTextField.getText();
+        String oldPassword = passwordField.getText();
+        String newPassword = repeatPasswordField.getText();
+
+        UpdateUserRequest request = new UpdateUserRequest(newUsername, newEmail,loggedInUser.getUserId(), oldPassword, newPassword);
+        this.loggedInUser = client.updateUser(request, loggedInUser);
+        System.out.println(loggedInUser.getUsername());
+
 
     }
 
     @FXML
-    public void changeUserStatus(MouseEvent  event) {
+    public void changeUserStatus(MouseEvent event) {
         Circle clickedCircle = (Circle) event.getSource();
         userCurrentStatus.setFill(clickedCircle.getFill());
 
     }
 
-        public void addUserInformation (User loggedInUser){
-            emailTextField.setText(loggedInUser.getEmail());
-            usernameTextField.setText(loggedInUser.getUsername());
-        }
-
+    public void addUserInformation(User loggedInUser) {
+        emailTextField.setText(loggedInUser.getEmail());
+        usernameTextField.setText(loggedInUser.getUsername());
     }
+}
 

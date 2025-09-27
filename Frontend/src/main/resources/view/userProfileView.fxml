@@ -14,7 +14,6 @@
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 
-
 <VBox alignment="CENTER" maxHeight="852.0" maxWidth="752.0" prefHeight="852.0" prefWidth="752.0" styleClass="userProfile" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.UserProfileController">
    <children>
       <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="30.0" prefWidth="316.0" text="Change User information" textFill="#d3d3d3">
@@ -104,7 +103,7 @@
             <Insets bottom="20.0" />
          </VBox.margin>
       </TextField>
-      <Label layoutX="128.0" layoutY="311.0" prefHeight="21.0" prefWidth="405.0" text="PASSWORD " textFill="#c3c3c3">
+      <Label layoutX="128.0" layoutY="311.0" prefHeight="21.0" prefWidth="405.0" text="NEW PASSWORD" textFill="#c3c3c3">
          <font>
             <Font size="15.0" />
          </font>

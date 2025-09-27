@@ -131,7 +131,7 @@ public class ChatDashboardController {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/userProfileView.fxml"));
         VBox userProfile = fxmlLoader.load();
         UserProfileController controller = fxmlLoader.getController();
-        controller.setController(loggedInUser);
+        controller.setController(loggedInUser, this.userApiClient);
         VBoxContentPane.getChildren().add(userProfile);
     }
 

@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 
 import model.User;
 import request.LoginRequest;
+import request.UpdateUserRequest;
 import utils.ApiUrl;
 
 public class UserApiClient implements ApiClient {
@@ -32,6 +33,24 @@ public class UserApiClient implements ApiClient {
             }
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException("Failed to register user", e);
+        }
+    }
+
+    public User updateUser(UpdateUserRequest request, User user) {
+        try {
+            String url = usersUrl + "/"+ request.getUserId();
+            String token = user.getToken();
+            ApiResponse response = sendPutRequestWithObjectAndToken(url, request, token);
+            if (response.isSuccess()) {
+                System.out.println(response.body);
+                return objectMapper.readValue(response.body, User.class);
+            } else {
+                System.out.println("Failed to Update user. Status: "
+                        + response.statusCode + ", Response: " + response.body);
+                return null;
+            }
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException("Failed to Update user", e);
         }
     }
 
