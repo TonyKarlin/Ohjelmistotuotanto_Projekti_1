@@ -8,6 +8,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.shape.Circle;
 import lombok.Data;
 import model.Conversation;
+import utils.ImageRounder;
 
 import java.io.IOException;
 
@@ -17,10 +18,12 @@ public class ConversationHBoxController {
 
     Conversation conversation;
     ChatDashboardController parentController;
+    ImageRounder imageRounder;
 
     public void setController(Conversation conversation, ChatDashboardController parentController) {
         this.conversation = conversation;
         this.parentController = parentController;
+        imageRounder = new ImageRounder(contactUserPicture);
     }
 
 
@@ -41,7 +44,6 @@ public class ConversationHBoxController {
     public void setUserImage(Image image) {
         contactUserPicture.setImage(image);
     }
-
 
     @FXML
     public void openMessages() throws IOException, InterruptedException {

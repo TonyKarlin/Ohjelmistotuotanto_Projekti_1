@@ -16,6 +16,7 @@ public class User {
     private String role;
     private int userId;
     private String profilePictureUrl;
+    private String profilePicture;
 
     // Default constructor (needed for Jackson/ObjectMapper)
     public User() {

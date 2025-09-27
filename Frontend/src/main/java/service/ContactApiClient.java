@@ -7,6 +7,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 
 import model.Contact;
 import model.User;
+import request.ContactRequest;
 import utils.ApiUrl;
 
 public class ContactApiClient implements ApiClient {
@@ -19,7 +20,7 @@ public class ContactApiClient implements ApiClient {
 
     // Get a list of contacts(friends) of the current user
     public List<Contact> getAllUserContacts(User user) throws IOException, InterruptedException {
-        ApiResponse response = sendGetRequest(baseUrl + "/" + user.getId());
+        ApiResponse response = sendGetRequest(baseUrl + "/user/" + user.getId());
         System.out.println(baseUrl + "/" + user.getId());
         if (response.isSuccess()) {
             System.out.println("Response: " + response.body);
@@ -30,6 +31,22 @@ public class ContactApiClient implements ApiClient {
                     + ", Response: " + response.body);
             return null;
         }
-
     }
+
+    public Contact addContact(ContactRequest contactRequest) throws IOException, InterruptedException {
+
+        String contactUrl = baseUrl + "/add?userId=" + contactRequest.getUserId() + "&contactUserId=" + contactRequest.getContactUserId();
+
+        String jsonBody = objectMapper.writeValueAsString(contactRequest);
+        ApiResponse response = sendPostRequest(contactUrl, jsonBody);
+        if (response.isSuccess()) {
+            System.out.println("Response: " + response.body);
+            return objectMapper.readValue(response.body, Contact.class);
+        } else {
+            System.out.println("Failed to add contact. Status: " + response.statusCode
+                    + ", Response: " + response.body);
+            return null;
+        }
+    }
+
 }

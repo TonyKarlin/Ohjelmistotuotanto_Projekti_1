@@ -1,28 +1,63 @@
 package controller.component;
 
+import controller.ChatDashboardController;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
+import javafx.scene.control.MenuButton;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
 import lombok.Data;
 import model.Message;
+import request.MessageRequest;
+import service.MessageApiClient;
+import utils.ImageRounder;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
+import java.io.IOException;
 
 @Data
 public class MessageHBoxController {
-    int id;
+    private int id;
+    private int senderId;
+    private int conversationId;
+    private ChatDashboardController parentController;
+    private ImageRounder imagerounder;
 
-    Message message;
+    private Message message;
 
-    public void setController(Message message) {
+    public MessageHBoxController() {}
+
+    public void setController(Message message, ChatDashboardController parentController) {
         this.message = message;
+        this.parentController = parentController;
+        imagerounder = new ImageRounder(userProfilePicture);
+        setTextInModifyField();
     }
 
+    @FXML
+    private MenuItem deleteMenuitem;
+
+    @FXML
+    private TextField editTextField;
 
     @FXML
     private Label messageLabel;
 
     @FXML
+    private MenuButton messageOptionButton;
+
+    @FXML
     private Label messageTimeLabel;
+
+    @FXML
+    private MenuItem modifyMenuItem;
+
+    @FXML
+    private HBox rootHbox;
 
     @FXML
     private Label senderUsernameLabel;
@@ -30,14 +65,56 @@ public class MessageHBoxController {
     @FXML
     private ImageView userProfilePicture;
 
-    public MessageHBoxController() {
+    @FXML
+    private void showMenuOption() {
+        messageOptionButton.setVisible(true);
 
     }
+
+    @FXML
+    private void hideMenuOption() {
+        if (!messageOptionButton.isShowing()) {
+            messageOptionButton.setVisible(false);
+        }
+
+
+    }
+
+    public void setTextInModifyField() {
+        String text = message.getText();
+        editTextField.setText(text);
+    }
+
 
     public void setMessageInformation(String text,String createdAt, String senderUsername) {
         messageLabel.setText(text);
-        messageTimeLabel.setText(createdAt);
         senderUsernameLabel.setText(senderUsername);
+        String formattedTime = formatTime(createdAt);
+        messageTimeLabel.setText(formattedTime);
+
     }
 
+    public String formatTime(String createdAt) {
+        LocalDateTime dateTime = LocalDateTime.parse(createdAt, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+        DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("dd-MM HH:mm");
+        return dateTime.format(outputFormatter);
+    }
+
+    @FXML
+    public void deleteMessage() throws IOException, InterruptedException {
+        int loggedInUSerId = parentController.getLoggedInUser().getId();
+        MessageRequest request = new MessageRequest(conversationId, loggedInUSerId, message.getId());
+        MessageApiClient client = new MessageApiClient();
+        client.deleteMessage(request);
+    }
+
+
+    @FXML
+    public void modifyMessage() throws IOException, InterruptedException {
+        int loggedInUserId = parentController.getLoggedInUser().getId();
+        String modifiedText = editTextField.getText();
+        MessageRequest request = new MessageRequest(conversationId,modifiedText, message.getId(), loggedInUserId);
+        MessageApiClient client = new MessageApiClient();
+        client.modifyMessage(request);
+    }
 }

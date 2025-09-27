@@ -9,6 +9,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
@@ -19,7 +20,7 @@
             <Insets />
          </BorderPane.margin>
          <right>
-            <Button alignment="CENTER" contentDisplay="RIGHT" mnemonicParsing="false" prefHeight="43.0" prefWidth="100.0" text="Log out" textAlignment="CENTER" textFill="WHITE" BorderPane.alignment="CENTER_RIGHT">
+            <Button fx:id="logoutButton" alignment="CENTER" contentDisplay="RIGHT" mnemonicParsing="false" onAction="#logoutUser" prefHeight="43.0" prefWidth="100.0" text="Log out" textAlignment="CENTER" textFill="WHITE" BorderPane.alignment="CENTER_RIGHT">
                <font>
                   <Font name="System Bold" size="17.0" />
                </font>
@@ -49,24 +50,28 @@
             <Insets bottom="10.0" right="10.0" />
          </BorderPane.margin>
          <center>
-            <VBox fx:id="VBoxContentPane" alignment="CENTER" prefHeight="692.0" prefWidth="988.0" spacing="10.0" BorderPane.alignment="CENTER" />
+            <VBox fx:id="VBoxContentPane" alignment="TOP_CENTER" prefHeight="692.0" prefWidth="1000.0" BorderPane.alignment="CENTER" />
          </center>
       </BorderPane>
    </center>
    <left>
       <VBox alignment="CENTER_LEFT" prefHeight="808.0" prefWidth="238.0" BorderPane.alignment="CENTER">
          <children>
-            <HBox alignment="CENTER" prefHeight="116.0" prefWidth="188.0" styleClass="VBox">
+            <HBox alignment="CENTER" fillHeight="false" prefHeight="116.0" prefWidth="188.0" styleClass="VBox">
                <VBox.margin>
                   <Insets bottom="10.0" left="10.0" right="10.0" />
                </VBox.margin>
                <children>
-                  <ImageView fx:id="userProfilePicture" fitHeight="55.0" fitWidth="63.0" onMouseClicked="#openUserProfile" pickOnBounds="true" preserveRatio="true" styleClass="ImageView">
-                     <image>
-                        <Image url="@../img/img_2.png" />
-                     </image>
-                  </ImageView>
-                  <Label fx:id="loggedInUsername" alignment="TOP_LEFT" contentDisplay="CENTER" prefHeight="55.0" prefWidth="131.0" text="Username" textFill="#c3c3c3">
+                  <StackPane fx:id="userProfileContent" prefHeight="55.0" prefWidth="48.0" HBox.hgrow="NEVER">
+                     <children>
+                        <ImageView fx:id="userProfilePicture" fitHeight="60.0" fitWidth="60.0" onMouseClicked="#openUserProfile" pickOnBounds="true" preserveRatio="true" styleClass="ImageView">
+                           <image>
+                              <Image url="@../img/img_2.png" />
+                           </image>
+                        </ImageView>
+                     </children>
+                  </StackPane>
+                  <Label fx:id="loggedInUsername" alignment="TOP_LEFT" contentDisplay="CENTER" prefHeight="57.0" prefWidth="131.0" text="Username" textFill="#c3c3c3">
                      <font>
                         <Font name="System Bold" size="17.0" />
                      </font>

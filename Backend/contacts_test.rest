@@ -1,27 +1,27 @@
 ### GET -- kaikki kontaktit
-GET http://localhost:8080/api/contacts/user/7
+GET http://localhost:8081/api/contacts/user/1
 Accept: application/json
 
 ### GET -- yksittäinen kontakti
-GET http://localhost:8080/api/contacts/user/4/contact/7
+GET http://localhost:8081/api/contacts/user/1/contact/2
 Accept: application/json
 
 ### GET -- kaikki tulleet ja odottavat / pending kontaktipyynnöt
-GET http://localhost:8080/api/contacts/user/9/pending
+GET http://localhost:8081/api/contacts/user/2/pending
 Accept: application/json
 
 ### GET -- kaikki lähetetyt odottavat / pending kontaktipyynnöt
-GET http://localhost:8080/api/contacts/user/9/sent
+GET http://localhost:8081/api/contacts/user/1/sent
 Accept: application/json
 
 ### POST -- uusi kontakti
-POST http://localhost:8080/api/contacts/add?userId=7&contactUserId=9
+POST http://localhost:8081/api/contacts/add?userId=1&contactUserId=2
 Content-Type: application/json
 
 ### POST -- hyväksytään kontakti
-POST http://localhost:8080/api/contacts/accept?userId=9&contactUserId=7
+POST http://localhost:8081/api/contacts/accept?userId=1&contactUserId=2
 Content-Type: application/json
 
 ### DELETE -- poistetaan kontakti
-DELETE http://localhost:8080/api/contacts?userId=7&contactUserId=9
+DELETE http://localhost:8081/api/contacts?userId=1&contactUserId=2
 Content-Type: application/json

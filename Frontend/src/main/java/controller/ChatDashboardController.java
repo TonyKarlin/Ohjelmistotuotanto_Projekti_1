@@ -5,8 +5,11 @@ import java.util.List;
 
 import controller.component.ConversationHBoxController;
 import controller.component.MessageHBoxController;
+import controller.component.SendMessageHBoxController;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -16,11 +19,13 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import lombok.Data;
 import model.Contact;
 import model.Conversation;
 import model.Message;
@@ -29,18 +34,19 @@ import service.ContactApiClient;
 import service.ConversationApiClient;
 import service.MessageApiClient;
 import service.UserApiClient;
+import utils.ImageRounder;
 
+@Data
 public class ChatDashboardController {
 
     User loggedInUser;
     UserApiClient userApiClient;
     ConversationApiClient conversationApiClient = new ConversationApiClient();
-    List<Conversation> conversations;
-
     MessageApiClient messageApiClient = new MessageApiClient();
-
     ContactApiClient contactApiClient = new ContactApiClient();
+    List<Conversation> conversations;
     List<Contact> contacts;
+    private ImageRounder imageRounder;
 
     public void setController(User loggedInUser, UserApiClient userApiClient) throws IOException, InterruptedException {
         this.loggedInUser = loggedInUser;
@@ -48,10 +54,16 @@ public class ChatDashboardController {
         setUpUsername();
         conversations = getUserConversations();
         contacts = getUserContacts();
-        // addConversation();
+        addConversation();
         addFriendsToFriendsList();
-
+        imageRounder = new ImageRounder(userProfilePicture);
     }
+
+    @FXML
+    private ImageView userProfilePicture;
+
+    @FXML
+    private StackPane userProfileContent;
 
     @FXML
     private Button addFriendsButton;
@@ -87,9 +99,6 @@ public class ChatDashboardController {
     private TextField sendMessageTextField;
 
     @FXML
-    private ImageView userProfilePicture;
-
-    @FXML
     private BorderPane contentBorderPane;
 
     @FXML
@@ -103,6 +112,7 @@ public class ChatDashboardController {
 
     public void setUpUsername() {
         loggedInUsername.setText(loggedInUser.getUsername());
+
     }
 
     public List<Conversation> getUserConversations() throws IOException, InterruptedException {
@@ -115,30 +125,69 @@ public class ChatDashboardController {
 
     @FXML
     public void openUserProfile(MouseEvent event) throws IOException {
+        contentBorderPane.setBottom(null);
         VBoxContentPane.getChildren().clear();
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/userProfileView.fxml"));
         VBox userProfile = fxmlLoader.load();
         UserProfileController controller = fxmlLoader.getController();
-        controller.setController(loggedInUser);
+        controller.setController(loggedInUser, this.userApiClient);
         VBoxContentPane.getChildren().add(userProfile);
+    }
 
+    @FXML
+    public void openAddFriendsView() throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/addFriendsView.fxml"));
+        Parent root = fxmlLoader.load();
+        AddFriendsController controller = fxmlLoader.getController();
+        controller.setController(loggedInUser, this.userApiClient, this.contactApiClient);
+        Stage stage = new Stage();
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.initStyle(StageStyle.UNDECORATED);
+        stage.setScene(new Scene(root));
+        stage.show();
+    }
+
+    @FXML
+    public void logoutUser(ActionEvent event) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/loginView.fxml"));
+        Parent root = fxmlLoader.load();
+        Stage stage = new Stage();
+        stage.setScene(new Scene(root));
+        loggedInUser = null;
+        conversations = null;
+        contacts = null;
+        Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        currentStage.close();
+        LoginController controller = fxmlLoader.getController();
+        controller.setController(this.userApiClient);
+        stage.show();
     }
 
     public void showConversationMessages(Conversation conversation) throws IOException, InterruptedException {
         VBoxContentPane.getChildren().clear();
         List<Message> messages = messageApiClient.getConversationMessages(conversation);
-        for (Message m : messages) {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/component/messageHBox.fxml"));
-            HBox messageHBox = fxmlLoader.load();
-            MessageHBoxController controller = fxmlLoader.getController();
-            controller.setController(m);
-            controller.setId(m.getId());
-            controller.setMessageInformation(m.getText(), m.getCreatedAt(), m.getSenderUsername());
-
-            VBoxContentPane.getChildren().add(messageHBox);
+        if (messages != null && !messages.isEmpty()) {
+            for (Message m : messages) {
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/component/messageHBox.fxml"));
+                HBox messageHBox = fxmlLoader.load();
+                MessageHBoxController controller = fxmlLoader.getController();
+                controller.setController(m, this);
+                controller.setConversationId(conversation.getId());
+                controller.setId(m.getId());
+                controller.setSenderId(m.getSenderId());
+                controller.setMessageInformation(m.getText(), m.getCreatedAt(), m.getSenderUsername());
+                VBoxContentPane.getChildren().add(messageHBox);
+            }
         }
+        sendMessageComponent(conversation);
+
+    }
+
+    public void sendMessageComponent(Conversation conversation) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/component/sendMessageHBox.fxml"));
         HBox sendMessageHBox = fxmlLoader.load();
+        SendMessageHBoxController controller = fxmlLoader.getController();
+        controller.setController(conversation, this.loggedInUser);
         contentBorderPane.setBottom(sendMessageHBox);
     }
 
@@ -154,22 +203,18 @@ public class ChatDashboardController {
     }
 
     public void addFriendsToFriendsList() throws IOException {
-        for (Contact c : contacts) {
-            friendsList.getChildren().add(new Label(c.getContactUsername()));
+        if (contacts != null) {
+            for (Contact c : contacts) {
+                Label contactLabel = new Label(c.getContactUsername());
+
+                if ("PENDING".equals(c.getStatus())) {
+                    contactLabel.setStyle("-fx-text-fill: orange;");
+                } else {
+                    contactLabel.setStyle("-fx-text-fill: green;");
+                }
+
+                friendsList.getChildren().add(contactLabel);
+            }
         }
     }
-
-    @FXML
-    public void openAddFriendsView() throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/addFriendsView.fxml"));
-        Parent root = fxmlLoader.load();
-        AddFriendsController controller = fxmlLoader.getController();
-        controller.setController(loggedInUser, this.userApiClient);
-        Stage stage = new Stage();
-        stage.initModality(Modality.APPLICATION_MODAL);
-        stage.initStyle(StageStyle.UNDECORATED);
-        stage.setScene(new Scene(root));
-        stage.show();
-    }
-
 }

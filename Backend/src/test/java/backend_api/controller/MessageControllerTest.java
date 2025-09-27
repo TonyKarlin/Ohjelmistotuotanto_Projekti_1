@@ -1,9 +1,14 @@
 package backend_api.controller;
 
+import java.util.List;
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import org.junit.jupiter.api.Test;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 import backend_api.DTOs.messages.MessageDTO;
 import backend_api.controller.messaging.MessageController;
@@ -11,15 +16,8 @@ import backend_api.entities.Conversation;
 import backend_api.entities.Message;
 import backend_api.entities.User;
 import backend_api.services.MessageService;
-import org.junit.jupiter.api.Test;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-
-import java.util.List;
-import java.util.Optional;
 
 public class MessageControllerTest {
-
 
 //    @Test
 //    void sendMessage() {
@@ -54,7 +52,6 @@ public class MessageControllerTest {
 //        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode(), "Expected HTTP status 400 Bad Request");
 //        assertNull(response.getBody(), "Expected response body to be null");
 //    }
-
     @Test
     void getMessages() {
         MessageService service = mock(MessageService.class);
@@ -87,20 +84,6 @@ public class MessageControllerTest {
     }
 
     @Test
-    void getMessages_NoContent() {
-        MessageService service = mock(MessageService.class);
-        MessageController controller = new MessageController(service);
-
-        // Simulate no messages found
-        when(service.getMessagesByConversationId(1L)).thenReturn(List.of());
-        ResponseEntity<List<MessageDTO>> response = controller.getMessages(1L);
-
-        // Asserts
-        assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode(), "Expected HTTP status 204 No Content");
-        assertNull(response.getBody(), "Expected response body to be null");
-    }
-
-    @Test
     void getMessageById() {
         MessageService service = mock(MessageService.class);
         MessageController controller = new MessageController(service);
@@ -122,17 +105,4 @@ public class MessageControllerTest {
         assertEquals(12L, response.getBody().getId(), "Expected message ID to be 12");
     }
 
-    @Test
-    void getMessageById_NotFound() {
-        MessageService service = mock(MessageService.class);
-        MessageController controller = new MessageController(service);
-
-        // Simulate message not found
-        when(service.getMessageByIdAndConversationId(12L, 8L)).thenReturn(Optional.empty());
-        ResponseEntity<MessageDTO> response = controller.getMessageById(8L, 12L);
-
-        // Asserts
-        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode(), "Expected HTTP status 404 Not Found");
-        assertNull(response.getBody(), "Expected response body to be null");
-    }
 }

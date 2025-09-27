@@ -1,14 +1,14 @@
 ### GET -- keskustelujen viestit
-GET http://localhost:8080/api/conversations/1/messages
+GET http://localhost:8081/api/conversations/1/messages
 Content-Type: application/json
 
 ### GET -- haluttu viesti keskustelusta
-GET http://localhost:8080/api/conversations/1/messages/2
+GET http://localhost:8081/api/conversations/1/messages/2
 Content-Type: application/json
 
 #### POST TESTI -- viestin lähetys
 @conversationId = 5
-POST http://localhost:8080/api/conversations/{{conversationId}}/messages
+POST http://localhost:8081/api/conversations/{{conversationId}}/messages
 Content-Type: application/json
 
 {
@@ -17,7 +17,7 @@ Content-Type: application/json
 }
 
 ### PUT -- viestin muokkaus
-PUT http://localhost:8080/api/conversations/5/messages/6
+PUT http://localhost:8081/api/conversations/5/messages/6
 Content-Type: application/json
 
 {
@@ -25,5 +25,5 @@ Content-Type: application/json
 }
 
 ### DELETE -- viestin poisto
-DELETE http://localhost:8080/api/conversations/5/messages/3?userId=2
+DELETE http://localhost:8081/api/conversations/5/messages/3?userId=2
 Content-Type: application/json

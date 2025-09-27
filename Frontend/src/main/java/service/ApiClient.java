@@ -64,6 +64,21 @@ public interface ApiClient {
 
     }
 
+    default ApiResponse sendPutRequestWithObjectAndToken(String urlString, Object body, String token) throws IOException, InterruptedException {
+        String requestBody = objectMapper.writeValueAsString(body);
+        HttpRequest request = HttpRequest.newBuilder()
+                .PUT(HttpRequest.BodyPublishers.ofString(requestBody))
+                .uri(URI.create(urlString))
+                .header("Content-Type", "Application/json")
+                .header("Authorization", "Bearer " + token)
+                .build();
+
+        HttpResponse<String> response = HttpClient.newHttpClient()
+                .send(request, HttpResponse.BodyHandlers.ofString());
+        return new ApiResponse(response.statusCode(), response.body());
+
+    }
+
     default ApiResponse sendPutRequestWithoutObject(String urlString) throws IOException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder()
                 .PUT(HttpRequest.BodyPublishers.noBody())

@@ -1,20 +1,18 @@
 
-import model.User;
+import java.net.MalformedURLException;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import model.User;
 import request.LoginRequest;
 import service.UserApiClient;
-
-
-import java.net.MalformedURLException;
 
 public class UserApiClientTest {
 
     private User user;
     private LoginRequest loginRequest;
     private UserApiClient userApiClient;
-
 
     @BeforeEach
     public void setUp() throws MalformedURLException {
@@ -34,13 +32,11 @@ public class UserApiClientTest {
 
     @Test
     public void loginUserTest() {
-        loginRequest = new LoginRequest("test", "1234");
-        User user = userApiClient.loginUser(loginRequest);
-        System.out.println("Username: " + user.getUsername());
-        System.out.println("Id: " + user.getId());
-        System.out.println("JWT Token: " + user.getToken());
+        loginRequest = new LoginRequest("Testopipp", "1234");
+        User loggedInUser = userApiClient.loginUser(loginRequest);
+        System.out.println("Username: " + loggedInUser.getUsername());
+        System.out.println("Id: " + loggedInUser.getId());
+        System.out.println("JWT Token: " + loggedInUser.getToken());
     }
-
-
 
 }

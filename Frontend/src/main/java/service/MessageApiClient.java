@@ -3,8 +3,6 @@ package service;
 import com.fasterxml.jackson.core.type.TypeReference;
 import model.Conversation;
 import model.Message;
-import model.User;
-import request.ConversationRequest;
 import request.MessageRequest;
 import utils.ApiUrl;
 
@@ -18,9 +16,9 @@ public class MessageApiClient implements ApiClient {
     public MessageApiClient() {
     }
 
-    public Message sendMessage(MessageRequest request, Conversation conversation) {
+    public Message sendMessage(MessageRequest request) {
         try {
-            String messageUrl = baseUrl + "/" + conversation.getId() + "/messages";
+            String messageUrl = baseUrl + "/" + request.getConversationId() + "/messages";
             ApiResponse response = sendPostRequest(messageUrl, request);
             if ((response.isSuccess())) {
                 return objectMapper.readValue(response.body, Message.class);
@@ -36,7 +34,9 @@ public class MessageApiClient implements ApiClient {
     }
 
     public Message modifyMessage(MessageRequest messageRequest) throws IOException, InterruptedException {
-        String messageUrl = baseUrl + "/" + messageRequest.getConversationId() + "/messages/" + messageRequest.getMessageId();
+        String messageUrl = baseUrl + "/" + messageRequest.getConversationId() +
+                "/messages/" + messageRequest.getMessageId() +
+                "?userId=" + messageRequest.getUserId();
         ApiResponse response = sendPutRequestWithObject(messageUrl, messageRequest);
         if (response.isSuccess()) {
             return objectMapper.readValue(response.body, Message.class);
@@ -60,10 +60,9 @@ public class MessageApiClient implements ApiClient {
         }
     }
 
-    public void deleteMessage(Conversation conversation, Message message, User user) throws IOException, InterruptedException {
-        String messageUrl = baseUrl + "/" + conversation.getId() + "/messages/" + message.getId() + "?userId=" + user.getId();
-        String token = user.getToken();
-        ApiResponse response = sendDeleteRequestWithToken(messageUrl, token);
+    public void deleteMessage(MessageRequest request) throws IOException, InterruptedException {
+        String messageUrl = baseUrl + "/" + request.getConversationId() + "/messages/" + request.getMessageId() + "?userId=" + request.getUserId();
+        ApiResponse response = sendDeleteRequestWithoutToken(messageUrl);
         if ((response.isSuccess())) {
             System.out.println(response.body);
         } else {
