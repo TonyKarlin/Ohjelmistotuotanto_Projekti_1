@@ -13,12 +13,14 @@ import model.User;
 import request.ContactRequest;
 import service.ContactApiClient;
 import service.UserApiClient;
+import utils.UIAlert;
 
 public class AddFriendsController {
 
     User loggedInuser;
     UserApiClient userApiClient;
     ContactApiClient contactApiClient = new ContactApiClient();
+    private UIAlert alert = new UIAlert();
 
     public void setController(User loggedInuser, UserApiClient userApiClient, ContactApiClient contactApiClient) {
         this.loggedInuser = loggedInuser;
@@ -60,13 +62,12 @@ public class AddFriendsController {
                         }
                     }
                     if (alreadyContact) {
-                        System.out.println();
-                        System.out.println("You are already friends with this user.");
+                        alert.showErrorAlert("You are already friends with user: " + foundUser.getUsername(), username);
                         return;
                     }
                     // Otherwise, send friend request logic here
-                    System.out.println("Friend request sent to: " + foundUser.getUsername());
 
+                    alert.showSuccessAlert("Friend request sent to: " + foundUser.getUsername(), username);
                     ContactRequest contactRequest = new ContactRequest(loggedInuser.getId(), foundUser.getId());
                     contactApiClient.addContact(contactRequest);
 
