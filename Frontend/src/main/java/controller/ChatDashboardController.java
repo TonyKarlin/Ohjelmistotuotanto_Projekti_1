@@ -206,16 +206,13 @@ public class ChatDashboardController {
         if (contacts != null) {
             for (Contact c : contacts) {
                 Label contactLabel = new Label(c.getContactUsername());
-                if ("ACCEPTED".equals(c.getStatus())) {
-                    contactLabel.setStyle("-fx-text-fill: green;");
-                }
 
                 if ("PENDING".equals(c.getStatus())) {
                     contactLabel.setStyle("-fx-text-fill: orange;");
                 } else {
-                    // BLOCKED
-                    contactLabel.setStyle("-fx-text-fill: red;");
+                    contactLabel.setStyle("-fx-text-fill: green;");
                 }
+
                 friendsList.getChildren().add(contactLabel);
             }
         }
