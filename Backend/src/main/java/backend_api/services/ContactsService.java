@@ -37,8 +37,7 @@ public class ContactsService {
                 ? contact.getContact()
                 : contact.getUser();
 
-        return new ContactResponseDTO(
-                contact.getId(),            // Friendship ID
+        return new ContactResponseDTO(// Friendship ID
                 contactUser.getId(),        // Friend's user ID
                 contactUser.getUsername(),  // Friend's username
                 contact.getStatus()         // Friendship status (PENDING, ACCEPTED, etc.)
