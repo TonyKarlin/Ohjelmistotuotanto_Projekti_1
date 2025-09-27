@@ -10,6 +10,7 @@ import backend_api.enums.ContactStatus;
 import backend_api.repository.ContactsRepository;
 import backend_api.repository.UserRepository;
 import backend_api.utils.customexceptions.ContactAlreadyExistsException;
+import backend_api.utils.customexceptions.InvalidContactRequestException;
 import backend_api.utils.customexceptions.InvalidStatusException;
 import backend_api.utils.customexceptions.UserNotFoundException;
 import jakarta.transaction.Transactional;
@@ -55,6 +56,12 @@ public class ContactsService {
         return allContacts;
     }
 
+    public void checkIfContactIsYourself(Long userId, Long contactUserId) {
+        if (userId.equals(contactUserId)) {
+            throw new InvalidContactRequestException("Cannot add yourself as a contact");
+        }
+    }
+
     private void checkForExistingContact(User user, User contactUser) {
         contactsRepository.findByUserAndContact(contactUser, user)
                 .or(() -> contactsRepository.findByUserAndContact(user, contactUser))
@@ -88,6 +95,7 @@ public class ContactsService {
         User contactUser = userRepository.findById(contactUserId).orElseThrow(() ->
                 new UserNotFoundException("Contact user not found with id: " + contactUserId));
 
+        checkIfContactIsYourself(userId, contactUserId);
         checkForExistingContact(user, contactUser);
 
         Contacts contact = createContactBetweenUsers(user, contactUser);

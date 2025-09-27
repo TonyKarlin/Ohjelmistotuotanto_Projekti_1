@@ -18,17 +18,17 @@ public class ApplicationExceptionHandler {
     }
 
     @ExceptionHandler(UserAlreadyParticipantException.class)
-    public ResponseEntity<String> handleUserAlreadyParticipant(UserAlreadyParticipantException e) {
+    public ResponseEntity<String> handleUserAlreadyParticipantException(UserAlreadyParticipantException e) {
         return ResponseEntity.status(HttpStatus.CONFLICT).body("Conflict: " + e.getMessage());
     }
 
     @ExceptionHandler(ConversationNotFoundException.class)
-    public ResponseEntity<String> handleConversationNotFound(ConversationNotFoundException e) {
+    public ResponseEntity<String> handleConversationNotFoundException(ConversationNotFoundException e) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not Found: " + e.getMessage());
     }
 
     @ExceptionHandler(UserNotFoundException.class)
-    public ResponseEntity<String> handleUserNotFound(UserNotFoundException e) {
+    public ResponseEntity<String> handleUserNotFoundException(UserNotFoundException e) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not Found: " + e.getMessage());
     }
 
@@ -38,7 +38,7 @@ public class ApplicationExceptionHandler {
     }
 
     @ExceptionHandler(InvalidConversationRequestException.class)
-    public ResponseEntity<String> handleInvalidConversationRequest(InvalidConversationRequestException e) {
+    public ResponseEntity<String> handleInvalidConversationRequestException(InvalidConversationRequestException e) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Bad Request: " + e.getMessage());
     }
 
@@ -48,7 +48,7 @@ public class ApplicationExceptionHandler {
     }
 
     @ExceptionHandler(MessageNotFoundException.class)
-    public ResponseEntity<String> handleMessageNotFound(MessageNotFoundException e) {
+    public ResponseEntity<String> handleMessageNotFoundException(MessageNotFoundException e) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not Found: " + e.getMessage());
     }
 
@@ -68,7 +68,12 @@ public class ApplicationExceptionHandler {
     }
 
     @ExceptionHandler
-    public ResponseEntity<String> handleInvalidStatus(InvalidStatusException e) {
+    public ResponseEntity<String> handleInvalidStatusException(InvalidStatusException e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Bad Request: " + e.getMessage());
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<String> handleInvalidContactRequestException(InvalidContactRequestException e) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Bad Request: " + e.getMessage());
     }
 }
