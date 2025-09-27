@@ -6,6 +6,7 @@ import java.util.List;
 import com.fasterxml.jackson.core.type.TypeReference;
 
 import model.Contact;
+import model.ContactResponse;
 import model.User;
 import request.ContactRequest;
 import utils.ApiUrl;
@@ -84,7 +85,8 @@ public class ContactApiClient implements ApiClient {
         ApiResponse response = sendPostRequest(contactUrl, jsonBody);
         if (response.isSuccess()) {
             System.out.println("Response: " + response.body);
-            return objectMapper.readValue(response.body, Contact.class);
+            ContactResponse contactResponse = objectMapper.readValue(response.body, ContactResponse.class);
+            return contactResponse.getContact();
         } else {
             System.out.println("Failed to add contact. Status: " + response.statusCode
                     + ", Response: " + response.body);
