@@ -1,0 +1,27 @@
+version: '3.9'
+services:
+  db:
+    image: postgres:17
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: otp_project
+    ports:
+      - "5432:5432"
+    networks:
+      - backend-network
+
+  backend:
+    build: ./Backend
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/otp_project
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: admin
+    depends_on:
+      - db
+    networks:
+      - backend-network
+
+networks:
+  backend-network:
+    driver: bridge
