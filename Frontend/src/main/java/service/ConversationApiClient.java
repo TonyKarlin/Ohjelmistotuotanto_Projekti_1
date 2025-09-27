@@ -44,7 +44,7 @@ public class ConversationApiClient implements ApiClient {
     }
 
     public void addUserToConversation(Conversation conversation, Contact Contact) throws IOException, InterruptedException {
-        String conversationUrl = baseUrl + "/" + conversation.getId() + "/participants/" + Contact.getContactId();
+        String conversationUrl = baseUrl + "/" + conversation.getId() + "/participants/" + Contact.getContactUserId();
         ApiResponse response = sendPutRequestWithoutObject(conversationUrl);
         if (response.isSuccess()) {
             System.out.println("Response: " + response.body);

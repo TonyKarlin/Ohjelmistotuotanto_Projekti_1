@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class Contact {
 
-    private int contactId;
+    private int id;
     private int contactUserId;
     private String contactUsername;
     private String status;

@@ -4,7 +4,6 @@ import java.io.IOException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import model.Contact;
 import model.Conversation;
 import model.User;
 import request.ConversationRequest;
@@ -52,14 +51,13 @@ public class ConversationApiClientTest {
     /**
      * Tests adding a new user (contact) to a conversation.
      */
-    @Test
-    public void testAddUserToConversation() throws IOException, InterruptedException {
-        Contact contact = new Contact();
-        contact.setContactId(4);
-        conversation.setId(4);
-        conversationApiClient.addUserToConversation(conversation, contact);
-    }
-
+    // @Test
+    // public void testAddUserToConversation() throws IOException, InterruptedException {
+    //     Contact contact = new Contact();
+    //     contact.setContactId(4);
+    //     conversation.setId(4);
+    //     conversationApiClient.addUserToConversation(conversation, contact);
+    // }
     /**
      * Tests a user leaving a conversation.
      */

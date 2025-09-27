@@ -46,14 +46,20 @@ public class ChatDashboardController {
     ContactApiClient contactApiClient = new ContactApiClient();
     List<Conversation> conversations;
     List<Contact> contacts;
+    List<Contact> pendingContacts;
+    List<Contact> sentContacts;
     private ImageRounder imageRounder;
 
     public void setController(User loggedInUser, UserApiClient userApiClient) throws IOException, InterruptedException {
         this.loggedInUser = loggedInUser;
         this.userApiClient = userApiClient;
         setUpUsername();
-        conversations = getUserConversations();
-        contacts = getUserContacts();
+
+        this.conversations = getUserConversations();
+        this.contacts = getUserContacts();
+        this.pendingContacts = getPendingUserContacts();
+        this.sentContacts = getSentUserContacts();
+
         addConversation();
         addFriendsToFriendsList();
         imageRounder = new ImageRounder(userProfilePicture);
@@ -123,6 +129,14 @@ public class ChatDashboardController {
         return contactApiClient.getAllUserContacts(loggedInUser);
     }
 
+    public List<Contact> getPendingUserContacts() throws IOException, InterruptedException {
+        return contactApiClient.getAllPendingUserContacts(loggedInUser);
+    }
+
+    public List<Contact> getSentUserContacts() throws IOException, InterruptedException {
+        return contactApiClient.getAllSentUserContacts(loggedInUser);
+    }
+
     @FXML
     public void openUserProfile(MouseEvent event) throws IOException {
         contentBorderPane.setBottom(null);
@@ -139,7 +153,7 @@ public class ChatDashboardController {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/addFriendsView.fxml"));
         Parent root = fxmlLoader.load();
         AddFriendsController controller = fxmlLoader.getController();
-        controller.setController(loggedInUser, this.userApiClient, this.contactApiClient);
+        controller.setController(loggedInUser, this.userApiClient, this.contactApiClient, this.contacts, this.pendingContacts, this.sentContacts);
         Stage stage = new Stage();
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.initStyle(StageStyle.UNDECORATED);
