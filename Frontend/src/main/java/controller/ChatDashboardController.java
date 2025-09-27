@@ -223,7 +223,7 @@ public class ChatDashboardController implements ContactUpdateCallback {
 
     @Override
     public void onContactsUpdated(List<Contact> updatedContacts) throws IOException {
-        // Update the local contacts list
+        // Update the contactslist when change has happened
         this.contacts = updatedContacts;
 
         // Clear the current friends list UI
