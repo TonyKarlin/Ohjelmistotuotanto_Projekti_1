@@ -67,7 +67,8 @@ public class AddFriendsController {
             try {
                 User foundUser = userApiClient.getUserByUsername(username);
                 if (foundUser != null) {
-                    // Check if already friends/contacts
+                    // Refresh contact lists to ensure accuracy
+                    refreshContactLists();
 
                     if (isContact(foundUser)) {
                         alert.showErrorAlert("You are already friends with user: " + foundUser.getUsername(), username);
@@ -83,8 +84,9 @@ public class AddFriendsController {
 
                     // if the contact is in your pending contacts list accept it
                     if (isPendingContact(foundUser)) {
-                        alert.showSuccessAlert("Friend request sent to user: " + foundUser.getUsername(), username);
+                        alert.showSuccessAlert("Friend request from " + foundUser.getUsername() + " accepted! You are now friends.", username);
                         contactApiClient.acceptContact(contactRequest);
+
                         return;
                     }
 
@@ -100,6 +102,20 @@ public class AddFriendsController {
             }
         }
 
+    }
+
+    /**
+     * Refreshes all contact lists from the API to ensure up-to-date data
+     */
+    private void refreshContactLists() {
+        try {
+            this.pendingContacts = contactApiClient.getAllPendingUserContacts(loggedInuser);
+            this.sentContacts = contactApiClient.getAllSentUserContacts(loggedInuser);
+            this.contacts = contactApiClient.getAllUserContacts(loggedInuser);
+        } catch (IOException | InterruptedException e) {
+            System.out.println("Error refreshing contact lists: " + e.getMessage());
+            // Keep existing lists if refresh fails
+        }
     }
 
     public boolean isContact(User foundUser) {
