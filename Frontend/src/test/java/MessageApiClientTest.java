@@ -64,7 +64,7 @@ public class MessageApiClientTest {
         conversation.setId(3);
         message.setId(2);
         String text = "prööt";
-        MessageRequest messageRequest = new MessageRequest(conversation.getId(), text, message.getId());
+        MessageRequest messageRequest = new MessageRequest(text, conversation.getId(), message.getId());
         Message message1 = messageApiClient.modifyMessage(messageRequest);
         if (message1 != null) {
             System.out.println(message1.getMessageAttachments());
