@@ -49,19 +49,19 @@ public class Contacts {
         return id;
     }
 
-    public User getUserId() {
+    public User getUser() {
         return user;
     }
 
-    public void setUserId(User user) {
+    public void setUser(User user) {
         this.user = user;
     }
 
-    public User getContactId() {
+    public User getContact() {
         return contact;
     }
 
-    public void setContactId(User contact) {
+    public void setContact(User contact) {
         this.contact = contact;
     }
 

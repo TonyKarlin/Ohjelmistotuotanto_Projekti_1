@@ -57,6 +57,13 @@ public class ContactsController {
         return ResponseEntity.ok(response);
     }
 
+    @GetMapping("/user/{userId}/accepted")
+    public ResponseEntity<List<ContactResponseDTO>> getAcceptedContacts(@PathVariable Long userId) {
+        List<ContactResponseDTO> contacts = contactsService.getAcceptedContacts(userId);
+
+        return ResponseEntity.ok(contacts);
+    }
+
     @GetMapping("/user/{userId}/pending")
     public ResponseEntity<List<ContactResponseDTO>> getPendingContacts(@PathVariable Long userId) {
         List<ContactResponseDTO> contacts = contactsService.getPendingContacts(userId);

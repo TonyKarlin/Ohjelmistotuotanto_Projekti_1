@@ -18,7 +18,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional
@@ -34,15 +33,15 @@ public class ContactsService {
     }
 
     public ContactResponseDTO convertToDTO(Contacts contact, User currentUser) {
-        User contactUser = contact.getUserId().equals(currentUser)
-                ? contact.getContactId()
-                : contact.getUserId();
+        User contactUser = contact.getUser().getId().equals(currentUser.getId())
+                ? contact.getContact()
+                : contact.getUser();
 
         return new ContactResponseDTO(
-                contact.getId(),
-                contactUser.getId(),      // Contact user ID
-                contactUser.getUsername(),// Contact username
-                contact.getStatus()
+                contact.getId(),            // Friendship ID
+                contactUser.getId(),        // Friend's user ID
+                contactUser.getUsername(),  // Friend's username
+                contact.getStatus()         // Friendship status (PENDING, ACCEPTED, etc.)
         );
     }
 
@@ -83,8 +82,8 @@ public class ContactsService {
 
     private Contacts createContactBetweenUsers(User user, User contactUser) {
         Contacts newContact = new Contacts();
-        newContact.setUserId(user);
-        newContact.setContactId(contactUser);
+        newContact.setUser(user);
+        newContact.setContact(contactUser);
         newContact.setStatus(ContactStatus.PENDING); // Default status, can be changed later
         return contactsRepository.save(newContact);
     }
@@ -162,6 +161,24 @@ public class ContactsService {
         return convertToDTO(contact, user);
     }
 
+    public List<ContactResponseDTO> getAcceptedContacts(Long userId) {
+        User user = userRepository.findById(userId).orElseThrow(() ->
+                new UserNotFoundException("User not found with id: " + userId));
+
+        List<Contacts> allContacts = fetchAllContacts(user);
+
+        List<Contacts> acceptedContacts = allContacts
+                .stream()
+                .filter(contact ->
+                        contact.getStatus() == ContactStatus.ACCEPTED)
+                .toList();
+
+        return acceptedContacts
+                .stream()
+                .map(contact -> convertToDTO(contact, user))
+                .toList();
+    }
+
     // Only for the receiver of the contact request
     public List<ContactResponseDTO> getPendingContacts(Long userId) {
         User user = userRepository.findById(userId).orElseThrow(() ->
@@ -172,7 +189,7 @@ public class ContactsService {
         List<Contacts> pendingContactRequests = allContacts
                 .stream()
                 .filter(contact ->
-                        contact.getStatus() == ContactStatus.PENDING && contact.getContactId().equals(user))
+                        contact.getStatus() == ContactStatus.PENDING && contact.getContact().equals(user))
                 .toList();
 
         return pendingContactRequests

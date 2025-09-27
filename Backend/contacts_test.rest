@@ -6,6 +6,10 @@ Accept: application/json
 GET http://localhost:8081/api/contacts/user/1/contact/2
 Accept: application/json
 
+### GET -- kaikki hyväksytyt kontaktit
+GET http://localhost:8081/api/contacts/user/1/accepted
+Accept: application/json
+
 ### GET -- kaikki tulleet ja odottavat / pending kontaktipyynnöt
 GET http://localhost:8081/api/contacts/user/2/pending
 Accept: application/json
@@ -15,7 +19,7 @@ GET http://localhost:8081/api/contacts/user/1/sent
 Accept: application/json
 
 ### POST -- uusi kontakti
-POST http://localhost:8081/api/contacts/add?userId=1&contactUserId=2
+POST http://localhost:8081/api/contacts/add?userId=1&contactUserId=1
 Content-Type: application/json
 
 ### POST -- hyväksytään kontakti
