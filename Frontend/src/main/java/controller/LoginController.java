@@ -1,21 +1,26 @@
 package controller;
 
+import java.io.IOException;
+
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
-import request.LoginRequest;
 import model.User;
+import request.LoginRequest;
 import service.ConversationApiClient;
 import service.MessageApiClient;
 import service.UserApiClient;
 import utils.UIAlert;
-
-import java.io.IOException;
 
 public class LoginController {
 
@@ -40,7 +45,6 @@ public class LoginController {
     @FXML
     private TextField userNameTextField;
 
-
     @FXML
     public void moveToRegisterView(MouseEvent event) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/registerView.fxml"));
@@ -55,25 +59,25 @@ public class LoginController {
 
     @FXML
     public void login() throws IOException, InterruptedException {
-            String username = userNameTextField.getText();
-            String password = passwordTextField.getText();
-            if (username.isEmpty() || password.isEmpty()) {
-                alert.showErrorAlert("Empty fields", "Username or password field is empty");
-                return;
-            }
-            //Gets username and password from the text fields and calls the loginRequest method
-            LoginRequest loginRequest = new LoginRequest(username, password);
-            // Saves the result to User Object
-            User user = userApiClient.loginUser(loginRequest);
-            // If user is not null pass the user to the next view
-            if (user != null) {
-                moveToMainView(user);
-                Stage stage = (Stage) loginButton.getScene().getWindow();
-                stage.close();
+        String username = userNameTextField.getText();
+        String password = passwordTextField.getText();
+        if (username.isEmpty() || password.isEmpty()) {
+            alert.showErrorAlert("Empty fields", "Username or password field is empty");
+            return;
+        }
+        //Gets username and password from the text fields and calls the loginRequest method
+        LoginRequest loginRequest = new LoginRequest(username, password);
+        // Saves the result to User Object
+        User user = userApiClient.loginUser(loginRequest);
+        // If user is not null pass the user to the next view
+        if (user != null) {
+            moveToMainView(user);
+            Stage stage = (Stage) loginButton.getScene().getWindow();
+            stage.close();
             //If user is null show this error alert
-            } else {
-                alert.showErrorAlert("Check credential", "Username or password is wrong");
-            }
+        } else {
+            alert.showErrorAlert("Check credential", "Username or password is wrong");
+        }
     }
 
     public void moveToMainView(User user) throws IOException, InterruptedException {
@@ -81,11 +85,13 @@ public class LoginController {
         Parent root = fxmlLoader.load();
         ChatDashboardController controller = fxmlLoader.getController();
         // pass the user and userApiClient to the main view so the instance is same
-        controller.setController(user, this.userApiClient);
+
         Stage stage = new Stage();
+        Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
+        stage.setWidth(screenBounds.getWidth() * 0.9);
+        stage.setHeight(screenBounds.getHeight() * 0.9);
+        controller.setController(user, this.userApiClient);
         stage.setScene(new Scene(root));
         stage.show();
     }
-
-
 }
