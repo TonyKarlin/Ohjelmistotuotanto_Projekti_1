@@ -37,10 +37,11 @@ public class ContactsService {
                 ? contact.getContact()
                 : contact.getUser();
 
-        return new ContactResponseDTO(// Friendship ID
+        return new ContactResponseDTO(
                 contactUser.getId(),        // Friend's user ID
                 contactUser.getUsername(),  // Friend's username
-                contact.getStatus()         // Friendship status (PENDING, ACCEPTED, etc.)
+                contact.getStatus(),        // Friendship status (PENDING, ACCEPTED, etc.)
+                contact.getUser().getId()   // ID of the user who sent the contact request
         );
     }
 
