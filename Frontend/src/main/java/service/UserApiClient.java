@@ -4,10 +4,8 @@ import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 
-import com.fasterxml.jackson.databind.JsonNode;
-
-import model.UserResponse;
 import model.User;
+import model.UserResponse;
 import request.LoginRequest;
 import request.UpdateUserRequest;
 import utils.ApiUrl;
@@ -40,7 +38,7 @@ public class UserApiClient implements ApiClient {
 
     public UserResponse updateUser(UpdateUserRequest request, User user) {
         try {
-            String url = usersUrl + "/"+ user.getId();
+            String url = usersUrl + "/" + user.getId();
             String token = user.getToken();
             ApiResponse response = sendPutRequestWithObjectAndToken(url, request, token);
             if (response.isSuccess()) {
@@ -56,7 +54,7 @@ public class UserApiClient implements ApiClient {
         }
     }
 
-    public User updateUserProfilePicture(UpdateUserRequest request, User user)  {
+    public User updateUserProfilePicture(UpdateUserRequest request, User user) {
         try {
             String url = usersUrl + "/" + user.getId() + "/profile-picture";
             String token = user.getToken();
@@ -91,10 +89,9 @@ public class UserApiClient implements ApiClient {
         }
     }
 
-    public User getUserByUsername(User user) {
+    public User getUserByUsername(String username, String token) {
         try {
-            String token = user.getToken();
-            String url = usersUrl + "/username/" + user.getUsername();
+            String url = usersUrl + "/username/" + username;
             ApiResponse response = sendGetRequest(url, token);
             if (response.isSuccess()) {
                 System.out.println(response.body);
