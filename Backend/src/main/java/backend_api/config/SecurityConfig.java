@@ -31,6 +31,7 @@ public class SecurityConfig {
 
                         // Allow unauthenticated access to endpoints listed below
                         .requestMatchers(
+                                "/uploads/**",
                                 "/",
                                 "/auth/**",
                                 "/api/users/register",
