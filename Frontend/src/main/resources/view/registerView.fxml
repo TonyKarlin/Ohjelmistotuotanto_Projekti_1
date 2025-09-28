@@ -8,184 +8,183 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1000.0" prefWidth="720.0" styleClass="parent" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.RegisterController">
-   <center>
-      <StackPane prefHeight="800.0" prefWidth="800.0" BorderPane.alignment="CENTER">
+
+<StackPane prefHeight="700.0" prefWidth="700.0" styleClass="parent" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.RegisterController">
+   <children>
+      <VBox alignment="CENTER" maxHeight="400.0" maxWidth="400.0" prefHeight="594.0" prefWidth="500.0" styleClass="VBox">
          <children>
-            <VBox alignment="CENTER" maxHeight="820.0" maxWidth="550.0" prefHeight="550.0" prefWidth="800.0" styleClass="VBox">
+            <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="30.0" prefWidth="316.0" text="Create a user" textFill="#d3d3d3">
+               <font>
+                  <Font name="System Bold" size="20.0" />
+               </font>
+               <VBox.margin>
+                  <Insets bottom="20.0" top="20.0" />
+               </VBox.margin>
+            </Label>
+            <HBox alignment="CENTER" prefHeight="88.0" prefWidth="508.0" spacing="40.0">
                <children>
-                  <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="30.0" prefWidth="316.0" text="Create a user" textFill="#d3d3d3">
-                     <font>
-                        <Font name="System Bold" size="30.0" />
-                     </font>
-                     <VBox.margin>
-                        <Insets bottom="20.0" top="20.0" />
-                     </VBox.margin>
-                  </Label>
-                  <HBox alignment="CENTER" prefHeight="152.0" prefWidth="546.0" spacing="50.0">
+                  <StackPane fx:id="profilePictureContainer" maxHeight="80.0" maxWidth="80.0" prefHeight="1.0" prefWidth="0.0">
                      <children>
-                        <StackPane fx:id="profilePictureContainer" maxHeight="120.0" maxWidth="120.0" prefHeight="120.0" prefWidth="120.0">
-                           <children>
-                              <ImageView fx:id="userProfilePicture" fitHeight="120.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" styleClass="imageView">
-                                 <image>
-                                    <Image url="@../img/img_2.png" />
-                                 </image>
-                              </ImageView>
-                           </children>
-                        </StackPane>
-                        <Button fx:id="addPictureButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#addProfilePicture" prefHeight="41.0" prefWidth="178.0" text="Add profile Picture" textAlignment="CENTER" textFill="WHITE" wrapText="true">
-                           <font>
-                              <Font size="18.0" />
-                           </font>
-                           <HBox.margin>
-                              <Insets />
-                           </HBox.margin>
-                        </Button>
+                        <ImageView fx:id="userProfilePicture" fitHeight="80.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true" styleClass="imageView">
+                           <image>
+                              <Image url="@../img/img_2.png" />
+                           </image>
+                           <StackPane.margin>
+                              <Insets bottom="10.0" />
+                           </StackPane.margin>
+                        </ImageView>
                      </children>
-                     <VBox.margin>
+                  </StackPane>
+                  <Button fx:id="addPictureButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#addProfilePicture" prefHeight="51.0" prefWidth="95.0" text="Add profile Picture" textAlignment="CENTER" textFill="WHITE" wrapText="true">
+                     <HBox.margin>
                         <Insets />
-                     </VBox.margin>
-                  </HBox>
-                  <Label layoutX="128.0" layoutY="311.0" maxWidth="405.0" prefHeight="21.0" prefWidth="405.0" text="USERNAME (Must at least 6 characters or more)" textFill="#c3c3c3">
+                     </HBox.margin>
                      <font>
-                        <Font size="15.0" />
+                        <Font name="System Bold" size="12.0" />
                      </font>
-                     <VBox.margin>
-                        <Insets bottom="10.0" />
-                     </VBox.margin>
-                  </Label>
-                  <TextField fx:id="usernameTextField" layoutX="113.0" layoutY="421.0" maxHeight="405.0" maxWidth="405.0" prefHeight="40.0" prefWidth="405.0">
-                     <font>
-                        <Font size="15.0" />
-                     </font>
-                     <VBox.margin>
-                        <Insets bottom="20.0" />
-                     </VBox.margin>
-                  </TextField>
-                  <Label maxWidth="405.0" prefHeight="21.0" prefWidth="405.0" text="EMAIL" textFill="#c3c3c3">
-                     <font>
-                        <Font size="15.0" />
-                     </font>
-                     <VBox.margin>
-                        <Insets bottom="10.0" />
-                     </VBox.margin>
-                  </Label>
-                  <TextField fx:id="emailTextField" layoutX="113.0" layoutY="451.0" maxWidth="405.0" prefHeight="40.0" prefWidth="405.0">
-                     <font>
-                        <Font size="16.0" />
-                     </font>
-                     <VBox.margin>
-                        <Insets bottom="20.0" />
-                     </VBox.margin>
-                  </TextField>
-                  <Label layoutX="128.0" layoutY="311.0" prefHeight="21.0" prefWidth="405.0" text="PASSWORD (must be at least 6 characters or more)" textFill="#c3c3c3">
-                     <font>
-                        <Font size="15.0" />
-                     </font>
-                     <VBox.margin>
-                        <Insets bottom="10.0" />
-                     </VBox.margin>
-                  </Label>
-                  <PasswordField fx:id="passwordField" maxWidth="405.0" prefHeight="40.0" prefWidth="405.0" styleClass="PasswordField">
-                     <font>
-                        <Font size="16.0" />
-                     </font>
-                     <VBox.margin>
-                        <Insets bottom="20.0" />
-                     </VBox.margin>
-                  </PasswordField>
-                  <Label layoutX="128.0" layoutY="311.0" maxWidth="405.0" prefHeight="21.0" prefWidth="405.0" text="WRITE PASSWORD AGAIN" textFill="#c3c3c3">
-                     <font>
-                        <Font size="15.0" />
-                     </font>
-                     <VBox.margin>
-                        <Insets bottom="10.0" />
-                     </VBox.margin>
-                  </Label>
-                  <PasswordField fx:id="repeatPasswordField" maxWidth="405.0" prefHeight="40.0" prefWidth="405.0" styleClass="PasswordField">
-                     <font>
-                        <Font size="16.0" />
-                     </font>
-                     <VBox.margin>
-                        <Insets bottom="20.0" />
-                     </VBox.margin>
-                  </PasswordField>
-                  <HBox alignment="CENTER" maxWidth="405.0" prefHeight="40.0" prefWidth="405.0">
-                     <children>
-                        <CheckBox fx:id="termsAndPrivacyCheckBox" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="54.0" prefWidth="25.0" textFill="#d7d7d7">
-                           <font>
-                              <Font size="15.0" />
-                           </font>
-                           <HBox.margin>
-                              <Insets right="10.0" />
-                           </HBox.margin>
-                        </CheckBox>
-                        <Label prefHeight="19.0" prefWidth="199.0" text="I have read and agree to Piscord's " textFill="#c3c3c3">
-                           <font>
-                              <Font size="13.0" />
-                           </font>
-                        </Label>
-                        <Label text="Terms of Service" textFill="#705eff">
-                           <font>
-                              <Font size="13.0" />
-                           </font>
-                        </Label>
-                     </children>
-                  </HBox>
-                  <HBox alignment="CENTER" layoutX="80.0" layoutY="585.0" maxWidth="405.0" prefHeight="24.0" prefWidth="405.0">
-                     <children>
-                        <Label prefHeight="19.0" prefWidth="26.0" text="and" textFill="#c3c3c3">
-                           <font>
-                              <Font size="13.0" />
-                           </font>
-                        </Label>
-                        <Label text="Pririvacy Policy" textFill="#705eff">
-                           <font>
-                              <Font size="13.0" />
-                           </font>
-                        </Label>
-                     </children>
-                     <VBox.margin>
-                        <Insets />
-                     </VBox.margin>
-                  </HBox>
-                  <Button fx:id="registerButton" maxWidth="405.0" onAction="#registerUser" prefHeight="40.0" prefWidth="405.0" text="Register Now" textAlignment="CENTER" textFill="#ebebeb">
-                     <font>
-                        <Font size="18.0" />
-                     </font>
-                     <VBox.margin>
-                        <Insets top="20.0" />
-                     </VBox.margin>
                   </Button>
-                  <HBox alignment="CENTER" prefHeight="51.0" prefWidth="596.0">
-                     <children>
-                        <Label prefHeight="27.0" prefWidth="132.0" text="Allready a user?" textFill="LIGHTGRAY">
-                           <font>
-                              <Font size="18.0" />
-                           </font>
-                        </Label>
-                        <Label fx:id="loginLabel" onDragDetected="#moveToLoginView" onMouseClicked="#moveToLoginView" onMousePressed="#moveToLoginView" prefHeight="30.0" prefWidth="63.0" styleClass="clickable-label" text="Login" textFill="#6365dc">
-                           <HBox.margin>
-                              <Insets left="15.0" />
-                           </HBox.margin>
-                           <font>
-                              <Font name="System Bold" size="20.0" />
-                           </font>
-                        </Label>
-                     </children>
-                  </HBox>
                </children>
-            </VBox>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+            </HBox>
+            <Label layoutX="128.0" layoutY="311.0" prefHeight="21.0" prefWidth="395.0" text="USERNAME (Must at least 6 characters or more)" textFill="#c3c3c3">
+               <font>
+                  <Font name="System Bold Italic" size="13.0" />
+               </font>
+               <VBox.margin>
+                  <Insets bottom="2.0" left="50.0" right="50.0" />
+               </VBox.margin>
+            </Label>
+            <TextField fx:id="usernameTextField" layoutX="113.0" layoutY="421.0">
+               <font>
+                  <Font size="15.0" />
+               </font>
+               <VBox.margin>
+                  <Insets bottom="10.0" left="50.0" right="50.0" />
+               </VBox.margin>
+            </TextField>
+            <Label maxWidth="1.7976931348623157E308" text="EMAIL" textFill="#c3c3c3">
+               <font>
+                  <Font name="System Bold Italic" size="13.0" />
+               </font>
+               <VBox.margin>
+                  <Insets bottom="5.0" left="50.0" right="50.0" />
+               </VBox.margin>
+            </Label>
+            <TextField fx:id="emailTextField" layoutX="113.0" layoutY="451.0">
+               <font>
+                  <Font size="16.0" />
+               </font>
+               <VBox.margin>
+                  <Insets bottom="10.0" left="50.0" right="50.0" />
+               </VBox.margin>
+            </TextField>
+            <Label layoutX="128.0" layoutY="311.0" maxWidth="1.7976931348623157E308" text="PASSWORD (must be at least 6 characters or more)" textFill="#c3c3c3">
+               <font>
+                  <Font name="System Bold Italic" size="13.0" />
+               </font>
+               <VBox.margin>
+                  <Insets bottom="5.0" left="50.0" right="50.0" />
+               </VBox.margin>
+            </Label>
+            <PasswordField fx:id="passwordField" styleClass="PasswordField">
+               <font>
+                  <Font size="16.0" />
+               </font>
+               <VBox.margin>
+                  <Insets bottom="10.0" left="50.0" right="50.0" />
+               </VBox.margin>
+            </PasswordField>
+            <Label layoutX="128.0" layoutY="311.0" maxWidth="1.7976931348623157E308" text="WRITE PASSWORD AGAIN" textFill="#c3c3c3">
+               <font>
+                  <Font size="13.0" />
+               </font>
+               <VBox.margin>
+                  <Insets bottom="5.0" left="50.0" right="50.0" />
+               </VBox.margin>
+            </Label>
+            <PasswordField fx:id="repeatPasswordField" styleClass="PasswordField">
+               <font>
+                  <Font size="16.0" />
+               </font>
+               <VBox.margin>
+                  <Insets bottom="10.0" left="50.0" right="50.0" />
+               </VBox.margin>
+            </PasswordField>
+            <HBox alignment="CENTER" maxWidth="405.0" prefHeight="40.0" prefWidth="405.0">
+               <children>
+                  <CheckBox fx:id="termsAndPrivacyCheckBox" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="13.0" prefWidth="3.0" textFill="#d7d7d7">
+                     <font>
+                        <Font size="10.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets right="10.0" />
+                     </HBox.margin>
+                  </CheckBox>
+                  <Label prefHeight="19.0" prefWidth="199.0" text="I have read and agree to Piscord's " textFill="#c3c3c3">
+                     <font>
+                        <Font size="13.0" />
+                     </font>
+                  </Label>
+                  <Label text="Terms of Service" textFill="#705eff">
+                     <font>
+                        <Font size="13.0" />
+                     </font>
+                  </Label>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" layoutX="80.0" layoutY="585.0" maxWidth="405.0" prefHeight="24.0" prefWidth="405.0">
+               <children>
+                  <Label prefHeight="19.0" prefWidth="26.0" text="and" textFill="#c3c3c3">
+                     <font>
+                        <Font size="13.0" />
+                     </font>
+                  </Label>
+                  <Label text="Pririvacy Policy" textFill="#705eff">
+                     <font>
+                        <Font size="13.0" />
+                     </font>
+                  </Label>
+               </children>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+            </HBox>
+            <Button fx:id="registerButton" maxWidth="405.0" onAction="#registerUser" prefHeight="34.0" prefWidth="403.0" text="Register Now" textAlignment="CENTER" textFill="#ebebeb">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+               <VBox.margin>
+                  <Insets left="50.0" right="50.0" top="10.0" />
+               </VBox.margin>
+            </Button>
+            <HBox alignment="CENTER" prefHeight="47.0" prefWidth="496.0">
+               <children>
+                  <Label prefHeight="30.0" prefWidth="116.0" text="Allready a user?" textFill="#c9c9c9">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="loginLabel" onDragDetected="#moveToLoginView" onMouseClicked="#moveToLoginView" onMousePressed="#moveToLoginView" prefHeight="30.0" prefWidth="63.0" styleClass="clickable-label" text="Login" textFill="#6365dc">
+                     <HBox.margin>
+                        <Insets left="5.0" />
+                     </HBox.margin>
+                     <font>
+                        <Font name="System Bold" size="15.0" />
+                     </font>
+                  </Label>
+               </children>
+               <VBox.margin>
+                  <Insets bottom="10.0" top="5.0" />
+               </VBox.margin>
+            </HBox>
          </children>
-         <BorderPane.margin>
-            <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
-         </BorderPane.margin>
-      </StackPane>
-   </center>
-</BorderPane>
+      </VBox>
+   </children>
+</StackPane>
