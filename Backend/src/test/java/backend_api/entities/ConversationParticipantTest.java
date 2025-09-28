@@ -45,6 +45,7 @@ class ConversationParticipantTest {
         ConversationParticipant participant = new ConversationParticipant();
         User user = new User("test", "test", "test@test.com");
         User user1 = new User("test1", "test1", "test@test.com");
+        user.setId(1L);
         participant.setUser(user);
         assertTrue(participant.isParticipant(user));
         assertFalse(participant.isParticipant(user1));
