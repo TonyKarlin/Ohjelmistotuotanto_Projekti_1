@@ -4,6 +4,7 @@ import backend_api.services.UserService;
 import backend_api.utils.JwtAuthFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -33,9 +34,9 @@ public class SecurityConfig {
                                 "/",
                                 "/auth/**",
                                 "/api/users/register",
-                                "/api/users/login",
-                                "/api/users/profile-picture/**"
+                                "/api/users/login"
                         ).permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/users/profile-picture/**").permitAll()
 
                         .anyRequest().authenticated() // All other endpoints require authentication
                 )

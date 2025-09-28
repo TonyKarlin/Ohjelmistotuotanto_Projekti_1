@@ -106,7 +106,13 @@ public class UserController {
     @PostMapping("/{id}/profile-picture")
     public ResponseEntity<?> uploadProfilePicture(
             @PathVariable Long id,
-            @RequestParam("file") MultipartFile file) throws IOException {
+            @RequestParam("file") MultipartFile file,
+            Authentication authentication) throws IOException {
+
+        User authUser = (User) authentication.getPrincipal();
+        if (!authUser.getId().equals(id)) {
+            throw new UnauthorizedActionException("You can only update your own profile picture");
+        }
 
         User user = userService.updateProfilePicture(id, file);
 
