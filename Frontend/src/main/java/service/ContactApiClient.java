@@ -35,11 +35,10 @@ public class ContactApiClient implements ApiClient {
     }
 
     public Contact addContact(ContactRequest contactRequest) throws IOException, InterruptedException {
-
         String contactUrl = baseUrl + "/add?userId=" + contactRequest.getUserId() + "&contactUserId=" + contactRequest.getContactUserId();
+        String token = contactRequest.getToken();
 
-        String jsonBody = objectMapper.writeValueAsString(contactRequest);
-        ApiResponse response = sendPostRequest(contactUrl, jsonBody);
+        ApiResponse response = sendPostRequestWithToken(contactUrl, contactRequest, token); // Changed this line
         if (response.isSuccess()) {
             System.out.println("Response: " + response.body);
             return objectMapper.readValue(response.body, Contact.class);
@@ -51,11 +50,10 @@ public class ContactApiClient implements ApiClient {
     }
 
     public Contact acceptContact(ContactRequest contactRequest) throws IOException, InterruptedException {
-
         String contactUrl = baseUrl + "/accept?userId=" + contactRequest.getUserId() + "&contactUserId=" + contactRequest.getContactUserId();
+        String token = contactRequest.getToken(); // Add this line to get the token
 
-        String jsonBody = objectMapper.writeValueAsString(contactRequest);
-        ApiResponse response = sendPostRequest(contactUrl, jsonBody);
+        ApiResponse response = sendPostRequestWithToken(contactUrl, contactRequest, token); // Changed this line
         if (response.isSuccess()) {
             System.out.println("Response: " + response.body);
             ContactResponse contactResponse = objectMapper.readValue(response.body, ContactResponse.class);

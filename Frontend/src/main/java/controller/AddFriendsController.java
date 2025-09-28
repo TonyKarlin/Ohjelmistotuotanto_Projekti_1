@@ -26,10 +26,10 @@ public class AddFriendsController {
     private ContactUpdateCallback contactUpdateCallback;
 
     public void setController(User loggedInuser,
-                              UserApiClient userApiClient,
-                              ContactApiClient contactApiClient,
-                              List<Contact> contacts,
-                              ContactUpdateCallback contactUpdateCallback) {
+            UserApiClient userApiClient,
+            ContactApiClient contactApiClient,
+            List<Contact> contacts,
+            ContactUpdateCallback contactUpdateCallback) {
 
         this.loggedInuser = loggedInuser;
         this.userApiClient = userApiClient;
@@ -82,7 +82,7 @@ public class AddFriendsController {
 
                     } else {
                         // else accept the request
-                        contactApiClient.acceptContact(new ContactRequest(loggedInuser.getId(), foundContact.getContactUserId()));
+                        contactApiClient.acceptContact(new ContactRequest(loggedInuser.getId(), foundContact.getContactUserId(), loggedInuser.getToken()));
                         alert.showSuccessAlert("Friend request from " + foundContact.getContactUsername() + " accepted!", username);
                         // Lastly update contacts
                         updateContactsList(loggedInuser);
@@ -94,14 +94,14 @@ public class AddFriendsController {
 
             }
             // Otherwise check if the user exists
-            User foundUser = userApiClient.getUserByUsername(loggedInuser);
+            User foundUser = userApiClient.getUserByUsername(username, loggedInuser.getToken());
             if (foundUser == null) {
                 alert.showErrorAlert("User not found", username);
                 return;
             }
 
             // Send a friend request to the found user
-            contactApiClient.addContact(new ContactRequest(loggedInuser.getId(), foundUser.getId()));
+            contactApiClient.addContact(new ContactRequest(loggedInuser.getId(), foundUser.getId(), loggedInuser.getToken()));
             alert.showSuccessAlert("Friend request sent to: " + foundUser.getUsername(), username);
 
             // Lastly update contacts
