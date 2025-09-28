@@ -92,8 +92,10 @@ public class ConversationApiClient implements ApiClient {
         }
     }
 
-    public List<Conversation> getAllConversations() throws IOException, InterruptedException {
-        ApiResponse response = sendGetRequest(baseUrl);
+    public List<Conversation> getAllUserConversations(User user) throws IOException, InterruptedException {
+        String url = baseUrl +"/user/me";
+        String token = user.getToken();
+        ApiResponse response = sendGetRequest(url, token);
         if (response.isSuccess()) {
             System.out.println("Response: " + response.body);
             return objectMapper.readValue(response.body, new TypeReference<List<Conversation>>() {
@@ -108,7 +110,8 @@ public class ConversationApiClient implements ApiClient {
 
     public List<Conversation> getConversationsById(User user) throws IOException, InterruptedException {
         String conversationUrl = (baseUrl + "/user/" + user.getId());
-        ApiResponse response = sendGetRequest(conversationUrl);
+        String token = user.getToken();
+        ApiResponse response = sendGetRequest(conversationUrl, token);
         if (response.isSuccess()) {
             System.out.println("Response: " + response.body);
             return objectMapper.readValue(response.body, new TypeReference<List<Conversation>>() {

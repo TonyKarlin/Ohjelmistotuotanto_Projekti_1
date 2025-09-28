@@ -103,18 +103,18 @@ public class MessageHBoxController {
 
     @FXML
     public void deleteMessage() throws IOException, InterruptedException {
-        int loggedInUSerId = parentController.getLoggedInUser().getId();
-        MessageRequest request = new MessageRequest(conversationId, loggedInUSerId, message.getId());
+        String token = parentController.getLoggedInUser().getToken();
+        MessageRequest deleteRequest = new MessageRequest(conversationId,message.getId(), token);
         MessageApiClient client = new MessageApiClient();
-        client.deleteMessage(request);
+        client.deleteMessage(deleteRequest);
     }
 
 
     @FXML
     public void modifyMessage() throws IOException, InterruptedException {
-        int loggedInUserId = parentController.getLoggedInUser().getId();
+        String token = parentController.getLoggedInUser().getToken();
         String modifiedText = editTextField.getText();
-        MessageRequest request = new MessageRequest(conversationId, modifiedText, message.getId(), loggedInUserId);
+        MessageRequest request = new MessageRequest(conversationId, modifiedText, message.getId(), token);
         MessageApiClient client = new MessageApiClient();
         client.modifyMessage(request);
     }

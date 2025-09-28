@@ -3,6 +3,7 @@ package service;
 import com.fasterxml.jackson.core.type.TypeReference;
 import model.Conversation;
 import model.Message;
+import model.User;
 import request.MessageRequest;
 import utils.ApiUrl;
 
@@ -19,7 +20,8 @@ public class MessageApiClient implements ApiClient {
     public Message sendMessage(MessageRequest request) {
         try {
             String messageUrl = baseUrl + "/" + request.getConversationId() + "/messages";
-            ApiResponse response = sendPostRequest(messageUrl, request);
+            String token = request.getToken();
+            ApiResponse response = sendPostRequestWithToken(messageUrl, request, token);
             if ((response.isSuccess())) {
                 return objectMapper.readValue(response.body, Message.class);
             } else {
@@ -33,12 +35,13 @@ public class MessageApiClient implements ApiClient {
         }
     }
 
-    public Message modifyMessage(MessageRequest messageRequest) throws IOException, InterruptedException {
-        String messageUrl = baseUrl + "/" + messageRequest.getConversationId() +
-                "/messages/" + messageRequest.getMessageId() +
-                "?userId=" + messageRequest.getUserId();
-        ApiResponse response = sendPutRequestWithObject(messageUrl, messageRequest);
+    public Message modifyMessage(MessageRequest request) throws IOException, InterruptedException {
+        String messageUrl = baseUrl + "/" + request.getConversationId() +
+                "/messages/" + request.getMessageId();
+        String token = request.getToken();
+        ApiResponse response = sendPutRequestWithObjectAndToken(messageUrl, request, token);
         if (response.isSuccess()) {
+            System.out.println(response.body);
             return objectMapper.readValue(response.body, Message.class);
         } else {
             System.out.println("Failed to Modify  message. Status: "
@@ -47,9 +50,10 @@ public class MessageApiClient implements ApiClient {
         }
     }
 
-    public List<Message> getConversationMessages(Conversation conversation) throws IOException, InterruptedException {
+    public List<Message> getConversationMessages(Conversation conversation, User user) throws IOException, InterruptedException {
+        String token = user.getToken();
         String messageUrl = baseUrl + "/" + conversation.getId() + "/messages";
-        ApiResponse response = sendGetRequest(messageUrl);
+        ApiResponse response = sendGetRequest(messageUrl, token);
         if (response.isSuccess()) {
             return objectMapper.readValue(response.body, new TypeReference<List<Message>>() {
             });
@@ -61,8 +65,9 @@ public class MessageApiClient implements ApiClient {
     }
 
     public void deleteMessage(MessageRequest request) throws IOException, InterruptedException {
-        String messageUrl = baseUrl + "/" + request.getConversationId() + "/messages/" + request.getMessageId() + "?userId=" + request.getUserId();
-        ApiResponse response = sendDeleteRequestWithoutToken(messageUrl);
+        String messageUrl = baseUrl + "/" + request.getConversationId() + "/messages/" + request.getMessageId();
+        String token = request.getToken();
+        ApiResponse response = sendDeleteRequestWithToken(messageUrl, token);
         if ((response.isSuccess())) {
             System.out.println(response.body);
         } else {

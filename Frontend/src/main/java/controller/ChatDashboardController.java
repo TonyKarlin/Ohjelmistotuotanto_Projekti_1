@@ -106,7 +106,7 @@ public class ChatDashboardController implements ContactUpdateCallback {
     }
 
     public List<Conversation> getUserConversations() throws IOException, InterruptedException {
-        return conversationApiClient.getConversationsById(loggedInUser);
+        return conversationApiClient.getAllUserConversations(loggedInUser);
     }
 
     public List<Contact> getUserContacts() throws IOException, InterruptedException {
@@ -155,7 +155,7 @@ public class ChatDashboardController implements ContactUpdateCallback {
 
     public void showConversationMessages(Conversation conversation) throws IOException, InterruptedException {
         VBoxContentPane.getChildren().clear();
-        List<Message> messages = messageApiClient.getConversationMessages(conversation);
+        List<Message> messages = messageApiClient.getConversationMessages(conversation, this.loggedInUser);
         if (messages != null && !messages.isEmpty()) {
             for (Message m : messages) {
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/component/messageHBox.fxml"));

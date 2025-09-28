@@ -44,11 +44,31 @@ public interface ApiClient {
         }
     }
 
+    default ApiResponse sendPostRequestWithToken(String urlString, Object body, String token) throws IOException, InterruptedException {
+        try {
+            String requestBody = objectMapper.writeValueAsString(body);
+            HttpRequest request = HttpRequest.newBuilder()
+                    .POST(HttpRequest.BodyPublishers.ofString(requestBody))
+                    .uri(URI.create(urlString))
+                    .header("Content-Type", "Application/json")
+                    .header("Authorization", "Bearer " + token)
+                    .build();
+
+            HttpResponse<String> response = HttpClient.newHttpClient()
+                    .send(request, HttpResponse.BodyHandlers.ofString());
+
+            return new ApiResponse(response.statusCode(), response.body());
+        } catch (IOException | InterruptedException e) {
+            return new ApiResponse(503, "Service unavailable: " + e.getMessage());
+        }
+    }
+
     //Get Method needs only right url
-    default ApiResponse sendGetRequest(String urlString) throws IOException, InterruptedException {
+    default ApiResponse sendGetRequest(String urlString, String token) throws IOException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder()
                 .GET()
                 .uri(URI.create(urlString))
+                .header("Authorization", "Bearer " + token)
                 .build();
 
         HttpResponse<String> response = HttpClient.newHttpClient()
@@ -138,13 +158,14 @@ public interface ApiClient {
 
     }
 
-    default ApiResponse sendFile(String urlString, File file) throws IOException, InterruptedException {
+    default ApiResponse sendFile(String urlString, File file, String token) throws IOException, InterruptedException {
         FileSystemResource fileResource = new FileSystemResource(file);
         String responseBody = WebClient.create()
                 .post()
                 .uri(urlString)
                 .contentType(MediaType.MULTIPART_FORM_DATA)
                 .body(BodyInserters.fromMultipartData("file", fileResource))
+                .header("Authorization", "Bearer " + token)
                 .retrieve()
                 .bodyToMono(String.class)
                 .block();

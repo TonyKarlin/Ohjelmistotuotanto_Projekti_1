@@ -258,7 +258,8 @@ public class ConversationApiClientTest {
     @Test
     public void testGetAllConversations() {
         try {
-            List<Conversation> conversations = conversationApiClient.getAllConversations();
+            User user = new User();
+            List<Conversation> conversations = conversationApiClient.getAllUserConversations(user);
 
             if (conversations != null && !conversations.isEmpty()) {
                 System.out.println("Successfully retrieved " + conversations.size() + " conversations from the system");

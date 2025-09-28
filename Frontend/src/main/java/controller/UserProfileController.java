@@ -11,6 +11,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Circle;
 import model.User;
+import model.UserResponse;
 import request.UpdateUserRequest;
 import service.UserApiClient;
 import utils.FileHandler;
@@ -28,7 +29,7 @@ public class UserProfileController {
     ImageRounder imageRounder;
     FileHandler fileHandler;
     UpdateUserRequest request;
-
+    UserResponse userResponse;
 
     public void setController(User loggedInUser, UserApiClient client, ChatDashboardController parentController) {
         this.loggedInUser = loggedInUser;
@@ -84,18 +85,18 @@ public class UserProfileController {
             return;
         }
         request = new UpdateUserRequest(newUsername, newEmail, newPassword);
-        User updatedUser = client.updateUser(request, loggedInUser);
-        if (updatedUser == null) {
+        userResponse = new UserResponse();
+        userResponse = client.updateUser(request, loggedInUser);
+        if (userResponse == null) {
             alert.showErrorAlert("Updated failed", "Failed to update user");
         } else {
             alert.showSuccessAlert("Success", "User updated successfully ✅");
-            String token = loggedInUser.getToken();
-            loggedInUser = updatedUser;
+            String token = userResponse.getToken();
+            loggedInUser = userResponse.getUser();
             loggedInUser.setToken(token);
             parentController.setLoggedInUser(loggedInUser);
             parentController.setUpUsername();
             addUserInformation(loggedInUser);
-
         }
     }
 
@@ -110,11 +111,13 @@ public class UserProfileController {
             userProfilePicture.setFitHeight(profilePictureContainer.getPrefHeight());
             userProfilePicture.setPreserveRatio(false);
             request = new UpdateUserRequest(selectedPicture);
-            client.updateUserProfilePicture(request, loggedInUser);
-
+            String token = loggedInUser.getToken();
+            loggedInUser = client.updateUserProfilePicture(request, loggedInUser);
+            loggedInUser.setToken(token);
+            System.out.println(loggedInUser.getProfilePictureUrl());
+            System.out.println(loggedInUser.getToken());
 
         }
-
     }
 
     public boolean checkPassword(String password, String repeatedPassword) {
