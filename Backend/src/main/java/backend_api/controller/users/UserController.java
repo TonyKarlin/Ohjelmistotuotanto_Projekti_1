@@ -145,7 +145,7 @@ public class UserController {
             response.put("username", user.getUsername());
             response.put("email", user.getEmail());
             response.put("profilePictureUrl", user.getProfilePicture() != null
-                    ? "http://localhost:8080/uploads/" + user.getProfilePicture()
+                    ? "http://localhost:8081/uploads/" + user.getProfilePicture()
                     : null);
             response.put("token", newToken);
 
