@@ -26,10 +26,10 @@ public class AddFriendsController {
     private ContactUpdateCallback contactUpdateCallback;
 
     public void setController(User loggedInuser,
-            UserApiClient userApiClient,
-            ContactApiClient contactApiClient,
-            List<Contact> contacts,
-            ContactUpdateCallback contactUpdateCallback) {
+                              UserApiClient userApiClient,
+                              ContactApiClient contactApiClient,
+                              List<Contact> contacts,
+                              ContactUpdateCallback contactUpdateCallback) {
 
         this.loggedInuser = loggedInuser;
         this.userApiClient = userApiClient;

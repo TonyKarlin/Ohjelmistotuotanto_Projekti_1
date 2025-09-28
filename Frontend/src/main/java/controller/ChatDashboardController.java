@@ -64,56 +64,42 @@ public class ChatDashboardController implements ContactUpdateCallback {
         addFriendsToFriendsList();
     }
 
+    //region FXML-injected UI components
     @FXML
     private ImageView userProfilePicture;
-
     @FXML
     private StackPane userProfileContent;
-
     @FXML
     private Button addFriendsButton;
-
     @FXML
     private ImageView contactUserPicture;
-
     @FXML
     private Circle contactUserStatus;
-
     @FXML
     private Label contactUsername;
-
     @FXML
     private Button createGroupButton;
-
     @FXML
     private Label loggedInUsername;
-
     @FXML
     private Label messageLabel;
-
     @FXML
     private Button messageOptionsButton;
-
     @FXML
     private Label messageTimeLabel;
-
     @FXML
     private Button sendMessageButton;
-
     @FXML
     private TextField sendMessageTextField;
-
     @FXML
     private BorderPane contentBorderPane;
-
     @FXML
     private VBox VBoxContentPane;
-
     @FXML
     private VBox contactVBox;
-
     @FXML
     private VBox friendsList;
+    //endregion
 
     public void setUpUsername() {
         loggedInUsername.setText(loggedInUser.getUsername());

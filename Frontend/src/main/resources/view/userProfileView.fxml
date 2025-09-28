@@ -40,7 +40,7 @@
                   </AnchorPane>
                </children>
             </StackPane>
-            <Button fx:id="changeUserPictureButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="68.0" prefWidth="178.0" text="Change Profile picture" textAlignment="CENTER" textFill="WHITE" wrapText="true">
+            <Button fx:id="changeProfilePictureButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#changeProfilePicture" prefHeight="68.0" prefWidth="178.0" text="Change Profile picture" textAlignment="CENTER" textFill="WHITE" wrapText="true">
                <font>
                   <Font size="18.0" />
                </font>

@@ -1,6 +1,11 @@
 package service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.http.MediaType;
+import org.springframework.web.reactive.function.BodyInserter;
+import org.springframework.web.reactive.function.BodyInserters;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import java.io.*;
 import java.net.URI;
@@ -13,6 +18,7 @@ import java.net.http.HttpResponse;
 public interface ApiClient {
 
     ObjectMapper objectMapper = new ObjectMapper();
+
 
 
     //Post Method needs only a right url and object as parameters
@@ -130,6 +136,20 @@ public interface ApiClient {
                 .send(request, HttpResponse.BodyHandlers.ofString());
         return new ApiResponse(response.statusCode(), response.body());
 
+    }
+
+    default ApiResponse sendFile(String urlString, File file) throws IOException, InterruptedException {
+        FileSystemResource fileResource = new FileSystemResource(file);
+        String responseBody = WebClient.create()
+                .post()
+                .uri(urlString)
+                .contentType(MediaType.MULTIPART_FORM_DATA)
+                .body(BodyInserters.fromMultipartData("file", fileResource))
+                .retrieve()
+                .bodyToMono(String.class)
+                .block();
+
+        return new ApiResponse(200,  responseBody);
     }
 }
 

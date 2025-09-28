@@ -29,7 +29,8 @@ public class MessageHBoxController {
 
     private Message message;
 
-    public MessageHBoxController() {}
+    public MessageHBoxController() {
+    }
 
     public void setController(Message message, ChatDashboardController parentController) {
         this.message = message;
@@ -38,6 +39,7 @@ public class MessageHBoxController {
         setTextInModifyField();
     }
 
+    //region FXML-injected UI component
     @FXML
     private MenuItem deleteMenuitem;
 
@@ -64,6 +66,7 @@ public class MessageHBoxController {
 
     @FXML
     private ImageView userProfilePicture;
+    //endregion
 
     @FXML
     private void showMenuOption() {
@@ -76,8 +79,6 @@ public class MessageHBoxController {
         if (!messageOptionButton.isShowing()) {
             messageOptionButton.setVisible(false);
         }
-
-
     }
 
     public void setTextInModifyField() {
@@ -86,7 +87,7 @@ public class MessageHBoxController {
     }
 
 
-    public void setMessageInformation(String text,String createdAt, String senderUsername) {
+    public void setMessageInformation(String text, String createdAt, String senderUsername) {
         messageLabel.setText(text);
         senderUsernameLabel.setText(senderUsername);
         String formattedTime = formatTime(createdAt);
@@ -113,7 +114,7 @@ public class MessageHBoxController {
     public void modifyMessage() throws IOException, InterruptedException {
         int loggedInUserId = parentController.getLoggedInUser().getId();
         String modifiedText = editTextField.getText();
-        MessageRequest request = new MessageRequest(conversationId,modifiedText, message.getId(), loggedInUserId);
+        MessageRequest request = new MessageRequest(conversationId, modifiedText, message.getId(), loggedInUserId);
         MessageApiClient client = new MessageApiClient();
         client.modifyMessage(request);
     }
