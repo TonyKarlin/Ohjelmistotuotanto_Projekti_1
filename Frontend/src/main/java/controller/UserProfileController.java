@@ -36,7 +36,6 @@ public class UserProfileController {
         this.client = client;
         this.parentController = parentController;
         addUserInformation(loggedInUser);
-        imageRounder = new ImageRounder(userProfilePicture);
     }
 
     //region FXML-injected UI components
@@ -95,7 +94,7 @@ public class UserProfileController {
             loggedInUser = userResponse.getUser();
             loggedInUser.setToken(token);
             parentController.setLoggedInUser(loggedInUser);
-            parentController.setUpUsername();
+            parentController.setUpUsernameLabel();
             addUserInformation(loggedInUser);
         }
     }
@@ -114,8 +113,8 @@ public class UserProfileController {
             String token = loggedInUser.getToken();
             loggedInUser = client.updateUserProfilePicture(request, loggedInUser);
             loggedInUser.setToken(token);
-            System.out.println(loggedInUser.getProfilePictureUrl());
-            System.out.println(loggedInUser.getToken());
+            parentController.setLoggedInUser(loggedInUser);
+            parentController.setUpLoggedInUserProfilePicture();
 
         }
     }
@@ -153,6 +152,13 @@ public class UserProfileController {
     public void addUserInformation(User loggedInUser) {
         emailTextField.setText(loggedInUser.getEmail());
         usernameTextField.setText(loggedInUser.getUsername());
+        Image profilePicture = new Image(loggedInUser.getProfilePictureUrl());
+        userProfilePicture.setImage(profilePicture);
+        imageRounder = new ImageRounder(userProfilePicture);
+        userProfilePicture.setImage(profilePicture);
+        userProfilePicture.setFitWidth(profilePictureContainer.getPrefWidth());
+        userProfilePicture.setFitHeight(profilePictureContainer.getPrefHeight());
+        userProfilePicture.setPreserveRatio(false);
     }
 }
 

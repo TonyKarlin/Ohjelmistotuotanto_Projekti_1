@@ -18,6 +18,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
@@ -57,11 +58,10 @@ public class ChatDashboardController implements ContactUpdateCallback {
     public void setController(User loggedInUser, UserApiClient userApiClient) throws IOException, InterruptedException {
         this.loggedInUser = loggedInUser;
         this.userApiClient = userApiClient;
-        setUpUsername();
+        setUpUsernameLabel();
+        setUpLoggedInUserProfilePicture();
         this.conversations = getUserConversations();
         this.contacts = getUserContacts();
-        imageRounder = new ImageRounder(userProfilePicture);
-        setUpUsername();
         addConversation();
         addFriendsToFriendsList();
     }
@@ -70,7 +70,7 @@ public class ChatDashboardController implements ContactUpdateCallback {
     @FXML
     private ImageView userProfilePicture;
     @FXML
-    private StackPane userProfileContent;
+    private StackPane profilePictureContainer;
     @FXML
     private Button addFriendsButton;
     @FXML
@@ -103,9 +103,21 @@ public class ChatDashboardController implements ContactUpdateCallback {
     private VBox friendsList;
     //endregion
 
-    public void setUpUsername() {
+    public void setUpUsernameLabel() {
         loggedInUsername.setText(loggedInUser.getUsername());
+
     }
+
+    public void setUpLoggedInUserProfilePicture() {
+        Image profilePicture= new Image(loggedInUser.getProfilePictureUrl());
+        userProfilePicture.setImage(profilePicture);
+        imageRounder = new ImageRounder(userProfilePicture);
+        userProfilePicture.setImage(profilePicture);
+        userProfilePicture.setFitWidth(profilePictureContainer.getPrefWidth());
+        userProfilePicture.setFitHeight(profilePictureContainer.getPrefHeight());
+        userProfilePicture.setPreserveRatio(false);
+    }
+
 
     public List<Conversation> getUserConversations() throws IOException, InterruptedException {
         return conversationApiClient.getAllUserConversations(loggedInUser);

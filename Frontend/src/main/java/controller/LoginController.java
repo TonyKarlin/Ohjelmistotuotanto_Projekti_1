@@ -79,6 +79,7 @@ public class LoginController {
             System.out.println(user.getToken());
             System.out.println(user.getUsername());
             System.out.println(user.getId());
+            System.out.println(user.getProfilePictureUrl());
             moveToMainView(user);
             Stage stage = (Stage) loginButton.getScene().getWindow();
             stage.close();
