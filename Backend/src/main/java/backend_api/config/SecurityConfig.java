@@ -30,9 +30,11 @@ public class SecurityConfig {
 
                         // Allow unauthenticated access to endpoints listed below
                         .requestMatchers(
+                                "/",
                                 "/auth/**",
                                 "/api/users/register",
-                                "/api/users/login"
+                                "/api/users/login",
+                                "/api/users/profile-picture/**"
                         ).permitAll()
 
                         .anyRequest().authenticated() // All other endpoints require authentication
