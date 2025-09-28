@@ -74,7 +74,21 @@ pipeline {
                 archiveArtifacts artifacts: 'Frontend/target/site/jacoco/**'
             }
         }
-        stage('Build Docker Image') {
+        stage('Docker Compose Build & Push') {
+            steps {
+                withCredentials([usernamePassword(credentialsId: "${DOCKERHUB_CREDENTIALS_ID}", usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+                    bat """
+                        docker login -u %DOCKER_USER% -p %DOCKER_PASS%
+                        docker-compose -f docker-compose.yml build
+                        docker-compose -f docker-compose.yml push
+                    """
+                }
+            }
+        }
+    }
+}
+/*
+stage('Build Docker Image') {
             steps {
                 dir('Backend') {
                     bat 'docker build -t %DOCKERHUB_REPO%:%DOCKER_IMAGE_TAG% .'
@@ -91,5 +105,21 @@ pipeline {
                 }
             }
         }
-    }
-}
+        stage('Build Frontend Docker Image') {
+            steps {
+                dir('Frontend') {
+                    bat 'docker build -t %DOCKERHUB_REPO%-frontend:%DOCKER_IMAGE_TAG% .'
+                }
+            }
+        }
+        stage('Push Frontend Docker Image to Docker Hub') {
+            steps {
+                withCredentials([usernamePassword(credentialsId: "${DOCKERHUB_CREDENTIALS_ID}", usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+                    bat '''
+                        docker login -u %DOCKER_USER% -p %DOCKER_PASS%
+                        docker push %DOCKERHUB_REPO%-frontend:%DOCKER_IMAGE_TAG%
+                    '''
+                }
+            }
+        }
+*/

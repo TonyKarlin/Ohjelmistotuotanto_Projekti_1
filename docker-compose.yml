@@ -15,6 +15,7 @@ services:
 
   backend:
     build: ./Backend
+    image: jarkkok1/project:latest
     container_name: otp_backend
     ports:
       - "8081:8080"
@@ -25,6 +26,14 @@ services:
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
     depends_on:
       - db
+  frontend:
+    build: ./Frontend
+    image: jarkkok1/project-frontend:latest
+    container_name: otp_frontend
+    depends_on:
+      - backend
+    environment:
+      BACKEND_URL: http://backend:8080
 
 volumes:
   otp_db_data:
