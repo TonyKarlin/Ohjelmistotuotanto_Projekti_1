@@ -6,6 +6,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import java.lang.IllegalArgumentException;
+import java.util.HashMap;
+import java.util.Map;
+
 @ControllerAdvice
 public class ApplicationExceptionHandler {
     // Custom exception handlers for better error responses
@@ -14,7 +18,7 @@ public class ApplicationExceptionHandler {
 
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<String> handleRuntimeException(RuntimeException e) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Internal Server Error: " + e.getMessage());
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Internal Server Error: " + e.getMessage());
     }
 
     @ExceptionHandler(UserAlreadyParticipantException.class)
@@ -52,29 +56,35 @@ public class ApplicationExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not Found: " + e.getMessage());
     }
 
-    @ExceptionHandler
+    @ExceptionHandler(ContactAlreadyExistsException.class)
     public ResponseEntity<String> handleContactAlreadyExistsException(ContactAlreadyExistsException e) {
         return ResponseEntity.status(HttpStatus.CONFLICT).body("Conflict: " + e.getMessage());
     }
 
-    @ExceptionHandler
+    @ExceptionHandler(ContactNotFoundException.class)
     public ResponseEntity<String> handleContactNotFoundException(ContactNotFoundException e) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not Found: " + e.getMessage());
     }
 
-    @ExceptionHandler
+    @ExceptionHandler(BadMessageRequestException.class)
     public ResponseEntity<String> handleBadMessageRequestException(BadMessageRequestException e) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Bad Request: " + e.getMessage());
     }
 
-    @ExceptionHandler
+    @ExceptionHandler(InvalidStatusException.class)
     public ResponseEntity<String> handleInvalidStatusException(InvalidStatusException e) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Bad Request: " + e.getMessage());
     }
 
-    @ExceptionHandler
+    @ExceptionHandler(InvalidContactRequestException.class)
     public ResponseEntity<String> handleInvalidContactRequestException(InvalidContactRequestException e) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Bad Request: " + e.getMessage());
     }
+
+    @ExceptionHandler(InvalidUserException.class)
+    public ResponseEntity<String> handleInvalidUserException(InvalidUserException e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Bad Request: " + e.getMessage());
+    }
+
 }
 
