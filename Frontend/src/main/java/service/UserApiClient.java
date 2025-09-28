@@ -6,6 +6,7 @@ import java.net.MalformedURLException;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
+import model.UserResponse;
 import model.User;
 import request.LoginRequest;
 import request.UpdateUserRequest;
@@ -37,14 +38,14 @@ public class UserApiClient implements ApiClient {
         }
     }
 
-    public User updateUser(UpdateUserRequest request, User user) {
+    public UserResponse updateUser(UpdateUserRequest request, User user) {
         try {
             String url = usersUrl + "/"+ user.getId();
             String token = user.getToken();
             ApiResponse response = sendPutRequestWithObjectAndToken(url, request, token);
             if (response.isSuccess()) {
                 System.out.println(response.body);
-                return objectMapper.readValue(response.body, User.class);
+                return objectMapper.readValue(response.body, UserResponse.class);
             } else {
                 System.out.println("Failed to Update user. Status: "
                         + response.statusCode + ", Response: " + response.body);
@@ -55,16 +56,19 @@ public class UserApiClient implements ApiClient {
         }
     }
 
-    public void updateUserProfilePicture(UpdateUserRequest request, User user)  {
+    public User updateUserProfilePicture(UpdateUserRequest request, User user)  {
         try {
             String url = usersUrl + "/" + user.getId() + "/profile-picture";
+            String token = user.getToken();
             File file = request.getProfilePicture();
-            ApiResponse response = sendFile(url, file);
+            ApiResponse response = sendFile(url, file, token);
             if (response.isSuccess()) {
                 System.out.println(response.body);
+                return objectMapper.readValue(response.body, User.class);
             } else {
                 System.out.println("Failed to Update user profile picture. Status: "
                         + response.statusCode + ", Response: " + response.body);
+                return null;
             }
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
@@ -72,17 +76,14 @@ public class UserApiClient implements ApiClient {
 
     }
 
-    public User loginUser(LoginRequest loginRequest) {
+    public UserResponse loginUser(LoginRequest loginRequest) {
         try {
             ApiResponse response = sendPostRequest(loginUrl, loginRequest);
             if (response.isSuccess()) {
-                return objectMapper.readValue(response.body, User.class);
+                return objectMapper.readValue(response.body, UserResponse.class);
             } else {
-                JsonNode jsonNode = objectMapper.readTree(response.getBody());
-                String errorMessage = jsonNode.has("message")
-                        ? jsonNode.get("message").asText()
-                        : response.getBody();
-                System.out.println(errorMessage);
+                System.out.println("Failed to Login: "
+                        + response.statusCode + ", Response: " + response.body);
                 return null;
             }
         } catch (IOException | InterruptedException e) {
@@ -90,9 +91,11 @@ public class UserApiClient implements ApiClient {
         }
     }
 
-    public User getUserByUsername(String username) {
+    public User getUserByUsername(User user) {
         try {
-            ApiResponse response = sendGetRequest(usersUrl + "/username/" + username);
+            String token = user.getToken();
+            String url = usersUrl + "/username/" + user.getUsername();
+            ApiResponse response = sendGetRequest(url, token);
             if (response.isSuccess()) {
                 System.out.println(response.body);
                 return objectMapper.readValue(response.body, User.class);

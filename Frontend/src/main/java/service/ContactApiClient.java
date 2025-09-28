@@ -21,7 +21,8 @@ public class ContactApiClient implements ApiClient {
 
     // Get a list of ALL contacts PENDING and ACCEPTED
     public List<Contact> getAllUserContacts(User user) throws IOException, InterruptedException {
-        ApiResponse response = sendGetRequest(baseUrl + "/user/" + user.getId());
+        String token = user.getToken();
+        ApiResponse response = sendGetRequest(baseUrl, token);
         if (response.isSuccess()) {
             System.out.println("Response: " + response.body);
             return objectMapper.readValue(response.body, new TypeReference<List<Contact>>() {

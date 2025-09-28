@@ -1,6 +1,7 @@
 package request;
 
 import lombok.Data;
+import model.User;
 
 @Data
 public class MessageRequest {
@@ -10,31 +11,31 @@ public class MessageRequest {
     private int senderId;
     private int conversationId;
     private int messageId;
+    private String token;
 
 
     public MessageRequest() {}
 
-
     //Construct to send message to conversation
-    public MessageRequest(String text, int senderId, int conversationId) {
+    public MessageRequest(String text, int conversationId, String token) {
         this.text = text;
-        this.senderId = senderId;
+        this.token = token;
         this.conversationId = conversationId;
-
     }
+
     //Construct to modify message in a conversation
-    public MessageRequest(int conversationId, String text, int messageId, int userId) {
+    public MessageRequest(int conversationId, String text, int messageId, String token) {
         this.conversationId = conversationId;
         this.text = text;
         this.messageId = messageId;
-        this.userId = userId;
+        this.token = token;
     }
 
     //Construct to delete message in conversation
-    public MessageRequest(int conversationId, int userId, int messageId) {
+    public MessageRequest(int conversationId, int messageId, String token) {
         this.conversationId = conversationId;
-        this.userId= userId;
         this.messageId = messageId;
+        this.token = token;
     }
 
 }

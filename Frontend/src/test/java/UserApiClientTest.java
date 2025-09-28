@@ -3,6 +3,8 @@ import java.net.MalformedURLException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+import model.UserResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -74,9 +76,9 @@ public class UserApiClientTest {
 
         // Now try to login with the registered user
         loginRequest = new LoginRequest("testuser", "testpassword");
-        User loggedInUser = userApiClient.loginUser(loginRequest);
-
-        if (loggedInUser != null) {
+        UserResponse loginResponse = userApiClient.loginUser(loginRequest);
+        if (loginResponse != null) {
+            User loggedInUser = loginResponse.getUser();
             System.out.println("Login successful!");
             System.out.println("Username: " + loggedInUser.getUsername());
             System.out.println("Id: " + loggedInUser.getId());
@@ -98,10 +100,10 @@ public class UserApiClientTest {
         try {
             // Test login with invalid credentials
             loginRequest = new LoginRequest("nonexistentuser", "wrongpassword");
-            User loggedInUser = userApiClient.loginUser(loginRequest);
+            UserResponse loginResponse = userApiClient.loginUser(loginRequest);
 
             // This should return null for invalid credentials
-            if (loggedInUser == null) {
+            if (loginResponse == null) {
                 System.out.println("Login with invalid credentials correctly returned null");
                 // This is the expected behavior
             } else {

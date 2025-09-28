@@ -31,7 +31,7 @@ public class SendMessageHBoxController {
     @FXML
     public void sendMessageToConversation(ActionEvent event) {
         String message = sendMessageTextField.getText();
-        MessageRequest messageRequest = new MessageRequest(message, loggedInUser.getId(), conversation.getId());
+        MessageRequest messageRequest = new MessageRequest(message, conversation.getId(),loggedInUser.getToken());
         MessageApiClient messageApiClient = new MessageApiClient();
         messageApiClient.sendMessage(messageRequest);
         sendMessageTextField.clear();

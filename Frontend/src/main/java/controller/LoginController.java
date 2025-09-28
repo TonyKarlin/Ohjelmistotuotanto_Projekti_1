@@ -15,6 +15,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import model.UserResponse;
 import model.User;
 import request.LoginRequest;
 import service.ConversationApiClient;
@@ -28,6 +29,7 @@ public class LoginController {
     private ConversationApiClient conversationApiClient;
     private MessageApiClient messageApiClient;
     private UIAlert alert = new UIAlert();
+    private UserResponse loginResponse = new UserResponse();
 
     public void setController(UserApiClient userApiClient) {
         this.userApiClient = userApiClient;
@@ -67,10 +69,16 @@ public class LoginController {
         }
         //Gets username and password from the text fields and calls the loginRequest method
         LoginRequest loginRequest = new LoginRequest(username, password);
-        // Saves the result to User Object
-        User user = userApiClient.loginUser(loginRequest);
-        // If user is not null pass the user to the next view
-        if (user != null) {
+        // Send the login request and save the result to a LoginResponse object
+        loginResponse = userApiClient.loginUser(loginRequest);
+        // If the login response is not null, extract the User and pass it to the next view
+        if (loginResponse != null) {
+            User user = loginResponse.getUser();
+            user.setToken(loginResponse.getToken());
+            System.out.println(user.getEmail());
+            System.out.println(user.getToken());
+            System.out.println(user.getUsername());
+            System.out.println(user.getId());
             moveToMainView(user);
             Stage stage = (Stage) loginButton.getScene().getWindow();
             stage.close();

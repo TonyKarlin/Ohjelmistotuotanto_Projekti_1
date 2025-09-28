@@ -94,7 +94,7 @@ public class AddFriendsController {
 
             }
             // Otherwise check if the user exists
-            User foundUser = userApiClient.getUserByUsername(username);
+            User foundUser = userApiClient.getUserByUsername(loggedInuser);
             if (foundUser == null) {
                 alert.showErrorAlert("User not found", username);
                 return;

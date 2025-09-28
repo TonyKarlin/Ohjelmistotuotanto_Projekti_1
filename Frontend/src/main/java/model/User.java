@@ -16,7 +16,6 @@ public class User {
     private String token;
     private String role;
     private String profilePictureUrl;
-    private String profilePicture;
 
     // Default constructor (needed for Jackson/ObjectMapper)
     public User() {}
@@ -27,6 +26,4 @@ public class User {
         this.email = email;
         this.password = password;
     }
-
-
 }
