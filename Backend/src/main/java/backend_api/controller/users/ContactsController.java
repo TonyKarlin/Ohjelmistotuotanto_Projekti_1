@@ -2,9 +2,11 @@ package backend_api.controller.users;
 
 import backend_api.DTOs.contacts.AcceptContactDTO;
 import backend_api.DTOs.contacts.ContactResponseDTO;
+import backend_api.entities.User;
 import backend_api.services.ContactsService;
 import backend_api.services.UserService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,66 +17,82 @@ import java.util.Map;
 public class ContactsController {
 
     private final ContactsService contactsService;
-    private final UserService userService;
 
-    public ContactsController(ContactsService contactsService, UserService userService) {
+    public ContactsController(ContactsService contactsService) {
         this.contactsService = contactsService;
-        this.userService = userService;
     }
 
     @PostMapping("/add")
-    public ResponseEntity<ContactResponseDTO> addContact(@RequestParam Long userId, @RequestParam Long contactUserId) {
-        ContactResponseDTO response = contactsService.addContact(userId, contactUserId);
+    public ResponseEntity<ContactResponseDTO> addContact(
+            @RequestParam Long contactUserId,
+            Authentication authentication) {
+
+        User authUser = (User) authentication.getPrincipal();
+        ContactResponseDTO response = contactsService.addContact(authUser.getId(), contactUserId);
         return ResponseEntity.ok(response);
     }
 
     @PostMapping("/accept")
-    public ResponseEntity<AcceptContactDTO> acceptContact(@RequestParam Long userId, @RequestParam Long contactUserId) {
-        AcceptContactDTO response = contactsService.acceptContact(userId, contactUserId);
+    public ResponseEntity<AcceptContactDTO> acceptContact(
+            @RequestParam Long contactUserId,
+            Authentication authentication) {
+
+        User authUser = (User) authentication.getPrincipal();
+        AcceptContactDTO response = contactsService.acceptContact(authUser.getId(), contactUserId);
         return ResponseEntity.ok(response);
     }
 
     @DeleteMapping
-    public ResponseEntity<Map<String, String>> deleteContact(@RequestParam Long userId, @RequestParam Long contactUserId) {
-        String response = contactsService.deleteContact(userId, contactUserId);
+    public ResponseEntity<Map<String, String>> deleteContact(
+            @RequestParam Long contactUserId,
+            Authentication authentication) {
+
+        User authUser = (User) authentication.getPrincipal();
+        String response = contactsService.deleteContact(authUser.getId(), contactUserId);
         return ResponseEntity.ok(Map.of("message", response));
     }
 
-    @GetMapping("/user/{userId}")
-    public ResponseEntity<List<ContactResponseDTO>> getContacts(@PathVariable Long userId) {
-        List<ContactResponseDTO> contacts = contactsService.getContacts(userId)
+    @GetMapping
+    public ResponseEntity<List<ContactResponseDTO>> getContacts(Authentication authentication) {
+
+        User authUser = (User) authentication.getPrincipal();
+
+        List<ContactResponseDTO> contacts = contactsService.getContacts(authUser.getId())
                 .stream()
-                .map(c -> contactsService.convertToDTO(c,
-                        userService.getUserOrThrow(userId)))
+                .map(c -> contactsService.convertToDTO(c, authUser))
                 .toList();
+
         return ResponseEntity.ok(contacts);
     }
 
+    @GetMapping("/contact/{contactUserId}")
+    public ResponseEntity<ContactResponseDTO> getContactById(
+            @PathVariable Long contactUserId,
+            Authentication authentication) {
 
-    @GetMapping("/user/{userId}/contact/{contactUserId}")
-    public ResponseEntity<ContactResponseDTO> getContactById(@PathVariable Long userId, @PathVariable Long contactUserId) {
-        ContactResponseDTO response = contactsService.getContactByUserId(userId, contactUserId);
+        User authUser = (User) authentication.getPrincipal();
+        ContactResponseDTO response = contactsService.getContactByUserId(authUser.getId(), contactUserId);
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/user/{userId}/accepted")
-    public ResponseEntity<List<ContactResponseDTO>> getAcceptedContacts(@PathVariable Long userId) {
-        List<ContactResponseDTO> contacts = contactsService.getAcceptedContacts(userId);
-
+    @GetMapping("/accepted")
+    public ResponseEntity<List<ContactResponseDTO>> getAcceptedContacts(Authentication authentication) {
+        User authUser = (User) authentication.getPrincipal();
+        List<ContactResponseDTO> contacts = contactsService.getAcceptedContacts(authUser.getId());
         return ResponseEntity.ok(contacts);
     }
 
-    @GetMapping("/user/{userId}/pending")
-    public ResponseEntity<List<ContactResponseDTO>> getPendingContacts(@PathVariable Long userId) {
-        List<ContactResponseDTO> contacts = contactsService.getPendingContacts(userId);
-
+    @GetMapping("/pending")
+    public ResponseEntity<List<ContactResponseDTO>> getPendingContacts(Authentication authentication) {
+        User authUser = (User) authentication.getPrincipal();
+        List<ContactResponseDTO> contacts = contactsService.getPendingContacts(authUser.getId());
         return ResponseEntity.ok(contacts);
     }
 
-    @GetMapping("/user/{userId}/sent")
-    public ResponseEntity<List<ContactResponseDTO>> getSentRequests(@PathVariable Long userId) {
-        List<ContactResponseDTO> sentRequests = contactsService.getSentRequests(userId);
+    @GetMapping("/sent")
+    public ResponseEntity<List<ContactResponseDTO>> getSentRequests(Authentication authentication) {
+        User authUser = (User) authentication.getPrincipal();
+        List<ContactResponseDTO> sentRequests = contactsService.getSentRequests(authUser.getId());
         return ResponseEntity.ok(sentRequests);
     }
-
 }

@@ -71,7 +71,10 @@ public class ConversationParticipant {
     }
 
     public boolean isParticipant(User user) {
-        return this.user.equals(user);
+        if (user == null || user.getId() == null) {
+            return false;
+        }
+        return this.user != null && this.user.getId().equals(user.getId());
     }
 
     public LocalDateTime getJoinedAt() {

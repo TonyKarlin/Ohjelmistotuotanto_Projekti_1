@@ -6,10 +6,12 @@ import backend_api.DTOs.messages.MessageDTO;
 import backend_api.DTOs.messages.MessageResponse;
 import backend_api.DTOs.messages.SendMessageRequest;
 import backend_api.entities.Message;
+import backend_api.entities.User;
 import backend_api.services.MessageService;
 import backend_api.utils.customexceptions.BadMessageRequestException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -28,10 +30,14 @@ public class MessageController {
     @PostMapping
     public ResponseEntity<MessageDTO> sendMessage(
             @PathVariable("conversationId") Long conversationId,
-            @RequestBody SendMessageRequest request) {
+            @RequestBody SendMessageRequest request,
+            Authentication authentication) {
+
+        User authUser = (User) authentication.getPrincipal();
+
 
         request.setConversationId(conversationId);
-        Message message = messageService.sendMessage(request);
+        Message message = messageService.sendMessage(request, authUser);
 
         if (message == null) {
             throw new BadMessageRequestException("Failed to send message. Please check the request data.");
@@ -42,25 +48,31 @@ public class MessageController {
     }
 
     @GetMapping
-    public ResponseEntity<List<MessageDTO>> getMessages(@PathVariable("conversationId") Long conversationId) {
-        List<Message> messages = messageService.getMessagesByConversationId(conversationId);
+    public ResponseEntity<List<MessageDTO>> getMessages(
+            @PathVariable("conversationId") Long conversationId,
+            Authentication authentication) {
+        User authUser = (User) authentication.getPrincipal();
+        List<Message> messages = messageService.getMessagesByConversationId(conversationId, authUser);
 
         if (messages.isEmpty()) {
             throw new BadMessageRequestException("No messages found for this conversation.");
         }
 
-        List<MessageDTO> dtos =
-                messages.stream()
-                        .map(MessageDTO::fromMessageEntity)
-                        .toList();
+        List<MessageDTO> dtos = messages
+                .stream()
+                .map(MessageDTO::fromMessageEntity)
+                .toList();
 
         return ResponseEntity.ok(dtos);
     }
 
     @GetMapping("/{messageId}")
     public ResponseEntity<MessageDTO> getMessageById(@PathVariable("conversationId") Long conversationId,
-                                                     @PathVariable("messageId") Long messageId) {
-        Optional<Message> messageOptional = messageService.getMessageByIdAndConversationId(messageId, conversationId);
+                                                     @PathVariable("messageId") Long messageId,
+                                                     Authentication authentication) {
+
+        User authUser = (User) authentication.getPrincipal();
+        Optional<Message> messageOptional = messageService.getMessageByIdAndConversationId(messageId, conversationId, authUser);
         if (messageOptional.isEmpty()) {
             throw new BadMessageRequestException("Message not found in this conversation.");
         }
@@ -73,30 +85,28 @@ public class MessageController {
     public ResponseEntity<?> editMessage(@PathVariable("messageId") Long messageId,
                                          @PathVariable("conversationId") Long conversationId,
                                          @RequestBody EditMessageTextRequest request,
-                                         @RequestParam(required = false) Long userId) {
+                                         Authentication authentication) {
 
+        User authUser = (User) authentication.getPrincipal();
         if (request.getText() == null || request.getText().trim().isEmpty()) {
-            throw new BadMessageRequestException("Message text cannot be empty");
+            throw new BadMessageRequestException("Text field cannot be empty");
         }
 
-        Message updatedMessage = messageService.editMessage(conversationId, messageId, userId, request.getText());
+        Message updatedMessage = messageService.editMessage(conversationId, messageId, authUser.getId(), request.getText());
         return ResponseEntity.ok(MessageDTO.fromMessageEntity(updatedMessage));
     }
 
 
-    // WIP: Poistetaan viesti, jos käyttäjä on viestin lähettäjä tai keskustelun ylläpitäjä
-    // sitten kun roolit mukana kunnolla. Tällä hetkellä vain viestin lähettäjä voi poistaa oman viestinsä.
-    // Ei toimi ennen kuin JWT auth on kunnossa.
     @DeleteMapping("/{messageId}")
     public ResponseEntity<MessageResponse> deleteMessage(@PathVariable("conversationId") Long conversationId,
                                                          @PathVariable("messageId") Long messageId,
-                                                         @RequestParam(required = false) Long userId) {
+                                                         Authentication authentication) {
 
-
-        messageService.deleteMessage(userId, messageId, conversationId);
+        User authUser = (User) authentication.getPrincipal();
+        messageService.deleteMessage(authUser.getId(), messageId, conversationId);
         MessageResponse response = new MessageResponse(
                 messageId,
-                userId,
+                authUser.getId(),
                 "Message deleted successfully");
 
         return ResponseEntity.ok(response);

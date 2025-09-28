@@ -5,33 +5,24 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
+import backend_api.DTOs.user.UserWithTokenDTO;
+import backend_api.utils.customexceptions.UnauthorizedActionException;
 import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.*;
 
-import backend_api.DTOs.UpdateUserRequest;
-import backend_api.DTOs.UserDTO;
+import backend_api.DTOs.user.UpdateUserRequest;
+import backend_api.DTOs.user.UserDTO;
 import backend_api.DTOs.user.LoginRequest;
 import backend_api.DTOs.user.RegisterRequest;
 import backend_api.entities.User;
 import backend_api.services.UserService;
 import backend_api.utils.JwtUtil;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/api/users")
@@ -61,156 +52,76 @@ public class UserController {
 
     @GetMapping("/username/{username}")
     public ResponseEntity<UserDTO> getUserByUsername(@PathVariable("username") String username) {
-        Optional<User> user = userService.getUserbyUsername(username);
+        Optional<User> user = userService.getUserByUsername(username);
         return user.map(value -> ResponseEntity.ok(new UserDTO(value)))
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody RegisterRequest request) {
-        try {
-            User user = new User(request.getUsername(), request.getPassword(), request.getEmail());
-            user.setProfilePicture("default.png");
-            User savedUser = userService.register(user);
-            return ResponseEntity.ok(new UserDTO(savedUser));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body("Registration failed: " + e.getMessage());
-        }
+
+        User user = new User(request.getUsername(), request.getPassword(), request.getEmail());
+        user.setProfilePicture("default.png");
+        User savedUser = userService.register(user);
+        return ResponseEntity.ok(new UserDTO(savedUser));
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginRequest request) {
-        return userService.login(request.getUsername(), request.getPassword())
-                .map(user -> {
-                    String token = JwtUtil.generateToken(user.getUsername());
-                    Map<String, Object> response = new HashMap<>();
-                    response.put("username", user.getUsername());
-                    response.put("email", user.getEmail());
-                    response.put("id", user.getId());
-                    response.put("token", token);
-                    return ResponseEntity.ok(response);
+    public ResponseEntity<UserWithTokenDTO> login(@RequestBody LoginRequest request) {
+        User user = userService.login(request.getUsername(), request.getPassword())
+                .orElseThrow(() -> new UnauthorizedActionException("Invalid username or password"));
 
-                })
-                .orElse(ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                        .body(Map.of("message", "Invalid username or password")));
+        String token = JwtUtil.generateToken(user.getUsername());
+        UserWithTokenDTO response = new UserWithTokenDTO(
+                token,
+                new UserDTO(user)
+        );
+        return ResponseEntity.ok()
+                .header("Authorization", "Bearer " + token)
+                .body(response);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateUser(
+    public ResponseEntity<UserWithTokenDTO> updateUser(
             @PathVariable Long id,
             @RequestBody UpdateUserRequest request,
-            @RequestHeader("Authorization") String authHeader) {
-        try {
-            String token = authHeader.replace("Bearer ", "");
+            Authentication authorization) {
 
-            if (!JwtUtil.isTokenValid(token)) {
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid or expired token");
-            }
+        // Get Authenticated user from Spring Security context
+        User authUser = (User) authorization.getPrincipal();
 
-            String usernameFromToken = JwtUtil.getUsernameFromToken(token);
-            Optional<User> userOptional = userService.getUserById(id);
-            if (userOptional.isEmpty()) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
-            }
-
-            User user = userOptional.get();
-            if (!usernameFromToken.equals(user.getUsername())) {
-                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Cannot modify another user");
-            }
-
-            if (request.getUsername() != null && !request.getUsername().isBlank()) {
-                Optional<User> existing = userService.getAllUsers().stream()
-                        .filter(u -> u.getUsername().equals(request.getUsername()) && !u.getId().equals(id))
-                        .findAny();
-                if (existing.isPresent()) {
-                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Username already exists");
-                }
-                user.setUsername(request.getUsername());
-            }
-            if (request.getEmail() != null && !request.getEmail().isBlank()) {
-                user.setEmail(request.getEmail());
-            }
-
-            if (request.getPassword() != null && !request.getPassword().isBlank()) {
-                user.setPassword(userService.encodePassword(request.getPassword()));
-            }
-
-            userService.save(user);
-
-            String newToken = JwtUtil.generateToken(user.getUsername());
-
-            Map<String, Object> response = new HashMap<>();
-            response.put("id", user.getId());
-            response.put("username", user.getUsername());
-            response.put("email", user.getEmail());
-            response.put("profilePictureUrl", user.getProfilePicture() != null
-                    ? "http://localhost:8081/uploads/" + user.getProfilePicture()
-                    : null);
-            response.put("token", newToken);
-
-            return ResponseEntity.ok(response);
-
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Error updating user: " + e.getMessage());
+        if (!authUser.getId().equals(id)) {
+            throw new UnauthorizedActionException("You can only update your own profile");
         }
+
+        User updatedUser = userService.updateUser(id, request);
+
+        String newToken = JwtUtil.generateToken(updatedUser.getUsername());
+
+        return ResponseEntity.ok()
+                .header("Authorization", "Bearer " + newToken)
+                .body(new UserWithTokenDTO(newToken, new UserDTO(updatedUser)));
     }
 
     @PostMapping("/{id}/profile-picture")
     public ResponseEntity<?> uploadProfilePicture(
             @PathVariable Long id,
-            @RequestParam("file") MultipartFile file) {
-        try {
-            Optional<User> userOptional = userService.getUserById(id);
-            if (userOptional.isEmpty()) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
-            }
-            User user = userOptional.get();
+            @RequestParam("file") MultipartFile file) throws IOException {
 
-            // Server's directory
-            String serverDir = new File(".").getCanonicalPath(); // project root
-            String uploadDir = serverDir + File.separator + "uploads";
+        User user = userService.updateProfilePicture(id, file);
 
-            // Directory exists
-            File dir = new File(uploadDir);
-            if (!dir.exists()) {
-                dir.mkdirs();
-            }
-
-            // Unique filename
-            String filename = id + "_" + System.currentTimeMillis() + "_" + file.getOriginalFilename();
-            File destination = new File(uploadDir + File.separator + filename);
-            file.transferTo(destination);
-
-            // Store filename in DB
-            user.setProfilePicture(filename);
-            userService.save(user);
-
-            return ResponseEntity.ok(new UserDTO(user));
-
-        } catch (IOException | IllegalStateException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Error uploading profile picture: " + e.getMessage());
-        }
+        return ResponseEntity.ok(new UserDTO(user));
     }
+
 
     @GetMapping("/profile-picture/{filename}")
-    public ResponseEntity<Resource> getProfilePicture(@PathVariable String filename) {
-        try {
-            Path filePath = Paths.get(new File(".").getCanonicalPath(), "uploads", filename);
-            Resource resource = new UrlResource(filePath.toUri());
-            if (!resource.exists() || !resource.isReadable()) {
-                return ResponseEntity.notFound().build();
-            }
-
-            String contentType = Files.probeContentType(filePath);
-            return ResponseEntity.ok()
-                    .header("Content-Type", contentType != null ? contentType : "application/octet-stream")
-                    .body(resource);
-
-        } catch (IOException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+    public ResponseEntity<Resource> getProfilePicture(@PathVariable String filename) throws IOException {
+        Path filePath = Paths.get(new File(".").getCanonicalPath(), "uploads", filename);
+        Resource resource = userService.getProfilePicture(filename, filePath);
+        String contentType = Files.probeContentType(filePath);
+        return ResponseEntity.ok()
+                .header("Content-Type", contentType != null ? contentType : "application/octet-stream")
+                .body(resource);
     }
 }
+

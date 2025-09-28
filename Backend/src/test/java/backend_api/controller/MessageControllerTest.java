@@ -16,6 +16,7 @@ import backend_api.entities.Conversation;
 import backend_api.entities.Message;
 import backend_api.entities.User;
 import backend_api.services.MessageService;
+import org.springframework.security.core.Authentication;
 
 public class MessageControllerTest {
 
@@ -73,8 +74,8 @@ public class MessageControllerTest {
         messages.get(1).setConversation(conversation);
 
         // Mock the service method
-        when(service.getMessagesByConversationId(1L)).thenReturn(messages);
-        ResponseEntity<List<MessageDTO>> response = controller.getMessages(1L);
+        when(service.getMessagesByConversationId(1L, null)).thenReturn(messages);
+        ResponseEntity<List<MessageDTO>> response = controller.getMessages(1L, null);
 
         assertEquals(2, response.getBody().size(), "Expected 2 messages in the response");
         assertEquals(HttpStatus.OK, response.getStatusCode(), "Expected HTTP status 200 OK");
@@ -97,8 +98,8 @@ public class MessageControllerTest {
         sender.setId(1L);                              // Cannot be null
         mockMessage.setSender(sender);
 
-        when(service.getMessageByIdAndConversationId(12L, 8L)).thenReturn(Optional.of(mockMessage));
-        ResponseEntity<MessageDTO> response = controller.getMessageById(8L, 12L);
+        when(service.getMessageByIdAndConversationId(12L, 8L, null)).thenReturn(Optional.of(mockMessage));
+        ResponseEntity<MessageDTO> response = controller.getMessageById(8L, 12L, null);
 
         // Asserts
         assertEquals(HttpStatus.OK, response.getStatusCode(), "Expected HTTP status 200 OK");

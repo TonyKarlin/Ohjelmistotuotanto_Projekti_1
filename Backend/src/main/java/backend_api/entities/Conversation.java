@@ -66,6 +66,17 @@ public class Conversation {
         return participants.stream().anyMatch(p -> p.isParticipant(user));
     }
 
+    public ParticipantRole getParticipantRole(User user) {
+        if (user == null || user.getId() == null) {
+            return null;
+        }
+        return participants.stream()
+                .filter(p -> p.getUser() != null && p.getUser().getId().equals(user.getId()))
+                .map(ConversationParticipant::getRole)
+                .findFirst()
+                .orElse(null);
+    }
+
 
     // getterit ja setterit
     public Long getId() {

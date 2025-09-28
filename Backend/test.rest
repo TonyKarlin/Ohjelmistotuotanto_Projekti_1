@@ -1,38 +1,60 @@
+// Kaikki muut metodit paitsi POST register ja POST login vaativat
+// Authorization headerin Bearer tokenin kanssa.
+// Tokenin saa kirjautumalla sisään POST login endpointtiin.
+// Tokeni päivittyy aina kun käyttäjä kirjautuu sisään tai päivittää tietojaan.
+
 ### GET -- kaikki käyttäjät
-GET http://localhost:8080/api/users
+GET http://localhost:8081/api/users
 Content-Type: application/json
+Authorization: Bearer <token>
 
 ### GET -- yksittäinen käyttäjä id:llä
-GET http://localhost:8080/api/users/1
+GET http://localhost:8081/api/users/1
 Content-Type: application/json
+Authorization: Bearer <token>
 
 ### testataan uusi rekisteröityminen
-POST http://localhost:8080/api/users/register
+POST http://localhost:8081/api/users/register
 Content-Type: application/json
 
 {
-  "username": "bob",
+  "username": "testikaveri4",
   "password": "12345",
   "email": "pena@example.com"
 }
 
 ### Testataan login
-POST http://localhost:8080/api/users/login
+POST http://localhost:8081/api/users/login
 Content-Type: application/json
 
 {
-  "username": "bob",
+  "username": "ilpo",
   "password": "12345"
 }
 
+
+###PUT -- päivitetään käyttäjätietoja
+PUT http://localhost:8081/api/users/17
+Content-Type: application/json
+Authorization: Bearer <token>
+
+{
+  "username": "katsotaas",
+  "password": "qwerty",
+  "email": "testi@example.com"
+}
+
 ### Testataan profile picture
-POST http://localhost:8080/api/users/1/profile-picture
+POST http://localhost:8081/api/users/1/profile-picture
 Content-Type: multipart/form-data
 Accept: application/json
+Authorization: Bearer <token>
 
 file=@C:\Users\karki\Desktop\kuvat\tonninseteli.jpg
 
 
 ### Get by username
 
-GET http://localhost:8080/api/users/username/onni123
+GET http://localhost:8081/api/users/username/katsotaas
+Content-Type: application/json
+Authorization: Bearer <token>

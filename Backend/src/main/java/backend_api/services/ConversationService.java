@@ -11,6 +11,8 @@ import backend_api.enums.ParticipantRole;
 import backend_api.repository.ConversationRepository;
 import backend_api.utils.customexceptions.*;
 import jakarta.transaction.Transactional;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -42,9 +44,18 @@ public class ConversationService {
         return false;
     }
 
+    public void validateOwnership(User user, Long conversationId) {
+        Conversation conversation = getConversationById(conversationId);
+        ParticipantRole role = conversation.getParticipantRole(user);
+        System.out.println("User Role: " + role);
+        if (role != ParticipantRole.OWNER && role != ParticipantRole.ADMIN) {
+            throw new UnauthorizedActionException("User does not have permission to perform this action");
+        }
+    }
+
     public Conversation getConversationById(Long id) {
         return conversationRepository.findById(id).orElseThrow(() ->
-                new RuntimeException("Conversation not found with id: " + id));
+                new ConversationNotFoundException("Conversation not found with id: " + id));
     }
 
     public List<Conversation> getConversationsByUserId(Long userId) {
@@ -117,12 +128,12 @@ public class ConversationService {
 
         if (!conversation.isParticipant(userId)) {
             throw new InvalidConversationRequestException("User with id " + userId +
-                    " is not a participant in the conversation " + conversationId + "\nUser must" +
-                    " remove the contact instead");
+                    " is not a participant in the conversation " + conversationId);
         }
 
         if (conversation.isPrivate()) {
-            throw new PrivateConversationException("Cannot leave a private conversation");
+            throw new PrivateConversationException("Cannot leave a private conversation. " +
+                    "Friends must be removed instead.");
         }
 
         boolean removed = conversation.getParticipants().removeIf(participant ->
@@ -164,8 +175,8 @@ public class ConversationService {
         Conversation conversation = new Conversation(ConversationType.PRIVATE);
         conversationRepository.saveAndFlush(conversation);
 
-        createParticipant(conversation, user, ParticipantRole.ADMIN);
-        createParticipant(conversation, contactUser, ParticipantRole.ADMIN);
+        createParticipant(conversation, user, ParticipantRole.OWNER);
+        createParticipant(conversation, contactUser, ParticipantRole.OWNER);
 
         return conversation;
     }
@@ -197,7 +208,7 @@ public class ConversationService {
     }
 
     public Conversation createAConversation(ConversationRequest request) {
-        User sender = userService.getSender(request.getCreatorId());
+        User sender = userService.getUserOrThrow(request.getCreatorId());
         // Ensures that the sender is part of the participants
         ensureSenderInParticipants(request, sender);
 
@@ -208,8 +219,11 @@ public class ConversationService {
         }
 
         ConversationType type = ConversationType.GROUP;
-        String groupName = request.getName() != null && !request.getName().isEmpty() ? request.getName() : null;
-        Long creatorId = request.getCreatorId() != null ? request.getCreatorId() : null;
+        String groupName = request.getName() != null && !request.getName().isEmpty() ? request.getName() : "New Group";
+        Long creatorId = request.getCreatorId();
+        if (creatorId == null || !request.getParticipantIds().contains(creatorId)) {
+            throw new InvalidConversationRequestException("Creator must be a participant in the conversation");
+        }
 
         return createGroupConversationEntity(users, type, groupName, creatorId);
     }

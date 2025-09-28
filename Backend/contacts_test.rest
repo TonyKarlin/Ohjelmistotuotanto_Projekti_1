@@ -1,31 +1,42 @@
-### GET -- kaikki kontaktit
-GET http://localhost:8081/api/contacts/user/1
-Accept: application/json
+// Kaikki metodit vaativat Authorization headerin Bearer tokenin kanssa.
+// Tokenin saa kirjautumalla sisään POST login endpointilla. (test.rest)
 
-### GET -- yksittäinen kontakti
-GET http://localhost:8081/api/contacts/user/1/contact/2
+### GET -- kaikki kontaktit
+GET http://localhost:8081/api/contacts
 Accept: application/json
+Authorization: Bearer <token>
+
+### GET -- yksittäinen kontakti kaverin id:llä
+GET http://localhost:8081/api/contacts/1
+Accept: application/json
+Authorization: Bearer <token>
 
 ### GET -- kaikki hyväksytyt kontaktit
-GET http://localhost:8081/api/contacts/user/1/accepted
+GET http://localhost:8081/api/contacts/accepted
 Accept: application/json
+Authorization: Bearer <token>
 
 ### GET -- kaikki tulleet ja odottavat / pending kontaktipyynnöt
-GET http://localhost:8081/api/contacts/user/2/pending
+GET http://localhost:8081/api/contacts/pending
 Accept: application/json
+Authorization: Bearer <token>
 
 ### GET -- kaikki lähetetyt odottavat / pending kontaktipyynnöt
-GET http://localhost:8081/api/contacts/user/1/sent
+GET http://localhost:8081/api/contacts/sent
 Accept: application/json
+Authorization: Bearer <token>
 
 ### POST -- uusi kontakti
-POST http://localhost:8081/api/contacts/add?userId=1&contactUserId=1
+POST http://localhost:8081/api/contacts/add?userId=17&contactUserId=1
 Content-Type: application/json
+Authorization: Bearer <token>
 
 ### POST -- hyväksytään kontakti
-POST http://localhost:8081/api/contacts/accept?userId=1&contactUserId=2
+POST http://localhost:8081/api/contacts/accept?userId=1&contactUserId=17
 Content-Type: application/json
+Authorization: Bearer <token>
 
 ### DELETE -- poistetaan kontakti
 DELETE http://localhost:8081/api/contacts?userId=1&contactUserId=2
 Content-Type: application/json
+Authorization: Bearer <token>

@@ -1,9 +1,12 @@
+// Kaikki metodit vaativat Authorization headerin Bearer tokenin kanssa.
+// Tokenin saa kirjautumalla sisään POST login endpointilla. (test.rest)
+
 ### POST -- uusi keskustelu
 POST http://localhost:8081/api/conversations
 Content-Type: application/json
+Authorization: Bearer <token>
 
 {
-  "creatorId": 3,
   "name": "dirre",
   "participantIds": [
     1,
@@ -12,36 +15,43 @@ Content-Type: application/json
 }
 
 ### PUT -- keskustelun nimen muokkaus
-PUT http://localhost:8081/api/conversations/2/update
+PUT http://localhost:8081/api/conversations/27/update
 Content-Type: application/json
+Authorization: Bearer <token>
 
 {
   "name": "Dirre ja sen jenkins"
 }
 
 ### PUT -- käyttäjän lisääminen keskusteluun
-PUT http://localhost:8081/api/conversations/2/participants/4
+PUT http://localhost:8081/api/conversations/27/participants/12
 Content-Type: application/json
+Authorization: Bearer <token>
 
 ### PATCH -- keskustelusta poistuminen
-PATCH http://localhost:8081/api/conversations/4/leave?userId=3
+PATCH http://localhost:8081/api/conversations/27/leave
 Content-Type: application/json
+Authorization: Bearer <token>
 
 ### DELETE -- keskustelun poisto
 DELETE http://localhost:8081/api/conversations/3?requesterId=1
 Content-Type: application/json
+Authorization: Bearer <token>
 
 
 ### DELETE -- käyttäjän poistaminen keskustelusta
 DELETE http://localhost:8081/api/conversations/5/participants/3
 Content-Type: application/json
+Authorization: Bearer <token>
 
 
 ### GET -- kaikki keskustelut
-GET http://localhost:8081/api/conversations
+GET http://localhost:8081/api/conversations/user/me
 Content-Type: application/json
+Authorization: Bearer <token>
 
 
-### GET -- yksittaisen käyttäjän keskustelut
-@userId = 1
-GET http://localhost:8081/api/conversations/user/{{userId}}
+### GET -- yksittäinen keskustelu, jos käyttäjä on osallistuja
+GET http://localhost:8081/api/conversations/1
+Content-Type: application/json
+Authorization: Bearer <token>

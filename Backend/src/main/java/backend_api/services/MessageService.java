@@ -29,7 +29,7 @@ public class MessageService {
 
     public Message setNewMessage(SendMessageRequest request, Conversation conversation) {
         Message message = new Message();
-        message.setSender(userService.getSender(request.getSenderId()));
+        message.setSender(userService.getUserOrThrow(request.getSenderId()));
         message.setConversation(conversation);
         message.setText(request.getText());
         return message;
@@ -56,27 +56,23 @@ public class MessageService {
     }
 
 
-    public Message sendMessage(SendMessageRequest request) {
-        Conversation conversation;
-
-        if (request.conversationExists()) {
-            conversation = conversationService.getConversationById(request.getConversationId());
-        } else {
-            // Convert SendMessageRequest -> ConversationRequest
-            ConversationRequest convRequest = new ConversationRequest();
-            convRequest.setCreatorId(request.getSenderId());
-            convRequest.setParticipantIds(request.getParticipantIds());
-
-            conversation = conversationService.createAConversation(convRequest);
+    public Message sendMessage(SendMessageRequest request, User sender) {
+        if (!request.conversationExists()) {
+            throw new InvalidConversationRequestException("Conversation ID is required to send a message");
         }
 
+        Conversation conversation = conversationService.getConversationById(request.getConversationId());
+        if (!conversation.isParticipant(sender.getId())) {
+            throw new UnauthorizedActionException("User not a participant of this conversation");
+        }
+        request.setSenderId(sender.getId());
         return createAndSaveMessage(request, conversation);
     }
 
 
     private Message createAndSaveMessage(SendMessageRequest request, Conversation conversation) {
         // Validate that sender is part of the conversation
-        User sender = userService.getSender(request.getSenderId());
+        User sender = userService.getUserOrThrow(request.getSenderId());
         conversationService.validateUserIsParticipant(sender, conversation);
 
         // Create message entity
@@ -103,15 +99,24 @@ public class MessageService {
     }
 
 
-    public List<Message> getMessagesByConversationId(Long conversationId) {
-        // Varmistetaan että id on olemassa ja käytetään sitä (Throws RuntimeException jos ei löydy)
+    public List<Message> getMessagesByConversationId(Long conversationId, User user) {
+        // Varmistetaan että id on olemassa ja käytetään sitä
         Conversation conversation = conversationService.getConversationById(conversationId);
+        // Vain osallistujat voivat hakea viestejä, joten tarkistetaan se
+        if (!conversation.isParticipant(user.getId())) {
+            throw new UnauthorizedActionException("User not a participant of this conversation");
+        }
+
         Long id = conversation.getId();
 
         return messageRepository.findMessagesByConversationId(id);
     }
 
-    public Optional<Message> getMessageByIdAndConversationId(Long messageId, Long conversationId) {
+    public Optional<Message> getMessageByIdAndConversationId(Long messageId, Long conversationId, User user) {
+        Conversation conversation = conversationService.getConversationById(conversationId);
+        if (!conversation.isParticipant(user.getId())) {
+            throw new UnauthorizedActionException("User not a participant of this conversation");
+        }
         return messageRepository.findByIdAndConversationId(messageId, conversationId);
     }
 

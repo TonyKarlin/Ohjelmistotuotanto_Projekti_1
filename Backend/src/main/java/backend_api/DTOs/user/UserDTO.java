@@ -1,12 +1,12 @@
-package backend_api.DTOs;
+package backend_api.DTOs.user;
 
 import backend_api.entities.User;
 
 public class UserDTO {
-    private Long id;
-    private String username;
-    private String email;
-    private String profilePictureUrl;
+    private final Long id;
+    private final String username;
+    private final String email;
+    private final String profilePictureUrl;
 
     public UserDTO(User user) {
         this.id = user.getId();
@@ -14,7 +14,7 @@ public class UserDTO {
         this.email = user.getEmail();
         this.profilePictureUrl = user.getProfilePicture() != null
                 ? "http://localhost:8081/" + user.getProfilePicture()
-                : null;
+                : "http://localhost:8081/default.png";
     }
 
     public Long getId() {

@@ -1,29 +1,36 @@
+// Kaikki metodit vaativat Authorization headerin Bearer tokenin kanssa.
+// Tokenin saa kirjautumalla sisään POST login endpointilla. (test.rest)
+
 ### GET -- keskustelujen viestit
 GET http://localhost:8081/api/conversations/1/messages
 Content-Type: application/json
+Authorization: Bearer <token>
 
 ### GET -- haluttu viesti keskustelusta
 GET http://localhost:8081/api/conversations/1/messages/2
 Content-Type: application/json
+Authorization: Bearer <token>
 
 #### POST TESTI -- viestin lähetys
-@conversationId = 5
+@conversationId = 28
 POST http://localhost:8081/api/conversations/{{conversationId}}/messages
 Content-Type: application/json
+Authorization: Bearer <token>
 
 {
-  "senderId": 1,
-  "text": "katsotaas"
+  "text": "toimiiko?"
 }
 
 ### PUT -- viestin muokkaus
-PUT http://localhost:8081/api/conversations/5/messages/6
+PUT http://localhost:8081/api/conversations/28/messages/6
 Content-Type: application/json
+Authorization: Bearer <token>
 
 {
-  "text": "muokkaus"
+  "text": "muokkaus test"
 }
 
 ### DELETE -- viestin poisto
-DELETE http://localhost:8081/api/conversations/5/messages/3?userId=2
+DELETE http://localhost:8081/api/conversations/28/messages/6
 Content-Type: application/json
+Authorization: Bearer <token>
