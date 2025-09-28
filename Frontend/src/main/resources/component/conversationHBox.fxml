@@ -1,41 +1,79 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.CustomMenuItem?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 
-<HBox alignment="CENTER" fillHeight="false" prefHeight="70.0" prefWidth="212.0" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.component.ConversationHBoxController">
+<HBox alignment="CENTER" fillHeight="false" prefHeight="85.0" prefWidth="212.0" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.component.ConversationHBoxController">
    <children>
       <StackPane fx:id="contactContent" prefHeight="62.0" prefWidth="60.0">
          <children>
-            <AnchorPane prefHeight="68.0" prefWidth="60.0">
+            <AnchorPane prefHeight="60.0" prefWidth="60.0">
                <children>
-                  <ImageView fx:id="contactUserPicture" fitHeight="60.0" fitWidth="60.0" layoutY="23.0" onMouseClicked="#openMessages" pickOnBounds="true" preserveRatio="true" styleClass="ImageView">
+                  <ImageView fx:id="contactUserPicture" fitHeight="60.0" fitWidth="60.0" layoutY="10.0" onMouseClicked="#openMessages" pickOnBounds="true" preserveRatio="true" styleClass="ImageView">
                      <image>
                         <Image url="@../img/img_2.png" />
                      </image>
                   </ImageView>
-                  <Circle fx:id="contactUserStatus" fill="#40c351" layoutX="50.0" layoutY="75.0" radius="7.0" stroke="BLACK" strokeType="INSIDE" />
+                  <Circle fx:id="contactUserStatus" fill="#40c351" layoutX="52.0" layoutY="62.0" radius="7.0" stroke="BLACK" strokeType="INSIDE" />
                </children>
+               <StackPane.margin>
+                  <Insets />
+               </StackPane.margin>
             </AnchorPane>
          </children>
       </StackPane>
-      <Label fx:id="contactUsername" alignment="TOP_LEFT" contentDisplay="CENTER" prefHeight="55.0" prefWidth="131.0" text="Username" textFill="#c3c3c3">
-         <font>
-            <Font name="System Bold" size="17.0" />
-         </font>
-         <padding>
-            <Insets top="5.0" />
-         </padding>
+      <VBox spacing="5.0">
+         <children>
+            <Label fx:id="contactUsername" alignment="CENTER" contentDisplay="CENTER" prefHeight="31.0" prefWidth="98.0" text="Username" textFill="#c3c3c3">
+               <font>
+                  <Font name="System Bold" size="17.0" />
+               </font>
+               <padding>
+                  <Insets top="5.0" />
+               </padding>
+               <VBox.margin>
+                  <Insets bottom="5.0" left="10.0" />
+               </VBox.margin>
+            </Label>
+            <MenuButton fx:id="conversationOptionButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" popupSide="RIGHT" prefHeight="23.0" prefWidth="43.0" text="MenuButton" visible="false">
+              <items>
+                <MenuItem fx:id="deleteButton" mnemonicParsing="false" onAction="#deleteConversation" text="Delete" />
+                <MenuItem fx:id="removeUserButton" mnemonicParsing="false" onAction="#removeUserFromConversation" text="Remove User" />
+                  <MenuItem fx:id="leaveButton" mnemonicParsing="false" onAction="#leaveFromConversation" text="Leave" />
+                  <MenuItem fx:id="addUserButton" mnemonicParsing="false" onAction="#adduserToConversation" text="Add user" />
+                  <CustomMenuItem hideOnClick="false" mnemonicParsing="false" text="Add user">
+                     <content>
+                        <TextField fx:id="userIdTextField" promptText="id's for now" />
+                     </content>
+                  </CustomMenuItem>
+              </items>
+               <graphic>
+                  <ImageView fitHeight="23.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../img/menu.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <VBox.margin>
+                  <Insets left="60.0" />
+               </VBox.margin>
+            </MenuButton>
+         </children>
          <HBox.margin>
-            <Insets left="10.0" />
+            <Insets />
          </HBox.margin>
-      </Label>
+      </VBox>
    </children>
 </HBox>

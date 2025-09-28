@@ -16,6 +16,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuButton;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -51,6 +52,7 @@ public class ChatDashboardController implements ContactUpdateCallback {
     List<Contact> pendingContacts;
     List<Contact> sentContacts;
     private ImageRounder imageRounder;
+    private MenuButton activeConversationMenu;
 
     public void setController(User loggedInUser, UserApiClient userApiClient) throws IOException, InterruptedException {
         this.loggedInUser = loggedInUser;
@@ -113,30 +115,39 @@ public class ChatDashboardController implements ContactUpdateCallback {
         return contactApiClient.getAllUserContacts(loggedInUser);
     }
 
+    //ImageView userProfilePicture opens up a user profile view and clears any content in the Content pane
     @FXML
     public void openUserProfile(MouseEvent event) throws IOException {
+        //Clears send message HBox in the bottom and main view
         contentBorderPane.setBottom(null);
         VBoxContentPane.getChildren().clear();
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/userProfileView.fxml"));
         VBox userProfile = fxmlLoader.load();
         UserProfileController controller = fxmlLoader.getController();
+        //Pass user, userApiClient and this view controller instances to user profile view
         controller.setController(loggedInUser, this.userApiClient, this);
+        // Adds the user profile to the VBox element
         VBoxContentPane.getChildren().add(userProfile);
     }
 
+    //Opens the add friends view
     @FXML
     public void openAddFriendsView() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/addFriendsView.fxml"));
         Parent root = fxmlLoader.load();
         AddFriendsController controller = fxmlLoader.getController();
+        //Pass instances to the view
         controller.setController(loggedInUser, this.userApiClient, this.contactApiClient, this.contacts, this);
         Stage stage = new Stage();
+        //Modality blocks all windows of this application
         stage.initModality(Modality.APPLICATION_MODAL);
+        //Undecorated so no resize, close or fullscreen options
         stage.initStyle(StageStyle.UNDECORATED);
         stage.setScene(new Scene(root));
         stage.show();
     }
 
+    //Logout user and clears the instances
     @FXML
     public void logoutUser(ActionEvent event) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/loginView.fxml"));
@@ -153,8 +164,14 @@ public class ChatDashboardController implements ContactUpdateCallback {
         stage.show();
     }
 
-    public void showConversationMessages(Conversation conversation) throws IOException, InterruptedException {
+
+    public void showConversationMessages(Conversation conversation, MenuButton menuButton) throws IOException, InterruptedException {
         VBoxContentPane.getChildren().clear();
+        if (activeConversationMenu != null) {
+            activeConversationMenu.setVisible(false);
+        }
+        activeConversationMenu = menuButton;
+        activeConversationMenu.setVisible(true);
         List<Message> messages = messageApiClient.getConversationMessages(conversation, this.loggedInUser);
         if (messages != null && !messages.isEmpty()) {
             for (Message m : messages) {
@@ -181,6 +198,7 @@ public class ChatDashboardController implements ContactUpdateCallback {
         contentBorderPane.setBottom(sendMessageHBox);
     }
 
+    //Adds the conversation components
     public void addConversation() throws IOException {
         for (Conversation c : conversations) {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/component/conversationHBox.fxml"));

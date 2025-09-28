@@ -64,8 +64,7 @@
   -fx-scale-y: 1.05;
 }
 
-.check-box {
-}
+.check-box {}
 .check-box:hover {
   -fx-cursor: hand;
   -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.5), 10, 0, 4, 4);
@@ -74,8 +73,7 @@
   -fx-color: rgb(99, 101, 220);
 }
 
-.clickable-label {
-}
+.clickable-label {}
 .clickable-label:hover {
   -fx-cursor: hand;
   -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.5), 10, 0, 4, 4);
@@ -87,8 +85,7 @@
   -fx-background-color: rgb(32, 32, 32);
 }
 
-.ImageView {
-}
+.ImageView {}
 .ImageView:hover {
   -fx-cursor: hand;
   -fx-scale-x: 1.05;
