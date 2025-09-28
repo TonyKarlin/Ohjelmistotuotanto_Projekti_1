@@ -22,6 +22,8 @@ class ConversationTest {
         User user1 = new User("test", "test", "test@test.com");
         User user2 = new User("test1", "test1", "test1@test1.com");
         Conversation conversation = new Conversation();
+        user1.setId(1L);
+        user2.setId(2L);
 
         // Add participant
         conversation.addParticipant(user1, ParticipantRole.MEMBER);

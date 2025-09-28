@@ -58,6 +58,11 @@ public class MessageControllerTest {
         MessageService service = mock(MessageService.class);
         MessageController controller = new MessageController(service);
 
+        Authentication auth = mock(Authentication.class);
+        User mockUser = new User();
+        mockUser.setId(99L);
+        when(auth.getPrincipal()).thenReturn(mockUser);
+
         List<Message> messages = List.of(new Message(), new Message()); // Create two mock messages
         List<User> senders = List.of(new User(), new User()); // Create two mock senders
         Conversation conversation = new Conversation();
@@ -74,8 +79,8 @@ public class MessageControllerTest {
         messages.get(1).setConversation(conversation);
 
         // Mock the service method
-        when(service.getMessagesByConversationId(1L, null)).thenReturn(messages);
-        ResponseEntity<List<MessageDTO>> response = controller.getMessages(1L, null);
+        when(service.getMessagesByConversationId(1L, mockUser)).thenReturn(messages);
+        ResponseEntity<List<MessageDTO>> response = controller.getMessages(1L, auth);
 
         assertEquals(2, response.getBody().size(), "Expected 2 messages in the response");
         assertEquals(HttpStatus.OK, response.getStatusCode(), "Expected HTTP status 200 OK");
@@ -88,6 +93,12 @@ public class MessageControllerTest {
     void getMessageById() {
         MessageService service = mock(MessageService.class);
         MessageController controller = new MessageController(service);
+
+        Authentication auth = mock(Authentication.class);
+        User mockUser = new User();
+        mockUser.setId(10L);
+        when(auth.getPrincipal()).thenReturn(mockUser);
+
         Conversation conversation = new Conversation();
         Message mockMessage = new Message();
         mockMessage.setId(12L);
@@ -98,8 +109,8 @@ public class MessageControllerTest {
         sender.setId(1L);                              // Cannot be null
         mockMessage.setSender(sender);
 
-        when(service.getMessageByIdAndConversationId(12L, 8L, null)).thenReturn(Optional.of(mockMessage));
-        ResponseEntity<MessageDTO> response = controller.getMessageById(8L, 12L, null);
+        when(service.getMessageByIdAndConversationId(12L, 8L, mockUser)).thenReturn(Optional.of(mockMessage));
+        ResponseEntity<MessageDTO> response = controller.getMessageById(8L, 12L, auth);
 
         // Asserts
         assertEquals(HttpStatus.OK, response.getStatusCode(), "Expected HTTP status 200 OK");
