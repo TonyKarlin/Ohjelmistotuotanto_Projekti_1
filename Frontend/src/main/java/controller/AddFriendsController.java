@@ -3,6 +3,7 @@ package controller;
 import java.io.IOException;
 import java.util.List;
 
+import callback.ContactUpdateCallback;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -22,21 +23,18 @@ public class AddFriendsController {
     ContactApiClient contactApiClient = new ContactApiClient();
     private final UIAlert alert = new UIAlert();
     private List<Contact> contacts;
-    private List<Contact> pendingContacts;
-    private List<Contact> sentContacts;
+    private ContactUpdateCallback contactUpdateCallback;
 
     public void setController(User loggedInuser,
-            UserApiClient userApiClient,
-            ContactApiClient contactApiClient,
-            List<Contact> contacts,
-            List<Contact> pendingContacts,
-            List<Contact> sentContacts) {
+                              UserApiClient userApiClient,
+                              ContactApiClient contactApiClient,
+                              List<Contact> contacts,
+                              ContactUpdateCallback contactUpdateCallback) {
 
         this.loggedInuser = loggedInuser;
         this.userApiClient = userApiClient;
         this.contacts = contacts;
-        this.pendingContacts = pendingContacts;
-        this.sentContacts = sentContacts;
+        this.contactUpdateCallback = contactUpdateCallback;
     }
 
     @FXML
@@ -49,120 +47,78 @@ public class AddFriendsController {
     private Button closeButton;
 
     @FXML
-    void sendFriendRequest(ActionEvent event) {
+    public void sendFriendRequest(ActionEvent event) {
 
-        String username = searchFriendTextField.getText();
+        String username = searchFriendTextField.getText().trim();
 
-        if ("".equals(username)) {
+        if (username.isEmpty()) {
             alert.showErrorAlert("Field is empty", username);
             return;
         }
 
         if (loggedInuser.getUsername().equals(username)) {
-            alert.showErrorAlert("Cant add yourself", username);
+            alert.showErrorAlert("Can't add yourself", username);
             return;
         }
 
-        if (username != null) {
-            try {
-                User foundUser = userApiClient.getUserByUsername(username);
-                if (foundUser != null) {
-                    // Refresh contact lists to ensure accuracy
-                    refreshContactLists();
-
-                    if (isContact(foundUser)) {
-                        alert.showErrorAlert("You are already friends with user: " + foundUser.getUsername(), username);
-                        return;
-                    }
-
-                    ContactRequest contactRequest = new ContactRequest(loggedInuser.getId(), foundUser.getId());
-
-                    if (isSentContact(foundUser)) {
-                        alert.showErrorAlert("You've already sent a friend request to user: " + foundUser.getUsername(), username);
-                        return;
-                    }
-
-                    // if the contact is in your pending contacts list accept it
-                    if (isPendingContact(foundUser)) {
-                        alert.showSuccessAlert("Friend request from " + foundUser.getUsername() + " accepted! You are now friends.", username);
-                        contactApiClient.acceptContact(contactRequest);
-
-                        return;
-                    }
-
-                    alert.showSuccessAlert("Friend request sent to: " + foundUser.getUsername(), username);
-
-                    contactApiClient.addContact(contactRequest);
-
-                } else {
-                    System.out.println("User not found");
-                }
-            } catch (IOException | InterruptedException e) {
-                System.out.println("Error fetching user or contacts: " + e.getMessage());
-            }
-        }
-
-    }
-
-    /**
-     * Refreshes all contact lists from the API to ensure up-to-date data
-     */
-    private void refreshContactLists() {
         try {
-            this.pendingContacts = contactApiClient.getAllPendingUserContacts(loggedInuser);
-            this.sentContacts = contactApiClient.getAllSentUserContacts(loggedInuser);
-            this.contacts = contactApiClient.getAllUserContacts(loggedInuser);
-        } catch (IOException | InterruptedException e) {
-            System.out.println("Error refreshing contact lists: " + e.getMessage());
-            // Keep existing lists if refresh fails
-        }
-    }
 
-    public boolean isContact(User foundUser) {
-        boolean alreadyContact = false;
-        if (contacts != null) {
+            // check if the contact is already in your contacts PENDING or ACCEPTED
+            Contact foundContact = null;
             for (Contact contact : contacts) {
-                if (contact.getContactUserId() == foundUser.getId()) {
-                    alreadyContact = true;
+                if (username.equals(contact.getContactUsername())) {
+                    foundContact = contact;
                     break;
                 }
             }
+
+            if (foundContact != null) {
+                // If the contact is PENDING
+                if ("PENDING".equals(foundContact.getStatus())) {
+                    // If the current user sent the friend request
+                    if (foundContact.getInitiatorId() == loggedInuser.getId()) {
+                        alert.showErrorAlert("Friend request already sent to: " + foundContact.getContactUsername(), username);
+                        return;
+
+                    } else {
+                        // else accept the request
+                        contactApiClient.acceptContact(new ContactRequest(loggedInuser.getId(), foundContact.getContactUserId()));
+                        alert.showSuccessAlert("Friend request from " + foundContact.getContactUsername() + " accepted!", username);
+                        // Lastly update contacts
+                        updateContactsList(loggedInuser);
+                        return;
+                    }
+                }
+                alert.showErrorAlert("You're already friends with: " + foundContact.getContactUsername(), username);
+                return;
+
+            }
+            // Otherwise check if the user exists
+            User foundUser = userApiClient.getUserByUsername(username);
+            if (foundUser == null) {
+                alert.showErrorAlert("User not found", username);
+                return;
+            }
+
+            // Send a friend request to the found user
+            contactApiClient.addContact(new ContactRequest(loggedInuser.getId(), foundUser.getId()));
+            alert.showSuccessAlert("Friend request sent to: " + foundUser.getUsername(), username);
+
+            // Lastly update contacts
+            updateContactsList(loggedInuser);
+
+        } catch (IOException | InterruptedException e) {
+            alert.showErrorAlert("Error sending friend request: " + e.getMessage(), username);
         }
-        System.out.println(alreadyContact + " CONTACT");
-        return alreadyContact;
     }
 
-    public boolean isPendingContact(User foundUser) {
-        boolean alreadyPending = false;
-        if (pendingContacts != null) {
-            for (Contact contact : pendingContacts) {
-                if (contact.getContactUserId() == foundUser.getId()) {
-                    System.out.println(contact);
-                    alreadyPending = true;
-                    break;
-                }
-            }
-        }
-        System.out.println(alreadyPending + " PENDING");
-        return alreadyPending;
-    }
+    public void updateContactsList(User loggedInUser) throws IOException, InterruptedException {
+        contacts = contactApiClient.getAllUserContacts(loggedInUser);
 
-    public boolean isSentContact(User foundUser) {
-        boolean alreadySent = false;
-        for (Contact contact : sentContacts) {
-            System.out.println(contact.getContactUsername());
+        // Notify the parent controller about the updated contacts
+        if (contactUpdateCallback != null) {
+            contactUpdateCallback.onContactsUpdated(contacts);
         }
-        if (sentContacts != null) {
-            for (Contact contact : sentContacts) {
-                if (contact.getContactUserId() == foundUser.getId()) {
-                    System.out.println(contact);
-                    alreadySent = true;
-                    break;
-                }
-            }
-        }
-        System.out.println(alreadySent + " SENT");
-        return alreadySent;
     }
 
     @FXML

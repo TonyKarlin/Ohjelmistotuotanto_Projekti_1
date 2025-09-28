@@ -1,6 +1,13 @@
 pipeline {
     agent any
 
+    environment {
+        PATH = "C:\\Program Files\\Docker\\Docker\\resources\\bin;${env.PATH}"
+        DOCKERHUB_CREDENTIALS_ID = 'Docker_Hub'
+        DOCKERHUB_REPO = 'jarkkok1/project'
+        DOCKER_IMAGE_TAG = 'latest'
+    }
+
     stages {
         stage('Checkout') {
             steps {
@@ -65,6 +72,23 @@ pipeline {
             steps {
                 archiveArtifacts artifacts: 'Backend/target/site/jacoco/**'
                 archiveArtifacts artifacts: 'Frontend/target/site/jacoco/**'
+            }
+        }
+        stage('Build Docker Image') {
+            steps {
+                dir('Backend') {
+                    bat 'docker build -t %DOCKERHUB_REPO%:%DOCKER_IMAGE_TAG% .'
+                }
+            }
+        }
+        stage('Push Docker Image to Docker Hub') {
+            steps {
+                withCredentials([usernamePassword(credentialsId: "${DOCKERHUB_CREDENTIALS_ID}", usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+                    bat '''
+                        docker login -u %DOCKER_USER% -p %DOCKER_PASS%
+                        docker push %DOCKERHUB_REPO%:%DOCKER_IMAGE_TAG%
+                    '''
+                }
             }
         }
     }

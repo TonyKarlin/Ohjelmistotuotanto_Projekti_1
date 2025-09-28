@@ -1,6 +1,7 @@
 package controller;
 
 import javafx.event.ActionEvent;
+import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -12,79 +13,138 @@ import javafx.scene.shape.Circle;
 import model.User;
 import request.UpdateUserRequest;
 import service.UserApiClient;
+import utils.FileHandler;
+import utils.ImageRounder;
 import utils.UIAlert;
 
-import java.util.Objects;
-
+import java.io.File;
 
 public class UserProfileController {
 
     User loggedInUser;
     UserApiClient client;
-    UIAlert uiAlert = new UIAlert();
+    ChatDashboardController parentController;
+    UIAlert alert = new UIAlert();
+    ImageRounder imageRounder;
+    FileHandler fileHandler;
+    UpdateUserRequest request;
 
 
-    public void setController(User loggedInUser, UserApiClient client) {
+    public void setController(User loggedInUser, UserApiClient client, ChatDashboardController parentController) {
         this.loggedInUser = loggedInUser;
         this.client = client;
+        this.parentController = parentController;
         addUserInformation(loggedInUser);
+        imageRounder = new ImageRounder(userProfilePicture);
     }
 
+    //region FXML-injected UI components
     @FXML
     private Circle awayStatus;
-
     @FXML
     private Circle userCurrentStatus;
-
     @FXML
     private Button changeInformationButton;
-
     @FXML
-    private Button changeUserPictureButton;
-
+    private Button changeProfilePictureButton;
     @FXML
     private TextField emailTextField;
-
     @FXML
     private Circle offlineStatus;
-
     @FXML
     private Circle onlineStatus;
-
     @FXML
     private PasswordField passwordField;
-
     @FXML
     private StackPane profilePictureContainer;
-
     @FXML
     private PasswordField repeatPasswordField;
-
     @FXML
     private ImageView userProfilePicture;
-
     @FXML
     private TextField usernameTextField;
-
-    @FXML
-    public void changeInformation(ActionEvent event) {
-        String newUsername = usernameTextField.getText();
-        String newEmail = emailTextField.getText();
-        String oldPassword = passwordField.getText();
-        String newPassword = repeatPasswordField.getText();
-
-        UpdateUserRequest request = new UpdateUserRequest(newUsername, newEmail,loggedInUser.getUserId(), oldPassword, newPassword);
-        this.loggedInUser = client.updateUser(request, loggedInUser);
-        System.out.println(loggedInUser.getUsername());
-
-
-    }
+    //endregion
 
     @FXML
     public void changeUserStatus(MouseEvent event) {
         Circle clickedCircle = (Circle) event.getSource();
         userCurrentStatus.setFill(clickedCircle.getFill());
+    }
 
+    @FXML
+    public void changeInformation(ActionEvent event) {
+        String newUsername = usernameTextField.getText();
+        String newEmail = emailTextField.getText();
+        String newPassword = passwordField.getText();
+        String repeatedPassword = repeatPasswordField.getText();
+        if (!checkTextFields(newUsername, newEmail)) {
+            return;
+        }
+        if (!checkPassword(newPassword, repeatedPassword)) {
+            return;
+        }
+        request = new UpdateUserRequest(newUsername, newEmail, newPassword);
+        User updatedUser = client.updateUser(request, loggedInUser);
+        if (updatedUser == null) {
+            alert.showErrorAlert("Updated failed", "Failed to update user");
+        } else {
+            alert.showSuccessAlert("Success", "User updated successfully ✅");
+            String token = loggedInUser.getToken();
+            loggedInUser = updatedUser;
+            loggedInUser.setToken(token);
+            parentController.setLoggedInUser(loggedInUser);
+            parentController.setUpUsername();
+            addUserInformation(loggedInUser);
+
+        }
+    }
+
+    @FXML
+    public void changeProfilePicture() {
+        fileHandler = new FileHandler();
+        File selectedPicture = fileHandler.selectProfilePicture(changeProfilePictureButton.getScene().getWindow());
+        if (selectedPicture != null) {
+            Image image = new Image(selectedPicture.toURI().toString());
+            userProfilePicture.setImage(image);
+            userProfilePicture.setFitWidth(profilePictureContainer.getPrefWidth());
+            userProfilePicture.setFitHeight(profilePictureContainer.getPrefHeight());
+            userProfilePicture.setPreserveRatio(false);
+            request = new UpdateUserRequest(selectedPicture);
+            client.updateUserProfilePicture(request, loggedInUser);
+
+
+        }
+
+    }
+
+    public boolean checkPassword(String password, String repeatedPassword) {
+        if (password.isEmpty() && repeatedPassword.isEmpty()) {
+            return true;
+        }
+        if (!password.equals(repeatedPassword)) {
+            alert.showErrorAlert("Error", "passwords don't match");
+            return false;
+        }
+        if (password.length() < 6) {
+            alert.showErrorAlert("Invalid Password", "Password should contain 6 or more characters.");
+            return false;
+        }
+        return true;
+    }
+
+    // Check the user inputs that hey are valid. Gets alert if something is wrong
+    public boolean checkTextFields(String username, String email) {
+        if (username.isEmpty() || email.isEmpty()) {
+            alert.showErrorAlert("Empty fields", "Please fill in all fields");
+            return false;
+        } else if (username.length() < 6) {
+            alert.showErrorAlert("Invalid Name", "Name should contain 6 or more characters.");
+            return false;
+        } else if (!email.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$")) {
+            alert.showErrorAlert("Invalid Email", "Please enter a valid email address.");
+            return false;
+        }
+        return true;
     }
 
     public void addUserInformation(User loggedInUser) {

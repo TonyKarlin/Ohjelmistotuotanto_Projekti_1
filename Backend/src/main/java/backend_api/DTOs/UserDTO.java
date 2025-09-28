@@ -13,7 +13,7 @@ public class UserDTO {
         this.username = user.getUsername();
         this.email = user.getEmail();
         this.profilePictureUrl = user.getProfilePicture() != null
-                ? "http://localhost:8080/" + user.getProfilePicture()
+                ? "http://localhost:8081/" + user.getProfilePicture()
                 : null;
     }
 

@@ -23,6 +23,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import model.User;
 import service.UserApiClient;
+import utils.FileHandler;
 import utils.ImageRounder;
 import utils.UIAlert;
 
@@ -31,6 +32,7 @@ public class RegisterController {
     private UserApiClient userApiClient;
     private ImageRounder imageRounder;
     private UIAlert alert = new UIAlert();
+    private FileHandler fileHandler = new FileHandler();
 
     //Controller to set instances. Is called when changing to this view.
     public void setController(UserApiClient userApiClient) {
@@ -38,6 +40,7 @@ public class RegisterController {
         imageRounder = new ImageRounder(userProfilePicture);
     }
 
+    //region FXML-injected UI components
     @FXML
     private Button addPictureButton;
 
@@ -64,6 +67,7 @@ public class RegisterController {
 
     @FXML
     private TextField usernameTextField;
+    //endregion
 
     public RegisterController() {
     }
@@ -111,15 +115,8 @@ public class RegisterController {
     //right now change the image in register view but don't send it to the server
     @FXML
     void addProfilePicture(ActionEvent event) {
-        // Open file explorer and shows only images
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Select Profile Picture");
-        fileChooser.getExtensionFilters().addAll(
-                new FileChooser.ExtensionFilter("image Files",
-                        "*.png", "*.jpg", ".jpeg")
-        );
+        File selectedPicture = fileHandler.selectProfilePicture(addPictureButton.getScene().getWindow());
         // when image is selected from file explorer change it in the register view and make it also a round
-        File selectedPicture = fileChooser.showOpenDialog(addPictureButton.getScene().getWindow());
         if (selectedPicture != null) {
             Image image = new Image(selectedPicture.toURI().toString());
             userProfilePicture.setImage(image);

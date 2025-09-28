@@ -19,43 +19,15 @@ public class ContactApiClient implements ApiClient {
 
     }
 
-    // Get a list of ACCEPTED contacts(friends) of the current user
+    // Get a list of ALL contacts PENDING and ACCEPTED
     public List<Contact> getAllUserContacts(User user) throws IOException, InterruptedException {
-        ApiResponse response = sendGetRequest(baseUrl + "/user/" + user.getId() + "/accepted");
+        ApiResponse response = sendGetRequest(baseUrl + "/user/" + user.getId());
         if (response.isSuccess()) {
             System.out.println("Response: " + response.body);
             return objectMapper.readValue(response.body, new TypeReference<List<Contact>>() {
             });
         } else {
             System.out.println("Failed to get Contacts. Status: " + response.statusCode
-                    + ", Response: " + response.body);
-            return null;
-        }
-    }
-
-    // Get a list of PENDING contacts of the current user
-    public List<Contact> getAllPendingUserContacts(User user) throws IOException, InterruptedException {
-        ApiResponse response = sendGetRequest(baseUrl + "/user/" + user.getId() + "/pending");
-        if (response.isSuccess()) {
-            System.out.println("Response: " + response.body);
-            return objectMapper.readValue(response.body, new TypeReference<List<Contact>>() {
-            });
-        } else {
-            System.out.println("Failed to get pending Contacts. Status: " + response.statusCode
-                    + ", Response: " + response.body);
-            return null;
-        }
-    }
-
-    // Get a list of SENT contacts of the current user
-    public List<Contact> getAllSentUserContacts(User user) throws IOException, InterruptedException {
-        ApiResponse response = sendGetRequest(baseUrl + "/user/" + user.getId() + "/sent");
-        if (response.isSuccess()) {
-            System.out.println("Response: " + response.body);
-            return objectMapper.readValue(response.body, new TypeReference<List<Contact>>() {
-            });
-        } else {
-            System.out.println("Failed to get pending Contacts. Status: " + response.statusCode
                     + ", Response: " + response.body);
             return null;
         }
@@ -93,5 +65,4 @@ public class ContactApiClient implements ApiClient {
             return null;
         }
     }
-
 }

@@ -1,5 +1,6 @@
 package service;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 
@@ -38,7 +39,7 @@ public class UserApiClient implements ApiClient {
 
     public User updateUser(UpdateUserRequest request, User user) {
         try {
-            String url = usersUrl + "/"+ request.getUserId();
+            String url = usersUrl + "/"+ user.getId();
             String token = user.getToken();
             ApiResponse response = sendPutRequestWithObjectAndToken(url, request, token);
             if (response.isSuccess()) {
@@ -52,6 +53,23 @@ public class UserApiClient implements ApiClient {
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException("Failed to Update user", e);
         }
+    }
+
+    public void updateUserProfilePicture(UpdateUserRequest request, User user)  {
+        try {
+            String url = usersUrl + "/" + user.getId() + "/profile-picture";
+            File file = request.getProfilePicture();
+            ApiResponse response = sendFile(url, file);
+            if (response.isSuccess()) {
+                System.out.println(response.body);
+            } else {
+                System.out.println("Failed to Update user profile picture. Status: "
+                        + response.statusCode + ", Response: " + response.body);
+            }
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
     public User loginUser(LoginRequest loginRequest) {

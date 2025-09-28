@@ -10,8 +10,8 @@ import request.MessageRequest;
 import service.MessageApiClient;
 
 public class SendMessageHBoxController {
-        Conversation conversation;
-        User loggedInUser;
+    Conversation conversation;
+    User loggedInUser;
 
     public void setController(Conversation conversation, User loggedInUser) {
         this.conversation = conversation;

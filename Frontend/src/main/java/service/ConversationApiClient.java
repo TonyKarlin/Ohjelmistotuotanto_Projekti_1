@@ -3,6 +3,7 @@ package service;
 import com.fasterxml.jackson.core.type.TypeReference;
 import model.Contact;
 import model.Conversation;
+import model.ConversationParticipant;
 import model.User;
 import request.ConversationRequest;
 import utils.ApiUrl;
@@ -79,8 +80,8 @@ public class ConversationApiClient implements ApiClient {
         }
     }
 
-    public void removeUserFromConversation(Conversation conversation, User user) throws IOException, InterruptedException {
-        String conversationUrl = baseUrl + "/" + conversation.getId() + "/participants/" + user.getUserId();
+    public void removeUserFromConversation(Conversation conversation, ConversationParticipant participant) throws IOException, InterruptedException {
+        String conversationUrl = baseUrl + "/" + conversation.getId() + "/participants/" + participant.getUserId();
         ApiResponse response = sendDeleteRequestWithoutToken(conversationUrl);
         if (response.isSuccess()) {
             System.out.println("Response: " + response.body);

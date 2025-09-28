@@ -2,22 +2,27 @@ package request;
 
 import lombok.Data;
 
+import java.io.File;
+
 @Data
 public class UpdateUserRequest {
 
     private String username;
     private String email;
-    private int userId;
-    private String oldPassword;
-    private String newPassword;
+    private String password;
+    private File profilePicture;
 
     public UpdateUserRequest() {}
 
-    public UpdateUserRequest(String username, String email, int userId, String oldPassword, String newPassword) {
+    //Construct to update user Information
+    public UpdateUserRequest(String username, String email, String password) {
         this.username = username;
         this.email = email;
-        this.userId = userId;
-        this.oldPassword = oldPassword;
-        this. newPassword = newPassword;
+        this.password = password;
+    }
+
+    // Construct to update user profile picture
+    public UpdateUserRequest(File profilePicture) {
+        this.profilePicture = profilePicture;
     }
 }

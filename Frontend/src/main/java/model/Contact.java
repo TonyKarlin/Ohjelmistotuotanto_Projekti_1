@@ -9,6 +9,7 @@ public class Contact {
     private int contactUserId;
     private String contactUsername;
     private String status;
+    private int initiatorId; // Who initiated the friend request
 
     //Empty construct for Object mapper
     public Contact() {
