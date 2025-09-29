@@ -12,30 +12,6 @@
   -fx-border-width: 2px;
 }
 
-.userProfile {
-  -fx-background-color: rgba(37, 37, 37);
-  -fx-background-radius: 30px;
-  -fx-border-radius: 30px;
-  -fx-border-width: 2px;
-}
-
-.statusCircle {
-}
-.statusCircle:hover {
-  -fx-cursor: hand;
-  -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.5), 10, 0, 4, 4);
-  -fx-scale-x: 1.05;
-  -fx-scale-y: 1.05;
-}
-
-.HBox {
-  -fx-background-color: #494949;
-  -fx-background-radius: 20px 20px 0px 0px;
-  -fx-border-width: 3px;
-  -fx-border-color: #878787;
-  -fx-border-radius: 16px 16px 0px 0px;
-}
-
 .text-field {
   -fx-background-color: rgba(19, 19, 19);
   -fx-background-radius: 10px;
@@ -49,7 +25,6 @@
   -fx-border-color: rgba(0, 0, 0);
   -fx-border-radius: 10px;
 }
-
 .button {
   -fx-background-color: rgb(99, 101, 220);
   -fx-background-radius: 10px;
@@ -75,6 +50,21 @@
 
 .clickable-label {}
 .clickable-label:hover {
+  -fx-cursor: hand;
+  -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.5), 10, 0, 4, 4);
+  -fx-scale-x: 1.05;
+  -fx-scale-y: 1.05;
+}
+
+.userProfile {
+  -fx-background-color: rgba(37, 37, 37);
+  -fx-background-radius: 30px;
+  -fx-border-radius: 30px;
+  -fx-border-width: 2px;
+}
+
+.statusCircle {}
+.statusCircle:hover {
   -fx-cursor: hand;
   -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.5), 10, 0, 4, 4);
   -fx-scale-x: 1.05;
@@ -149,6 +139,22 @@
 .menu-item:hover {
   -fx-background-color: rgba(30, 30, 30);
   -fx-cursor: hand;
+}
+
+.list-view {
+  -fx-background-color: transparent;
+  -fx-control-inner-background: transparent;
+  -fx-background-insets: 0;
+  -fx-padding: 0;
+}
+
+.list-cell {
+  -fx-background-color: transparent;
+  -fx-text-fill: white;
+}
+
+.conversationParticipantHBox {
+  -fx-background-color: rgb(25, 25, 25);
 }
 
 .ContactView {

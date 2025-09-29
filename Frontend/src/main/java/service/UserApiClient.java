@@ -54,11 +54,10 @@ public class UserApiClient implements ApiClient {
         }
     }
 
-    public User updateUserProfilePicture(UpdateUserRequest request, User user) {
+    public User updateUserProfilePicture(File file, User user) {
         try {
             String url = usersUrl + "/" + user.getId() + "/profile-picture";
             String token = user.getToken();
-            File file = request.getProfilePicture();
             ApiResponse response = sendFile(url, file, token);
             if (response.isSuccess()) {
                 System.out.println(response.body);

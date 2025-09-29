@@ -76,9 +76,9 @@ public class ConversationApiClientTest {
         try {
             conversation.setId(3);
             String newName = "Updated Conversation Name from JUnit";
-            conversationRequest = new ConversationRequest(newName);
+            conversationRequest = new ConversationRequest();
 
-            Conversation updatedConversation = conversationApiClient.changeConversationName(conversationRequest, conversation);
+            Conversation updatedConversation = conversationApiClient.changeConversationName(conversationRequest);
 
             if (updatedConversation != null) {
                 System.out.println("Conversation name updated successfully!");
@@ -190,7 +190,7 @@ public class ConversationApiClientTest {
             conversation.setId(3);
             participant.setUserId(3);
 
-            conversationApiClient.removeUserFromConversation(conversation, participant);
+            conversationApiClient.removeUserFromConversation(conversation.getId(), participant.getUserId(), "prööt");
 
             System.out.println("Remove user from conversation request sent successfully");
             System.out.println("User ID: " + participant.getUserId() + " removed from conversation ID: " + conversation.getId());

@@ -13,6 +13,7 @@ public class ConversationRequest {
     private List<Integer> participantIds = new ArrayList<>();
     private int conversationId;
     private String token;
+    private int participantId;
 
 
     public ConversationRequest() {}

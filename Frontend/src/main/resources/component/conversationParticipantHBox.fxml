@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.text.Font?>
+
+
+<HBox alignment="CENTER_LEFT" fillHeight="false" prefHeight="30.0" prefWidth="380.0" styleClass="conversationParticipantHBox" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.component.ConversationParticipantHBoxController">
+   <children>
+      <StackPane prefHeight="70.0" prefWidth="87.0">
+         <children>
+            <AnchorPane prefHeight="70.0" prefWidth="115.0">
+               <children>
+                  <ImageView fx:id="participantProfilePicture" fitHeight="53.0" fitWidth="54.0" layoutX="15.0" layoutY="5.0" pickOnBounds="true" preserveRatio="true" styleClass="ImageView">
+                     <image>
+                        <Image url="@../img/img_2.png" />
+                     </image>
+                  </ImageView>
+                  <Circle fx:id="contactUserStatus" fill="#40c351" layoutX="60.0" layoutY="50.0" radius="7.0" stroke="BLACK" strokeType="INSIDE" />
+               </children>
+               <StackPane.margin>
+                  <Insets />
+               </StackPane.margin>
+            </AnchorPane>
+         </children>
+         <HBox.margin>
+            <Insets />
+         </HBox.margin>
+      </StackPane>
+      <Label fx:id="participantUsername" prefHeight="64.0" prefWidth="65.0" text="Name" textAlignment="CENTER" textFill="#c3c3c3">
+         <font>
+            <Font name="System Bold" size="17.0" />
+         </font>
+         <padding>
+            <Insets top="5.0" />
+         </padding>
+      </Label>
+      <Button fx:id="Remove" mnemonicParsing="false" onAction="#removeParticipantFromConversation" text="Remove" />
+   </children>
+</HBox>

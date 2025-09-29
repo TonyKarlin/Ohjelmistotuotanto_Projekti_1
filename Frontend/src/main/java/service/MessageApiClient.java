@@ -35,9 +35,9 @@ public class MessageApiClient implements ApiClient {
         }
     }
 
-    public Message modifyMessage(MessageRequest request) throws IOException, InterruptedException {
+    public Message modifyMessage(MessageRequest request, int messageId) throws IOException, InterruptedException {
         String messageUrl = baseUrl + "/" + request.getConversationId() +
-                "/messages/" + request.getMessageId();
+                "/messages/" + messageId;
         String token = request.getToken();
         ApiResponse response = sendPutRequestWithObjectAndToken(messageUrl, request, token);
         if (response.isSuccess()) {
@@ -64,9 +64,8 @@ public class MessageApiClient implements ApiClient {
         }
     }
 
-    public void deleteMessage(MessageRequest request) throws IOException, InterruptedException {
-        String messageUrl = baseUrl + "/" + request.getConversationId() + "/messages/" + request.getMessageId();
-        String token = request.getToken();
+    public void deleteMessage(int conversationId, int messageId, String token) throws IOException, InterruptedException {
+        String messageUrl = baseUrl + "/" + conversationId + "/messages/" + messageId;
         ApiResponse response = sendDeleteRequestWithToken(messageUrl, token);
         if ((response.isSuccess())) {
             System.out.println(response.body);

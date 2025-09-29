@@ -1,12 +1,16 @@
 package controller;
 
 import controller.component.ConversationHBoxController;
+import controller.component.ConversationParticipantHBoxController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.HBox;
 import model.Conversation;
+import model.ConversationParticipant;
 import model.User;
 import request.ConversationRequest;
 import service.ConversationApiClient;
@@ -24,12 +28,13 @@ public class ConversationSettingsController {
 
     public void setController(User loggedInuser, Conversation conversation,
                               ChatDashboardController parentController,
-                              ConversationHBoxController conversationHBoxController) {
+                              ConversationHBoxController conversationHBoxController) throws IOException {
 
         this.loggedInuser = loggedInuser;
         this.conversation = conversation;
         this.parentController = parentController;
         this.conversationHBoxController = conversationHBoxController;
+        addConversationParticipants();
     }
 
 
@@ -37,7 +42,7 @@ public class ConversationSettingsController {
     private Button ChangeNameButton;
 
     @FXML
-    private ListView<?> conversationParticipantList;
+    private ListView<HBox> conversationParticipantList;
 
     @FXML
     private TextField nameTextField;
@@ -52,8 +57,6 @@ public class ConversationSettingsController {
         Updatedconversation = conversationApiClient.changeConversationName(conversationRequest);
         if (Updatedconversation != null) {
             conversationHBoxController.setConversationInformation(Updatedconversation);
-            System.out.println(Updatedconversation.getName());
-            System.out.println(Updatedconversation.getId());
             this.conversation = Updatedconversation;
         }else {
             System.out.println("failed to change conversation name");
@@ -68,6 +71,17 @@ public class ConversationSettingsController {
             parentController.addConversation();
         } else {
             System.out.println("Deletion failed");
+        }
+    }
+
+    public void addConversationParticipants() throws IOException {
+        conversationParticipantList.getItems().clear();
+        for (ConversationParticipant p: conversation.getParticipants()) {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/component/conversationParticipantHBox.fxml"));
+            HBox conversationParticipantHBox = fxmlLoader.load();
+            ConversationParticipantHBoxController controller = fxmlLoader.getController();
+            controller.setController(p, this.conversation, loggedInuser, conversationParticipantHBox, conversationParticipantList);
+            conversationParticipantList.getItems().add(conversationParticipantHBox);
         }
     }
 }

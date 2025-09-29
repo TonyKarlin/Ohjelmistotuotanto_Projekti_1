@@ -82,15 +82,18 @@ public class ConversationApiClient implements ApiClient {
         }return false;
     }
 
-    public void removeUserFromConversation(Conversation conversation, ConversationParticipant participant) throws IOException, InterruptedException {
-        String conversationUrl = baseUrl + "/" + conversation.getId() + "/participants/" + participant.getUserId();
-        ApiResponse response = sendDeleteRequestWithoutToken(conversationUrl);
+    public boolean removeUserFromConversation(int participantId, int conversationId, String token) throws IOException, InterruptedException {
+        String conversationUrl = baseUrl + "/" + conversationId + "/participants/" + participantId;
+        System.out.println(conversationUrl);
+        ApiResponse response = sendDeleteRequestWithToken(conversationUrl, token);
         if (response.isSuccess()) {
             System.out.println("Response: " + response.body);
+            return true;
 
         } else {
             System.out.println("Failed to remove User from conversation. Status: " + response.statusCode
                     + ", Response: " + response.body);
+            return false;
         }
     }
 

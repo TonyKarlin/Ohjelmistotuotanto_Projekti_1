@@ -67,15 +67,6 @@ public class ChatDashboardController implements ContactUpdateCallback {
         addFriendsToFriendsList();
     }
 
-    // Call this method in the child component when the user object needs to be updated
-    public void setLoggedInUser(User loggedInUser) {
-        this.loggedInUser = loggedInUser;
-    }
-
-    // Returns the currently logged-in user
-    public User getLoggedInUser() {
-        return this.loggedInUser;
-    }
 
     //region FXML-injected UI components
     @FXML
@@ -115,6 +106,16 @@ public class ChatDashboardController implements ContactUpdateCallback {
     @FXML
     private VBox friendsList;
     //endregion
+
+    // Call this method in the child component when the user object needs to be updated
+    public void setLoggedInUser(User loggedInUser) {
+        this.loggedInUser = loggedInUser;
+    }
+
+    // Returns the currently logged-in user
+    public User getLoggedInUser() {
+        return this.loggedInUser;
+    }
 
     // Sets user information in the UI
     public void setUserInformation() {

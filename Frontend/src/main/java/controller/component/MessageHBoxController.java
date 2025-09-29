@@ -111,9 +111,8 @@ public class MessageHBoxController {
     @FXML
     public void deleteMessage() throws IOException, InterruptedException {
         String token = parentController.getLoggedInUser().getToken();
-        MessageRequest deleteRequest = new MessageRequest(conversationId,message.getId(), token);
         MessageApiClient client = new MessageApiClient();
-        client.deleteMessage(deleteRequest);
+        client.deleteMessage(conversationId,message.getId(),token );
     }
 
 
@@ -121,8 +120,8 @@ public class MessageHBoxController {
     public void modifyMessage() throws IOException, InterruptedException {
         String token = parentController.getLoggedInUser().getToken();
         String modifiedText = editTextField.getText();
-        MessageRequest request = new MessageRequest(conversationId, modifiedText, message.getId(), token);
+        MessageRequest request = new MessageRequest(modifiedText, conversationId, token);
         MessageApiClient client = new MessageApiClient();
-        client.modifyMessage(request);
+        client.modifyMessage(request, message.getId());
     }
 }

@@ -107,9 +107,8 @@ public class UserProfileController {
             Image image = new Image(selectedPicture.toURI().toString());
             userProfilePicture.setImage(image);
             userProfilePicture.setPreserveRatio(false);
-            request = new UpdateUserRequest(selectedPicture);
             String token = loggedInUser.getToken();
-            loggedInUser = client.updateUserProfilePicture(request, loggedInUser);
+            loggedInUser = client.updateUserProfilePicture(selectedPicture, loggedInUser);
             loggedInUser.setToken(token);
             parentController.setLoggedInUser(loggedInUser);
             parentController.setUserInformation();
