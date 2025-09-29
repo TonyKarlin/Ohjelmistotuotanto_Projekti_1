@@ -1,17 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.CustomMenuItem?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.MenuButton?>
-<?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
-<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 
@@ -33,47 +29,30 @@
                </StackPane.margin>
             </AnchorPane>
          </children>
+         <HBox.margin>
+            <Insets left="10.0" />
+         </HBox.margin>
       </StackPane>
-      <VBox spacing="5.0">
+      <AnchorPane prefHeight="200.0" prefWidth="200.0">
          <children>
-            <Label fx:id="conversationName" alignment="CENTER" contentDisplay="CENTER" prefHeight="28.0" prefWidth="98.0" text="Name" textAlignment="CENTER" textFill="#c3c3c3">
+            <Label fx:id="conversationName" contentDisplay="CENTER" prefHeight="31.0" prefWidth="133.0" text="Name" textAlignment="CENTER" textFill="#c3c3c3">
                <font>
                   <Font name="System Bold" size="17.0" />
                </font>
                <padding>
-                  <Insets top="5.0" />
+                  <Insets left="10.0" top="5.0" />
                </padding>
-               <VBox.margin>
-                  <Insets bottom="5.0" left="10.0" />
-               </VBox.margin>
             </Label>
-            <MenuButton fx:id="conversationOptionButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" popupSide="RIGHT" prefHeight="23.0" prefWidth="43.0" text="MenuButton" visible="false">
-              <items>
-                <MenuItem fx:id="deleteButton" mnemonicParsing="false" onAction="#deleteConversation" text="Delete" />
-                <MenuItem fx:id="removeUserButton" mnemonicParsing="false" onAction="#removeUserFromConversation" text="Remove User" />
-                  <MenuItem fx:id="leaveButton" mnemonicParsing="false" onAction="#leaveFromConversation" text="Leave" />
-                  <MenuItem fx:id="addUserButton" mnemonicParsing="false" onAction="#adduserToConversation" text="Add user" />
-                  <CustomMenuItem hideOnClick="false" mnemonicParsing="false" text="Add user">
-                     <content>
-                        <TextField fx:id="userIdTextField" promptText="id's for now" />
-                     </content>
-                  </CustomMenuItem>
-              </items>
+            <Button fx:id="conversationsettingsButton" alignment="CENTER" contentDisplay="CENTER" layoutX="75.0" layoutY="31.0" mnemonicParsing="false" onAction="#openConversationSettings" visible="false">
                <graphic>
-                  <ImageView fitHeight="23.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="34.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../img/menu.png" />
+                        <Image url="@../img/setting.png" />
                      </image>
                   </ImageView>
                </graphic>
-               <VBox.margin>
-                  <Insets left="60.0" />
-               </VBox.margin>
-            </MenuButton>
+            </Button>
          </children>
-         <HBox.margin>
-            <Insets />
-         </HBox.margin>
-      </VBox>
+      </AnchorPane>
    </children>
 </HBox>

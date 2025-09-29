@@ -74,7 +74,7 @@
                   </Label>
                </children>
             </HBox>
-            <VBox fx:id="contactVBox" alignment="TOP_CENTER" prefHeight="612.0" prefWidth="188.0" styleClass="VBox" VBox.vgrow="ALWAYS">
+            <VBox fx:id="conversationVBox" alignment="TOP_CENTER" prefHeight="612.0" prefWidth="188.0" styleClass="VBox" VBox.vgrow="ALWAYS">
                <VBox.margin>
                   <Insets bottom="10.0" left="10.0" right="10.0" />
                </VBox.margin>

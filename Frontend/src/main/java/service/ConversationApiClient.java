@@ -32,9 +32,9 @@ public class ConversationApiClient implements ApiClient {
         }
     }
 
-    public Conversation changeConversationName(ConversationRequest conversationRequest, Conversation conversation) throws IOException, InterruptedException {
-        String conversationUrl = baseUrl + "/" + conversation.getId() + "/update";
-        ApiResponse response = sendPutRequestWithObject(conversationUrl, conversationRequest);
+    public Conversation changeConversationName(ConversationRequest request) throws IOException, InterruptedException {
+        String conversationUrl = baseUrl + "/" + request.getConversationId() + "/update";
+        ApiResponse response = sendPutRequestWithObjectAndToken(conversationUrl, request, request.getToken());
         if (response.isSuccess()) {
             System.out.println("Response: " + response.body);
             return objectMapper.readValue(response.body, Conversation.class);
@@ -68,16 +68,18 @@ public class ConversationApiClient implements ApiClient {
         }
     }
 
-    public void deleteConversation(Conversation conversation, User user) throws IOException, InterruptedException {
+    public boolean deleteConversation(Conversation conversation, User user) throws IOException, InterruptedException {
         String conversationUrl = baseUrl + "/" + conversation.getId() + "?requesterId=" + user.getId();
-        ApiResponse response = sendDeleteRequestWithoutToken(conversationUrl);
+        String token = user.getToken();
+        ApiResponse response = sendDeleteRequestWithToken(conversationUrl, token);
         if (response.isSuccess()) {
             System.out.println("Response: " + response.body);
+            return true;
 
         } else {
             System.out.println("Failed to delete conversation. Status: " + response.statusCode
                     + ", Response: " + response.body);
-        }
+        }return false;
     }
 
     public void removeUserFromConversation(Conversation conversation, ConversationParticipant participant) throws IOException, InterruptedException {

@@ -11,6 +11,8 @@ public class ConversationRequest {
     private int creatorId;
     private String name;
     private List<Integer> participantIds = new ArrayList<>();
+    private int conversationId;
+    private String token;
 
 
     public ConversationRequest() {}
@@ -23,7 +25,9 @@ public class ConversationRequest {
     }
 
     //Construct for changing name in conversation
-    public ConversationRequest(String name) {
+    public ConversationRequest(String name, int conversationId, String token) {
         this.name = name;
+        this.conversationId = conversationId;
+        this.token = token;
     }
 }

@@ -54,7 +54,7 @@ public class ChatDashboardController implements ContactUpdateCallback {
     List<Contact> pendingContacts;
     List<Contact> sentContacts;
     ImageRounder imageRounder;
-    MenuButton activeConversationMenu;
+    Button activeConversation;
 
     // Sets the controller with user and API clients, initializes user info and lists
     public void setController(User loggedInUser, UserApiClient userApiClient) throws IOException, InterruptedException {
@@ -103,13 +103,15 @@ public class ChatDashboardController implements ContactUpdateCallback {
     @FXML
     private Button sendMessageButton;
     @FXML
+    private Button conversationSettingsButton;
+    @FXML
     private TextField sendMessageTextField;
     @FXML
     private BorderPane contentBorderPane;
     @FXML
     private VBox VBoxContentPane;
     @FXML
-    private VBox contactVBox;
+    private VBox conversationVBox;
     @FXML
     private VBox friendsList;
     //endregion
@@ -186,13 +188,13 @@ public class ChatDashboardController implements ContactUpdateCallback {
 
 
     // Shows messages for a selected conversation
-    public void showConversationMessages(Conversation conversation, MenuButton menuButton) throws IOException, InterruptedException {
+    public void showConversationMessages(Conversation conversation, Button conversationSettingsButton) throws IOException, InterruptedException {
         VBoxContentPane.getChildren().clear();
-        if (activeConversationMenu != null) {
-            activeConversationMenu.setVisible(false);
+        if (activeConversation != null) {
+            activeConversation.setVisible(false);
         }
-        activeConversationMenu = menuButton;
-        activeConversationMenu.setVisible(true);
+        activeConversation = conversationSettingsButton;
+        activeConversation.setVisible(true);
         List<Message> messages = messageApiClient.getConversationMessages(conversation, this.loggedInUser);
         if (messages != null && !messages.isEmpty()) {
             for (Message m : messages) {
@@ -206,6 +208,18 @@ public class ChatDashboardController implements ContactUpdateCallback {
         sendMessageComponent(conversation);
     }
 
+    public void openConversationSettings(Conversation conversation, ConversationHBoxController conversationHBoxController) throws IOException {
+        contentBorderPane.setBottom(null);
+        VBoxContentPane.getChildren().clear();
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/conversationSettingsView.fxml"));
+        VBox conversationSettings = fxmlLoader.load();
+        ConversationSettingsController controller= fxmlLoader.getController();
+        controller.setController(this.loggedInUser, conversation, this,
+                conversationHBoxController);
+
+        VBoxContentPane.getChildren().add(conversationSettings);
+    }
+
     // Loads and displays the send message component
     public void sendMessageComponent(Conversation conversation) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/component/sendMessageHBox.fxml"));
@@ -217,13 +231,14 @@ public class ChatDashboardController implements ContactUpdateCallback {
 
     // Adds conversation components to the UI
     public void addConversation() throws IOException {
+        conversationVBox.getChildren().clear();
         for (Conversation c : conversations) {
             if(Objects.equals(c.getType(), "GROUP")) {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/component/conversationHBox.fxml"));
                 HBox userConversationHBox = loader.load();
                 ConversationHBoxController controller = loader.getController();
                 controller.setController(c, this);
-                contactVBox.getChildren().add(userConversationHBox);
+                conversationVBox.getChildren().add(userConversationHBox);
             }
         }
     }
