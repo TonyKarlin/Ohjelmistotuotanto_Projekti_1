@@ -6,13 +6,10 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-
 
 <StackPane prefHeight="700.0" prefWidth="700.0" styleClass="parent" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.RegisterController">
    <children>
@@ -28,26 +25,7 @@
             </Label>
             <HBox alignment="CENTER" prefHeight="88.0" prefWidth="508.0" spacing="40.0">
                <children>
-                  <StackPane fx:id="profilePictureContainer" maxHeight="80.0" maxWidth="80.0" prefHeight="1.0" prefWidth="0.0">
-                     <children>
-                        <ImageView fx:id="userProfilePicture" fitHeight="80.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true" styleClass="imageView">
-                           <image>
-                              <Image url="@../img/img_2.png" />
-                           </image>
-                           <StackPane.margin>
-                              <Insets bottom="10.0" />
-                           </StackPane.margin>
-                        </ImageView>
-                     </children>
-                  </StackPane>
-                  <Button fx:id="addPictureButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#addProfilePicture" prefHeight="51.0" prefWidth="95.0" text="Add profile Picture" textAlignment="CENTER" textFill="WHITE" wrapText="true">
-                     <HBox.margin>
-                        <Insets />
-                     </HBox.margin>
-                     <font>
-                        <Font name="System Bold" size="12.0" />
-                     </font>
-                  </Button>
+                  <StackPane fx:id="profilePictureContainer" maxHeight="80.0" maxWidth="80.0" prefHeight="1.0" prefWidth="0.0" />
                </children>
                <VBox.margin>
                   <Insets />
@@ -103,7 +81,7 @@
             </PasswordField>
             <Label layoutX="128.0" layoutY="311.0" maxWidth="1.7976931348623157E308" text="WRITE PASSWORD AGAIN" textFill="#c3c3c3">
                <font>
-                  <Font size="13.0" />
+                  <Font name="System Bold Italic" size="13.0" />
                </font>
                <VBox.margin>
                   <Insets bottom="5.0" left="50.0" right="50.0" />
@@ -156,7 +134,7 @@
                   <Insets />
                </VBox.margin>
             </HBox>
-            <Button fx:id="registerButton" maxWidth="405.0" onAction="#registerUser" prefHeight="34.0" prefWidth="403.0" text="Register Now" textAlignment="CENTER" textFill="#ebebeb">
+            <Button fx:id="registerButton" alignment="CENTER" contentDisplay="CENTER" onAction="#registerUser" prefWidth="180.0" text="Register Now" textAlignment="CENTER" textFill="#ebebeb">
                <font>
                   <Font name="System Bold" size="15.0" />
                </font>
@@ -171,7 +149,7 @@
                         <Font size="16.0" />
                      </font>
                   </Label>
-                  <Label fx:id="loginLabel" onDragDetected="#moveToLoginView" onMouseClicked="#moveToLoginView" onMousePressed="#moveToLoginView" prefHeight="30.0" prefWidth="63.0" styleClass="clickable-label" text="Login" textFill="#6365dc">
+                  <Label fx:id="loginLabel" onMouseClicked="#moveToLoginView" onMousePressed="#moveToLoginView" prefHeight="30.0" prefWidth="63.0" styleClass="clickable-label" text="Login" textFill="#6365dc">
                      <HBox.margin>
                         <Insets left="5.0" />
                      </HBox.margin>

@@ -11,14 +11,13 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Circle;
-import lombok.Data;
 import model.Conversation;
 import utils.ImageRounder;
 
 import java.io.IOException;
 
 
-@Data
+
 public class ConversationHBoxController {
 
     Conversation conversation;
@@ -28,7 +27,8 @@ public class ConversationHBoxController {
     public void setController(Conversation conversation, ChatDashboardController parentController) {
         this.conversation = conversation;
         this.parentController = parentController;
-        imageRounder = new ImageRounder(contactUserPicture);
+        imageRounder = new ImageRounder(conversationProfilePicture);
+        setConversationInformation(conversation);
     }
 
 
@@ -38,11 +38,11 @@ public class ConversationHBoxController {
     @FXML
     private StackPane contactContent;
     @FXML
-    private ImageView contactUserPicture;
+    private ImageView conversationProfilePicture;
     @FXML
     private Circle contactUserStatus;
     @FXML
-    private Label contactUsername;
+    private Label conversationName;
     @FXML
     private MenuItem deleteButton;
     @FXML
@@ -56,14 +56,13 @@ public class ConversationHBoxController {
     //endregion
 
 
-    public void setUsername(String username) {
-        contactUsername.setText(username);
+    public void setConversationInformation(Conversation conversation) {
+        conversationName.setText(conversation.getName());
     }
 
     public void setUserImage(Image image) {
-        contactUserPicture.setImage(image);
+        conversationProfilePicture.setImage(image);
     }
-
 
     @FXML
     public void openMessages() throws IOException, InterruptedException {

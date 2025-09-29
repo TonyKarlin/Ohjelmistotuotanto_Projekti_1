@@ -85,7 +85,10 @@
   -fx-background-color: rgb(32, 32, 32);
 }
 
-.ImageView {}
+.ImageView {
+  -fx-border-radius: 1px;
+  -fx-border-color: black;
+}
 .ImageView:hover {
   -fx-cursor: hand;
   -fx-scale-x: 1.05;

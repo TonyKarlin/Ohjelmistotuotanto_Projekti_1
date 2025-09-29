@@ -8,11 +8,10 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
-<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1200.0" styleClass="parent" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ChatDashboardController">
+<BorderPane maxHeight="900.0" maxWidth="1200.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1200.0" styleClass="parent" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ChatDashboardController">
    <top>
       <BorderPane BorderPane.alignment="CENTER">
          <BorderPane.margin>
@@ -61,11 +60,7 @@
                   <Insets bottom="10.0" left="10.0" right="10.0" />
                </VBox.margin>
                <children>
-                  <StackPane fx:id="profilePictureContainer" prefHeight="60.0" prefWidth="60.0" HBox.hgrow="NEVER">
-                     <children>
-                        <ImageView fx:id="userProfilePicture" fitHeight="60.0" fitWidth="60.0" onMouseClicked="#openUserProfile" pickOnBounds="true" preserveRatio="true" styleClass="ImageView" />
-                     </children>
-                  </StackPane>
+                  <ImageView fx:id="userProfilePicture" fitHeight="60.0" fitWidth="60.0" onMouseClicked="#openUserProfile" pickOnBounds="true" preserveRatio="true" styleClass="ImageView" />
                   <Label fx:id="loggedInUsername" alignment="TOP_LEFT" contentDisplay="CENTER" prefHeight="57.0" prefWidth="131.0" text="Username" textFill="#c3c3c3">
                      <font>
                         <Font name="System Bold" size="17.0" />

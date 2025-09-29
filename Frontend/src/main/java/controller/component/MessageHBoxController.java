@@ -9,6 +9,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import lombok.Data;
+import model.Conversation;
 import model.Message;
 import request.MessageRequest;
 import service.MessageApiClient;
@@ -28,14 +29,20 @@ public class MessageHBoxController {
     private ImageRounder imagerounder;
 
     private Message message;
+    private Conversation conversation;
 
     public MessageHBoxController() {
     }
 
-    public void setController(Message message, ChatDashboardController parentController) {
+    public void setController(Message message, ChatDashboardController parentController, Conversation conversation) {
         this.message = message;
         this.parentController = parentController;
+        this.conversation = conversation;
+        this.id = message.getId();
+        this.senderId = message.getSenderId();
+        this.conversationId = conversation.getId();
         imagerounder = new ImageRounder(userProfilePicture);
+        setMessageInformation(message.getText(), message.getCreatedAt(), message.getSenderUsername());
         setTextInModifyField();
     }
 

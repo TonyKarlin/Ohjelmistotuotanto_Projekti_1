@@ -1,7 +1,6 @@
 package controller;
 
 import java.io.IOException;
-
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
@@ -18,16 +17,14 @@ import javafx.stage.Stage;
 import model.UserResponse;
 import model.User;
 import request.LoginRequest;
-import service.ConversationApiClient;
-import service.MessageApiClient;
+
 import service.UserApiClient;
 import utils.UIAlert;
 
 public class LoginController {
 
     private UserApiClient userApiClient;
-    private ConversationApiClient conversationApiClient;
-    private MessageApiClient messageApiClient;
+
     private UIAlert alert = new UIAlert();
     private UserResponse loginResponse = new UserResponse();
 
@@ -75,11 +72,6 @@ public class LoginController {
         if (loginResponse != null) {
             User user = loginResponse.getUser();
             user.setToken(loginResponse.getToken());
-            System.out.println(user.getEmail());
-            System.out.println(user.getToken());
-            System.out.println(user.getUsername());
-            System.out.println(user.getId());
-            System.out.println(user.getProfilePictureUrl());
             moveToMainView(user);
             Stage stage = (Stage) loginButton.getScene().getWindow();
             stage.close();
@@ -94,11 +86,10 @@ public class LoginController {
         Parent root = fxmlLoader.load();
         ChatDashboardController controller = fxmlLoader.getController();
         // pass the user and userApiClient to the main view so the instance is same
-
         Stage stage = new Stage();
-        Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
-        stage.setWidth(screenBounds.getWidth() * 0.9);
-        stage.setHeight(screenBounds.getHeight() * 0.9);
+//       Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
+//       stage.setWidth(screenBounds.getWidth() * 0.9);
+//       stage.setHeight(screenBounds.getHeight() * 0.9);
         controller.setController(user, this.userApiClient);
         stage.setScene(new Scene(root));
         stage.show();

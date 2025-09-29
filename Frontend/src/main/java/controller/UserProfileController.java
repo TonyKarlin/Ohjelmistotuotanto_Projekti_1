@@ -94,7 +94,7 @@ public class UserProfileController {
             loggedInUser = userResponse.getUser();
             loggedInUser.setToken(token);
             parentController.setLoggedInUser(loggedInUser);
-            parentController.setUpUsernameLabel();
+            parentController.setUserInformation();
             addUserInformation(loggedInUser);
         }
     }
@@ -106,15 +106,13 @@ public class UserProfileController {
         if (selectedPicture != null) {
             Image image = new Image(selectedPicture.toURI().toString());
             userProfilePicture.setImage(image);
-            userProfilePicture.setFitWidth(profilePictureContainer.getPrefWidth());
-            userProfilePicture.setFitHeight(profilePictureContainer.getPrefHeight());
             userProfilePicture.setPreserveRatio(false);
             request = new UpdateUserRequest(selectedPicture);
             String token = loggedInUser.getToken();
             loggedInUser = client.updateUserProfilePicture(request, loggedInUser);
             loggedInUser.setToken(token);
             parentController.setLoggedInUser(loggedInUser);
-            parentController.setUpLoggedInUserProfilePicture();
+            parentController.setUserInformation();
 
         }
     }
@@ -156,8 +154,6 @@ public class UserProfileController {
         userProfilePicture.setImage(profilePicture);
         imageRounder = new ImageRounder(userProfilePicture);
         userProfilePicture.setImage(profilePicture);
-        userProfilePicture.setFitWidth(profilePictureContainer.getPrefWidth());
-        userProfilePicture.setFitHeight(profilePictureContainer.getPrefHeight());
         userProfilePicture.setPreserveRatio(false);
     }
 }

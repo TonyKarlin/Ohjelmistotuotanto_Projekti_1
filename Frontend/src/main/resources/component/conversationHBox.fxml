@@ -21,7 +21,7 @@
          <children>
             <AnchorPane prefHeight="60.0" prefWidth="60.0">
                <children>
-                  <ImageView fx:id="contactUserPicture" fitHeight="60.0" fitWidth="60.0" layoutY="10.0" onMouseClicked="#openMessages" pickOnBounds="true" preserveRatio="true" styleClass="ImageView">
+                  <ImageView fx:id="conversationProfilePicture" fitHeight="60.0" fitWidth="60.0" layoutY="10.0" onMouseClicked="#openMessages" pickOnBounds="true" preserveRatio="true" styleClass="ImageView">
                      <image>
                         <Image url="@../img/img_2.png" />
                      </image>
@@ -36,7 +36,7 @@
       </StackPane>
       <VBox spacing="5.0">
          <children>
-            <Label fx:id="contactUsername" alignment="CENTER" contentDisplay="CENTER" prefHeight="31.0" prefWidth="98.0" text="Username" textFill="#c3c3c3">
+            <Label fx:id="conversationName" alignment="CENTER" contentDisplay="CENTER" prefHeight="28.0" prefWidth="98.0" text="Name" textAlignment="CENTER" textFill="#c3c3c3">
                <font>
                   <Font name="System Bold" size="17.0" />
                </font>
