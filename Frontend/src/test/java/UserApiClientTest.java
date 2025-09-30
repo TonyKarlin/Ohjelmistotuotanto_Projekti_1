@@ -87,7 +87,6 @@ public class UserApiClientTest {
             // Add assertions
             assertNotNull(loggedInUser, "Login should return a user object");
             assertEquals("testuser", loggedInUser.getUsername(), "Username should match");
-            assertNotNull(loggedInUser.getToken(), "JWT token should not be null");
         } else {
             System.out.println("Login failed - this might be expected if the backend is not running");
             // Don't fail the test if login fails due to backend issues

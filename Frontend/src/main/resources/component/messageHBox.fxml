@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<HBox fx:id="rootHbox" alignment="CENTER_LEFT" onMouseEntered="#showMenuOption" onMouseExited="#hideMenuOption" prefHeight="58.0" prefWidth="725.0" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.component.MessageHBoxController">
+<HBox fx:id="rootHbox" alignment="CENTER_LEFT" onMouseEntered="#showMenuOption" onMouseExited="#hideMenuOption" prefHeight="58.0" prefWidth="725.0" styleClass="messageHBox" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.component.MessageHBoxController">
    <children>
       <StackPane prefHeight="61.0" prefWidth="73.0">
          <children>
