@@ -234,13 +234,12 @@ public class ChatDashboardController implements ContactUpdateCallback {
     public void addConversation() throws IOException {
         conversationVBox.getChildren().clear();
         for (Conversation c : conversations) {
-            if(Objects.equals(c.getType(), "GROUP")) {
+//            if(Objects.equals(c.getType(), "GROUP")) {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/component/conversationHBox.fxml"));
                 HBox userConversationHBox = loader.load();
                 ConversationHBoxController controller = loader.getController();
                 controller.setController(c, this);
                 conversationVBox.getChildren().add(userConversationHBox);
-            }
         }
     }
 
