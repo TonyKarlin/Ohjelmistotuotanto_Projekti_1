@@ -13,7 +13,6 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
 <HBox fx:id="rootHbox" alignment="CENTER" fillHeight="false" onMouseEntered="#showMenuOption" onMouseExited="#hideMenuOption" styleClass="messageHBox" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.component.MessageHBoxController">
    <children>
       <StackPane prefHeight="61.0" prefWidth="73.0">
@@ -54,7 +53,7 @@
             </Label>
          </children>
       </VBox>
-      <MenuButton fx:id="messageOptionButton" mnemonicParsing="false" popupSide="LEFT" prefHeight="24.0" prefWidth="41.0">
+      <MenuButton fx:id="messageOptionButton" mnemonicParsing="false" popupSide="LEFT" prefHeight="24.0" prefWidth="41.0" visible="false">
          <items>
             <MenuItem fx:id="deleteMenuitem" mnemonicParsing="false" onAction="#deleteMessage" text="Delete" />
             <MenuItem fx:id="modifyMenuItem" mnemonicParsing="false" onAction="#modifyMessage" text="Modify" />

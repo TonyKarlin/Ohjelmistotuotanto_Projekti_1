@@ -18,7 +18,7 @@
                       <Font name="Bauhaus 93" size="28.0" />
                   </font>
                   <VBox.margin>
-                      <Insets bottom="20.0" />
+                      <Insets bottom="10.0" />
                   </VBox.margin>
               </Label>
          <Label maxWidth="405.0" prefHeight="21.0" prefWidth="405.0" text="USERNAME" textFill="#c3c3c3">
@@ -61,7 +61,7 @@
                <Insets left="50.0" right="50.0" top="5.0" />
             </VBox.margin>
          </Label>
-              <Button fx:id="loginButton" alignment="CENTER" contentDisplay="CENTER" onAction="#login" prefHeight="33.0" prefWidth="180.0" text="Login" textAlignment="CENTER" textFill="#ebebeb">
+              <Button fx:id="loginButton" alignment="CENTER" contentDisplay="CENTER" onAction="#login" prefWidth="180.0" text="Login" textAlignment="CENTER" textFill="#ebebeb">
             <font>
                <Font name="System Bold" size="15.0" />
             </font>
