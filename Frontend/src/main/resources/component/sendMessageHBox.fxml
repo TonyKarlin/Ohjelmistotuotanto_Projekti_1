@@ -6,14 +6,15 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<HBox alignment="CENTER" prefHeight="74.0" prefWidth="880.0" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.component.SendMessageHBoxController">
+
+<HBox alignment="CENTER" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.component.SendMessageHBoxController">
    <children>
       <Button fx:id="messageOptionsButton" mnemonicParsing="false" text="+" textFill="WHITE">
          <font>
             <Font name="System Bold" size="15.0" />
          </font>
          <HBox.margin>
-            <Insets left="100.0" />
+            <Insets />
          </HBox.margin>
       </Button>
       <TextField fx:id="sendMessageTextField" promptText="Send Message" HBox.hgrow="ALWAYS">
@@ -23,11 +24,14 @@
       </TextField>
       <Button fx:id="sendMessageButton" mnemonicParsing="false" onAction="#sendMessageToConversation" text="Send" textAlignment="CENTER" textFill="WHITE">
          <HBox.margin>
-            <Insets right="100.0" />
+            <Insets />
          </HBox.margin>
          <font>
             <Font size="16.0" />
          </font>
       </Button>
    </children>
+   <padding>
+      <Insets bottom="20.0" left="50.0" right="50.0" top="20.0" />
+   </padding>
 </HBox>

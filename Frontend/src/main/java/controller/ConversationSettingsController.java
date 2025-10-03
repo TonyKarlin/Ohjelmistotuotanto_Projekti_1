@@ -5,9 +5,7 @@ import controller.component.ConversationParticipantHBoxController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Button;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import model.Conversation;
 import model.ConversationParticipant;
@@ -35,8 +33,19 @@ public class ConversationSettingsController {
         this.parentController = parentController;
         this.conversationHBoxController = conversationHBoxController;
         addConversationParticipants();
+        checkOwnerPermissions();
     }
 
+
+    //region
+    @FXML
+    private MenuButton optionButton;
+
+    @FXML
+    private MenuItem leaveMenuItem;
+
+    @FXML
+    private MenuItem deleteMenuItem;
 
     @FXML
     private Button ChangeNameButton;
@@ -49,6 +58,7 @@ public class ConversationSettingsController {
 
     @FXML
     private Button deleteButton;
+    //endregion
 
     @FXML
     void changeConversationName(ActionEvent event) throws IOException, InterruptedException {
@@ -72,6 +82,17 @@ public class ConversationSettingsController {
         } else {
             System.out.println("Deletion failed");
         }
+    }
+
+    @FXML
+    public void leaveFromConversation() {
+
+    }
+
+    public void checkOwnerPermissions() {
+        boolean isOwner = conversation.getParticipants().stream()
+                .anyMatch(p -> p.getUserId() == loggedInuser.getId() && "OWNER".equals(p.getRole()));
+        deleteMenuItem.setVisible(isOwner);
     }
 
     public void addConversationParticipants() throws IOException {

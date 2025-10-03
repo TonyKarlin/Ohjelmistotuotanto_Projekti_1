@@ -12,27 +12,27 @@
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="CENTER" maxHeight="852.0" maxWidth="752.0" prefHeight="852.0" prefWidth="752.0" styleClass="userProfile" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.UserProfileController">
+<VBox alignment="CENTER" maxHeight="0.0" maxWidth="400.0" styleClass="userProfile" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.UserProfileController">
    <children>
-      <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="30.0" prefWidth="316.0" text="Change User information" textFill="#d3d3d3">
+      <Label alignment="CENTER" contentDisplay="CENTER" text="Change User information" textAlignment="CENTER" textFill="#d3d3d3">
          <font>
-            <Font name="System Bold" size="24.0" />
+            <Font name="System Bold" size="20.0" />
          </font>
          <VBox.margin>
-            <Insets bottom="20.0" top="20.0" />
+            <Insets bottom="10.0" left="50.0" right="50.0" top="20.0" />
          </VBox.margin>
       </Label>
       <HBox alignment="CENTER" prefHeight="123.0" prefWidth="752.0" spacing="50.0">
          <children>
-            <AnchorPane prefHeight="120.0" prefWidth="120.0">
+            <AnchorPane>
                <children>
-                  <ImageView fx:id="userProfilePicture" fitHeight="120.0" fitWidth="120.0" layoutX="2.0" layoutY="2.0" pickOnBounds="true" preserveRatio="true" styleClass="imageView" />
-                  <Circle fx:id="userCurrentStatus" fill="#3dad2a" layoutX="100.0" layoutY="100.0" radius="14.0" stroke="BLACK" strokeType="INSIDE" />
+                  <ImageView fx:id="userProfilePicture" fitHeight="100.0" fitWidth="100.0" layoutX="7.0" layoutY="7.0" pickOnBounds="true" preserveRatio="true" styleClass="imageView" />
+                  <Circle fx:id="userCurrentStatus" fill="#3dad2a" layoutX="93.0" layoutY="93.0" radius="14.0" stroke="BLACK" strokeType="INSIDE" />
                </children>
             </AnchorPane>
-            <Button fx:id="changeProfilePictureButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#changeProfilePicture" prefHeight="68.0" prefWidth="178.0" text="Change Profile picture" textAlignment="CENTER" textFill="WHITE" wrapText="true">
+            <Button fx:id="changeProfilePictureButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#changeProfilePicture" prefHeight="56.0" prefWidth="123.0" text="Change Profile picture" textAlignment="CENTER" textFill="WHITE" wrapText="true">
                <font>
-                  <Font size="18.0" />
+                  <Font name="System Bold" size="15.0" />
                </font>
                <HBox.margin>
                   <Insets />
@@ -43,94 +43,97 @@
             <Insets />
          </VBox.margin>
       </HBox>
-      <Label maxWidth="405.0" prefHeight="21.0" prefWidth="405.0" text="CHANGE STATUS" textFill="#c3c3c3">
+      <Label maxWidth="1.7976931348623157E308" text="CHANGE STATUS" textFill="#c3c3c3">
          <font>
-            <Font size="15.0" />
+            <Font name="System Bold Italic" size="13.0" />
          </font>
          <VBox.margin>
-            <Insets top="10.0" />
+            <Insets bottom="5.0" left="50.0" right="50.0" top="10.0" />
          </VBox.margin>
       </Label>
-      <HBox alignment="CENTER" maxHeight="80.0" maxWidth="405.0" prefHeight="80.0" prefWidth="405.0" spacing="70.0" styleClass="text-field">
+      <HBox alignment="CENTER" spacing="50.0" styleClass="text-field">
          <children>
-            <Circle fx:id="offlineStatus" fill="#bc5143" onMouseClicked="#changeUserStatus" onMousePressed="#changeUserStatus" radius="14.0" stroke="BLACK" strokeType="INSIDE" styleClass="statusCircle" />
-            <Circle fx:id="awayStatus" fill="#d7cb50" layoutX="301.0" layoutY="32.0" onMouseClicked="#changeUserStatus" onMousePressed="#changeUserStatus" radius="14.0" stroke="BLACK" strokeType="INSIDE" styleClass="statusCircle" />
-            <Circle fx:id="onlineStatus" fill="#3dad2a" layoutX="287.0" layoutY="32.0" onMouseClicked="#changeUserStatus" onMousePressed="#changeUserStatus" radius="14.0" stroke="BLACK" strokeType="INSIDE" styleClass="statusCircle" />
+            <Circle fx:id="offlineStatus" fill="#bc5143" onMouseClicked="#changeUserStatus" onMousePressed="#changeUserStatus" radius="11.0" stroke="BLACK" strokeType="INSIDE" styleClass="statusCircle" />
+            <Circle fx:id="awayStatus" fill="#d7cb50" layoutX="301.0" layoutY="32.0" onMouseClicked="#changeUserStatus" onMousePressed="#changeUserStatus" radius="11.0" stroke="BLACK" strokeType="INSIDE" styleClass="statusCircle" />
+            <Circle fx:id="onlineStatus" fill="#3dad2a" layoutX="287.0" layoutY="32.0" onMouseClicked="#changeUserStatus" onMousePressed="#changeUserStatus" radius="11.0" stroke="BLACK" strokeType="INSIDE" styleClass="statusCircle" />
          </children>
          <VBox.margin>
-            <Insets />
+            <Insets bottom="10.0" left="50.0" right="50.0" />
          </VBox.margin>
+         <padding>
+            <Insets bottom="3.0" top="3.0" />
+         </padding>
       </HBox>
-      <Label layoutX="128.0" layoutY="311.0" maxWidth="405.0" prefHeight="21.0" prefWidth="405.0" text="USERNAME " textFill="#c3c3c3">
+      <Label layoutX="128.0" layoutY="311.0" maxWidth="1.7976931348623157E308" text="USERNAME " textFill="#c3c3c3">
+         <VBox.margin>
+            <Insets bottom="5.0" left="50.0" right="50.0" top="10.0" />
+         </VBox.margin>
          <font>
-            <Font size="15.0" />
+            <Font name="System Bold Italic" size="13.0" />
+         </font>
+      </Label>
+      <TextField fx:id="usernameTextField" layoutX="113.0" layoutY="421.0">
+         <VBox.margin>
+            <Insets bottom="10.0" left="50.0" right="50.0" />
+         </VBox.margin>
+         <font>
+            <Font size="13.0" />
+         </font>
+      </TextField>
+      <Label maxWidth="1.7976931348623157E308" text="EMAIL" textFill="#c3c3c3">
+         <font>
+            <Font name="System Bold Italic" size="13.0" />
          </font>
          <VBox.margin>
-            <Insets top="10.0" />
+            <Insets bottom="5.0" left="50.0" right="50.0" />
          </VBox.margin>
       </Label>
-      <TextField fx:id="usernameTextField" layoutX="113.0" layoutY="421.0" maxHeight="405.0" maxWidth="405.0" prefHeight="40.0" prefWidth="600.0">
+      <TextField fx:id="emailTextField" layoutX="113.0" layoutY="451.0">
          <font>
-            <Font size="15.0" />
+            <Font size="13.0" />
          </font>
          <VBox.margin>
-            <Insets bottom="20.0" />
+            <Insets bottom="10.0" left="50.0" right="50.0" />
          </VBox.margin>
       </TextField>
-      <Label maxWidth="405.0" prefHeight="21.0" prefWidth="405.0" text="EMAIL" textFill="#c3c3c3">
+      <Label layoutX="128.0" layoutY="311.0" maxWidth="1.7976931348623157E308" text="NEW PASSWORD" textFill="#c3c3c3">
          <font>
-            <Font size="15.0" />
+            <Font name="System Bold Italic" size="13.0" />
          </font>
          <VBox.margin>
-            <Insets />
+            <Insets bottom="5.0" left="50.0" right="50.0" />
          </VBox.margin>
       </Label>
-      <TextField fx:id="emailTextField" layoutX="113.0" layoutY="451.0" maxWidth="405.0" prefHeight="40.0" prefWidth="405.0">
+      <PasswordField fx:id="passwordField" styleClass="PasswordField">
          <font>
-            <Font size="16.0" />
+            <Font size="13.0" />
          </font>
          <VBox.margin>
-            <Insets bottom="20.0" />
-         </VBox.margin>
-      </TextField>
-      <Label layoutX="128.0" layoutY="311.0" prefHeight="21.0" prefWidth="405.0" text="NEW PASSWORD" textFill="#c3c3c3">
-         <font>
-            <Font size="15.0" />
-         </font>
-         <VBox.margin>
-            <Insets />
-         </VBox.margin>
-      </Label>
-      <PasswordField fx:id="passwordField" maxWidth="405.0" prefHeight="40.0" prefWidth="405.0" styleClass="PasswordField">
-         <font>
-            <Font size="16.0" />
-         </font>
-         <VBox.margin>
-            <Insets bottom="20.0" />
+            <Insets bottom="10.0" left="50.0" right="50.0" />
          </VBox.margin>
       </PasswordField>
-      <Label layoutX="128.0" layoutY="311.0" maxWidth="405.0" prefHeight="21.0" prefWidth="405.0" text="WRITE PASSWORD AGAIN" textFill="#c3c3c3">
+      <Label layoutX="128.0" layoutY="311.0" maxWidth="1.7976931348623157E308" text="WRITE PASSWORD AGAIN" textFill="#c3c3c3">
          <font>
-            <Font size="15.0" />
+            <Font name="System Bold Italic" size="13.0" />
          </font>
          <VBox.margin>
-            <Insets />
+            <Insets bottom="5.0" left="50.0" right="50.0" />
          </VBox.margin>
       </Label>
-      <PasswordField fx:id="repeatPasswordField" maxWidth="405.0" prefHeight="40.0" prefWidth="405.0" styleClass="PasswordField">
+      <PasswordField fx:id="repeatPasswordField" styleClass="PasswordField">
          <font>
-            <Font size="16.0" />
+            <Font size="13.0" />
          </font>
          <VBox.margin>
-            <Insets bottom="20.0" />
+            <Insets bottom="20.0" left="50.0" right="50.0" />
          </VBox.margin>
       </PasswordField>
-      <Button fx:id="changeInformationButton" maxHeight="50.0" maxWidth="405.0" onAction="#changeInformation" prefHeight="50.0" prefWidth="405.0" text="Change" textAlignment="CENTER" textFill="#ebebeb">
+      <Button fx:id="changeInformationButton" maxWidth="1.7976931348623157E308" onAction="#changeInformation" text="Change" textAlignment="CENTER" textFill="#ebebeb">
          <font>
-            <Font size="18.0" />
+            <Font name="System Bold" size="15.0" />
          </font>
          <VBox.margin>
-            <Insets bottom="20.0" />
+            <Insets bottom="20.0" left="100.0" right="100.0" />
          </VBox.margin>
       </Button>
    </children>

@@ -3,6 +3,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
@@ -11,26 +12,26 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="900.0" maxWidth="1200.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1200.0" styleClass="parent" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ChatDashboardController">
+<BorderPane prefHeight="674.0" prefWidth="982.0" styleClass="parent" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ChatDashboardController">
    <top>
       <BorderPane BorderPane.alignment="CENTER">
          <BorderPane.margin>
             <Insets />
          </BorderPane.margin>
          <right>
-            <Button fx:id="logoutButton" alignment="CENTER" contentDisplay="RIGHT" mnemonicParsing="false" onAction="#logoutUser" prefHeight="43.0" prefWidth="100.0" text="Log out" textAlignment="CENTER" textFill="WHITE" BorderPane.alignment="CENTER_RIGHT">
+            <Button fx:id="logoutButton" alignment="CENTER" contentDisplay="RIGHT" mnemonicParsing="false" onAction="#logoutUser" prefHeight="42.0" prefWidth="91.0" text="Log out" textAlignment="CENTER" textFill="WHITE" BorderPane.alignment="CENTER_RIGHT">
                <font>
-                  <Font name="System Bold" size="17.0" />
+                  <Font name="System Bold" size="14.0" />
                </font>
                <BorderPane.margin>
-                  <Insets right="50.0" />
+                  <Insets right="70.0" />
                </BorderPane.margin>
             </Button>
          </right>
          <center>
-            <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="93.0" prefWidth="229.0" text="Piscord" textFill="#c3c3c3" BorderPane.alignment="CENTER">
+            <Label alignment="CENTER" contentDisplay="CENTER" text="Piscord" textFill="#c3c3c3" BorderPane.alignment="CENTER">
                <font>
-                  <Font name="Bauhaus 93" size="58.0" />
+                  <Font name="Bauhaus 93" size="46.0" />
                </font>
                <BorderPane.margin>
                   <Insets />
@@ -43,24 +44,34 @@
       </BorderPane>
    </top>
    <center>
-      <BorderPane fx:id="contentBorderPane" prefHeight="200.0" prefWidth="200.0" styleClass="VBox" BorderPane.alignment="CENTER">
+      <BorderPane fx:id="contentBorderPane" styleClass="VBox" BorderPane.alignment="CENTER">
          <BorderPane.margin>
-            <Insets bottom="10.0" right="10.0" />
+            <Insets bottom="10.0" left="10.0" right="10.0" />
          </BorderPane.margin>
          <center>
-            <VBox fx:id="VBoxContentPane" alignment="TOP_CENTER" prefHeight="692.0" prefWidth="1000.0" BorderPane.alignment="CENTER" />
+            <ScrollPane fitToHeight="true" fitToWidth="true" BorderPane.alignment="CENTER">
+               <content>
+                  <VBox fx:id="VBoxContentPane" alignment="TOP_CENTER" />
+               </content>
+               <BorderPane.margin>
+                  <Insets />
+               </BorderPane.margin>
+            </ScrollPane>
          </center>
       </BorderPane>
    </center>
    <left>
-      <VBox alignment="CENTER_LEFT" prefHeight="808.0" prefWidth="238.0" BorderPane.alignment="CENTER">
+      <VBox alignment="CENTER_LEFT" maxWidth="500.0" prefWidth="225.0" BorderPane.alignment="CENTER">
          <children>
-            <HBox alignment="CENTER" fillHeight="false" prefHeight="116.0" prefWidth="188.0" styleClass="VBox">
+            <HBox alignment="CENTER" fillHeight="false" styleClass="VBox">
                <VBox.margin>
                   <Insets bottom="10.0" left="10.0" right="10.0" />
                </VBox.margin>
                <children>
-                  <ImageView fx:id="userProfilePicture" fitHeight="60.0" fitWidth="60.0" onMouseClicked="#openUserProfile" pickOnBounds="true" preserveRatio="true" styleClass="ImageView" />
+                  <ImageView fx:id="userProfilePicture" fitHeight="50.0" fitWidth="50.0" onMouseClicked="#openUserProfile" pickOnBounds="true" preserveRatio="true" styleClass="ImageView">
+                     <HBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="10.0" top="5.0" />
+                     </HBox.margin></ImageView>
                   <Label fx:id="loggedInUsername" alignment="TOP_LEFT" contentDisplay="CENTER" prefHeight="57.0" prefWidth="131.0" text="Username" textFill="#c3c3c3">
                      <font>
                         <Font name="System Bold" size="17.0" />
@@ -74,7 +85,7 @@
                   </Label>
                </children>
             </HBox>
-            <VBox fx:id="conversationVBox" alignment="TOP_CENTER" prefHeight="612.0" prefWidth="188.0" styleClass="VBox" VBox.vgrow="ALWAYS">
+            <VBox fx:id="conversationVBox" alignment="TOP_CENTER" styleClass="VBox" VBox.vgrow="ALWAYS">
                <VBox.margin>
                   <Insets bottom="10.0" left="10.0" right="10.0" />
                </VBox.margin>
@@ -92,22 +103,36 @@
                         <Insets left="20.0" right="20.0" top="10.0" />
                      </VBox.margin>
                   </Separator>
+                  <ScrollPane>
+                     <VBox.margin>
+                        <Insets top="10.0" />
+                     </VBox.margin>
+                     <content>
+                        <VBox fx:id="conversationVBox" alignment="TOP_CENTER" />
+                     </content>
+                  </ScrollPane>
                </children>
             </VBox>
-            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0" styleClass="VBox">
+            <HBox alignment="CENTER" minHeight="70.0" spacing="20.0" styleClass="VBox">
                <VBox.margin>
                   <Insets bottom="10.0" left="10.0" right="10.0" />
                </VBox.margin>
                <children>
-                  <Button fx:id="addFriendsButton" mnemonicParsing="false" onAction="#openAddFriendsView" prefHeight="61.0" prefWidth="77.0" text="Add Friends" textAlignment="CENTER" textFill="#fffafa" wrapText="true">
+                  <Button fx:id="addFriendsButton" mnemonicParsing="false" onAction="#openAddFriendsView" prefWidth="70.0" text="Add Friends" textAlignment="CENTER" textFill="#fffafa" wrapText="true">
                      <font>
-                        <Font name="System Bold" size="15.0" />
+                        <Font name="System Bold" size="12.0" />
                      </font>
+                     <HBox.margin>
+                        <Insets bottom="10.0" top="10.0" />
+                     </HBox.margin>
                   </Button>
-                  <Button fx:id="createGroupButton" layoutX="13.0" layoutY="13.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="85.0" text="Create a Group" textAlignment="CENTER" textFill="WHITE" wrapText="true">
+                  <Button fx:id="createGroupButton" layoutX="13.0" layoutY="13.0" mnemonicParsing="false" prefWidth="70.0" text="Create a Group" textAlignment="CENTER" textFill="WHITE" wrapText="true">
                      <font>
-                        <Font name="System Bold" size="14.0" />
+                        <Font name="System Bold" size="12.0" />
                      </font>
+                     <HBox.margin>
+                        <Insets bottom="10.0" top="10.0" />
+                     </HBox.margin>
                   </Button>
                </children>
             </HBox>
@@ -115,14 +140,14 @@
       </VBox>
    </left>
    <right>
-      <VBox alignment="CENTER_LEFT" prefHeight="808.0" prefWidth="238.0" BorderPane.alignment="CENTER">
+      <VBox alignment="CENTER_LEFT" maxWidth="500.0" prefWidth="225.0" BorderPane.alignment="CENTER">
          <children>
-            <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="31.0" prefWidth="374.0" text="Friends" textFill="#c3c3c3" VBox.vgrow="ALWAYS">
+            <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="31.0" prefWidth="227.0" text="Friends" textFill="#c3c3c3" VBox.vgrow="ALWAYS">
                <font>
                   <Font name="System Bold" size="21.0" />
                </font>
             </Label>
-            <VBox fx:id="friendsList" alignment="TOP_CENTER" prefHeight="612.0" prefWidth="188.0" styleClass="VBox" VBox.vgrow="ALWAYS">
+            <VBox fx:id="friendsList" alignment="TOP_CENTER" styleClass="VBox" VBox.vgrow="ALWAYS">
                <VBox.margin>
                   <Insets bottom="10.0" left="10.0" right="10.0" />
                </VBox.margin>

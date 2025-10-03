@@ -12,8 +12,8 @@
 
 <StackPane prefHeight="700.0" prefWidth="700.0" styleClass="parent" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.LoginController">
    <children>
-          <VBox alignment="CENTER" maxHeight="400.0" maxWidth="400.0" prefHeight="461.0" prefWidth="400.0" styleClass="VBox">
-              <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="95.0" prefWidth="177.0" text="Welcome To Piscord" textAlignment="CENTER" textFill="#c3c3c3" wrapText="true">
+          <VBox alignment="CENTER" maxHeight="400.0" maxWidth="400.0" styleClass="VBox">
+              <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="99.0" prefWidth="219.0" text="Welcome To Piscord" textAlignment="CENTER" textFill="#c3c3c3" wrapText="true">
                   <font>
                       <Font name="Bauhaus 93" size="28.0" />
                   </font>
@@ -69,22 +69,28 @@
                <Insets left="50.0" right="50.0" top="10.0" />
             </VBox.margin>
          </Button>
-              <HBox alignment="CENTER" prefHeight="49.0" prefWidth="396.0">
+              <HBox alignment="CENTER">
                   <children>
                       <Label prefHeight="25.0" prefWidth="183.0" text="Not a user? Sign up here" textFill="#c3c3c3">
                   <font>
                      <Font size="16.0" />
                   </font>
+                  <HBox.margin>
+                     <Insets left="10.0" />
+                  </HBox.margin>
                </Label>
                       <Label fx:id="signUpLabel" onMouseClicked="#moveToRegisterView" onMousePressed="#moveToRegisterView" styleClass="clickable-label" text="Sign up" textFill="#705eff">
                   <HBox.margin>
-                     <Insets />
+                     <Insets right="10.0" />
                   </HBox.margin>
                   <font>
                      <Font name="System Bold" size="15.0" />
                   </font>
                </Label>
                   </children>
+            <VBox.margin>
+               <Insets top="10.0" />
+            </VBox.margin>
               </HBox>
 
                       </VBox>

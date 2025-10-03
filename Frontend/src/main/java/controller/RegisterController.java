@@ -15,7 +15,6 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import model.User;
 import service.UserApiClient;
-import utils.FileHandler;
 import utils.UIAlert;
 
 public class RegisterController {
@@ -71,9 +70,9 @@ public class RegisterController {
         String email = emailTextField.getText();
         String password = passwordField.getText();
         String repeatedPassword = repeatPasswordField.getText();
-        if (!checkTextFields(username, email, password)) {
-            return;
-        }
+//        if (!checkTextFields(username, email, password)) {
+//            return;
+//        }
         if (!checkPassword(password, repeatedPassword)) {
             return;
         }

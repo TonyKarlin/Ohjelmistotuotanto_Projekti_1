@@ -11,18 +11,18 @@
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 
-<HBox alignment="CENTER" fillHeight="false" prefHeight="85.0" prefWidth="212.0" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.component.ConversationHBoxController">
+<HBox alignment="CENTER" fillHeight="false" prefWidth="100.0" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.component.ConversationHBoxController">
    <children>
-      <StackPane fx:id="contactContent" prefHeight="62.0" prefWidth="60.0">
+      <StackPane fx:id="contactContent1" prefHeight="62.0" prefWidth="60.0">
          <children>
             <AnchorPane prefHeight="60.0" prefWidth="60.0">
                <children>
-                  <ImageView fx:id="conversationProfilePicture" fitHeight="60.0" fitWidth="60.0" layoutY="10.0" onMouseClicked="#openMessages" pickOnBounds="true" preserveRatio="true" styleClass="ImageView">
+                  <ImageView fx:id="conversationProfilePicture" fitHeight="50.0" fitWidth="50.0" layoutY="10.0" onMouseClicked="#openMessages" pickOnBounds="true" preserveRatio="true" styleClass="ImageView">
                      <image>
                         <Image url="@../img/img_2.png" />
                      </image>
                   </ImageView>
-                  <Circle fx:id="contactUserStatus" fill="#40c351" layoutX="52.0" layoutY="62.0" radius="7.0" stroke="BLACK" strokeType="INSIDE" />
+                  <Circle fx:id="contactUserStatus1" fill="#40c351" layoutX="45.0" layoutY="55.0" radius="7.0" stroke="BLACK" strokeType="INSIDE" />
                </children>
                <StackPane.margin>
                   <Insets />
@@ -33,9 +33,9 @@
             <Insets left="10.0" />
          </HBox.margin>
       </StackPane>
-      <AnchorPane prefHeight="200.0" prefWidth="200.0">
+      <AnchorPane>
          <children>
-            <Label fx:id="conversationName" contentDisplay="CENTER" prefHeight="31.0" prefWidth="133.0" text="Name" textAlignment="CENTER" textFill="#c3c3c3">
+            <Label fx:id="conversationName" contentDisplay="CENTER" prefHeight="23.0" prefWidth="133.0" text="Name" textAlignment="CENTER" textFill="#c3c3c3">
                <font>
                   <Font name="System Bold" size="17.0" />
                </font>
@@ -43,9 +43,9 @@
                   <Insets left="10.0" top="5.0" />
                </padding>
             </Label>
-            <Button fx:id="conversationsettingsButton" alignment="CENTER" contentDisplay="CENTER" layoutX="75.0" layoutY="31.0" mnemonicParsing="false" onAction="#openConversationSettings" visible="false">
+            <Button fx:id="conversationsettingsButton" alignment="CENTER" contentDisplay="CENTER" layoutX="6.0" layoutY="31.0" mnemonicParsing="false" onAction="#openConversationSettings" visible="false">
                <graphic>
-                  <ImageView fitHeight="34.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="27.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../img/setting.png" />
                      </image>
