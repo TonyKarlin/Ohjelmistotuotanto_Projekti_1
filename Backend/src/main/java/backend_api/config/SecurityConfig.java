@@ -26,6 +26,7 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http, UserService userService) throws Exception {
         http
                 // Disabled because we're using JWTs and not sessions
+                .cors(cors -> {})
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(authz -> authz
 

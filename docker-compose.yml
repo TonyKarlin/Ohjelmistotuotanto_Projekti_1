@@ -1,5 +1,13 @@
 version: '3.8'
 
+networks:
+  otp_network:
+    driver: bridge
+
+
+volumes:
+  otp_db_data:
+
 services:
   db:
     image: postgres:17
@@ -12,10 +20,12 @@ services:
       - "5432:5432"
     volumes:
       - otp_db_data:/var/lib/postgresql/data
+    networks:
+      - otp_network
+    restart: unless-stopped
 
   backend:
     build: ./Backend
-    image: jarkkok1/project:latest
     container_name: otp_backend
     ports:
       - "8081:8081"
@@ -24,17 +34,21 @@ services:
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: admin
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SERVER_ADDRESS: 0.0.0.0
+      SERVER_PORT: 8081
     depends_on:
       - db
+    networks:
+      - otp_network
+    restart: unless-stopped
 
   frontend:
     build: ./Frontend
-    image: jarkkok1/project-frontend:latest
     container_name: otp_frontend
     depends_on:
       - backend
     environment:
-      BACKEND_URL: http://backend:8080
-
-volumes:
-  otp_db_data:
+      BACKEND_URL: http://localhost:8081
+    networks:
+      - otp_network
+    restart: unless-stopped
