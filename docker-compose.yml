@@ -1,9 +1,8 @@
-version: '3.8'
+version: "3.8"
 
 networks:
   otp_network:
     driver: bridge
-
 
 volumes:
   otp_db_data:
@@ -48,7 +47,7 @@ services:
     depends_on:
       - backend
     environment:
-      BACKEND_URL: http://localhost:8081
+      BACKEND_URL: http://backend:8081
     networks:
       - otp_network
     restart: unless-stopped
