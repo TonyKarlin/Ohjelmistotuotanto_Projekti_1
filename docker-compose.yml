@@ -21,7 +21,7 @@ services:
       - otp_db_data:/var/lib/postgresql/data
     networks:
       - otp_network
-    restart: unless-stopped
+    restart: no
 
   backend:
     build: ./Backend
@@ -39,7 +39,7 @@ services:
       - db
     networks:
       - otp_network
-    restart: unless-stopped
+    restart: no
 
   frontend:
     build: ./Frontend
@@ -50,4 +50,4 @@ services:
       BACKEND_URL: http://backend:8081
     networks:
       - otp_network
-    restart: unless-stopped
+    restart: no
