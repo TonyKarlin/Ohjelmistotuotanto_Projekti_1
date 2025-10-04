@@ -28,7 +28,7 @@ Our project is designed to help users easily add contacts and chat with them.
 
 ```project-structure
 docs/ # Project documentation (plans, database diagrams, sprint reports)
-├─ database/
+├─ images/
 ├─ project-initialization/
 └─ sprint-documentation/
 
