@@ -27,7 +27,6 @@ Our project is designed to help users easily add contacts and chat with them.
 ## Rough Project Structure
 
 ```project-structure
-
 docs/ # Project documentation (plans, database diagrams, sprint reports)
 ├─ database/
 ├─ project-initialization/
