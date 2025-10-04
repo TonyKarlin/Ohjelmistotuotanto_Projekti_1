@@ -27,11 +27,6 @@ Our project is designed to help users easily add contacts and chat with them.
 ## Rough Project Structure
 
 ```project-structure
-docs/ # Project documentation (plans, database diagrams, sprint reports)
-├─ images/
-├─ project-initialization/
-└─ sprint-documentation/
-
 Backend/ # Java Spring Boot backend
 ├─ database/            # Database initialization
 ├─ http-requests/       # HTTP request snippets for manual testing -
@@ -39,12 +34,12 @@ Backend/ # Java Spring Boot backend
 │ ├─ main/
 │ │ ├─ java/
 │ │ │ └─ backend_api/
-│ │ │ ├─ controller/    # REST & WebSocket controllers
-│ │ │ ├─ DTOs/          # Data Transfer Objects for users, messages, conversations
-│ │ │ ├─ entities/      # Database entities
-│ │ │ ├─ repository/    # Spring Data repositories
-│ │ │ ├─ services/      # Business logic services
-│ │ │ └─ utils/         # Utilities (JWT, exception handling, etc.)
+│ │ │  ├─ controller/    # REST & WebSocket controllers
+│ │ │  ├─ DTOs/          # Data Transfer Objects for users, messages, conversations
+│ │ │  ├─ entities/      # Database entities
+│ │ │  ├─ repository/    # Spring Data repositories
+│ │ │  ├─ services/      # Business logic services
+│ │ │  └─ utils/         # Utilities (JWT, exception handling, etc.)
 │ │ └─ resources/
 │ │ └─ application.properties
 │ └─ test/              # Unit and integration tests
@@ -63,6 +58,11 @@ Frontend/ # JavaFX client
 │ └─ test/              # Client tests
 ├─ Dockerfile
 └─ pom.xml
+
+docs/ # Project documentation (plans, database diagrams, sprint reports)
+├─ images/
+├─ project-initialization/
+└─ sprint-documentation/
 
 docker-compose.yml      # Orchestrates frontend, backend, and database containers
 Jenkinsfile             # CI/CD pipeline configuration
