@@ -191,8 +191,6 @@
 }
 .ContactView:hover {
   -fx-cursor: hand;
-  -fx-scale-x: 1.05;
-  -fx-scale-y: 1.05;
   -fx-border-color: rgb(99, 101, 220);
   -fx-border-width: 2px;
   -fx-border-radius: 10px;

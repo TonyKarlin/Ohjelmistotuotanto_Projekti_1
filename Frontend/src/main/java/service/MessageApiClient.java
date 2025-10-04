@@ -64,15 +64,17 @@ public class MessageApiClient implements ApiClient {
         }
     }
 
-    public void deleteMessage(int conversationId, int messageId, String token) throws IOException, InterruptedException {
+    public boolean deleteMessage(int conversationId, int messageId, String token) throws IOException, InterruptedException {
         String messageUrl = baseUrl + "/" + conversationId + "/messages/" + messageId;
         ApiResponse response = sendDeleteRequestWithToken(messageUrl, token);
         if ((response.isSuccess())) {
             System.out.println(response.body);
+            return true;
         } else {
             System.out.println("Failed to delete Message: "
                     + response.statusCode + ", Response: " + response.body);
-        }
+        } return false;
+
     }
 
 }
