@@ -80,7 +80,7 @@ The backend of the project is built with Java and Spring Boot, using Maven as th
 
 Initial database Schema in PostGreSQL.
 
-![database](docs/database/project-database.png)
+![database](docs/images/project-database.png)
 
 ## JaCoCo report
 
