@@ -13,8 +13,8 @@ services:
     container_name: otp_db
     environment:
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: admin
-      POSTGRES_DB: otp_project
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: otp1-project
     ports:
       - "5432:5432"
     volumes:
@@ -29,12 +29,13 @@ services:
     ports:
       - "8081:8081"
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/otp_project
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/otp1-project
       SPRING_DATASOURCE_USERNAME: postgres
-      SPRING_DATASOURCE_PASSWORD: admin
+      SPRING_DATASOURCE_PASSWORD: root
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
       SERVER_ADDRESS: 0.0.0.0
       SERVER_PORT: 8081
+      SPRING_SESSION_JDBC_INITIALIZE_SCHEMA: always
     depends_on:
       - db
     networks:
