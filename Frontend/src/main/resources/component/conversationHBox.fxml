@@ -11,7 +11,7 @@
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 
-<HBox alignment="CENTER" fillHeight="false" prefWidth="100.0" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.component.ConversationHBoxController">
+<HBox alignment="CENTER" fillHeight="false" prefWidth="100.0" styleClass="ContactView" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.component.ConversationHBoxController">
    <children>
       <StackPane fx:id="contactContent1" prefHeight="62.0" prefWidth="60.0">
          <children>

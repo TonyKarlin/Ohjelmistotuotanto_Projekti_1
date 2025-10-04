@@ -9,18 +9,24 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Circle;
 import model.Conversation;
+import model.ConversationParticipant;
+import model.User;
 import utils.ImageRounder;
+
 import java.io.IOException;
+import java.util.Objects;
 
 public class ConversationHBoxController {
 
     Conversation conversation;
     ChatDashboardController parentController;
     ImageRounder imageRounder;
+    User loggedInuser;
 
-    public void setController(Conversation conversation, ChatDashboardController parentController) {
+    public void setController(Conversation conversation, ChatDashboardController parentController, User loggedInUser) {
         this.conversation = conversation;
         this.parentController = parentController;
+        this.loggedInuser = loggedInUser;
         imageRounder = new ImageRounder(conversationProfilePicture);
         setConversationInformation(conversation);
     }
@@ -39,9 +45,14 @@ public class ConversationHBoxController {
 
 
     public void setConversationInformation(Conversation conversation) {
-        System.out.println(conversation.getName());
-        System.out.println(conversation.getId());
-        conversationName.setText(conversation.getName());
+        if (Objects.equals(conversation.getType(), "PRIVATE")) {
+            for (ConversationParticipant p : conversation.getParticipants()) {
+                if (p.getUserId() != loggedInuser.getId()) {
+                    conversationName.setText(p.getUsername());
+                    break;
+                }
+            }
+        } else conversationName.setText(conversation.getName());
     }
 
     public void setUserImage(Image image) {

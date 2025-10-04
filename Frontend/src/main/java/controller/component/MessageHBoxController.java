@@ -99,7 +99,6 @@ public class MessageHBoxController {
         senderUsernameLabel.setText(senderUsername);
         String formattedTime = formatTime(createdAt);
         messageTimeLabel.setText(formattedTime);
-
     }
 
     public String formatTime(String createdAt) {
@@ -112,7 +111,12 @@ public class MessageHBoxController {
     public void deleteMessage() throws IOException, InterruptedException {
         String token = parentController.getLoggedInUser().getToken();
         MessageApiClient client = new MessageApiClient();
-        client.deleteMessage(conversationId,message.getId(),token );
+        boolean success = client.deleteMessage(conversationId, message.getId(), token);
+        if (success) {
+            parentController.deleteMessageLocally(message);
+        } else {
+            System.out.println("Message deletion failed");
+        }
     }
 
 
@@ -122,6 +126,13 @@ public class MessageHBoxController {
         String modifiedText = editTextField.getText();
         MessageRequest request = new MessageRequest(modifiedText, conversationId, token);
         MessageApiClient client = new MessageApiClient();
-        client.modifyMessage(request, message.getId());
-    }
+        Message updatedMessage = client.modifyMessage(request, message.getId());
+        if (updatedMessage != null) {
+            this.message = updatedMessage;
+            setMessageInformation(message.getText(), message.getCreatedAt(), message.getSenderUsername());
+        }else {
+            System.out.println("Message modification failed on server");
+        }
+
+}
 }
