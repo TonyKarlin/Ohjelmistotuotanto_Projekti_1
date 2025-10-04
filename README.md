@@ -75,6 +75,12 @@ The frontend is built with Java and JavaFX that allows users to communicate with
 
 The backend of the project is built with Java and Spring Boot, using Maven as the build tool. It handles the business logic and data storage, using PostgreSQL as the primary database, and provides a RESTful API that the frontend client uses to make HTTP requests.
 
+## Database
+
+Initial database Schema in PostGreSQL.
+
+![database](docs/database/project-database.png)
+
 ## JaCoCo report
 
 Java Code Coverage reports for both Backend and Frontend directories.
@@ -88,12 +94,6 @@ cd .\Backend; mvn clean test jacoco:report
 ```
 
 The JaCoCo reports can be found in the `target/site/jacoco` directory within each respective project.
-
-## Database
-
-Initial database Schema in PostGreSQL.
-
-![database](docs/database/project-database.png)
 
 ## Image
 
