@@ -78,7 +78,7 @@ public class ConversationSettingsController {
         boolean success = conversationApiClient.deleteConversation(conversation, loggedInuser);
         if (success) {
             parentController.conversations.remove(conversation);
-            parentController.addConversation(conversation.getType());
+            parentController.addConversations(conversation.getType());
         } else {
             System.out.println("Deletion failed");
         }

@@ -59,7 +59,7 @@ public class ChatDashboardController implements ContactUpdateCallback {
         setUserInformation();
         this.conversations = getUserConversations();
         this.contacts = getUserContacts();
-        addConversation("PRIVATE");
+        addConversations("PRIVATE");
         addFriendsToFriendsList();
     }
 
@@ -189,12 +189,37 @@ public class ChatDashboardController implements ContactUpdateCallback {
 
     @FXML
     public void openGroupConversations() throws IOException {
-        addConversation("GROUP");
+        addConversations("GROUP");
     }
 
     @FXML
     public void openPrivateConversations() throws IOException {
-        addConversation("PRIVATE");
+        addConversations("PRIVATE");
+    }
+
+    // Adds conversation components to the UI
+    public void addConversations(String groupType) throws IOException {
+        conversationVBox.getChildren().clear();
+        for (Conversation c : conversations) {
+            if(Objects.equals(c.getType(), groupType)) {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/component/conversationHBox.fxml"));
+                HBox userConversationHBox = loader.load();
+                ConversationHBoxController controller = loader.getController();
+                controller.setController(c, this, loggedInUser);
+                conversationVBox.getChildren().add(userConversationHBox);
+            }}
+    }
+
+    public void openConversationSettings(Conversation conversation, ConversationHBoxController conversationHBoxController) throws IOException {
+        contentBorderPane.setBottom(null);
+        VBoxContentPane.getChildren().clear();
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/conversationSettingsView.fxml"));
+        VBox conversationSettings = fxmlLoader.load();
+        ConversationSettingsController controller= fxmlLoader.getController();
+        controller.setController(this.loggedInUser, conversation, this,
+                conversationHBoxController);
+
+        VBoxContentPane.getChildren().add(conversationSettings);
     }
 
 
@@ -243,18 +268,6 @@ public class ChatDashboardController implements ContactUpdateCallback {
         });
     }
 
-    public void openConversationSettings(Conversation conversation, ConversationHBoxController conversationHBoxController) throws IOException {
-        contentBorderPane.setBottom(null);
-        VBoxContentPane.getChildren().clear();
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/conversationSettingsView.fxml"));
-        VBox conversationSettings = fxmlLoader.load();
-        ConversationSettingsController controller= fxmlLoader.getController();
-        controller.setController(this.loggedInUser, conversation, this,
-                conversationHBoxController);
-
-        VBoxContentPane.getChildren().add(conversationSettings);
-    }
-
     // Loads and displays the send message component
     public void sendMessageComponent(Conversation conversation) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/component/sendMessageHBox.fxml"));
@@ -264,18 +277,6 @@ public class ChatDashboardController implements ContactUpdateCallback {
         contentBorderPane.setBottom(sendMessageHBox);
     }
 
-    // Adds conversation components to the UI
-    public void addConversation(String groupType) throws IOException {
-        conversationVBox.getChildren().clear();
-        for (Conversation c : conversations) {
-            if(Objects.equals(c.getType(), groupType)) {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/component/conversationHBox.fxml"));
-                HBox userConversationHBox = loader.load();
-                ConversationHBoxController controller = loader.getController();
-                controller.setController(c, this, loggedInUser);
-                conversationVBox.getChildren().add(userConversationHBox);
-        }}
-    }
 
     // Adds accepted friends to the friends list UI
     public void addFriendsToFriendsList() throws IOException {
@@ -298,6 +299,11 @@ public class ChatDashboardController implements ContactUpdateCallback {
 
     @FXML
     public void openPendingList() {
+
+    }
+
+    @FXML
+    public void openSentList() {
 
     }
 
