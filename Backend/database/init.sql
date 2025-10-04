@@ -1,9 +1,9 @@
 -- Create the database (run this separately if needed)
--- CREATE DATABASE otp_project;
--- DROP DATABASE IF EXISTS otp_project;
+-- CREATE DATABASE otp1-project;
+-- DROP DATABASE IF EXISTS otp1-project;
 
 -- Connect to the database (in psql, run this after creating the database)
--- \c otp-project
+-- \c otp1-project
 
 -- Create users table
 CREATE TABLE IF NOT EXISTS users

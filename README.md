@@ -33,7 +33,9 @@ docs/ # Project documentation (plans, database diagrams, sprint reports)
 └─ sprint-documentation/
 
 Backend/ # Java Spring Boot backend
-├─ src/
+├─ database/            # Database initialization
+├─ http-requests/       # HTTP request snippets for manual testing -
+├─ src/                 # (VS Code REST Client, Postman, curl)
 │ ├─ main/
 │ │ ├─ java/
 │ │ │ └─ backend_api/
