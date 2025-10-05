@@ -82,19 +82,46 @@ Initial database Schema in PostGreSQL.
 
 ![database](docs/images/project-database.png)
 
-## JaCoCo report
+## Jenkins CI/CD
 
-Java Code Coverage reports for both Backend and Frontend directories.
+Jenkins is currently handled locally since the backend has not yet been integrated into a remote server, which we believe will be implemented in the next course.
 
-```powershell
-cd .\Frontend; mvn clean test jacoco:report
+### General flow of the pipeline
+
+```mermaid
+flowchart TD
+  subgraph "Jenkins Pipeline"
+    A[Checkout Source Code] --> B[Build Backend]
+    B --> C[Start Backend]
+    C --> D[Build Frontend]
+    D --> E[Run Frontend & Backend Tests]
+    E --> F[Generate Code Coverage Reports]
+    F --> G[Publish Test Results]
+    G --> H[Archive Coverage Reports]
+    H --> I[Build & Push Docker Images]
+    I --> J[Deploy with Docker Compose]
+  end
 ```
 
-```powershell
-cd .\Backend; mvn clean test jacoco:report
-```
+Currently there are three docker images for the project. One for the Frontend (Client), one for the Backend (Springboot Server) and one for the database (PostgreSQL).
 
-The JaCoCo reports can be found in the `target/site/jacoco` directory within each respective project.
+## Testing
+
+Testing is performed on both the backend and frontend components of the project.
+
+### Backend Testing
+
+- **Unit Tests:** The backend uses JUnit and Mockito to test individual services, controllers, and repositories. These tests verify business logic, data validation, and API endpoints.
+- **Integration Tests:** Integration tests ensure that different modules work together, including database interactions and REST API responses.
+- **Test Coverage:** Code coverage is measured using tools like JaCoCo, and reports are generated in the CI/CD pipeline.
+
+### Frontend Testing
+
+- **Unit Tests:** The frontend includes JUnit-based tests for controllers and models to validate UI logic and data handling.
+- **Manual Testing:** JavaFX UI components are manually tested to ensure correct user interaction and display.
+- **End-to-End Testing:** Basic end-to-end scenarios are tested by running the client against the backend to verify user flows such as login, contact management, and messaging.
+
+All tests are executed automatically in the Jenkins pipeline, with results and coverage reports archived for review.
 
 ## Image
 
