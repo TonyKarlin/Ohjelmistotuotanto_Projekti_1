@@ -9,6 +9,5 @@ public class Main {
     public static void main(String[] args) {
         SpringApplication.run(Main.class, args);
         System.out.println("Server running at: http://localhost:8081");
-        System.out.println("User endpoint at: http://localhost:8081/api/users");
     }
 }

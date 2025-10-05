@@ -105,7 +105,7 @@
                         <Insets right="10.0" />
                      </HBox.margin>
                   </CheckBox>
-                  <Label prefHeight="19.0" prefWidth="199.0" text="I have read and agree to Piscord's " textFill="#c3c3c3">
+                  <Label prefHeight="19.0" prefWidth="199.0" text="I have read and agree to ProChat's " textFill="#c3c3c3">
                      <font>
                         <Font size="13.0" />
                      </font>

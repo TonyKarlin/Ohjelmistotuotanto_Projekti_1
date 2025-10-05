@@ -23,7 +23,7 @@ public class View extends Application {
                 Platform.exit();
                 System.exit(0);
             });
-            stage.setTitle("Pisscord");
+            stage.setTitle("ProChat");
 
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/loginView.fxml"));
             Parent root = fxmlLoader.load();

@@ -29,7 +29,7 @@
             </Button>
          </right>
          <center>
-            <Label alignment="CENTER" contentDisplay="CENTER" text="Piscord" textFill="#c3c3c3" BorderPane.alignment="CENTER">
+            <Label alignment="CENTER" contentDisplay="CENTER" text="ProChat" textFill="#c3c3c3" BorderPane.alignment="CENTER">
                <font>
                   <Font name="Bauhaus 93" size="46.0" />
                </font>

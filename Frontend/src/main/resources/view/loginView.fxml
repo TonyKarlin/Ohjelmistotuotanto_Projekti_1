@@ -13,7 +13,7 @@
 <StackPane prefHeight="700.0" prefWidth="700.0" styleClass="parent" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.LoginController">
    <children>
           <VBox alignment="CENTER" maxHeight="400.0" maxWidth="400.0" styleClass="VBox">
-              <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="99.0" prefWidth="219.0" text="Welcome To Piscord" textAlignment="CENTER" textFill="#c3c3c3" wrapText="true">
+              <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="99.0" prefWidth="219.0" text="Welcome To ProChat" textAlignment="CENTER" textFill="#c3c3c3" wrapText="true">
                   <font>
                       <Font name="Bauhaus 93" size="28.0" />
                   </font>
