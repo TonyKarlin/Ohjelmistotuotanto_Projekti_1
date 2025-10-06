@@ -19,9 +19,9 @@ public class ConversationApiClient implements ApiClient {
 
     }
 
-    public Conversation createConversation(ConversationRequest conversationRequest) throws IOException, InterruptedException {
+    public Conversation createConversation(ConversationRequest conversationRequest, String token) throws IOException, InterruptedException {
         String conversationUrl = baseUrl;
-        ApiResponse response = sendPostRequest(conversationUrl, conversationRequest);
+        ApiResponse response = sendPostRequestWithToken(conversationUrl, conversationRequest, token);
         if (response.isSuccess()) {
             System.out.println("Response: " + response.body);
             return objectMapper.readValue(response.body, Conversation.class);

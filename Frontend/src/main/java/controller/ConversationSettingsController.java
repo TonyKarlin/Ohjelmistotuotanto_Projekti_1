@@ -14,6 +14,8 @@ import model.ConversationParticipant;
 import model.User;
 import request.ConversationRequest;
 import service.ConversationApiClient;
+import utils.ImageRounder;
+import utils.UIAlert;
 
 import java.io.IOException;
 import java.util.List;
@@ -28,6 +30,8 @@ public class ConversationSettingsController {
     ChatDashboardController parentController;
     ConversationHBoxController conversationHBoxController;
     List<Contact> contacts;
+    UIAlert alert = new UIAlert();
+
 
     public void setController(User loggedInuser, Conversation conversation,
                               ChatDashboardController parentController,
@@ -106,9 +110,7 @@ public class ConversationSettingsController {
     public void showParticipantsInAGroup() throws IOException {
         conversationParticipantList.getItems().clear();
         for (ConversationParticipant p : conversation.getParticipants()) {
-            if (p.getUserId() == loggedInuser.getId()) {
-                break;
-            }
+            if (p.getUserId() == loggedInuser.getId()) continue; // skip yourself
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/component/conversationParticipantHBox.fxml"));
             HBox participantHBox = fxmlLoader.load();
             ConversationParticipantHBoxController controller = fxmlLoader.getController();
@@ -118,27 +120,38 @@ public class ConversationSettingsController {
 
     }
 
-    @FXML
     public void showFriendsToAdd() throws IOException {
         conversationParticipantList.getItems().clear();
         for (Contact c : contacts) {
-            boolean isInConversation = false;
-            for (ConversationParticipant p : conversation.getParticipants()) {
-                if (p.getUserId() == c.getContactUserId()) {
-                    isInConversation = true;
-                    break;
-                }
-            }
+            if (c.getContactUserId() == loggedInuser.getId()) continue;
+
+            boolean isInConversation = conversation.getParticipants().stream()
+                    .anyMatch(p -> p.getUserId() == c.getContactUserId());
             if (isInConversation) continue;
+
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/component/contactHBox.fxml"));
             HBox contactHBox = fxmlLoader.load();
             ContactHboxController controller = fxmlLoader.getController();
             controller.setController(c, parentController);
-            controller.setController(conversation, loggedInuser);
+            controller.setControllerForConversationSettings(conversation, loggedInuser, this);
             controller.setUsername(c.getContactUsername());
             conversationParticipantList.getItems().add(contactHBox);
         }
     }
+
+    public void addUserToConversation(Contact contact, ContactHboxController hboxController) throws IOException, InterruptedException {
+        boolean success = conversationApiClient.addUserToConversation(
+                conversation.getId(), contact.getContactUserId(), loggedInuser.getToken()
+        );
+        if (success) {
+            hboxController.getAddButton().setVisible(false);
+            alert.showSuccessAlert("Success", "User added to conversation: " + conversation.getName());
+            conversation.getParticipants().add(new ConversationParticipant(contact.getContactUserId(), contact.getContactUsername(), "MEMBER"));
+        } else {
+            alert.showErrorAlert("Failed", "Failed to add user to the conversation");
+        }
+    }
+
 
     public void checkOwnerPermissions() {
         boolean isOwner = conversation.getParticipants().stream()

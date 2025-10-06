@@ -146,7 +146,7 @@
                         <Insets bottom="10.0" top="10.0" />
                      </HBox.margin>
                   </Button>
-                  <Button fx:id="createGroupButton" layoutX="13.0" layoutY="13.0" mnemonicParsing="false" prefWidth="70.0" text="Create a Group" textAlignment="CENTER" textFill="WHITE" wrapText="true">
+                  <Button fx:id="createGroupButton" layoutX="13.0" layoutY="13.0" mnemonicParsing="false" onAction="#openCreateGroupView" prefWidth="70.0" text="Create a Group" textAlignment="CENTER" textFill="WHITE" wrapText="true">
                      <font>
                         <Font name="System Bold" size="12.0" />
                      </font>

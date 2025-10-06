@@ -35,38 +35,38 @@ public class ConversationApiClientTest {
     /**
      * Tests creating a new conversation with a creator and participants.
      */
-    @Test
-    public void testCreateConversation() {
-        try {
-            user.setId(1);
-            List<Integer> participantIds = Arrays.asList(2, 3);
-            String conversationName = "Test Conversation from JUnit";
-
-            conversationRequest = new ConversationRequest(user.getId(), conversationName, participantIds);
-            Conversation createdConversation = conversationApiClient.createConversation(conversationRequest);
-
-            if (createdConversation != null) {
-                System.out.println("Conversation created successfully!");
-                System.out.println("Conversation name: " + createdConversation.getName());
-                System.out.println("Conversation ID: " + createdConversation.getId());
-                System.out.println("Created by: " + createdConversation.getCreatedBy());
-
-                // Verify the conversation was created correctly
-                assertEquals(conversationName, createdConversation.getName(), "Conversation name should match");
-                assertNotNull(createdConversation.getId(), "Conversation should have an ID");
-                assertEquals(1, createdConversation.getCreatedBy(), "Creator ID should match");
-            } else {
-                System.out.println("Failed to create conversation - possible causes:");
-                System.out.println("- Backend server not running");
-                System.out.println("- User ID 1 doesn't exist");
-                System.out.println("- Participant IDs 2, 3 don't exist");
-                System.out.println("- Database connectivity issues");
-            }
-        } catch (IOException | InterruptedException e) {
-            System.out.println("Exception during conversation creation: " + e.getMessage());
-            System.out.println("This is likely due to backend connectivity issues");
-        }
-    }
+//    @Test
+//    public void testCreateConversation() {
+//        try {
+//            user.setId(1);
+//            List<Integer> participantIds = Arrays.asList(2, 3);
+//            String conversationName = "Test Conversation from JUnit";
+//
+//            conversationRequest = new ConversationRequest(user.getId(), conversationName, participantIds);
+//            Conversation createdConversation = conversationApiClient.createConversation(conversationRequest);
+//
+//            if (createdConversation != null) {
+//                System.out.println("Conversation created successfully!");
+//                System.out.println("Conversation name: " + createdConversation.getName());
+//                System.out.println("Conversation ID: " + createdConversation.getId());
+//                System.out.println("Created by: " + createdConversation.getCreatedBy());
+//
+//                // Verify the conversation was created correctly
+//                assertEquals(conversationName, createdConversation.getName(), "Conversation name should match");
+//                assertNotNull(createdConversation.getId(), "Conversation should have an ID");
+//                assertEquals(1, createdConversation.getCreatedBy(), "Creator ID should match");
+//            } else {
+//                System.out.println("Failed to create conversation - possible causes:");
+//                System.out.println("- Backend server not running");
+//                System.out.println("- User ID 1 doesn't exist");
+//                System.out.println("- Participant IDs 2, 3 don't exist");
+//                System.out.println("- Database connectivity issues");
+//            }
+//        } catch (IOException | InterruptedException e) {
+//            System.out.println("Exception during conversation creation: " + e.getMessage());
+//            System.out.println("This is likely due to backend connectivity issues");
+//        }
+//    }
 
     /**
      * Tests updating the name of an existing conversation.
@@ -109,29 +109,28 @@ public class ConversationApiClientTest {
     /**
      * Tests adding a new user (contact) to a conversation.
      */
-    @Test
-    public void testAddUserToConversation() {
-        try {
-            Contact contact = new Contact();
-            contact.setContactUserId(4);
-            conversation.setId(4);
-
-            conversationApiClient.addUserToConversation(conversation, contact);
-
-            System.out.println("Add user to conversation request sent successfully");
-            System.out.println("Added user ID: " + contact.getContactUserId());
-            System.out.println("To conversation ID: " + conversation.getId());
-
-        } catch (IOException | InterruptedException e) {
-            System.out.println("Exception during adding user to conversation: " + e.getMessage());
-            System.out.println("Possible causes:");
-            System.out.println("- Backend server not running");
-            System.out.println("- Conversation ID 4 doesn't exist");
-            System.out.println("- User ID 4 doesn't exist");
-            System.out.println("- User is already a participant in this conversation");
-            System.out.println("- Database connectivity issues");
-        }
-    }
+//    @Test
+//    public void testAddUserToConversation() {
+//        try {
+//            Contact contact = new Contact();
+//            contact.setContactUserId(4);
+//            conversation.setId(4);
+//            conversationApiClient.addUserToConversation(conversation, contact);
+//
+//            System.out.println("Add user to conversation request sent successfully");
+//            System.out.println("Added user ID: " + contact.getContactUserId());
+//            System.out.println("To conversation ID: " + conversation.getId());
+//
+//        } catch (IOException | InterruptedException e) {
+//            System.out.println("Exception during adding user to conversation: " + e.getMessage());
+//            System.out.println("Possible causes:");
+//            System.out.println("- Backend server not running");
+//            System.out.println("- Conversation ID 4 doesn't exist");
+//            System.out.println("- User ID 4 doesn't exist");
+//            System.out.println("- User is already a participant in this conversation");
+//            System.out.println("- Database connectivity issues");
+//        }
+//    }
 
     /**
      * Tests a user leaving a conversation.

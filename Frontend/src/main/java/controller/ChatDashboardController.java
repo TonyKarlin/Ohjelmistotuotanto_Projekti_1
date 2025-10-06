@@ -117,7 +117,11 @@ public class ChatDashboardController implements ContactUpdateCallback {
         return this.loggedInUser;
     }
 
-    // Sets user information in the UI
+    public List<Conversation> getConversations() {
+        return this.conversations;
+    }
+
+        // Sets user information in the UI
     public void setUserInformation() {
         loggedInUsername.setText(loggedInUser.getUsername());
         Image profilePicture= new Image(loggedInUser.getProfilePictureUrl());
@@ -296,6 +300,17 @@ public class ChatDashboardController implements ContactUpdateCallback {
                 friendsList.getChildren().add(userContactsHbox);
             }
         }
+    }
+
+    @FXML
+    public void openCreateGroupView() throws IOException {
+        contentBorderPane.setBottom(null);
+        VBoxContentPane.getChildren().clear();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/creatGroupConversationView.fxml"));
+        VBox createGroupVBox = loader.load();
+        CreateGroupController controller = loader.getController();
+        controller.setController(contacts, loggedInUser, this);
+        VBoxContentPane.getChildren().add(createGroupVBox);
     }
 
     @FXML
