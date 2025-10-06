@@ -123,7 +123,17 @@ Testing is performed on both the backend and frontend components of the project.
 
 All tests are executed automatically in the Jenkins pipeline, with results and coverage reports archived for review.
 
-## Image
+## Docker Image
 
-docker-compose up --build
-docker-compose down
+```yaml
+docker-compose up -d
+```
+
+## Future development
+
+- Implement live chatting and possible voice calls.
+- Public walls where any user can join by a specific topic and chat about.
+- Localization (multiple language options).
+- Calendar for planning events and meetings.
+- Pinning messages.
+- Live Notifications for alerts etc.
