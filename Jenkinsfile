@@ -87,7 +87,7 @@ pipeline {
         }
     }
 }
-
+/*
 stage('Build Docker Image') {
             steps {
                 dir('Backend') {
@@ -122,3 +122,4 @@ stage('Build Docker Image') {
                 }
             }
         }
+*/
