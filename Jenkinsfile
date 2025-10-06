@@ -4,7 +4,7 @@ pipeline {
     environment {
         PATH = "C:\\Program Files\\Docker\\Docker\\resources\\bin;${env.PATH}"
         DOCKERHUB_CREDENTIALS_ID = 'Docker_Hub'
-        DOCKERHUB_REPO = 'jarkkok1/project'
+        DOCKERHUB_REPO = 'joniheikk/project'
         DOCKER_IMAGE_TAG = 'latest'
     }
 
@@ -87,7 +87,7 @@ pipeline {
         }
     }
 }
-/*
+
 stage('Build Docker Image') {
             steps {
                 dir('Backend') {
@@ -122,4 +122,3 @@ stage('Build Docker Image') {
                 }
             }
         }
-*/
