@@ -1,54 +1,58 @@
-version: "3.8"
-
-networks:
-  otp_network:
-    driver: bridge
-
-volumes:
-  otp_db_data:
-
+# docker-compose up -d
 services:
   db:
-    image: postgres:17
-    container_name: otp_db
+    image: joniheikk/otp_db:latest
+    pull_policy: always
+    container_name: db
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: root
-      POSTGRES_DB: otp1-project
-    ports:
-      - "5432:5432"
+      POSTGRES_DB: otp_project
     volumes:
       - otp_db_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
     networks:
       - otp_network
-    restart: no
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 10s
+      retries: 5
 
   backend:
-    build: ./Backend
-    container_name: otp_backend
-    ports:
-      - "8081:8081"
+    image: joniheikk/otp_backend:latest
+    pull_policy: always
+    container_name: backend
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/otp1-project
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/otp_project
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: root
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
       SERVER_ADDRESS: 0.0.0.0
       SERVER_PORT: 8081
-      SPRING_SESSION_JDBC_INITIALIZE_SCHEMA: always
-    depends_on:
-      - db
+    ports:
+      - "8081:8081"
     networks:
       - otp_network
-    restart: no
+    depends_on:
+      db:
+        condition: service_healthy
 
   frontend:
-    build: ./Frontend
-    container_name: otp_frontend
-    depends_on:
-      - backend
+    image: joniheikk/otp_frontend:latest
+    pull_policy: always
+    container_name: frontend
     environment:
       BACKEND_URL: http://backend:8081
     networks:
       - otp_network
-    restart: no
+    depends_on:
+      - backend
+
+volumes:
+  otp_db_data:
+
+networks:
+  otp_network:
+    driver: bridge
