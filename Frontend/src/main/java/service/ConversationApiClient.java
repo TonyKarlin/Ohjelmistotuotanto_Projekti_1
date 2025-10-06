@@ -44,15 +44,17 @@ public class ConversationApiClient implements ApiClient {
         return null;
     }
 
-    public void addUserToConversation(Conversation conversation, Contact Contact) throws IOException, InterruptedException {
-        String conversationUrl = baseUrl + "/" + conversation.getId() + "/participants/" + Contact.getContactUserId();
-        ApiResponse response = sendPutRequestWithoutObject(conversationUrl);
+    public boolean addUserToConversation(int conversationId, int contactId, String token) throws IOException, InterruptedException {
+        String conversationUrl = baseUrl + "/" + conversationId + "/participants/" + contactId;
+        ApiResponse response = sendPutRequestWithoutObject(conversationUrl, token);
         if (response.isSuccess()) {
             System.out.println("Response: " + response.body);
+            return true;
 
         } else {
             System.out.println("Failed to add user to conversation. Status: " + response.statusCode
                     + ", Response: " + response.body);
+            return false;
         }
     }
 

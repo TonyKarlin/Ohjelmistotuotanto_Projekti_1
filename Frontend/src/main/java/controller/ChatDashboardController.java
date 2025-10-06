@@ -217,7 +217,7 @@ public class ChatDashboardController implements ContactUpdateCallback {
         VBox conversationSettings = fxmlLoader.load();
         ConversationSettingsController controller= fxmlLoader.getController();
         controller.setController(this.loggedInUser, conversation, this,
-                conversationHBoxController);
+                conversationHBoxController, contacts);
 
         VBoxContentPane.getChildren().add(conversationSettings);
     }
@@ -226,11 +226,17 @@ public class ChatDashboardController implements ContactUpdateCallback {
     // Shows messages for a selected conversation
     public void showConversationMessages(Conversation conversation, Button conversationSettingsButton) throws IOException, InterruptedException {
         VBoxContentPane.getChildren().clear();
+        //If conversation is private don't show the conversation settings button
         if (activeConversation != null) {
             activeConversation.setVisible(false);
         }
-        activeConversation = conversationSettingsButton;
-        activeConversation.setVisible(true);
+        if (Objects.equals(conversation.getType(), "GROUP")) {
+            activeConversation = conversationSettingsButton;
+            activeConversation.setVisible(true);
+        } else {
+            activeConversation = null;
+            conversationSettingsButton.setVisible(false);
+        }
         List<Message> messages = messageApiClient.getConversationMessages(conversation, this.loggedInUser);
         if (messages != null && !messages.isEmpty()) {
             for (Message m : messages) {

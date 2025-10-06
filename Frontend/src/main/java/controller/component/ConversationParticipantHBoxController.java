@@ -14,6 +14,7 @@ import request.ConversationRequest;
 import service.ConversationApiClient;
 
 import java.io.IOException;
+import java.util.List;
 
 public class ConversationParticipantHBoxController {
 

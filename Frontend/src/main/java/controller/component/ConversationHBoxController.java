@@ -40,7 +40,7 @@ public class ConversationHBoxController {
     @FXML
     private Label conversationName;
     @FXML
-    private Button conversationsettingsButton;
+    private Button conversationSettingsButton;
     //endregion
 
 
@@ -66,7 +66,7 @@ public class ConversationHBoxController {
 
     @FXML
     public void openMessages() throws IOException, InterruptedException {
-        parentController.showConversationMessages(conversation, conversationsettingsButton);
+        parentController.showConversationMessages(conversation, conversationSettingsButton);
     }
 
 }

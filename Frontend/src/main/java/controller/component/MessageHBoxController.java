@@ -77,8 +77,7 @@ public class MessageHBoxController {
 
     @FXML
     private void showMenuOption() {
-        messageOptionButton.setVisible(true);
-
+        messageOptionButton.setVisible(message.getSenderId() == parentController.getLoggedInUser().getId());
     }
 
     @FXML
