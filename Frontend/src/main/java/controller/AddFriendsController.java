@@ -14,6 +14,7 @@ import model.User;
 import request.ContactRequest;
 import service.ContactApiClient;
 import service.UserApiClient;
+import utils.LanguageManager;
 import utils.UIAlert;
 
 public class AddFriendsController {
@@ -52,12 +53,12 @@ public class AddFriendsController {
         String username = searchFriendTextField.getText().trim();
 
         if (username.isEmpty()) {
-            alert.showErrorAlert("Field is empty", username);
+            alert.showErrorAlert(LanguageManager.getString("empty_field"), username);
             return;
         }
 
         if (loggedInuser.getUsername().equals(username)) {
-            alert.showErrorAlert("Can't add yourself", username);
+            alert.showErrorAlert(LanguageManager.getString("add_self"), username);
             return;
         }
 
@@ -77,38 +78,38 @@ public class AddFriendsController {
                 if ("PENDING".equals(foundContact.getStatus())) {
                     // If the current user sent the friend request
                     if (foundContact.getInitiatorId() == loggedInuser.getId()) {
-                        alert.showErrorAlert("Friend request already sent to: " + foundContact.getContactUsername(), username);
+                        alert.showErrorAlert(LanguageManager.getString("already_sent") + foundContact.getContactUsername(), username);
                         return;
 
                     } else {
                         // else accept the request
                         contactApiClient.acceptContact(new ContactRequest(loggedInuser.getId(), foundContact.getContactUserId(), loggedInuser.getToken()));
-                        alert.showSuccessAlert("Friend request from " + foundContact.getContactUsername() + " accepted!", username);
+                        alert.showSuccessAlert(LanguageManager.getString("request_from") + foundContact.getContactUsername() + LanguageManager.getString("accepted"), username);
                         // Lastly update contacts
                         updateContactsList(loggedInuser);
                         return;
                     }
                 }
-                alert.showErrorAlert("You're already friends with: " + foundContact.getContactUsername(), username);
+                alert.showErrorAlert(LanguageManager.getString("already_friends") + foundContact.getContactUsername(), username);
                 return;
 
             }
             // Otherwise check if the user exists
             User foundUser = userApiClient.getUserByUsername(username, loggedInuser.getToken());
             if (foundUser == null) {
-                alert.showErrorAlert("User not found", username);
+                alert.showErrorAlert(LanguageManager.getString("user_not_found"), username);
                 return;
             }
 
             // Send a friend request to the found user
             contactApiClient.addContact(new ContactRequest(loggedInuser.getId(), foundUser.getId(), loggedInuser.getToken()));
-            alert.showSuccessAlert("Friend request sent to: " + foundUser.getUsername(), username);
+            alert.showSuccessAlert(LanguageManager.getString("request_sent") + foundUser.getUsername(), username);
 
             // Lastly update contacts
             updateContactsList(loggedInuser);
 
         } catch (IOException | InterruptedException e) {
-            alert.showErrorAlert("Error sending friend request: " + e.getMessage(), username);
+            alert.showErrorAlert(LanguageManager.getString("error_sending") + e.getMessage(), username);
         }
     }
 

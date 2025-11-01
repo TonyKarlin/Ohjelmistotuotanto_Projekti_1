@@ -191,7 +191,8 @@ public class ChatDashboardController implements ContactUpdateCallback, LanguageC
         //Clears send message HBox in the bottom and main view
         contentBorderPane.setBottom(null);
         VBoxContentPane.getChildren().clear();
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/userProfileView.fxml"));
+        ResourceBundle bundle = ResourceBundle.getBundle("localization.LanguageBundle", LanguageManager.getCurrentLocale());
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/userProfileView.fxml"), bundle);
         VBox userProfile = fxmlLoader.load();
         UserProfileController controller = fxmlLoader.getController();
         //Pass user, userApiClient and this view controller instances to user profile view
@@ -203,7 +204,8 @@ public class ChatDashboardController implements ContactUpdateCallback, LanguageC
     // Opens the add friends view in a modal window
     @FXML
     public void openAddFriendsView() throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/addFriendsView.fxml"));
+        ResourceBundle bundle = ResourceBundle.getBundle("localization.LanguageBundle", LanguageManager.getCurrentLocale());
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/addFriendsView.fxml"), bundle);
         Parent root = fxmlLoader.load();
         AddFriendsController controller = fxmlLoader.getController();
         //Pass instances to the view
