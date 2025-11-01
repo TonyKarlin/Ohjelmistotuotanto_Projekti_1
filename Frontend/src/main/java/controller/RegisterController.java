@@ -1,8 +1,8 @@
 package controller;
 
-
 import java.io.IOException;
-
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -15,14 +15,16 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import model.User;
 import service.UserApiClient;
+import utils.LanguageManager;
 import utils.UIAlert;
 
 public class RegisterController {
 
     private UserApiClient userApiClient;
-    private UIAlert alert = new UIAlert();
+    private final UIAlert alert = new UIAlert();
 
-    public RegisterController() {}
+    public RegisterController() {
+    }
 
     //Controller to set instances. Is called when changing to this view.
     public void setController(UserApiClient userApiClient) {
@@ -49,11 +51,11 @@ public class RegisterController {
     private TextField usernameTextField;
     //endregion
 
-
     //To move back to login view
     @FXML
     void moveToLoginView() throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/loginView.fxml"));
+        ResourceBundle bundle = ResourceBundle.getBundle("localization.LanguageBundle", Locale.US);
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/loginView.fxml"), bundle);
         Parent root = fxmlLoader.load();
         LoginController controller = fxmlLoader.getController();
         // pass the userApiClient instance back to login view
@@ -83,16 +85,17 @@ public class RegisterController {
             User checkIfUserExist = userApiClient.registerUser(user);
             //If response is not user information but response message, user is null so send this alert message
             if (checkIfUserExist == null) {
-                alert.showErrorAlert("Existing User", "User already exists");
+                alert.showErrorAlert(LanguageManager.getString("register_user_exists_title"), LanguageManager.getString("register_user_exists"));
             } else {
                 // Registration successful, move to login view
                 try {
-                    alert.showSuccessAlert("Success", "User created successfully ✅");
+                    alert.showSuccessAlert(LanguageManager.getString("register_success_title"), LanguageManager.getString("register_success"));
                     moveToLoginView();
                 } catch (IOException e) {
-                    alert.showErrorAlert("Error", "Could not load login view.");
+                    alert.showErrorAlert(LanguageManager.getString("register_error_title"), LanguageManager.getString("register_error"));
                 }
             }
+
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -101,16 +104,16 @@ public class RegisterController {
     // Check the user inputs that hey are valid. Gets alert if something is wrong
     public boolean checkTextFields(String username, String email, String password) {
         if (username.isEmpty() || email.isEmpty() || password.isEmpty()) {
-            alert.showErrorAlert("Empty fields", "Please fill in all fields");
+            alert.showErrorAlert(LanguageManager.getString("register_empty_fields_title"), LanguageManager.getString("register_empty_fields"));
             return false;
         } else if (username.length() < 6) {
-            alert.showErrorAlert("Invalid Name", "Name should contain 6 or more characters.");
+            alert.showErrorAlert(LanguageManager.getString("register_invalid_name_title"), LanguageManager.getString("register_invalid_name"));
             return false;
         } else if (!email.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$")) {
-            alert.showErrorAlert("Invalid Email", "Please enter a valid email address.");
+            alert.showErrorAlert(LanguageManager.getString("register_invalid_email_title"), LanguageManager.getString("register_invalid_email"));
             return false;
         } else if (password.length() < 6) {
-            alert.showErrorAlert("Invalid password", "Password should contain 6 or more characters.");
+            alert.showErrorAlert(LanguageManager.getString("register_invalid_password_title"), LanguageManager.getString("register_invalid_password"));
         }
 
         return true;
@@ -119,7 +122,7 @@ public class RegisterController {
     //Check that the password user inputs match with each other
     public boolean checkPassword(String password, String repeatedPassword) {
         if (!password.equals(repeatedPassword)) {
-            alert.showErrorAlert("Error", "passwords don't match");
+            alert.showErrorAlert(LanguageManager.getString("password_missmatch_title"), LanguageManager.getString("password_missmatch"));
             return false;
         }
         return true;

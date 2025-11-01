@@ -2,7 +2,9 @@ package controller;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
+import java.util.ResourceBundle;
 
 import callback.ContactUpdateCallback;
 import controller.component.ContactHboxController;
@@ -15,7 +17,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -36,7 +40,7 @@ import service.ConversationApiClient;
 import service.MessageApiClient;
 import service.UserApiClient;
 import utils.ImageRounder;
-
+import utils.LanguageManager;
 
 public class ChatDashboardController implements ContactUpdateCallback {
 
@@ -62,7 +66,6 @@ public class ChatDashboardController implements ContactUpdateCallback {
         addConversations("PRIVATE");
         addFriendsToFriendsList();
     }
-
 
     //region FXML-injected UI components
     @FXML
@@ -121,16 +124,15 @@ public class ChatDashboardController implements ContactUpdateCallback {
         return this.conversations;
     }
 
-        // Sets user information in the UI
+    // Sets user information in the UI
     public void setUserInformation() {
         loggedInUsername.setText(loggedInUser.getUsername());
-        Image profilePicture= new Image(loggedInUser.getProfilePictureUrl());
+        Image profilePicture = new Image(loggedInUser.getProfilePictureUrl());
         userProfilePicture.setImage(profilePicture);
         imageRounder = new ImageRounder(userProfilePicture);
         userProfilePicture.setImage(profilePicture);
         userProfilePicture.setPreserveRatio(false);
     }
-
 
     // Retrieves all conversations for the user
     public List<Conversation> getUserConversations() throws IOException, InterruptedException {
@@ -177,9 +179,11 @@ public class ChatDashboardController implements ContactUpdateCallback {
     //Logout user and clears the instances
     @FXML
     public void logoutUser(ActionEvent event) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/loginView.fxml"));
+        ResourceBundle bundle = ResourceBundle.getBundle("localization.LanguageBundle", Locale.US);
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/loginView.fxml"), bundle);
         Parent root = fxmlLoader.load();
         Stage stage = new Stage();
+        stage.setTitle(LanguageManager.getString("title"));
         stage.setScene(new Scene(root));
         loggedInUser = null;
         conversations = null;
@@ -205,13 +209,14 @@ public class ChatDashboardController implements ContactUpdateCallback {
     public void addConversations(String groupType) throws IOException {
         conversationVBox.getChildren().clear();
         for (Conversation c : conversations) {
-            if(Objects.equals(c.getType(), groupType)) {
+            if (Objects.equals(c.getType(), groupType)) {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/component/conversationHBox.fxml"));
                 HBox userConversationHBox = loader.load();
                 ConversationHBoxController controller = loader.getController();
                 controller.setController(c, this, loggedInUser);
                 conversationVBox.getChildren().add(userConversationHBox);
-            }}
+            }
+        }
     }
 
     public void openConversationSettings(Conversation conversation, ConversationHBoxController conversationHBoxController) throws IOException {
@@ -219,13 +224,12 @@ public class ChatDashboardController implements ContactUpdateCallback {
         VBoxContentPane.getChildren().clear();
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/conversationSettingsView.fxml"));
         VBox conversationSettings = fxmlLoader.load();
-        ConversationSettingsController controller= fxmlLoader.getController();
+        ConversationSettingsController controller = fxmlLoader.getController();
         controller.setController(this.loggedInUser, conversation, this,
                 conversationHBoxController, contacts);
 
         VBoxContentPane.getChildren().add(conversationSettings);
     }
-
 
     // Shows messages for a selected conversation
     public void showConversationMessages(Conversation conversation, Button conversationSettingsButton) throws IOException, InterruptedException {
@@ -283,10 +287,9 @@ public class ChatDashboardController implements ContactUpdateCallback {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/component/sendMessageHBox.fxml"));
         HBox sendMessageHBox = fxmlLoader.load();
         SendMessageHBoxController controller = fxmlLoader.getController();
-        controller.setController(conversation, this.loggedInUser, this );
+        controller.setController(conversation, this.loggedInUser, this);
         contentBorderPane.setBottom(sendMessageHBox);
     }
-
 
     // Adds accepted friends to the friends list UI
     public void addFriendsToFriendsList() throws IOException {

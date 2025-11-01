@@ -11,6 +11,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import service.UserApiClient;
+import utils.LanguageManager;
 
 public class View extends Application {
 
@@ -23,13 +24,18 @@ public class View extends Application {
                 Platform.exit();
                 System.exit(0);
             });
-            stage.setTitle("ProChat");
+            // Set initial locale in LanguageManager
+            LanguageManager.setLocale("en", "US");
 
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/loginView.fxml"));
+            stage.setTitle(LanguageManager.getString("title"));
+
+            FXMLLoader fxmlLoader = new FXMLLoader(
+                    getClass().getResource("/view/loginView.fxml"),
+                    LanguageManager.getBundle()
+            );
             Parent root = fxmlLoader.load();
             LoginController controller = fxmlLoader.getController();
             controller.setController(userApiClient = new UserApiClient());
-            // root.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
             stage.setScene(new Scene(root));
             stage.show();
 
@@ -37,5 +43,4 @@ public class View extends Application {
             throw new RuntimeException(e);
         }
     }
-
 }
