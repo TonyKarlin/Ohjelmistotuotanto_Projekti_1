@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+import callback.LanguageChangeCallback;
+import controller.component.LanguageButtonController;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -22,7 +24,7 @@ import service.UserApiClient;
 import utils.LanguageManager;
 import utils.UIAlert;
 
-public class LoginController {
+public class LoginController implements LanguageChangeCallback {
 
     private UserApiClient userApiClient;
 
@@ -46,8 +48,52 @@ public class LoginController {
     private TextField userNameTextField;
 
     @FXML
+    private LanguageButtonController languageButtonController;
+
+    /**
+     * Called after FXML injection. Set up the language change callback.
+     */
+    @FXML
+    public void initialize() {
+        if (languageButtonController != null) {
+            languageButtonController.setLanguageChangeCallback(this);
+        }
+    }
+
+    /**
+     * Handles language change by reloading the current view
+     */
+    @Override
+    public void onLanguageChanged(Locale newLocale) {
+        try {
+            // Save the current input values
+            String currentUsername = userNameTextField.getText();
+            String currentPassword = passwordTextField.getText();
+
+            // Reload the view with the new language
+            ResourceBundle bundle = ResourceBundle.getBundle("localization.LanguageBundle", newLocale);
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/loginView.fxml"), bundle);
+            Parent root = fxmlLoader.load();
+
+            // Get the new controller and restore state
+            LoginController newController = fxmlLoader.getController();
+            newController.setController(this.userApiClient);
+            newController.userNameTextField.setText(currentUsername);
+            newController.passwordTextField.setText(currentPassword);
+
+            // Replace the scene
+            Stage stage = (Stage) loginButton.getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.setTitle(LanguageManager.getString("title"));
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.err.println("Failed to reload view with new language: " + e.getMessage());
+        }
+    }
+
+    @FXML
     public void moveToRegisterView(MouseEvent event) throws IOException {
-        ResourceBundle bundle = ResourceBundle.getBundle("localization.LanguageBundle", Locale.US);
+        ResourceBundle bundle = ResourceBundle.getBundle("localization.LanguageBundle", LanguageManager.getCurrentLocale());
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/registerView.fxml"), bundle);
         Parent root = fxmlLoader.load();
         RegisterController controller = fxmlLoader.getController();
@@ -83,7 +129,7 @@ public class LoginController {
     }
 
     public void moveToMainView(User user) throws IOException, InterruptedException {
-        ResourceBundle bundle = ResourceBundle.getBundle("localization.LanguageBundle", Locale.US);
+        ResourceBundle bundle = ResourceBundle.getBundle("localization.LanguageBundle", LanguageManager.getCurrentLocale());
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/chatDashboardView.fxml"), bundle);
         Parent root = fxmlLoader.load();
         ChatDashboardController controller = fxmlLoader.getController();

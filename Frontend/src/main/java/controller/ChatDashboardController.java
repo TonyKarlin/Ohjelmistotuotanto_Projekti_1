@@ -7,8 +7,10 @@ import java.util.Objects;
 import java.util.ResourceBundle;
 
 import callback.ContactUpdateCallback;
+import callback.LanguageChangeCallback;
 import controller.component.ContactHboxController;
 import controller.component.ConversationHBoxController;
+import controller.component.LanguageButtonController;
 import controller.component.MessageHBoxController;
 import controller.component.SendMessageHBoxController;
 import javafx.event.ActionEvent;
@@ -42,7 +44,7 @@ import service.UserApiClient;
 import utils.ImageRounder;
 import utils.LanguageManager;
 
-public class ChatDashboardController implements ContactUpdateCallback {
+public class ChatDashboardController implements ContactUpdateCallback, LanguageChangeCallback {
 
     User loggedInUser;
     UserApiClient userApiClient;
@@ -108,7 +110,46 @@ public class ChatDashboardController implements ContactUpdateCallback {
     private Button pendingButton;
     @FXML
     private Button friendButton;
+
+    @FXML
+    private LanguageButtonController languageButtonController;
     //endregion
+
+    /**
+     * Called after FXML injection. Set up the language change callback.
+     */
+    @FXML
+    public void initialize() {
+        if (languageButtonController != null) {
+            languageButtonController.setLanguageChangeCallback(this);
+        }
+    }
+
+    /**
+     * Handles language change by reloading the current view with user data
+     * preserved
+     */
+    @Override
+    public void onLanguageChanged(Locale newLocale) {
+        try {
+            // Reload the view with the new language
+            ResourceBundle bundle = ResourceBundle.getBundle("localization.LanguageBundle", newLocale);
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/chatDashboardView.fxml"), bundle);
+            Parent root = fxmlLoader.load();
+
+            // Get the new controller and restore state
+            ChatDashboardController newController = fxmlLoader.getController();
+            newController.setController(this.loggedInUser, this.userApiClient);
+
+            // Replace the scene
+            Stage stage = (Stage) loggedInUsername.getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.setTitle(LanguageManager.getString("title"));
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+            System.err.println("Failed to reload view with new language: " + e.getMessage());
+        }
+    }
 
     // Call this method in the child component when the user object needs to be updated
     public void setLoggedInUser(User loggedInUser) {
@@ -179,7 +220,7 @@ public class ChatDashboardController implements ContactUpdateCallback {
     //Logout user and clears the instances
     @FXML
     public void logoutUser(ActionEvent event) throws IOException {
-        ResourceBundle bundle = ResourceBundle.getBundle("localization.LanguageBundle", Locale.US);
+        ResourceBundle bundle = ResourceBundle.getBundle("localization.LanguageBundle", LanguageManager.getCurrentLocale());
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/loginView.fxml"), bundle);
         Parent root = fxmlLoader.load();
         Stage stage = new Stage();

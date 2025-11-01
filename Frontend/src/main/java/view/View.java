@@ -1,6 +1,7 @@
 package view;
 
 import java.io.IOException;
+import java.util.ResourceBundle;
 
 import controller.LoginController;
 import javafx.application.Application;
@@ -24,18 +25,15 @@ public class View extends Application {
                 Platform.exit();
                 System.exit(0);
             });
-            // Set initial locale in LanguageManager
-            LanguageManager.setLocale("en", "US");
 
-            stage.setTitle(LanguageManager.getString("title"));
+            // Load resource bundle for localization
+            ResourceBundle bundle = ResourceBundle.getBundle("localization.LanguageBundle", LanguageManager.getCurrentLocale());
 
-            FXMLLoader fxmlLoader = new FXMLLoader(
-                    getClass().getResource("/view/loginView.fxml"),
-                    LanguageManager.getBundle()
-            );
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/loginView.fxml"), bundle);
             Parent root = fxmlLoader.load();
             LoginController controller = fxmlLoader.getController();
             controller.setController(userApiClient = new UserApiClient());
+            stage.setTitle(LanguageManager.getString("title"));
             stage.setScene(new Scene(root));
             stage.show();
 
