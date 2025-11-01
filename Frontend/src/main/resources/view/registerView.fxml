@@ -6,16 +6,29 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
+<?import java.util.*?>
 
 <StackPane prefHeight="700.0" prefWidth="700.0" styleClass="parent" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.RegisterController">
    <children>
+      <BorderPane prefHeight="200.0" prefWidth="200.0">
+         <top>
+            
+            <!-- Language Selector in top-right corner -->
+            <fx:include fx:id="languageButton" source="../component/languageButton.fxml" StackPane.alignment="TOP_RIGHT">
+               <StackPane.margin>
+                  <Insets right="10.0" top="10.0" />
+               </StackPane.margin>
+            </fx:include>
+         </top>
+      </BorderPane>
       <VBox alignment="CENTER" maxHeight="400.0" maxWidth="400.0" styleClass="VBox">
          <children>
-            <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="30.0" prefWidth="316.0" text="Create a user" textFill="#d3d3d3">
+            <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="30.0" prefWidth="316.0" text="%create" textFill="#d3d3d3">
                <font>
                   <Font name="System Bold" size="20.0" />
                </font>
@@ -31,7 +44,7 @@
                   <Insets />
                </VBox.margin>
             </HBox>
-            <Label layoutX="128.0" layoutY="311.0" prefHeight="21.0" prefWidth="395.0" text="USERNAME " textFill="#c3c3c3">
+            <Label layoutX="128.0" layoutY="311.0" prefHeight="21.0" prefWidth="395.0" text="%username" textFill="#c3c3c3">
                <font>
                   <Font name="System Bold Italic" size="13.0" />
                </font>
@@ -47,7 +60,7 @@
                   <Insets bottom="10.0" left="50.0" right="50.0" />
                </VBox.margin>
             </TextField>
-            <Label maxWidth="1.7976931348623157E308" text="EMAIL" textFill="#c3c3c3">
+            <Label maxWidth="1.7976931348623157E308" text="%email" textFill="#c3c3c3">
                <font>
                   <Font name="System Bold Italic" size="13.0" />
                </font>
@@ -63,7 +76,7 @@
                   <Insets bottom="10.0" left="50.0" right="50.0" />
                </VBox.margin>
             </TextField>
-            <Label layoutX="128.0" layoutY="311.0" maxWidth="1.7976931348623157E308" text="PASSWORD" textFill="#c3c3c3">
+            <Label layoutX="128.0" layoutY="311.0" maxWidth="1.7976931348623157E308" text="%password" textFill="#c3c3c3">
                <font>
                   <Font name="System Bold Italic" size="13.0" />
                </font>
@@ -79,7 +92,7 @@
                   <Insets bottom="10.0" left="50.0" right="50.0" />
                </VBox.margin>
             </PasswordField>
-            <Label layoutX="128.0" layoutY="311.0" maxWidth="1.7976931348623157E308" text="PASSWORD AGAIN" textFill="#c3c3c3">
+            <Label layoutX="128.0" layoutY="311.0" maxWidth="1.7976931348623157E308" text="%password_again" textFill="#c3c3c3">
                <font>
                   <Font name="System Bold Italic" size="13.0" />
                </font>
@@ -105,7 +118,7 @@
                         <Insets right="10.0" />
                      </HBox.margin>
                   </CheckBox>
-                  <Label prefHeight="19.0" prefWidth="199.0" text="I have read and agree to ProChat's " textFill="#c3c3c3">
+                  <Label prefHeight="19.0" prefWidth="199.0" text="%terms_of_service" textFill="#c3c3c3">
                      <font>
                         <Font size="13.0" />
                      </font>
@@ -119,12 +132,12 @@
             </HBox>
             <HBox alignment="CENTER" layoutX="80.0" layoutY="585.0" maxWidth="405.0" prefHeight="24.0" prefWidth="405.0">
                <children>
-                  <Label prefHeight="19.0" prefWidth="26.0" text="and" textFill="#c3c3c3">
+                  <Label prefHeight="19.0" prefWidth="26.0" text="%and" textFill="#c3c3c3">
                      <font>
                         <Font size="13.0" />
                      </font>
                   </Label>
-                  <Label text="Pririvacy Policy" textFill="#705eff">
+                  <Label text="%privacy_label" textFill="#705eff">
                      <font>
                         <Font size="13.0" />
                      </font>
@@ -134,7 +147,7 @@
                   <Insets />
                </VBox.margin>
             </HBox>
-            <Button fx:id="registerButton" alignment="CENTER" contentDisplay="CENTER" onAction="#registerUser" prefWidth="180.0" text="Register Now" textAlignment="CENTER" textFill="#ebebeb">
+            <Button fx:id="registerButton" alignment="CENTER" contentDisplay="CENTER" onAction="#registerUser" prefWidth="180.0" text="%register" textAlignment="CENTER" textFill="#ebebeb">
                <font>
                   <Font name="System Bold" size="15.0" />
                </font>
@@ -144,7 +157,7 @@
             </Button>
             <HBox alignment="CENTER" prefHeight="47.0" prefWidth="496.0">
                <children>
-                  <Label text="Allready a user?" textFill="#c9c9c9">
+                  <Label text="%already_user" textFill="#c9c9c9">
                      <font>
                         <Font size="16.0" />
                      </font>
@@ -152,7 +165,7 @@
                         <Insets left="10.0" />
                      </HBox.margin>
                   </Label>
-                  <Label fx:id="loginLabel" onMouseClicked="#moveToLoginView" onMousePressed="#moveToLoginView" styleClass="clickable-label" text="Login" textFill="#6365dc">
+                  <Label fx:id="loginLabel" onMouseClicked="#moveToLoginView" onMousePressed="#moveToLoginView" styleClass="clickable-label" text="%login" textFill="#6365dc">
                      <HBox.margin>
                         <Insets left="5.0" right="10.0" />
                      </HBox.margin>
