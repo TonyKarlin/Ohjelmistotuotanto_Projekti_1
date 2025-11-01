@@ -11,41 +11,56 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-<?import java.util.*?>
 
 <BorderPane prefHeight="674.0" prefWidth="982.0" styleClass="parent" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ChatDashboardController">
    <top>
-      <BorderPane BorderPane.alignment="CENTER">
-         <BorderPane.margin>
-            <Insets />
-         </BorderPane.margin>
-         <right>
-            <Button fx:id="logoutButton" alignment="CENTER" contentDisplay="RIGHT" mnemonicParsing="false" onAction="#logoutUser" text="%logout" textAlignment="CENTER" textFill="WHITE" BorderPane.alignment="CENTER_RIGHT">
-               <font>
-                  <Font name="System Bold" size="14.0" />
-               </font>
-               <BorderPane.margin>
-                  <Insets right="85.0" />
-               </BorderPane.margin>
-            </Button>
-         </right>
-         <center>
-            <Label alignment="CENTER" contentDisplay="CENTER" text="%title" textFill="#c3c3c3" BorderPane.alignment="CENTER">
-               <font>
-                  <Font name="Bauhaus 93" size="46.0" />
-               </font>
+      <VBox>
+         <children>
+            <!-- Language Selector in top-right corner -->
+            <BorderPane />
+
+            <!-- Existing top bar with title and logout button -->
+            <BorderPane BorderPane.alignment="CENTER">
                <BorderPane.margin>
                   <Insets />
                </BorderPane.margin>
-            </Label>
-         </center>
-         <left>
-            <Region BorderPane.alignment="CENTER">
-               <BorderPane.margin>
-                  <Insets bottom="75.0" left="85.0" />
-               </BorderPane.margin></Region>
-         </left>
-      </BorderPane>
+               <right>
+                  <Button fx:id="logoutButton" alignment="CENTER" contentDisplay="RIGHT" mnemonicParsing="false" onAction="#logoutUser" text="%logout" textAlignment="CENTER" textFill="WHITE" BorderPane.alignment="CENTER_RIGHT">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                     <BorderPane.margin>
+                        <Insets right="85.0" />
+                     </BorderPane.margin>
+                  </Button>
+               </right>
+               <center>
+                  <Label alignment="CENTER" contentDisplay="CENTER" text="%title" textFill="#c3c3c3" BorderPane.alignment="CENTER">
+                     <font>
+                        <Font name="Bauhaus 93" size="46.0" />
+                     </font>
+                     <BorderPane.margin>
+                        <Insets />
+                     </BorderPane.margin>
+                  </Label>
+               </center>
+               <left>
+                  <Region BorderPane.alignment="CENTER">
+                     <BorderPane.margin>
+                        <Insets bottom="75.0" left="85.0" />
+                     </BorderPane.margin>
+                  </Region>
+               </left>
+               <top>
+                  <fx:include fx:id="languageButton" source="../component/languageButton.fxml">
+                     <BorderPane.margin>
+                        <Insets right="10.0" top="10.0" />
+                     </BorderPane.margin>
+                  </fx:include>
+               </top>
+            </BorderPane>
+         </children>
+      </VBox>
    </top>
    <center>
       <BorderPane fx:id="contentBorderPane" styleClass="VBox" BorderPane.alignment="CENTER">
