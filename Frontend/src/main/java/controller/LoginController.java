@@ -83,7 +83,8 @@ public class LoginController {
     }
 
     public void moveToMainView(User user) throws IOException, InterruptedException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/chatDashboardView.fxml"));
+        ResourceBundle bundle = ResourceBundle.getBundle("localization.LanguageBundle", Locale.US);
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/chatDashboardView.fxml"), bundle);
         Parent root = fxmlLoader.load();
         ChatDashboardController controller = fxmlLoader.getController();
         Stage stage = new Stage();

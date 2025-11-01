@@ -11,6 +11,7 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
+<?import java.util.*?>
 
 <BorderPane prefHeight="674.0" prefWidth="982.0" styleClass="parent" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ChatDashboardController">
    <top>
@@ -19,7 +20,7 @@
             <Insets />
          </BorderPane.margin>
          <right>
-            <Button fx:id="logoutButton" alignment="CENTER" contentDisplay="RIGHT" mnemonicParsing="false" onAction="#logoutUser" text="Log out" textAlignment="CENTER" textFill="WHITE" BorderPane.alignment="CENTER_RIGHT">
+            <Button fx:id="logoutButton" alignment="CENTER" contentDisplay="RIGHT" mnemonicParsing="false" onAction="#logoutUser" text="%logout" textAlignment="CENTER" textFill="WHITE" BorderPane.alignment="CENTER_RIGHT">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
@@ -29,7 +30,7 @@
             </Button>
          </right>
          <center>
-            <Label alignment="CENTER" contentDisplay="CENTER" text="ProChat" textFill="#c3c3c3" BorderPane.alignment="CENTER">
+            <Label alignment="CENTER" contentDisplay="CENTER" text="%title" textFill="#c3c3c3" BorderPane.alignment="CENTER">
                <font>
                   <Font name="Bauhaus 93" size="46.0" />
                </font>
@@ -75,7 +76,7 @@
                      <HBox.margin>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                      </HBox.margin></ImageView>
-                  <Label fx:id="loggedInUsername" alignment="TOP_LEFT" contentDisplay="CENTER" prefHeight="57.0" prefWidth="131.0" text="Username" textFill="#c3c3c3">
+                  <Label fx:id="loggedInUsername" alignment="TOP_LEFT" contentDisplay="CENTER" prefHeight="57.0" prefWidth="131.0" text="%username" textFill="#c3c3c3">
                      <font>
                         <Font name="System Bold" size="17.0" />
                      </font>
@@ -93,7 +94,7 @@
                   <Insets bottom="10.0" />
                </VBox.margin>
                <children>
-                  <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="42.0" prefWidth="154.0" text="Conversations" textFill="#c3c3c3">
+                  <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="42.0" prefWidth="154.0" text="%conversations" textFill="#c3c3c3">
                      <font>
                         <Font name="System Bold" size="21.0" />
                      </font>
@@ -103,12 +104,12 @@
                   </Label>
                   <HBox alignment="CENTER" spacing="20.0">
                      <children>
-                        <Button fx:id="privateConversationsButton" mnemonicParsing="false" onAction="#openPrivateConversations" text="Private" textFill="WHITE">
+                        <Button fx:id="privateConversationsButton" mnemonicParsing="false" onAction="#openPrivateConversations" text="%private" textFill="WHITE">
                            <font>
                               <Font name="System Bold" size="13.0" />
                            </font>
                         </Button>
-                        <Button fx:id="groupConversationsButton" layoutX="79.0" layoutY="10.0" mnemonicParsing="false" onAction="#openGroupConversations" text="Group" textFill="WHITE">
+                        <Button fx:id="groupConversationsButton" layoutX="79.0" layoutY="10.0" mnemonicParsing="false" onAction="#openGroupConversations" text="%group" textFill="WHITE">
                            <font>
                               <Font name="System Bold" size="13.0" />
                            </font>
@@ -138,7 +139,7 @@
                   <Insets bottom="10.0" />
                </VBox.margin>
                <children>
-                  <Button fx:id="addFriendsButton" mnemonicParsing="false" onAction="#openAddFriendsView" prefWidth="70.0" text="Add Friends" textAlignment="CENTER" textFill="#fffafa" wrapText="true">
+                  <Button fx:id="addFriendsButton" mnemonicParsing="false" onAction="#openAddFriendsView" prefWidth="70.0" text="%add_friends" textAlignment="CENTER" textFill="#fffafa" wrapText="true">
                      <font>
                         <Font name="System Bold" size="12.0" />
                      </font>
@@ -146,7 +147,7 @@
                         <Insets bottom="10.0" top="10.0" />
                      </HBox.margin>
                   </Button>
-                  <Button fx:id="createGroupButton" layoutX="13.0" layoutY="13.0" mnemonicParsing="false" onAction="#openCreateGroupView" prefWidth="70.0" text="Create a Group" textAlignment="CENTER" textFill="WHITE" wrapText="true">
+                  <Button fx:id="createGroupButton" layoutX="13.0" layoutY="13.0" mnemonicParsing="false" onAction="#openCreateGroupView" prefWidth="70.0" text="%create_group" textAlignment="CENTER" textFill="WHITE" wrapText="true">
                      <font>
                         <Font name="System Bold" size="12.0" />
                      </font>
@@ -165,7 +166,7 @@
    <right>
       <VBox alignment="TOP_CENTER" maxWidth="500.0" prefWidth="225.0" styleClass="VBox" BorderPane.alignment="CENTER">
          <children>
-            <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="31.0" prefWidth="227.0" text="Friends" textFill="#c3c3c3" VBox.vgrow="ALWAYS">
+            <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="31.0" prefWidth="227.0" text="%friends" textFill="#c3c3c3" VBox.vgrow="ALWAYS">
                <font>
                   <Font name="System Bold" size="21.0" />
                </font>
@@ -175,17 +176,17 @@
             </Label>
             <HBox alignment="CENTER" spacing="10.0">
                <children>
-                  <Button fx:id="friendButton" mnemonicParsing="false" onAction="#openFriendList" prefWidth="80.0" text="Friends" textAlignment="CENTER" textFill="WHITE">
+                  <Button fx:id="friendButton" mnemonicParsing="false" onAction="#openFriendList" prefWidth="80.0" text="%friends" textAlignment="CENTER" textFill="WHITE">
                      <font>
                         <Font name="System Bold" size="11.0" />
                      </font>
                   </Button>
-                  <Button fx:id="pendingButton" layoutX="79.0" layoutY="10.0" mnemonicParsing="false" onAction="#openPendingList" prefWidth="80.0" text="Pending" textAlignment="CENTER" textFill="WHITE">
+                  <Button fx:id="pendingButton" layoutX="79.0" layoutY="10.0" mnemonicParsing="false" onAction="#openPendingList" prefWidth="80.0" text="%pending" textAlignment="CENTER" textFill="WHITE">
                      <font>
                         <Font name="System Bold" size="11.0" />
                      </font>
                   </Button>
-                  <Button fx:id="sentButton" layoutX="43.0" layoutY="10.0" mnemonicParsing="false" onAction="#openSentList" prefWidth="80.0" text="Sent" textAlignment="CENTER" textFill="WHITE">
+                  <Button fx:id="sentButton" layoutX="43.0" layoutY="10.0" mnemonicParsing="false" onAction="#openSentList" prefWidth="80.0" text="%sent" textAlignment="CENTER" textFill="WHITE">
                      <font>
                         <Font name="System Bold" size="11.0" />
                      </font>
