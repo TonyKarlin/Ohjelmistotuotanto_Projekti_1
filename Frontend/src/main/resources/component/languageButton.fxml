@@ -4,14 +4,15 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.HBox?>
+<?import java.util.*?>
 
-<HBox alignment="CENTER_LEFT" spacing="10.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<HBox alignment="CENTER_LEFT" spacing="10.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.component.LanguageButtonController">
     <padding>
         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
     </padding>
     
-    <Label text="Language:" />
+    <Label text="%language" />
     
-    <ComboBox fx:id="languageComboBox" prefWidth="150.0" promptText="Select Language">
+    <ComboBox fx:id="languageComboBox" prefWidth="150.0" promptText="%select_lang">
     </ComboBox>
 </HBox>
