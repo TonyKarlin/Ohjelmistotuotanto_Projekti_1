@@ -1,12 +1,21 @@
 package controller;
 
+import java.io.IOException;
+import java.util.List;
+import java.util.ResourceBundle;
+
 import controller.component.ContactHboxController;
 import controller.component.ConversationHBoxController;
 import controller.component.ConversationParticipantHBoxController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
+import javafx.scene.control.MenuButton;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import model.Contact;
 import model.Conversation;
@@ -14,14 +23,11 @@ import model.ConversationParticipant;
 import model.User;
 import request.ConversationRequest;
 import service.ConversationApiClient;
-import utils.ImageRounder;
+import utils.LanguageManager;
 import utils.UIAlert;
 
-import java.io.IOException;
-import java.util.List;
-import java.util.Objects;
-
 public class ConversationSettingsController {
+
     ConversationRequest conversationRequest;
     ConversationApiClient conversationApiClient = new ConversationApiClient();
     User loggedInuser;
@@ -32,10 +38,9 @@ public class ConversationSettingsController {
     List<Contact> contacts;
     UIAlert alert = new UIAlert();
 
-
     public void setController(User loggedInuser, Conversation conversation,
-                              ChatDashboardController parentController,
-                              ConversationHBoxController conversationHBoxController, List<Contact> contacts) throws IOException {
+            ChatDashboardController parentController,
+            ConversationHBoxController conversationHBoxController, List<Contact> contacts) throws IOException {
 
         this.loggedInuser = loggedInuser;
         this.conversation = conversation;
@@ -46,7 +51,6 @@ public class ConversationSettingsController {
         showParticipantsInAGroup();
         setConversationName(conversation.getName());
     }
-
 
     //region
     @FXML
@@ -74,7 +78,6 @@ public class ConversationSettingsController {
     public void setConversationName(String name) {
         conversationNameLabel.setText(name);
     }
-
 
     @FXML
     void changeConversationName(ActionEvent event) throws IOException, InterruptedException {
@@ -110,8 +113,12 @@ public class ConversationSettingsController {
     public void showParticipantsInAGroup() throws IOException {
         conversationParticipantList.getItems().clear();
         for (ConversationParticipant p : conversation.getParticipants()) {
-            if (p.getUserId() == loggedInuser.getId()) continue; // skip yourself
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/component/conversationParticipantHBox.fxml"));
+            if (p.getUserId() == loggedInuser.getId()) {
+                continue; // skip yourself
+
+                        }FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/component/conversationParticipantHBox.fxml"));
+            ResourceBundle bundle = ResourceBundle.getBundle("localization.LanguageBundle", LanguageManager.getCurrentLocale());
+            fxmlLoader.setResources(bundle);
             HBox participantHBox = fxmlLoader.load();
             ConversationParticipantHBoxController controller = fxmlLoader.getController();
             controller.setController(p, conversation, loggedInuser, participantHBox, conversationParticipantList);
@@ -123,13 +130,19 @@ public class ConversationSettingsController {
     public void showFriendsToAdd() throws IOException {
         conversationParticipantList.getItems().clear();
         for (Contact c : contacts) {
-            if (c.getContactUserId() == loggedInuser.getId()) continue;
+            if (c.getContactUserId() == loggedInuser.getId()) {
+                continue;
+            }
 
             boolean isInConversation = conversation.getParticipants().stream()
                     .anyMatch(p -> p.getUserId() == c.getContactUserId());
-            if (isInConversation) continue;
+            if (isInConversation) {
+                continue;
+            }
 
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/component/contactHBox.fxml"));
+            ResourceBundle bundle = ResourceBundle.getBundle("localization.LanguageBundle", LanguageManager.getCurrentLocale());
+            fxmlLoader.setResources(bundle);
             HBox contactHBox = fxmlLoader.load();
             ContactHboxController controller = fxmlLoader.getController();
             controller.setController(c, parentController);
@@ -152,14 +165,10 @@ public class ConversationSettingsController {
         }
     }
 
-
     public void checkOwnerPermissions() {
         boolean isOwner = conversation.getParticipants().stream()
                 .anyMatch(p -> p.getUserId() == loggedInuser.getId() && "OWNER".equals(p.getRole()));
         deleteMenuItem.setVisible(isOwner);
     }
 
-
 }
-
-

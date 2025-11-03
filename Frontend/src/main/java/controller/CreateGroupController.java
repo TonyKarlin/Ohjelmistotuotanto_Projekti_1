@@ -1,5 +1,10 @@
 package controller;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.ResourceBundle;
+
 import controller.component.ContactHboxController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -13,10 +18,7 @@ import model.Conversation;
 import model.User;
 import request.ConversationRequest;
 import service.ConversationApiClient;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import utils.LanguageManager;
 
 public class CreateGroupController {
 
@@ -26,7 +28,6 @@ public class CreateGroupController {
     private ConversationRequest request;
     private User loggedInUser;
     private ChatDashboardController parentController;
-
 
     public void setController(List<Contact> contacts, User loggedInUser, ChatDashboardController parentController) throws IOException {
         this.contacts = contacts;
@@ -56,10 +57,11 @@ public class CreateGroupController {
         }
     }
 
-
     public void addContactsToList() throws IOException {
         for (Contact c : contacts) {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/component/contactHBox.fxml"));
+            ResourceBundle bundle = ResourceBundle.getBundle("localization.LanguageBundle", LanguageManager.getCurrentLocale());
+            loader.setResources(bundle);
             HBox contactHBox = loader.load();
             ContactHboxController controller = loader.getController();
             controller.setControllerForCreateGroup(this, c);
