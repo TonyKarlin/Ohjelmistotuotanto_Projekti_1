@@ -10,6 +10,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
+<?import java.util.*?>
 
 <HBox alignment="CENTER" fillHeight="false" prefWidth="100.0" styleClass="ContactView" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.component.ConversationHBoxController">
    <children>
@@ -35,7 +36,7 @@
       </StackPane>
       <AnchorPane>
          <children>
-            <Label fx:id="conversationName" contentDisplay="CENTER" prefHeight="23.0" prefWidth="133.0" text="Name" textAlignment="CENTER" textFill="#c3c3c3">
+            <Label fx:id="conversationName" contentDisplay="CENTER" prefHeight="23.0" prefWidth="133.0" text="%name" textAlignment="CENTER" textFill="#c3c3c3">
                <font>
                   <Font name="System Bold" size="17.0" />
                </font>

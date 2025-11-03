@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
-
+<?import java.util.*?>
 
 <HBox alignment="CENTER_LEFT" fillHeight="false" prefHeight="30.0" prefWidth="380.0" styleClass="conversationParticipantHBox" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.component.ConversationParticipantHBoxController">
    <children>
@@ -34,7 +34,7 @@
             <Insets />
          </HBox.margin>
       </StackPane>
-      <Label fx:id="participantUsername" prefHeight="64.0" prefWidth="65.0" text="Name" textAlignment="CENTER" textFill="#c3c3c3">
+      <Label fx:id="participantUsername" prefHeight="64.0" prefWidth="65.0" text="%name" textAlignment="CENTER" textFill="#c3c3c3">
          <font>
             <Font name="System Bold" size="17.0" />
          </font>
@@ -42,6 +42,6 @@
             <Insets top="5.0" />
          </padding>
       </Label>
-      <Button fx:id="Remove" mnemonicParsing="false" onAction="#removeParticipantFromConversation" text="Remove" />
+      <Button fx:id="Remove" mnemonicParsing="false" onAction="#removeParticipantFromConversation" text="%remove" />
    </children>
 </HBox>

@@ -10,6 +10,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
+<?import java.util.*?>
 
 <HBox alignment="CENTER" fillHeight="false" onMouseClicked="#openContactProfile" prefHeight="0.0" prefWidth="212.0" styleClass="ContactView" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.component.ContactHboxController">
    <children>
@@ -25,7 +26,7 @@
       </AnchorPane>
       <VBox>
          <children>
-            <Label fx:id="contactUsername" alignment="TOP_LEFT" contentDisplay="CENTER" prefHeight="31.0" prefWidth="205.0" text="Username" textFill="#c3c3c3">
+            <Label fx:id="contactUsername" alignment="TOP_LEFT" contentDisplay="CENTER" prefHeight="31.0" prefWidth="205.0" text="%username" textFill="#c3c3c3">
                <font>
                   <Font name="System Bold" size="17.0" />
                </font>
@@ -35,7 +36,7 @@
             </Label>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <Button fx:id="addButton" mnemonicParsing="false" onAction="#addToConversation" text="Add" textFill="#fcfcfc" visible="false">
+                  <Button fx:id="addButton" mnemonicParsing="false" onAction="#addToConversation" text="%add" textFill="#fcfcfc" visible="false">
                      <font>
                         <Font name="System Bold" size="12.0" />
                      </font>

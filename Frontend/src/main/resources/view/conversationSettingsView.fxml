@@ -12,13 +12,14 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
+<?import java.util.*?>
 
 <VBox alignment="CENTER" maxWidth="400.0" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ConversationSettingsController">
    <children>
       <MenuButton fx:id="optionButton" mnemonicParsing="false">
         <items>
-          <MenuItem fx:id="leaveMenuItem" mnemonicParsing="false" onAction="#leaveFromConversation" text="Leave" />
-          <MenuItem fx:id="deleteMenuItem" mnemonicParsing="false" onAction="#deleteConversation" text="Delete" visible="false" />
+          <MenuItem fx:id="leaveMenuItem" mnemonicParsing="false" onAction="#leaveFromConversation" text="%leave" />
+          <MenuItem fx:id="deleteMenuItem" mnemonicParsing="false" onAction="#deleteConversation" text="%delete" visible="false" />
         </items>
          <graphic>
             <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
@@ -31,14 +32,14 @@
             <Insets left="300.0" top="10.0" />
          </VBox.margin>
       </MenuButton>
-      <Label fx:id="conversationNameLabel" contentDisplay="CENTER" text="Conversation name" textFill="#c9c9c9">
+      <Label fx:id="conversationNameLabel" contentDisplay="CENTER" text="%conversation_name" textFill="#c9c9c9">
          <VBox.margin>
             <Insets bottom="20.0" left="50.0" right="50.0" />
          </VBox.margin>
          <font>
             <Font name="System Bold" size="16.0" />
          </font></Label>
-      <Label maxWidth="1.7976931348623157E308" text="Give conversation a name" textFill="#c9c9c9">
+      <Label maxWidth="1.7976931348623157E308" text="%give_conversation_name" textFill="#c9c9c9">
          <VBox.margin>
             <Insets bottom="10.0" left="50.0" right="50.0" />
          </VBox.margin>
@@ -49,7 +50,7 @@
          <VBox.margin>
             <Insets left="50.0" right="50.0" />
          </VBox.margin></TextField>
-      <Button fx:id="ChangeNameButton" mnemonicParsing="false" onAction="#changeConversationName" text="Change" textFill="WHITE">
+      <Button fx:id="ChangeNameButton" mnemonicParsing="false" onAction="#changeConversationName" text="%change" textFill="WHITE">
          <VBox.margin>
             <Insets bottom="20.0" left="100.0" right="100.0" top="10.0" />
          </VBox.margin>
@@ -58,12 +59,12 @@
          </font></Button>
       <HBox alignment="CENTER" spacing="20.0">
          <children>
-            <Button fx:id="showParticipantButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#showParticipantsInAGroup" text="Group" textFill="WHITE">
+            <Button fx:id="showParticipantButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#showParticipantsInAGroup" text="%group" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="13.0" />
                </font>
             </Button>
-            <Button fx:id="addFriendButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#showFriendsToAdd" text="Add" textFill="WHITE">
+            <Button fx:id="addFriendButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#showFriendsToAdd" text="%add" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="13.0" />
                </font>

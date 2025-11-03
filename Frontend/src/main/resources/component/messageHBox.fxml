@@ -12,6 +12,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
+<?import java.util.*?>
 
 <HBox fx:id="rootHbox" alignment="CENTER" fillHeight="false" onMouseEntered="#showMenuOption" onMouseExited="#hideMenuOption" styleClass="messageHBox" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.component.MessageHBoxController">
    <children>
@@ -28,7 +29,7 @@
          <children>
             <HBox prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <Label fx:id="senderUsernameLabel" prefHeight="30.0" prefWidth="112.0" text="Username" textFill="WHITE">
+                  <Label fx:id="senderUsernameLabel" prefHeight="30.0" prefWidth="112.0" text="%username" textFill="WHITE">
                      <font>
                         <Font name="System Bold" size="16.0" />
                      </font>
@@ -42,7 +43,8 @@
                <VBox.margin>
                   <Insets left="10.0" />
                </VBox.margin>
-            </HBox>
+            </HBox> 
+                                                                                    <!-- Mikä tää on xdd -->
             <Label fx:id="messageLabel" prefHeight="28.0" prefWidth="396.0" text="No moro Pekka! Miten meneeee?!" textFill="WHITE">
                <font>
                   <Font size="16.0" />
@@ -55,11 +57,11 @@
       </VBox>
       <MenuButton fx:id="messageOptionButton" mnemonicParsing="false" popupSide="LEFT" prefHeight="24.0" prefWidth="41.0" visible="false">
          <items>
-            <MenuItem fx:id="deleteMenuitem" mnemonicParsing="false" onAction="#deleteMessage" text="Delete" />
-            <MenuItem fx:id="modifyMenuItem" mnemonicParsing="false" onAction="#modifyMessage" text="Modify" />
+            <MenuItem fx:id="deleteMenuitem" mnemonicParsing="false" onAction="#deleteMessage" text="%delete" />
+            <MenuItem fx:id="modifyMenuItem" mnemonicParsing="false" onAction="#modifyMessage" text="%modify" />
             <CustomMenuItem hideOnClick="false">
                <content>
-                  <TextField fx:id="editTextField" promptText="Edit message..." />
+                  <TextField fx:id="editTextField" promptText="%edit_text" />
                </content>
             </CustomMenuItem>
          </items>

@@ -7,11 +7,11 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-
+<?import java.util.*?>
 
 <VBox fx:id="createGroupVBox" alignment="CENTER" maxWidth="400.0" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.CreateGroupController">
    <children>
-      <Label contentDisplay="CENTER" text="Create a Group" textFill="#c9c9c9">
+      <Label contentDisplay="CENTER" text="%create_group" textFill="#c9c9c9">
          <VBox.margin>
             <Insets bottom="20.0" left="50.0" right="50.0" />
          </VBox.margin>
@@ -19,7 +19,7 @@
             <Font name="System Bold" size="16.0" />
          </font>
       </Label>
-      <Label maxWidth="1.7976931348623157E308" text="Give conversation a name" textFill="#c9c9c9">
+      <Label maxWidth="1.7976931348623157E308" text="%give_conversation_name" textFill="#c9c9c9">
          <VBox.margin>
             <Insets bottom="10.0" left="50.0" right="50.0" />
          </VBox.margin>
@@ -32,7 +32,7 @@
             <Insets left="50.0" right="50.0" />
          </VBox.margin>
       </TextField>
-      <Button fx:id="CreateButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#createConversation" text="Create" textFill="WHITE">
+      <Button fx:id="CreateButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#createConversation" text="%create_button" textFill="WHITE">
          <font>
             <Font name="System Bold" size="13.0" />
          </font>
