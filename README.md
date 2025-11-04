@@ -1,4 +1,4 @@
-# Ohjelmistotuotantoprojekti
+<img width="691" height="168" alt="image" src="https://github.com/user-attachments/assets/6beabebe-eff7-4c87-adee-deee163039b4" /># Ohjelmistotuotantoprojekti
 
 ```contributors
 Tony Karlin, Onni Kivinen, Joni Heikkilä, Jarkko Kärki
@@ -99,6 +99,13 @@ Frontend/
             LanguageBundle_sv_SE.properties
 ```
 Each `.properties` file contains translated key-value pairs.
+
+#### Localization Resources
+
+- **Translators:** Initial translations for Finnish, Russian, Swedish, and Japanese were created using **AI tools**.
+- **Localization Tools:** Translations were handled manually during Sprint 5 using `.properties` files in the `Frontend/src/main/resources/localization/` directory.
+- **Encoding:** All localization files use **UTF-8** encoding to ensure correct rendering of non-Latin characters.
+
 
 #### Developers
 ##### Adding a new language
