@@ -10,7 +10,6 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-<?import java.util.*?>
 
 <StackPane prefHeight="700.0" prefWidth="700.0" styleClass="parent" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.LoginController">
    <children>
@@ -84,13 +83,16 @@
          </Button>
               <HBox alignment="CENTER">
                   <children>
-                      <Label prefHeight="25.0" prefWidth="183.0" text="%notauser" textFill="#c3c3c3">
+                      <Label alignment="CENTER_RIGHT" maxWidth="400.0" text="%notauser" textFill="#c3c3c3">
                   <font>
-                     <Font size="16.0" />
+                     <Font size="14.0" />
                   </font>
                   <HBox.margin>
                      <Insets left="10.0" />
                   </HBox.margin>
+                  <padding>
+                     <Insets right="5.0" />
+                  </padding>
                </Label>
                       <Label fx:id="signUpLabel" onMouseClicked="#moveToRegisterView" onMousePressed="#moveToRegisterView" styleClass="clickable-label" text="%signup" textFill="#705eff">
                   <HBox.margin>

@@ -7,7 +7,6 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-<?import java.util.*?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="193.0" prefWidth="412.0" styleClass="parent" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AddFriendsController">
    <center>
@@ -38,7 +37,7 @@
       </VBox>
    </center>
    <top>
-      <Button fx:id="closeButton" contentDisplay="RIGHT" mnemonicParsing="false" onAction="#closeWindow" prefHeight="16.0" prefWidth="37.0" text="%x" textAlignment="CENTER" textFill="WHITE" BorderPane.alignment="CENTER">
+      <Button fx:id="closeButton" contentDisplay="RIGHT" maxWidth="800.0" mnemonicParsing="false" onAction="#closeWindow" text="%x" textAlignment="CENTER" textFill="WHITE" BorderPane.alignment="CENTER">
          <font>
             <Font name="System Bold" size="12.0" />
          </font>
