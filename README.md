@@ -1,4 +1,4 @@
-<img width="691" height="168" alt="image" src="https://github.com/user-attachments/assets/6beabebe-eff7-4c87-adee-deee163039b4" /># Ohjelmistotuotantoprojekti
+# Ohjelmistotuotantoprojekti
 
 ```contributors
 Tony Karlin, Onni Kivinen, Joni Heikkilä, Jarkko Kärki
