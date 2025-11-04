@@ -101,13 +101,12 @@ Frontend/
 Each `.properties` file contains translated key-value pairs.
 
 #### Localization Resources
-
 - **Translators:** Initial translations for Finnish, Russian, Swedish, and Japanese were created using **AI tools**.
 - **Localization Tools:** Translations were handled manually during Sprint 5 using `.properties` files in the `Frontend/src/main/resources/localization/` directory.
 - **Encoding:** All localization files use **UTF-8** encoding to ensure correct rendering of non-Latin characters.
 
-
 #### Developers
+
 ##### Adding a new language
 1. Right-click `LanguageBundle` inside localization folder to add a new property file.
 2. Name it using the language and country code, e.g. ` _fr_FR`.
@@ -116,7 +115,6 @@ Each `.properties` file contains translated key-value pairs.
 5. Test that all UI components update dynamically and text renders correctly.
 
 > Make sure all `.properties` files are saved in **UTF-8** encoding to support non-Latin characters
-
 
 ## Backend
 
