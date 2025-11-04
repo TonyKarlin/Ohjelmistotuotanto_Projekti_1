@@ -370,6 +370,7 @@ public class ChatDashboardController implements ContactUpdateCallback, LanguageC
         VBox createGroupVBox = loader.load();
         CreateGroupController controller = loader.getController();
         controller.setController(contacts, loggedInUser, this);
+        controller.setBundle(bundle);
         VBoxContentPane.getChildren().add(createGroupVBox);
     }
 

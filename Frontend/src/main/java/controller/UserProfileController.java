@@ -16,6 +16,7 @@ import request.UpdateUserRequest;
 import service.UserApiClient;
 import utils.FileHandler;
 import utils.ImageRounder;
+import utils.LanguageManager;
 import utils.UIAlert;
 
 import java.io.File;
@@ -87,9 +88,9 @@ public class UserProfileController {
         userResponse = new UserResponse();
         userResponse = client.updateUser(request, loggedInUser);
         if (userResponse == null) {
-            alert.showErrorAlert("Updated failed", "Failed to update user");
+            alert.showErrorAlert(LanguageManager.getString("user_updated_failed_title"), LanguageManager.getString("user_updated_failed_message"));
         } else {
-            alert.showSuccessAlert("Success", "User updated successfully ✅");
+            alert.showErrorAlert(LanguageManager.getString("register_success_title"), LanguageManager.getString("user_updated_successfully"));
             String token = userResponse.getToken();
             loggedInUser = userResponse.getUser();
             loggedInUser.setToken(token);
@@ -121,11 +122,11 @@ public class UserProfileController {
             return true;
         }
         if (!password.equals(repeatedPassword)) {
-            alert.showErrorAlert("Error", "passwords don't match");
+            alert.showErrorAlert(LanguageManager.getString("register_error_title"), LanguageManager.getString("password_missmatch"));
             return false;
         }
         if (password.length() < 6) {
-            alert.showErrorAlert("Invalid Password", "Password should contain 6 or more characters.");
+            alert.showErrorAlert(LanguageManager.getString("register_invalid_password_title"),LanguageManager.getString("register_invalid_password"));
             return false;
         }
         return true;
@@ -134,13 +135,13 @@ public class UserProfileController {
     // Check the user inputs that hey are valid. Gets alert if something is wrong
     public boolean checkTextFields(String username, String email) {
         if (username.isEmpty() || email.isEmpty()) {
-            alert.showErrorAlert("Empty fields", "Please fill in all fields");
+            alert.showErrorAlert(LanguageManager.getString("register_empty_fields_title"), LanguageManager.getString("register_empty_fields"));
             return false;
         } else if (username.length() < 6) {
-            alert.showErrorAlert("Invalid Name", "Name should contain 6 or more characters.");
+            alert.showErrorAlert(LanguageManager.getString("register_invalid_name_title"), LanguageManager.getString("register_invalid_name"));
             return false;
         } else if (!email.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$")) {
-            alert.showErrorAlert("Invalid Email", "Please enter a valid email address.");
+            alert.showErrorAlert(LanguageManager.getString("register_invalid_email_title"), LanguageManager.getString("register_invalid_email"));
             return false;
         }
         return true;

@@ -13,6 +13,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
+import lombok.Data;
 import model.Contact;
 import model.Conversation;
 import model.User;
@@ -20,6 +21,7 @@ import request.ConversationRequest;
 import service.ConversationApiClient;
 import utils.LanguageManager;
 
+@Data
 public class CreateGroupController {
 
     private List<Contact> contacts;
@@ -28,6 +30,7 @@ public class CreateGroupController {
     private ConversationRequest request;
     private User loggedInUser;
     private ChatDashboardController parentController;
+    private ResourceBundle bundle;
 
     public void setController(List<Contact> contacts, User loggedInUser, ChatDashboardController parentController) throws IOException {
         this.contacts = contacts;
@@ -73,11 +76,10 @@ public class CreateGroupController {
     public void handleSelectContact(Contact contact, ContactHboxController controller) {
         if (!selectedContacts.contains(contact.getContactUserId())) {
             selectedContacts.add(contact.getContactUserId());
-            controller.getAddButton().setText("Selected");
+            controller.getAddButton().setText(bundle.getString("selected"));
         } else {
-            selectedContacts.remove(contact.getContactUserId());
-            controller.getAddButton().setText("Add");
+            selectedContacts.remove(Integer.valueOf(contact.getContactUserId()));
+            controller.getAddButton().setText(bundle.getString("add"));
         }
     }
-
 }

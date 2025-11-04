@@ -61,7 +61,8 @@ public class LanguageButtonController {
             new LanguageOption("English (US)", Locale.US),
             new LanguageOption("Suomi (Finnish)", Locale.forLanguageTag("fi-FI")),
             new LanguageOption("Русский (Russian)", Locale.forLanguageTag("ru-RU")),
-            new LanguageOption("Svenska (Swedish)", Locale.forLanguageTag("sv-SE"))
+            new LanguageOption("Svenska (Swedish)", Locale.forLanguageTag("sv-SE")),
+            new LanguageOption("日本語 (Japanese)", Locale.forLanguageTag("ja-JP"))
     );
 
     /**
