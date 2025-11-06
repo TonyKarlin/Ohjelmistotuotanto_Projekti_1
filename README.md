@@ -128,6 +128,16 @@ Each `.properties` file contains translated key-value pairs.
 
 The backend of the project is built with Java and Spring Boot, using Maven as the build tool. It handles the business logic and data storage, using PostgreSQL as the primary database, and provides a RESTful API that the frontend client uses to make HTTP requests.
 
+## Diagrams
+
+ER-diagram
+
+![alt text](docs/diagrams/project-er-diagram.png)
+
+Relational-Schema
+
+![alt text](docs/diagrams/project-relational-schema.png)
+
 ## Database
 
 Initial database Schema in PostGreSQL.
