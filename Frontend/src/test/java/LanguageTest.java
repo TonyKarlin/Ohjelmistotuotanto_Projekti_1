@@ -18,7 +18,7 @@ public class LanguageTest {
         Locale locale = Locale.US;
         LanguageManager.setLocale(locale);
         String message = LanguageManager.getString("give_conversation_name");
-        assertEquals("Give conversation a name#", message);
+        assertEquals("Give conversation a name", message);
     }
 
     @Test
