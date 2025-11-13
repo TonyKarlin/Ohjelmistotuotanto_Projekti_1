@@ -3,6 +3,7 @@ package service;
 import java.io.IOException;
 import java.util.List;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 
 import model.Contact;
@@ -20,7 +21,7 @@ public class ContactApiClient implements ApiClient {
     }
 
     // Get a list of ALL contacts PENDING and ACCEPTED
-    public List<Contact> getAllUserContacts(User user) throws IOException, InterruptedException {
+    public List<Contact> getAllUserContacts(User user) throws JsonProcessingException {
         String token = user.getToken();
         ApiResponse response = sendGetRequest(baseUrl, token);
         if (response.isSuccess()) {
@@ -34,7 +35,7 @@ public class ContactApiClient implements ApiClient {
         }
     }
 
-    public Contact addContact(ContactRequest contactRequest) throws IOException, InterruptedException {
+    public Contact addContact(ContactRequest contactRequest) throws JsonProcessingException {
         String contactUrl = baseUrl + "/add?userId=" + contactRequest.getUserId() + "&contactUserId=" + contactRequest.getContactUserId();
         String token = contactRequest.getToken();
 
@@ -49,7 +50,7 @@ public class ContactApiClient implements ApiClient {
         }
     }
 
-    public Contact acceptContact(ContactRequest contactRequest) throws IOException, InterruptedException {
+    public Contact acceptContact(ContactRequest contactRequest) throws JsonProcessingException {
         String contactUrl = baseUrl + "/accept?userId=" + contactRequest.getUserId() + "&contactUserId=" + contactRequest.getContactUserId();
         String token = contactRequest.getToken(); // Add this line to get the token
 

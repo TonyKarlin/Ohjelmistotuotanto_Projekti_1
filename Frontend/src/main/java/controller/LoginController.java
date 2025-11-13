@@ -86,7 +86,6 @@ public class LoginController implements LanguageChangeCallback {
             stage.setScene(new Scene(root));
             stage.setTitle(LanguageManager.getString("title"));
         } catch (IOException e) {
-            e.printStackTrace();
             System.err.println("Failed to reload view with new language: " + e.getMessage());
         }
     }

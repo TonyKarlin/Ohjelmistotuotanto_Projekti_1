@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import model.User;
 import model.UserResponse;
 import request.LoginRequest;
@@ -31,13 +32,13 @@ public class UserApiClient implements ApiClient {
                         + response.statusCode + ", Response: " + response.body);
                 return null;
             }
-        } catch (IOException | InterruptedException e) {
+        } catch (IOException e) {
             throw new RuntimeException("Failed to register user", e);
         }
     }
 
-    public UserResponse updateUser(UpdateUserRequest request, User user) {
-        try {
+    public UserResponse updateUser(UpdateUserRequest request, User user) throws IOException, InterruptedException {
+
             String url = usersUrl + "/" + user.getId();
             String token = user.getToken();
             ApiResponse response = sendPutRequestWithObjectAndToken(url, request, token);
@@ -49,12 +50,11 @@ public class UserApiClient implements ApiClient {
                         + response.statusCode + ", Response: " + response.body);
                 return null;
             }
-        } catch (IOException | InterruptedException e) {
-            throw new RuntimeException("Failed to Update user", e);
         }
-    }
 
-    public User updateUserProfilePicture(File file, User user) {
+
+
+    public User updateUserProfilePicture(File file, User user)  {
         try {
             String url = usersUrl + "/" + user.getId() + "/profile-picture";
             String token = user.getToken();
@@ -67,10 +67,9 @@ public class UserApiClient implements ApiClient {
                         + response.statusCode + ", Response: " + response.body);
                 return null;
             }
-        } catch (IOException | InterruptedException e) {
-            throw new RuntimeException(e);
+        }catch (JsonProcessingException e) {
+            throw new RuntimeException("Failed to parse server response", e);
         }
-
     }
 
     public UserResponse loginUser(LoginRequest loginRequest) {
@@ -83,7 +82,7 @@ public class UserApiClient implements ApiClient {
                         + response.statusCode + ", Response: " + response.body);
                 return null;
             }
-        } catch (IOException | InterruptedException e) {
+        } catch (IOException e) {
             throw new RuntimeException("Failed to login", e);
         }
     }
@@ -100,7 +99,7 @@ public class UserApiClient implements ApiClient {
                         + response.statusCode + ", Response: " + response.body);
                 return null;
             }
-        } catch (IOException | InterruptedException e) {
+        } catch (IOException e) {
             throw new RuntimeException("Failed to GET a user", e);
         }
     }
