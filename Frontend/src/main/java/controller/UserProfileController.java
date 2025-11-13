@@ -20,6 +20,7 @@ import utils.LanguageManager;
 import utils.UIAlert;
 
 import java.io.File;
+import java.io.IOException;
 
 public class UserProfileController {
 
@@ -73,7 +74,7 @@ public class UserProfileController {
     }
 
     @FXML
-    public void changeInformation(ActionEvent event) {
+    public void changeInformation(ActionEvent event) throws IOException, InterruptedException {
         String newUsername = usernameTextField.getText();
         String newEmail = emailTextField.getText();
         String newPassword = passwordField.getText();

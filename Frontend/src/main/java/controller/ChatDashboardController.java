@@ -1,6 +1,7 @@
 package controller;
 
 import java.io.IOException;
+import java.nio.file.InvalidPathException;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
@@ -130,7 +131,7 @@ public class ChatDashboardController implements ContactUpdateCallback, LanguageC
      * preserved
      */
     @Override
-    public void onLanguageChanged(Locale newLocale) {
+    public void onLanguageChanged(Locale newLocale) throws RuntimeException {
         try {
             // Reload the view with the new language
             ResourceBundle bundle = ResourceBundle.getBundle("localization.LanguageBundle", newLocale);
@@ -145,9 +146,11 @@ public class ChatDashboardController implements ContactUpdateCallback, LanguageC
             Stage stage = (Stage) loggedInUsername.getScene().getWindow();
             stage.setScene(new Scene(root));
             stage.setTitle(LanguageManager.getString("title"));
-        } catch (IOException | InterruptedException e) {
-            e.printStackTrace();
+        } catch (IOException e) {
             System.err.println("Failed to reload view with new language: " + e.getMessage());
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new IllegalStateException("Thread was interrupted while changing language", e);
         }
     }
 

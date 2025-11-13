@@ -10,7 +10,7 @@ public class ApiResponse {
     int statusCode;
     String body;
 
-    ApiResponse(int statusCode, String body) {
+    public ApiResponse(int statusCode, String body) {
         this.statusCode = statusCode;
         this.body = body;
     }
@@ -19,4 +19,6 @@ public class ApiResponse {
     public boolean isSuccess() {
         return statusCode >= 200 && statusCode <300;
     }
+
+
 }
