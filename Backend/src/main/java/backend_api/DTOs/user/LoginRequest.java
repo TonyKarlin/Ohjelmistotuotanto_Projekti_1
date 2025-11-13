@@ -4,6 +4,7 @@ public class LoginRequest {
 
     private String username;
     private String password;
+    private String language;
 
     // getterit & setterit
     public String getUsername() {
@@ -21,4 +22,7 @@ public class LoginRequest {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    public String getLanguage() { return language; }
+    public void setLanguage(String language) { this.language = language; }
 }

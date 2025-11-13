@@ -101,6 +101,10 @@ public class UserService {
             user.setPassword(encodePassword(request.getPassword()));
         }
 
+        if (request.getLanguage() != null && !request.getLanguage().isBlank()) {
+            user.setLanguage(request.getLanguage());
+        }
+
         return userRepository.save(user);
     }
 
@@ -147,5 +151,9 @@ public class UserService {
 
     public String encodePassword(String rawPassword) {
         return passwordEncoder.encode(rawPassword);
+    }
+
+    public User save(User user) {
+        return userRepository.save(user);
     }
 }

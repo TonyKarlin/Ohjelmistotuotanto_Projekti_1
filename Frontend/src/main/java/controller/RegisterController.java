@@ -130,7 +130,10 @@ public class RegisterController implements LanguageChangeCallback {
         }
         try {
             //creates user object from the user inputs
+            Locale selectedLocale = languageButtonController.getSelectedLocale();
+            String languageTag = selectedLocale.toLanguageTag();
             User user = new User(username, email, password);
+            user.setLanguage(languageTag);
             //Sends the user object to the server and creates another user from the backend response
             User checkIfUserExist = userApiClient.registerUser(user);
             //If response is not user information but response message, user is null so send this alert message

@@ -7,14 +7,16 @@ import lombok.Data;
 public class LoginRequest {
     private String username;
     private String password;
+    private String language;
 
 
     //Empty construct for Object mapper
     public LoginRequest() {}
 
-    public LoginRequest(String username, String password) {
+    public LoginRequest(String username, String password, String language) {
         this.username = username;
         this.password = password;
+        this.language = language;
 
     }
 }

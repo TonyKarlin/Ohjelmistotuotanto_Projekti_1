@@ -62,6 +62,13 @@ public class UserController {
 
         User user = new User(request.getUsername(), request.getPassword(), request.getEmail());
         user.setProfilePicture("default.png");
+
+        if (request.getLanguage() != null && !request.getLanguage().isEmpty()) {
+            user.setLanguage(request.getLanguage());
+        } else {
+            user.setLanguage("en");
+        }
+
         User savedUser = userService.register(user);
         return ResponseEntity.ok(new UserDTO(savedUser));
     }
@@ -70,6 +77,11 @@ public class UserController {
     public ResponseEntity<UserWithTokenDTO> login(@RequestBody LoginRequest request) {
         User user = userService.login(request.getUsername(), request.getPassword())
                 .orElseThrow(() -> new UnauthorizedActionException("Invalid username or password"));
+
+        if (request.getLanguage() != null && !request.getLanguage().isEmpty()) {
+            user.setLanguage(request.getLanguage());
+            userService.save(user);
+        }
 
         String token = JwtUtil.generateToken(user.getUsername());
         UserWithTokenDTO response = new UserWithTokenDTO(

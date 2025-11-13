@@ -14,6 +14,7 @@ CREATE TABLE IF NOT EXISTS users
     email      VARCHAR(255) NOT NULL,
     created_at TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
     profile_picture VARCHAR(255)
+    language        VARCHAR(10)  DEFAULT 'en'
 );
 
 -- Create contacts table

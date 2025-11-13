@@ -40,6 +40,10 @@ public class User {
     @Column(name = "profile_picture")
     private String profilePicture;
 
+    @Column(name = "language", length = 10)
+    private String language = "en";
+
+
     public String getProfilePicture() {
         return profilePicture;
     }
@@ -106,7 +110,16 @@ public class User {
         this.createdAt = createdAt;
     }
 
-//    public List<Conversation> getConversations() {
+    public String getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(String language) {
+        this.language = language;
+    }
+
+
+    //    public List<Conversation> getConversations() {
 //        return conversations;
 //    }
 //

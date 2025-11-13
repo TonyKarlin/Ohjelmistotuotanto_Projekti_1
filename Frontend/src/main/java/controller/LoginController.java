@@ -112,13 +112,22 @@ public class LoginController implements LanguageChangeCallback {
             return;
         }
         //Gets username and password from the text fields and calls the loginRequest method
-        LoginRequest loginRequest = new LoginRequest(username, password);
+        LoginRequest loginRequest = new LoginRequest(username, password, null);
         // Send the login request and save the result to a LoginResponse object
         loginResponse = userApiClient.loginUser(loginRequest);
         // If the login response is not null, extract the User and pass it to the next view
         if (loginResponse != null) {
             User user = loginResponse.getUser();
             user.setToken(loginResponse.getToken());
+
+            String userLang = user.getLanguage();
+            if (userLang != null && !userLang.isEmpty()) {
+                Locale newLocale = Locale.forLanguageTag(userLang);
+                LanguageManager.setLocale(newLocale);
+            } else {
+                LanguageManager.setLocale(Locale.ENGLISH);
+            }
+
             moveToMainView(user);
             Stage stage = (Stage) loginButton.getScene().getWindow();
             stage.close();
