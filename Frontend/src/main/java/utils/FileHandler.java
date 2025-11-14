@@ -7,9 +7,6 @@ import java.io.File;
 
 public class FileHandler {
 
-
-    public FileHandler() {}
-
     public File selectProfilePicture(Window ownerWindow) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Select Profile Picture");
@@ -22,7 +19,7 @@ public class FileHandler {
     }
 
     public void selectFile() {
-
+        //for future implementation
     }
 
 }

@@ -2,7 +2,7 @@ package service;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
+import java.util.logging.Logger;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import model.User;
@@ -16,20 +16,16 @@ public class UserApiClient implements ApiClient {
     String registerUrl = ApiUrl.getApiUrl() + "/users/register";
     String loginUrl = ApiUrl.getApiUrl() + "/users/login";
     String usersUrl = ApiUrl.getApiUrl() + "/users";
-
-    public UserApiClient() throws MalformedURLException {
-
-    }
+    String stringResponse = ", Response: ";
 
     public User registerUser(User user) {
         try {
             ApiResponse response = sendPostRequest(registerUrl, user);
             if (response.isSuccess()) {
-                System.out.println(response.body);
                 return objectMapper.readValue(response.body, User.class);
             } else {
                 System.out.println("Failed to register user. Status: "
-                        + response.statusCode + ", Response: " + response.body);
+                        + response.statusCode + stringResponse + response.body);
                 return null;
             }
         } catch (IOException e) {
@@ -43,11 +39,10 @@ public class UserApiClient implements ApiClient {
             String token = user.getToken();
             ApiResponse response = sendPutRequestWithObjectAndToken(url, request, token);
             if (response.isSuccess()) {
-                System.out.println(response.body);
                 return objectMapper.readValue(response.body, UserResponse.class);
             } else {
                 System.out.println("Failed to Update user. Status: "
-                        + response.statusCode + ", Response: " + response.body);
+                        + response.statusCode + stringResponse + response.body);
                 return null;
             }
         }
@@ -60,11 +55,10 @@ public class UserApiClient implements ApiClient {
             String token = user.getToken();
             ApiResponse response = sendFile(url, file, token);
             if (response.isSuccess()) {
-                System.out.println(response.body);
                 return objectMapper.readValue(response.body, User.class);
             } else {
                 System.out.println("Failed to Update user profile picture. Status: "
-                        + response.statusCode + ", Response: " + response.body);
+                        + response.statusCode + stringResponse + response.body);
                 return null;
             }
         }catch (JsonProcessingException e) {
@@ -79,7 +73,7 @@ public class UserApiClient implements ApiClient {
                 return objectMapper.readValue(response.body, UserResponse.class);
             } else {
                 System.out.println("Failed to Login: "
-                        + response.statusCode + ", Response: " + response.body);
+                        + response.statusCode + stringResponse + response.body);
                 return null;
             }
         } catch (IOException e) {
@@ -92,11 +86,10 @@ public class UserApiClient implements ApiClient {
             String url = usersUrl + "/username/" + username;
             ApiResponse response = sendGetRequest(url, token);
             if (response.isSuccess()) {
-                System.out.println(response.body);
                 return objectMapper.readValue(response.body, User.class);
             } else {
                 System.out.println("Failed to fetch a User. Status: "
-                        + response.statusCode + ", Response: " + response.body);
+                        + response.statusCode + stringResponse + response.body);
                 return null;
             }
         } catch (IOException e) {

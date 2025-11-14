@@ -31,9 +31,6 @@ public class MessageHBoxController {
     private Message message;
     private Conversation conversation;
 
-    public MessageHBoxController() {
-    }
-
     public void setController(Message message, ChatDashboardController parentController, Conversation conversation) {
         this.message = message;
         this.parentController = parentController;

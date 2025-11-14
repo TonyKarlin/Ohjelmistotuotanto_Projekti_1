@@ -8,7 +8,8 @@ public class ContactResponse {
     private Contact contact;
     private Conversation conversation;
 
-    // Empty constructor for Object mapper
+
     public ContactResponse() {
+        // Empty constructor for Object mapper
     }
 }

@@ -11,8 +11,6 @@ public class UIAlert {
     private String message;
     private Alert.AlertType type;
 
-    public UIAlert() {}
-
     public void showErrorAlert(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(title);

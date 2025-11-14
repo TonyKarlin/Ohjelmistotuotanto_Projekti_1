@@ -18,8 +18,10 @@ public class User {
     private String profilePictureUrl;
     private String language;
 
-    // Default constructor (needed for Jackson/ObjectMapper)
-    public User() {}
+    public User() {
+        // Default constructor (needed for Jackson/ObjectMapper)
+
+    }
 
     // Constructor for creating/registering a new user
     public User(String username, String email, String password) {

@@ -25,8 +25,6 @@ public class RegisterController implements LanguageChangeCallback {
     private UserApiClient userApiClient;
     private final UIAlert alert = new UIAlert();
 
-    public RegisterController() {
-    }
 
     //Controller to set instances. Is called when changing to this view.
     public void setController(UserApiClient userApiClient) {
@@ -121,9 +119,9 @@ public class RegisterController implements LanguageChangeCallback {
         String email = emailTextField.getText();
         String password = passwordField.getText();
         String repeatedPassword = repeatPasswordField.getText();
-//        if (!checkTextFields(username, email, password)) {
-//            return;
-//        }
+       if (!checkTextFields(username, email, password)) {
+            return;
+       }
         if (!checkPassword(password, repeatedPassword)) {
             return;
         }

@@ -11,9 +11,9 @@ public class Contact {
     private String status;
     private int initiatorId; // Who initiated the friend request
 
-    //Empty construct for Object mapper
-    public Contact() {
 
+    public Contact() {
+        //Empty construct for Object mapper
     }
 
 }

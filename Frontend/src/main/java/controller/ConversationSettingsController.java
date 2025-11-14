@@ -80,7 +80,7 @@ public class ConversationSettingsController {
     }
 
     @FXML
-    void changeConversationName(ActionEvent event) throws IOException, InterruptedException {
+    void changeConversationName(ActionEvent event) throws IOException {
         String conversationName = nameTextField.getText();
         conversationRequest = new ConversationRequest(conversationName, conversation.getId(), loggedInuser.getToken());
         Updatedconversation = conversationApiClient.changeConversationName(conversationRequest);
@@ -94,7 +94,7 @@ public class ConversationSettingsController {
     }
 
     @FXML
-    public void deleteConversation() throws IOException, InterruptedException {
+    public void deleteConversation() throws IOException {
         boolean success = conversationApiClient.deleteConversation(conversation, loggedInuser);
         if (success) {
             parentController.conversations.remove(conversation);
@@ -106,7 +106,7 @@ public class ConversationSettingsController {
 
     @FXML
     public void leaveFromConversation() {
-
+        //to be implemented
     }
 
     @FXML
@@ -158,10 +158,10 @@ public class ConversationSettingsController {
         );
         if (success) {
             hboxController.getAddButton().setVisible(false);
-            alert.showSuccessAlert("Success", "User added to conversation: " + conversation.getName());
+            alert.showSuccessAlert(LanguageManager.getString("register_success_title"), LanguageManager.getString("user_added_successfully") + conversation.getName());
             conversation.getParticipants().add(new ConversationParticipant(contact.getContactUserId(), contact.getContactUsername(), "MEMBER"));
         } else {
-            alert.showErrorAlert("Failed", "Failed to add user to the conversation");
+            alert.showErrorAlert(LanguageManager.getString("failed"), LanguageManager.getString("user_added_failed"));
         }
     }
 

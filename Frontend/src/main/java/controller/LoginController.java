@@ -30,6 +30,7 @@ public class LoginController implements LanguageChangeCallback {
 
     private final UIAlert alert = new UIAlert();
     private UserResponse loginResponse = new UserResponse();
+    String languageBundle = "localization.LanguageBundle";
 
     public void setController(UserApiClient userApiClient) {
         this.userApiClient = userApiClient;
@@ -71,7 +72,7 @@ public class LoginController implements LanguageChangeCallback {
             String currentPassword = passwordTextField.getText();
 
             // Reload the view with the new language
-            ResourceBundle bundle = ResourceBundle.getBundle("localization.LanguageBundle", newLocale);
+            ResourceBundle bundle = ResourceBundle.getBundle(languageBundle, newLocale);
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/loginView.fxml"), bundle);
             Parent root = fxmlLoader.load();
 
@@ -92,7 +93,7 @@ public class LoginController implements LanguageChangeCallback {
 
     @FXML
     public void moveToRegisterView(MouseEvent event) throws IOException {
-        ResourceBundle bundle = ResourceBundle.getBundle("localization.LanguageBundle", LanguageManager.getCurrentLocale());
+        ResourceBundle bundle = ResourceBundle.getBundle(languageBundle, LanguageManager.getCurrentLocale());
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/registerView.fxml"), bundle);
         Parent root = fxmlLoader.load();
         RegisterController controller = fxmlLoader.getController();
@@ -137,7 +138,7 @@ public class LoginController implements LanguageChangeCallback {
     }
 
     public void moveToMainView(User user) throws IOException, InterruptedException {
-        ResourceBundle bundle = ResourceBundle.getBundle("localization.LanguageBundle", LanguageManager.getCurrentLocale());
+        ResourceBundle bundle = ResourceBundle.getBundle(languageBundle, LanguageManager.getCurrentLocale());
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/chatDashboardView.fxml"), bundle);
         Parent root = fxmlLoader.load();
         ChatDashboardController controller = fxmlLoader.getController();

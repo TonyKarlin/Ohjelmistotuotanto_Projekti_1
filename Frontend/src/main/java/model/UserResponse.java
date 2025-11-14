@@ -12,5 +12,7 @@ public class UserResponse {
     private String token;
     private User user;
 
-    public UserResponse() {}
+    public UserResponse() {
+        //Empty user constructor for Jackson object mapper
+    }
 }

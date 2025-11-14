@@ -91,7 +91,7 @@ public class UserProfileController {
         if (userResponse == null) {
             alert.showErrorAlert(LanguageManager.getString("user_updated_failed_title"), LanguageManager.getString("user_updated_failed_message"));
         } else {
-            alert.showErrorAlert(LanguageManager.getString("register_success_title"), LanguageManager.getString("user_updated_successfully"));
+            alert.showSuccessAlert(LanguageManager.getString("register_success_title"), LanguageManager.getString("user_updated_successfully"));
             String token = userResponse.getToken();
             loggedInUser = userResponse.getUser();
             loggedInUser.setToken(token);

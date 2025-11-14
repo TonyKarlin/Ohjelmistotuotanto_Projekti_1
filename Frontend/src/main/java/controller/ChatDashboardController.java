@@ -58,6 +58,8 @@ public class ChatDashboardController implements ContactUpdateCallback, LanguageC
     List<Contact> sentContacts;
     ImageRounder imageRounder;
     Button activeConversation;
+    String languageBundle = "localization.LanguageBundle";
+    String controllerString = "controller";
 
     // Sets the controller with user and API clients, initializes user info and lists
     public void setController(User loggedInUser, UserApiClient userApiClient) throws IOException, InterruptedException {
@@ -134,7 +136,7 @@ public class ChatDashboardController implements ContactUpdateCallback, LanguageC
     public void onLanguageChanged(Locale newLocale) throws RuntimeException {
         try {
             // Reload the view with the new language
-            ResourceBundle bundle = ResourceBundle.getBundle("localization.LanguageBundle", newLocale);
+            ResourceBundle bundle = ResourceBundle.getBundle(languageBundle, newLocale);
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/chatDashboardView.fxml"), bundle);
             Parent root = fxmlLoader.load();
 
@@ -194,7 +196,7 @@ public class ChatDashboardController implements ContactUpdateCallback, LanguageC
         //Clears send message HBox in the bottom and main view
         contentBorderPane.setBottom(null);
         VBoxContentPane.getChildren().clear();
-        ResourceBundle bundle = ResourceBundle.getBundle("localization.LanguageBundle", LanguageManager.getCurrentLocale());
+        ResourceBundle bundle = ResourceBundle.getBundle(languageBundle, LanguageManager.getCurrentLocale());
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/userProfileView.fxml"), bundle);
         VBox userProfile = fxmlLoader.load();
         UserProfileController controller = fxmlLoader.getController();
@@ -207,7 +209,7 @@ public class ChatDashboardController implements ContactUpdateCallback, LanguageC
     // Opens the add friends view in a modal window
     @FXML
     public void openAddFriendsView() throws IOException {
-        ResourceBundle bundle = ResourceBundle.getBundle("localization.LanguageBundle", LanguageManager.getCurrentLocale());
+        ResourceBundle bundle = ResourceBundle.getBundle(languageBundle, LanguageManager.getCurrentLocale());
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/addFriendsView.fxml"), bundle);
         Parent root = fxmlLoader.load();
         AddFriendsController controller = fxmlLoader.getController();
@@ -225,7 +227,7 @@ public class ChatDashboardController implements ContactUpdateCallback, LanguageC
     //Logout user and clears the instances
     @FXML
     public void logoutUser(ActionEvent event) throws IOException {
-        ResourceBundle bundle = ResourceBundle.getBundle("localization.LanguageBundle", LanguageManager.getCurrentLocale());
+        ResourceBundle bundle = ResourceBundle.getBundle(languageBundle, LanguageManager.getCurrentLocale());
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/loginView.fxml"), bundle);
         Parent root = fxmlLoader.load();
         Stage stage = new Stage();
@@ -257,7 +259,7 @@ public class ChatDashboardController implements ContactUpdateCallback, LanguageC
         for (Conversation c : conversations) {
             if (Objects.equals(c.getType(), groupType)) {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/component/conversationHBox.fxml"));
-                ResourceBundle bundle = ResourceBundle.getBundle("localization.LanguageBundle", LanguageManager.getCurrentLocale());
+                ResourceBundle bundle = ResourceBundle.getBundle(languageBundle, LanguageManager.getCurrentLocale());
                 loader.setResources(bundle);
                 HBox userConversationHBox = loader.load();
                 ConversationHBoxController controller = loader.getController();
@@ -271,7 +273,7 @@ public class ChatDashboardController implements ContactUpdateCallback, LanguageC
         contentBorderPane.setBottom(null);
         VBoxContentPane.getChildren().clear();
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/conversationSettingsView.fxml"));
-        ResourceBundle bundle = ResourceBundle.getBundle("localization.LanguageBundle", LanguageManager.getCurrentLocale());
+        ResourceBundle bundle = ResourceBundle.getBundle(languageBundle, LanguageManager.getCurrentLocale());
         fxmlLoader.setResources(bundle);
         VBox conversationSettings = fxmlLoader.load();
         ConversationSettingsController controller = fxmlLoader.getController();
@@ -299,12 +301,12 @@ public class ChatDashboardController implements ContactUpdateCallback, LanguageC
         if (messages != null && !messages.isEmpty()) {
             for (Message m : messages) {
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/component/messageHBox.fxml"));
-                ResourceBundle bundle = ResourceBundle.getBundle("localization.LanguageBundle", LanguageManager.getCurrentLocale());
+                ResourceBundle bundle = ResourceBundle.getBundle(languageBundle, LanguageManager.getCurrentLocale());
                 fxmlLoader.setResources(bundle);
                 HBox messageHBox = fxmlLoader.load();
                 MessageHBoxController controller = fxmlLoader.getController();
                 controller.setController(m, this, conversation);
-                messageHBox.getProperties().put("controller", controller);
+                messageHBox.getProperties().put(controllerString, controller);
                 VBoxContentPane.getChildren().add(messageHBox);
             }
         }
@@ -314,12 +316,12 @@ public class ChatDashboardController implements ContactUpdateCallback, LanguageC
     //This method called in the SendMessageHBoXController to show the message locally
     public void addMessageToConversation(Message message, Conversation conversation) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/component/messageHBox.fxml"));
-        ResourceBundle bundle = ResourceBundle.getBundle("localization.LanguageBundle", LanguageManager.getCurrentLocale());
+        ResourceBundle bundle = ResourceBundle.getBundle(languageBundle, LanguageManager.getCurrentLocale());
         fxmlLoader.setResources(bundle);
         HBox messageHBox = fxmlLoader.load();
         MessageHBoxController controller = fxmlLoader.getController();
         controller.setController(message, this, conversation);
-        messageHBox.getProperties().put("controller", controller);
+        messageHBox.getProperties().put(controllerString, controller);
         VBoxContentPane.getChildren().add(messageHBox);
     }
 
@@ -327,7 +329,7 @@ public class ChatDashboardController implements ContactUpdateCallback, LanguageC
     public void deleteMessageLocally(Message message) throws IOException {
         VBoxContentPane.getChildren().removeIf(node -> {
             if (node instanceof HBox) {
-                Object controller = ((HBox) node).getProperties().get("controller");
+                Object controller = ((HBox) node).getProperties().get(controllerString);
                 if (controller instanceof MessageHBoxController msgController) {
                     return msgController.getMessage().getId() == message.getId();
                 }
@@ -339,7 +341,7 @@ public class ChatDashboardController implements ContactUpdateCallback, LanguageC
     // Loads and displays the send message component
     public void sendMessageComponent(Conversation conversation) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/component/sendMessageHBox.fxml"));
-        ResourceBundle bundle = ResourceBundle.getBundle("localization.LanguageBundle", LanguageManager.getCurrentLocale());
+        ResourceBundle bundle = ResourceBundle.getBundle(languageBundle, LanguageManager.getCurrentLocale());
         fxmlLoader.setResources(bundle);
         HBox sendMessageHBox = fxmlLoader.load();
         SendMessageHBoxController controller = fxmlLoader.getController();
@@ -352,7 +354,7 @@ public class ChatDashboardController implements ContactUpdateCallback, LanguageC
         for (Contact contact : contacts) {
             if ("ACCEPTED".equals(contact.getStatus())) {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/component/contactHBox.fxml"));
-                ResourceBundle bundle = ResourceBundle.getBundle("localization.LanguageBundle", LanguageManager.getCurrentLocale());
+                ResourceBundle bundle = ResourceBundle.getBundle(languageBundle, LanguageManager.getCurrentLocale());
                 loader.setResources(bundle);
                 HBox userContactsHbox = loader.load();
                 ContactHboxController controller = loader.getController();
@@ -368,7 +370,7 @@ public class ChatDashboardController implements ContactUpdateCallback, LanguageC
         contentBorderPane.setBottom(null);
         VBoxContentPane.getChildren().clear();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/creatGroupConversationView.fxml"));
-        ResourceBundle bundle = ResourceBundle.getBundle("localization.LanguageBundle", LanguageManager.getCurrentLocale());
+        ResourceBundle bundle = ResourceBundle.getBundle(languageBundle, LanguageManager.getCurrentLocale());
         loader.setResources(bundle);
         VBox createGroupVBox = loader.load();
         CreateGroupController controller = loader.getController();
@@ -379,17 +381,17 @@ public class ChatDashboardController implements ContactUpdateCallback, LanguageC
 
     @FXML
     public void openFriendList() {
-
+        //To be implemented
     }
 
     @FXML
     public void openPendingList() {
-
+        //To be implemented
     }
 
     @FXML
     public void openSentList() {
-
+        //To be implemented
     }
 
     @Override
