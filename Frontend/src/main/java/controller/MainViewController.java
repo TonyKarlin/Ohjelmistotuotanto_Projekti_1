@@ -368,7 +368,7 @@ public class MainViewController implements ContactUpdateCallback, LanguageChange
     public void openCreateGroupView() throws IOException {
         contentBorderPane.setBottom(null);
         VBoxContentPane.getChildren().clear();
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/creatGroupConversationView.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/createGroupConversationView.fxml"));
         ResourceBundle bundle = ResourceBundle.getBundle(languageBundle, LanguageManager.getCurrentLocale());
         loader.setResources(bundle);
         VBox createGroupVBox = loader.load();
