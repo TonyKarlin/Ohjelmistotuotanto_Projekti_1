@@ -60,11 +60,11 @@ public class UserController {
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody RegisterRequest request) {
 
-        User user = new User(request.getUsername(), request.getPassword(), request.getEmail());
+        User user = new User(request.username(), request.password(), request.email());
         user.setProfilePicture("default.png");
 
-        if (request.getLanguage() != null && !request.getLanguage().isEmpty()) {
-            user.setLanguage(request.getLanguage());
+        if (request.language() != null && !request.language().isEmpty()) {
+            user.setLanguage(request.language());
         } else {
             user.setLanguage("en");
         }
