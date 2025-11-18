@@ -132,11 +132,15 @@ The backend of the project is built with Java and Spring Boot, using Maven as th
 
 ER-diagram
 
-![alt text](docs/diagrams/project-er-diagram.png)
+![ER-diagram](docs/diagrams/project-er-diagram.png)
 
 Relational-Schema
 
-![alt text](docs/diagrams/project-relational-schema.png)
+![Relational-schema](docs/diagrams/project-relational-schema.png)
+
+## Use-case Diagram
+
+![Use-case-diagram](docs/diagrams/project-usecase-diagram.png)
 
 ## Jenkins CI/CD
 
