@@ -9,11 +9,13 @@ import request.MessageRequest;
 import utils.ApiUrl;
 
 import java.util.List;
+import java.util.logging.Logger;
 
 public class MessageApiClient implements ApiClient {
 
     String baseUrl = ApiUrl.getApiUrl() + "/conversations";
     String stringResponse = ", Response: ";
+    private static final Logger logger = Logger.getLogger(MessageApiClient.class.getName());
 
     public Message sendMessage(MessageRequest request) throws JsonProcessingException {
         String messageUrl = baseUrl + "/" + request.getConversationId() + "/messages";
@@ -22,7 +24,7 @@ public class MessageApiClient implements ApiClient {
         if ((response.isSuccess())) {
             return objectMapper.readValue(response.body, Message.class);
         } else {
-            System.out.println("Failed to Send a message. Status: "
+            logger.info("Failed to Send a message. Status: "
                     + response.statusCode + stringResponse + response.body);
             return null;
         }
@@ -36,7 +38,7 @@ public class MessageApiClient implements ApiClient {
         if (response.isSuccess()) {
             return objectMapper.readValue(response.body, Message.class);
         } else {
-            System.out.println("Failed to Modify  message. Status: "
+            logger.info("Failed to Modify  message. Status: "
                     + response.statusCode + stringResponse + response.body);
             return null;
         }
@@ -50,7 +52,7 @@ public class MessageApiClient implements ApiClient {
             return objectMapper.readValue(response.body, new TypeReference<List<Message>>() {
             });
         } else {
-            System.out.println("Failed to get conversation: " + conversation.getId() + " "
+            logger.info("Failed to get conversation: " + conversation.getId() + " "
                     + "messages" + response.statusCode + stringResponse + response.body);
             return null;
         }
@@ -62,7 +64,7 @@ public class MessageApiClient implements ApiClient {
         if ((response.isSuccess())) {
             return true;
         } else {
-            System.out.println("Failed to delete Message: "
+            logger.info("Failed to delete Message: "
                     + response.statusCode + stringResponse + response.body);
         }
         return false;

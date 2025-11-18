@@ -3,6 +3,8 @@ package controller;
 import java.io.IOException;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import controller.component.ContactHboxController;
 import controller.component.ConversationHBoxController;
@@ -31,16 +33,17 @@ public class ConversationSettingsController {
     ConversationRequest conversationRequest;
     ConversationApiClient conversationApiClient = new ConversationApiClient();
     User loggedInuser;
-    Conversation Updatedconversation;
+    Conversation updatedconversation;
     Conversation conversation;
     MainViewController parentController;
     ConversationHBoxController conversationHBoxController;
     List<Contact> contacts;
     UIAlert alert = new UIAlert();
+    private static final Logger logger = Logger.getLogger(ConversationSettingsController.class.getName());
 
     public void setController(User loggedInuser, Conversation conversation,
-            MainViewController parentController,
-            ConversationHBoxController conversationHBoxController, List<Contact> contacts) throws IOException {
+                              MainViewController parentController,
+                              ConversationHBoxController conversationHBoxController, List<Contact> contacts) throws IOException {
 
         this.loggedInuser = loggedInuser;
         this.conversation = conversation;
@@ -60,7 +63,7 @@ public class ConversationSettingsController {
     @FXML
     private MenuItem deleteMenuItem;
     @FXML
-    private Button ChangeNameButton;
+    private Button changeNameButton;
     @FXML
     private Button addFriendButton;
     @FXML
@@ -83,13 +86,13 @@ public class ConversationSettingsController {
     void changeConversationName(ActionEvent event) throws IOException {
         String conversationName = nameTextField.getText();
         conversationRequest = new ConversationRequest(conversationName, conversation.getId(), loggedInuser.getToken());
-        Updatedconversation = conversationApiClient.changeConversationName(conversationRequest);
-        if (Updatedconversation != null) {
-            conversationHBoxController.setConversationInformation(Updatedconversation);
-            this.conversation = Updatedconversation;
+        updatedconversation = conversationApiClient.changeConversationName(conversationRequest);
+        if (updatedconversation != null) {
+            conversationHBoxController.setConversationInformation(updatedconversation);
+            this.conversation = updatedconversation;
             setConversationName(conversation.getName());
         } else {
-            System.out.println("failed to change conversation name");
+            logger.log(Level.WARNING, "Failed to change conversation name");
         }
     }
 
@@ -100,7 +103,7 @@ public class ConversationSettingsController {
             parentController.conversations.remove(conversation);
             parentController.addConversations(conversation.getType());
         } else {
-            System.out.println("Deletion failed");
+            logger.log(Level.WARNING, "Deletion failed");
         }
     }
 
@@ -128,16 +131,22 @@ public class ConversationSettingsController {
 
     }
 
+
+    public boolean isInConversation(Contact contact) {
+        return conversation.getParticipants().stream()
+                .anyMatch(p -> p.getUserId() == contact.getContactUserId());
+    }
+
+
     public void showFriendsToAdd() throws IOException {
         conversationParticipantList.getItems().clear();
         for (Contact c : contacts) {
-            if (c.getContactUserId() == loggedInuser.getId()) {
-                continue;
-            }
 
-            boolean isInConversation = conversation.getParticipants().stream()
-                    .anyMatch(p -> p.getUserId() == c.getContactUserId());
-            if (isInConversation) {
+            boolean shouldSkip =
+                    c.getContactUserId() == loggedInuser.getId() ||
+                            isInConversation(c);
+
+            if (shouldSkip) {
                 continue;
             }
 

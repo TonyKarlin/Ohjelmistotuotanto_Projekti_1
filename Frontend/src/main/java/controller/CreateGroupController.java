@@ -26,8 +26,7 @@ public class CreateGroupController {
 
     private List<Contact> contacts;
     private List<Integer> selectedContacts = new ArrayList<>();
-    private ConversationApiClient conversationApiClient;
-    private ConversationRequest request;
+    ConversationApiClient conversationApiClient = new ConversationApiClient();
     private User loggedInUser;
     private MainViewController parentController;
     private ResourceBundle bundle;
@@ -40,7 +39,7 @@ public class CreateGroupController {
     }
 
     @FXML
-    private Button CreateButton;
+    private Button createButton;
 
     @FXML
     private ListView<HBox> contactList;
@@ -50,9 +49,8 @@ public class CreateGroupController {
 
     @FXML
     public void createConversation(ActionEvent event) throws IOException, InterruptedException {
-        conversationApiClient = new ConversationApiClient();
         String name = nameTextField.getText();
-        request = new ConversationRequest(loggedInUser.getId(), name, selectedContacts);
+        ConversationRequest request = new ConversationRequest(loggedInUser.getId(), name, selectedContacts);
         Conversation newConversation = conversationApiClient.createConversation(request, loggedInUser.getToken());
         if (newConversation != null) {
             parentController.getConversations().add(newConversation);
@@ -63,7 +61,7 @@ public class CreateGroupController {
     public void addContactsToList() throws IOException {
         for (Contact c : contacts) {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/component/contactHBox.fxml"));
-            ResourceBundle bundle = ResourceBundle.getBundle("localization.LanguageBundle", LanguageManager.getCurrentLocale());
+            bundle = ResourceBundle.getBundle("localization.LanguageBundle", LanguageManager.getCurrentLocale());
             loader.setResources(bundle);
             HBox contactHBox = loader.load();
             ContactHboxController controller = loader.getController();

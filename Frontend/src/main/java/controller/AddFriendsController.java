@@ -28,7 +28,6 @@ public class AddFriendsController {
 
     public void setController(User loggedInuser,
             UserApiClient userApiClient,
-            ContactApiClient contactApiClient,
             List<Contact> contacts,
             ContactUpdateCallback contactUpdateCallback) {
 
