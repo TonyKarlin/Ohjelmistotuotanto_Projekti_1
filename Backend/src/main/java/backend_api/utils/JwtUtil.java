@@ -15,7 +15,8 @@ public class JwtUtil {
             .directory("Backend")
             .load();
     private static final String JWT_KEY = dotenv.get("JWT_KEY");
-    private static final long EXPIRATION_TIME = 1000 * 60 * 60 * 10; // 10 hours
+    private static final long HOURS = 10; // 10 hours
+    private static final long EXPIRATION_TIME = 1000 * 60 * 60 * HOURS;
     private static final Key SIGNING_KEY = Keys.hmacShaKeyFor(JWT_KEY.getBytes());
 
     private JwtUtil() {
