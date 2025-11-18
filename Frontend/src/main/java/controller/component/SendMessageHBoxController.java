@@ -2,7 +2,7 @@ package controller.component;
 
 import java.io.IOException;
 
-import controller.ChatDashboardController;
+import controller.MainViewController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -18,9 +18,9 @@ public class SendMessageHBoxController {
     Conversation conversation;
     User loggedInUser;
     Message message;
-    ChatDashboardController parentController;
+    MainViewController parentController;
 
-    public void setController(Conversation conversation, User loggedInUser, ChatDashboardController parentController) {
+    public void setController(Conversation conversation, User loggedInUser, MainViewController parentController) {
         this.conversation = conversation;
         this.loggedInUser = loggedInUser;
         this.parentController = parentController;

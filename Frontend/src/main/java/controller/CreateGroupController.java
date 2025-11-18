@@ -29,10 +29,10 @@ public class CreateGroupController {
     private ConversationApiClient conversationApiClient;
     private ConversationRequest request;
     private User loggedInUser;
-    private ChatDashboardController parentController;
+    private MainViewController parentController;
     private ResourceBundle bundle;
 
-    public void setController(List<Contact> contacts, User loggedInUser, ChatDashboardController parentController) throws IOException {
+    public void setController(List<Contact> contacts, User loggedInUser, MainViewController parentController) throws IOException {
         this.contacts = contacts;
         this.loggedInUser = loggedInUser;
         this.parentController = parentController;

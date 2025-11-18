@@ -44,7 +44,7 @@ import service.UserApiClient;
 import utils.ImageRounder;
 import utils.LanguageManager;
 
-public class ChatDashboardController implements ContactUpdateCallback, LanguageChangeCallback {
+public class MainViewController implements ContactUpdateCallback, LanguageChangeCallback {
 
     User loggedInUser;
     UserApiClient userApiClient;
@@ -136,11 +136,11 @@ public class ChatDashboardController implements ContactUpdateCallback, LanguageC
         try {
             // Reload the view with the new language
             ResourceBundle bundle = ResourceBundle.getBundle(languageBundle, newLocale);
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/chatDashboardView.fxml"), bundle);
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/MainViewView.fxml"), bundle);
             Parent root = fxmlLoader.load();
 
             // Get the new controller and restore state
-            ChatDashboardController newController = fxmlLoader.getController();
+            MainViewController newController = fxmlLoader.getController();
             newController.setController(this.loggedInUser, this.userApiClient);
 
             // Replace the scene

@@ -139,9 +139,9 @@ public class LoginController implements LanguageChangeCallback {
 
     public void moveToMainView(User user) throws IOException, InterruptedException {
         ResourceBundle bundle = ResourceBundle.getBundle(languageBundle, LanguageManager.getCurrentLocale());
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/chatDashboardView.fxml"), bundle);
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/mainView.fxml"), bundle);
         Parent root = fxmlLoader.load();
-        ChatDashboardController controller = fxmlLoader.getController();
+        MainViewController controller = fxmlLoader.getController();
         Stage stage = new Stage();
         stage.setTitle(LanguageManager.getString("title"));
 

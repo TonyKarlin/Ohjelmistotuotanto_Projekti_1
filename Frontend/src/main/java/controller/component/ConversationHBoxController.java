@@ -3,7 +3,7 @@ package controller.component;
 import java.io.IOException;
 import java.util.Objects;
 
-import controller.ChatDashboardController;
+import controller.MainViewController;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -18,11 +18,11 @@ import utils.ImageRounder;
 public class ConversationHBoxController {
 
     Conversation conversation;
-    ChatDashboardController parentController;
+    MainViewController parentController;
     ImageRounder imageRounder;
     User loggedInuser;
 
-    public void setController(Conversation conversation, ChatDashboardController parentController, User loggedInUser) {
+    public void setController(Conversation conversation, MainViewController parentController, User loggedInUser) {
         this.conversation = conversation;
         this.parentController = parentController;
         this.loggedInuser = loggedInUser;

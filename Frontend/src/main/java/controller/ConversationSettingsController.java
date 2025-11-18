@@ -33,13 +33,13 @@ public class ConversationSettingsController {
     User loggedInuser;
     Conversation Updatedconversation;
     Conversation conversation;
-    ChatDashboardController parentController;
+    MainViewController parentController;
     ConversationHBoxController conversationHBoxController;
     List<Contact> contacts;
     UIAlert alert = new UIAlert();
 
     public void setController(User loggedInuser, Conversation conversation,
-            ChatDashboardController parentController,
+            MainViewController parentController,
             ConversationHBoxController conversationHBoxController, List<Contact> contacts) throws IOException {
 
         this.loggedInuser = loggedInuser;
@@ -116,7 +116,8 @@ public class ConversationSettingsController {
             if (p.getUserId() == loggedInuser.getId()) {
                 continue; // skip yourself
 
-                        }FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/component/conversationParticipantHBox.fxml"));
+            }
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/component/conversationParticipantHBox.fxml"));
             ResourceBundle bundle = ResourceBundle.getBundle("localization.LanguageBundle", LanguageManager.getCurrentLocale());
             fxmlLoader.setResources(bundle);
             HBox participantHBox = fxmlLoader.load();

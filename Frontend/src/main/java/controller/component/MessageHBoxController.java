@@ -1,6 +1,10 @@
 package controller.component;
 
-import controller.ChatDashboardController;
+import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
+import controller.MainViewController;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuButton;
@@ -15,23 +19,19 @@ import request.MessageRequest;
 import service.MessageApiClient;
 import utils.ImageRounder;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-
-import java.io.IOException;
-
 @Data
 public class MessageHBoxController {
+
     private int id;
     private int senderId;
     private int conversationId;
-    private ChatDashboardController parentController;
+    private MainViewController parentController;
     private ImageRounder imagerounder;
 
     private Message message;
     private Conversation conversation;
 
-    public void setController(Message message, ChatDashboardController parentController, Conversation conversation) {
+    public void setController(Message message, MainViewController parentController, Conversation conversation) {
         this.message = message;
         this.parentController = parentController;
         this.conversation = conversation;
@@ -89,7 +89,6 @@ public class MessageHBoxController {
         editTextField.setText(text);
     }
 
-
     public void setMessageInformation(String text, String createdAt, String senderUsername) {
         messageLabel.setText(text);
         senderUsernameLabel.setText(senderUsername);
@@ -115,7 +114,6 @@ public class MessageHBoxController {
         }
     }
 
-
     @FXML
     public void modifyMessage() throws IOException, InterruptedException {
         String token = parentController.getLoggedInUser().getToken();
@@ -126,9 +124,9 @@ public class MessageHBoxController {
         if (updatedMessage != null) {
             this.message = updatedMessage;
             setMessageInformation(message.getText(), message.getCreatedAt(), message.getSenderUsername());
-        }else {
+        } else {
             System.out.println("Message modification failed on server");
         }
 
-}
+    }
 }
