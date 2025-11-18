@@ -27,6 +27,7 @@ public class ConversationService {
 
     private final ConversationRepository conversationRepository;
     private final UserService userService;
+    private static final String CONVERSATION_NOT_FOUND = "Conversation not found with id: ";
 
     public ConversationService(ConversationRepository conversationRepository, UserService userService) {
         this.conversationRepository = conversationRepository;
@@ -52,7 +53,6 @@ public class ConversationService {
     public void validateOwnership(User user, Long conversationId) {
         Conversation conversation = getConversationById(conversationId);
         ParticipantRole role = conversation.getParticipantRole(user);
-        System.out.println("User Role: " + role);
         if (role != ParticipantRole.OWNER && role != ParticipantRole.ADMIN) {
             throw new UnauthorizedActionException("User does not have permission to perform this action");
         }
@@ -60,7 +60,7 @@ public class ConversationService {
 
     public Conversation getConversationById(Long id) {
         return conversationRepository.findById(id).orElseThrow(()
-                -> new ConversationNotFoundException("Conversation not found with id: " + id));
+                -> new ConversationNotFoundException(CONVERSATION_NOT_FOUND + id));
     }
 
     public List<Conversation> getConversationsByUserId(Long userId) {
@@ -73,7 +73,7 @@ public class ConversationService {
 
     public Conversation updateConversation(Long conversationId, ConversationRequest request) {
         Conversation conversation = conversationRepository.findById(conversationId).orElseThrow(()
-                -> new ConversationNotFoundException("Conversation not found with id: " + conversationId));
+                -> new ConversationNotFoundException(CONVERSATION_NOT_FOUND + conversationId));
 
         if (conversation.isPrivate()) {
             throw new PrivateConversationException("Cannot update a private conversation");
@@ -88,7 +88,7 @@ public class ConversationService {
     public void addUserToConversation(Long conversationId, Long userId) {
         Conversation conversation = conversationRepository.findById(conversationId).orElse(null);
         if (conversation == null) {
-            throw new ConversationNotFoundException("Conversation not found with id: " + conversationId);
+            throw new ConversationNotFoundException(CONVERSATION_NOT_FOUND + conversationId);
         }
 
         if (conversation.isPrivate()) {
@@ -110,7 +110,7 @@ public class ConversationService {
     public boolean removeUserFromConversation(Long conversationId, Long userId) {
         Conversation conversation = conversationRepository.findById(conversationId).orElse(null);
         if (conversation == null) {
-            throw new ConversationNotFoundException("Conversation not found with id: " + conversationId);
+            throw new ConversationNotFoundException(CONVERSATION_NOT_FOUND + conversationId);
         }
 
         if (conversation.isPrivate()) {
@@ -127,7 +127,7 @@ public class ConversationService {
     public void leaveConversation(Long conversationId, Long userId) {
         Conversation conversation = conversationRepository.findById(conversationId).orElse(null);
         if (conversation == null) {
-            throw new ConversationNotFoundException("Conversation not found with id: " + conversationId);
+            throw new ConversationNotFoundException(CONVERSATION_NOT_FOUND + conversationId);
         }
 
         if (!conversation.isParticipant(userId)) {
@@ -232,7 +232,7 @@ public class ConversationService {
 
     public void deleteConversation(Long conversationId, Long requesterId) {
         Conversation conversation = conversationRepository.findById(conversationId)
-                .orElseThrow(() -> new ConversationNotFoundException("Conversation not found with id: " + conversationId));
+                .orElseThrow(() -> new ConversationNotFoundException(CONVERSATION_NOT_FOUND + conversationId));
 
         if (conversation.isPrivate()) {
             throw new PrivateConversationException("Cannot delete a private conversation");
