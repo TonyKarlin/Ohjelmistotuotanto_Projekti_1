@@ -25,8 +25,8 @@ public class User {
     @Column(nullable = false, unique = true)
     private String username;
 
-    @Column(nullable = true)
-    private String password; // hashattu
+    @Column
+    private String password;
 
     @Column(nullable = false, unique = true)
     private String email;
@@ -52,9 +52,6 @@ public class User {
         this.profilePicture = profilePicture;
     }
 
-//    @ManyToMany(mappedBy = "participants")
-//    @JsonIgnore
-//    private List<Conversation> conversations = new ArrayList<>();
     public User() {
     }
 
@@ -118,14 +115,6 @@ public class User {
         this.language = language;
     }
 
-
-    //    public List<Conversation> getConversations() {
-//        return conversations;
-//    }
-//
-//    public void setConversations(List<Conversation> conversations) {
-//        this.conversations = conversations;
-//    }
     public List<Contacts> getContacts() {
         return contacts;
     }

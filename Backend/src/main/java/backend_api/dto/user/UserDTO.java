@@ -10,7 +10,7 @@ public class UserDTO {
     private final String profilePictureUrl;
     private final String language;
 
-    public UserDTO(User user, String language) {
+    public UserDTO(User user) {
         this.id = user.getId();
         this.username = user.getUsername();
         this.email = user.getEmail();
@@ -18,10 +18,6 @@ public class UserDTO {
                 ? "http://localhost:8081/uploads/" + user.getProfilePicture()
                 : "http://localhost:8081/uploads/default.png";
         this.language = user.getLanguage();
-    }
-
-    public UserDTO(User user) {
-        this(user, user.getLanguage());
     }
 
     public Long getId() {
