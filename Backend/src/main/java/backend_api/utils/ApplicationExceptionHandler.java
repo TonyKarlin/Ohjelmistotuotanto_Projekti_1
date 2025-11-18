@@ -1,14 +1,23 @@
 package backend_api.utils;
 
-import backend_api.utils.customexceptions.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-import java.lang.IllegalArgumentException;
-import java.util.HashMap;
-import java.util.Map;
+import backend_api.utils.customexceptions.BadMessageRequestException;
+import backend_api.utils.customexceptions.ContactAlreadyExistsException;
+import backend_api.utils.customexceptions.ContactNotFoundException;
+import backend_api.utils.customexceptions.ConversationNotFoundException;
+import backend_api.utils.customexceptions.InvalidContactRequestException;
+import backend_api.utils.customexceptions.InvalidConversationRequestException;
+import backend_api.utils.customexceptions.InvalidStatusException;
+import backend_api.utils.customexceptions.InvalidUserException;
+import backend_api.utils.customexceptions.MessageNotFoundException;
+import backend_api.utils.customexceptions.PrivateConversationException;
+import backend_api.utils.customexceptions.UnauthorizedActionException;
+import backend_api.utils.customexceptions.UserAlreadyParticipantException;
+import backend_api.utils.customexceptions.UserNotFoundException;
 
 @ControllerAdvice
 public class ApplicationExceptionHandler {
@@ -87,4 +96,3 @@ public class ApplicationExceptionHandler {
     }
 
 }
-
