@@ -1,20 +1,19 @@
 package controller.component;
 
+import java.io.IOException;
+import java.util.Objects;
+
 import controller.ChatDashboardController;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Circle;
 import model.Conversation;
 import model.ConversationParticipant;
 import model.User;
 import utils.ImageRounder;
-
-import java.io.IOException;
-import java.util.Objects;
 
 public class ConversationHBoxController {
 
@@ -31,7 +30,6 @@ public class ConversationHBoxController {
         setConversationInformation(conversation);
     }
 
-
     //region FXML-injected UI components
     @FXML
     private ImageView conversationProfilePicture;
@@ -43,7 +41,6 @@ public class ConversationHBoxController {
     private Button conversationSettingsButton;
     //endregion
 
-
     public void setConversationInformation(Conversation conversation) {
         if (Objects.equals(conversation.getType(), "PRIVATE")) {
             for (ConversationParticipant p : conversation.getParticipants()) {
@@ -52,7 +49,9 @@ public class ConversationHBoxController {
                     break;
                 }
             }
-        } else conversationName.setText(conversation.getName());
+        } else {
+            conversationName.setText(conversation.getName());
+        }
     }
 
     public void setUserImage(Image image) {

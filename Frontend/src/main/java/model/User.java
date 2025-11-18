@@ -1,6 +1,5 @@
 package model;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 //When register or login creates User Object from the Json Data
@@ -30,6 +29,5 @@ public class User {
         this.password = password;
         this.language = "en";
     }
-
 
 }

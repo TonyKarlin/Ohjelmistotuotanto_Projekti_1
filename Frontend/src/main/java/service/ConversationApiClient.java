@@ -8,7 +8,6 @@ import request.ConversationRequest;
 import utils.ApiUrl;
 
 import java.util.List;
-import java.util.logging.Logger;
 
 public class ConversationApiClient implements ApiClient {
 
@@ -16,15 +15,15 @@ public class ConversationApiClient implements ApiClient {
     String stringResponse = ", Response: ";
 
     public Conversation createConversation(ConversationRequest conversationRequest, String token) throws JsonProcessingException {
-            String conversationUrl = baseUrl;
-            ApiResponse response = sendPostRequestWithToken(conversationUrl, conversationRequest, token);
-            if (response.isSuccess()) {
-                return objectMapper.readValue(response.body, Conversation.class);
-            } else {
-                System.out.println("Failed to start conversation. Status: " + response.statusCode
-                        + stringResponse + response.body);
-                return null;
-            }
+        String conversationUrl = baseUrl;
+        ApiResponse response = sendPostRequestWithToken(conversationUrl, conversationRequest, token);
+        if (response.isSuccess()) {
+            return objectMapper.readValue(response.body, Conversation.class);
+        } else {
+            System.out.println("Failed to start conversation. Status: " + response.statusCode
+                    + stringResponse + response.body);
+            return null;
+        }
     }
 
     public Conversation changeConversationName(ConversationRequest request) throws JsonProcessingException {
@@ -71,7 +70,8 @@ public class ConversationApiClient implements ApiClient {
         } else {
             System.out.println("Failed to delete conversation. Status: " + response.statusCode
                     + stringResponse + response.body);
-        }return false;
+        }
+        return false;
     }
 
     public boolean removeUserFromConversation(int participantId, int conversationId, String token) throws JsonProcessingException {
@@ -87,7 +87,7 @@ public class ConversationApiClient implements ApiClient {
     }
 
     public List<Conversation> getAllUserConversations(User user) throws JsonProcessingException {
-        String url = baseUrl +"/user/me";
+        String url = baseUrl + "/user/me";
         String token = user.getToken();
         ApiResponse response = sendGetRequest(url, token);
         if (response.isSuccess()) {

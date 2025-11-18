@@ -1,5 +1,7 @@
 package controller.component;
 
+import java.io.IOException;
+
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -12,9 +14,6 @@ import model.ConversationParticipant;
 import model.User;
 import request.ConversationRequest;
 import service.ConversationApiClient;
-
-import java.io.IOException;
-import java.util.List;
 
 public class ConversationParticipantHBoxController {
 
@@ -53,7 +52,7 @@ public class ConversationParticipantHBoxController {
 
     @FXML
     public void removeParticipantFromConversation() throws IOException, InterruptedException {
-        boolean success = conversationApiClient.removeUserFromConversation(participant.getUserId(),conversation.getId(), loggedInuser.getToken());
+        boolean success = conversationApiClient.removeUserFromConversation(participant.getUserId(), conversation.getId(), loggedInuser.getToken());
         if (success) {
             listView.getItems().remove(hbox);
             conversation.getParticipants().remove(participant);

@@ -1,6 +1,6 @@
+package fronttest;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -9,7 +9,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import model.Contact;
 import model.Conversation;
 import model.ConversationParticipant;
 import model.User;
@@ -67,7 +66,6 @@ public class ConversationApiClientTest {
 //            System.out.println("This is likely due to backend connectivity issues");
 //        }
 //    }
-
     /**
      * Tests updating the name of an existing conversation.
      */
@@ -100,7 +98,7 @@ public class ConversationApiClientTest {
                 System.out.println("- User doesn't have permission to update this conversation");
                 System.out.println("- Database connectivity issues");
             }
-        } catch (IOException  e) {
+        } catch (IOException e) {
             System.out.println("Exception during conversation name update: " + e.getMessage());
             System.out.println("This is likely due to backend connectivity issues");
         }
@@ -131,7 +129,6 @@ public class ConversationApiClientTest {
 //            System.out.println("- Database connectivity issues");
 //        }
 //    }
-
     /**
      * Tests a user leaving a conversation.
      */
@@ -170,7 +167,7 @@ public class ConversationApiClientTest {
             System.out.println("Delete conversation request sent successfully");
             System.out.println("Conversation ID: " + conversation.getId() + " deleted by user ID: " + user.getId());
 
-        } catch (IOException  e) {
+        } catch (IOException e) {
             System.out.println("Exception during conversation deletion: " + e.getMessage());
             System.out.println("Possible causes:");
             System.out.println("- Backend server not running");
@@ -245,7 +242,7 @@ public class ConversationApiClientTest {
                 System.out.println("- User ID 1 doesn't exist");
                 System.out.println("- Database connectivity issues");
             }
-        } catch (IOException  e) {
+        } catch (IOException e) {
             System.out.println("Exception during conversation retrieval: " + e.getMessage());
             System.out.println("This is likely due to backend connectivity issues");
         }
@@ -284,7 +281,7 @@ public class ConversationApiClientTest {
                 System.out.println("- Database connectivity issues");
                 System.out.println("- API endpoint not accessible");
             }
-        } catch (IOException  e) {
+        } catch (IOException e) {
             System.out.println("Exception during all conversations retrieval: " + e.getMessage());
             System.out.println("This is likely due to backend connectivity issues");
         }

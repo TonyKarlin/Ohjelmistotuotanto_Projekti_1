@@ -9,13 +9,11 @@ import request.MessageRequest;
 import utils.ApiUrl;
 
 import java.util.List;
-import java.util.logging.Logger;
 
 public class MessageApiClient implements ApiClient {
 
     String baseUrl = ApiUrl.getApiUrl() + "/conversations";
     String stringResponse = ", Response: ";
-
 
     public Message sendMessage(MessageRequest request) throws JsonProcessingException {
         String messageUrl = baseUrl + "/" + request.getConversationId() + "/messages";
@@ -31,8 +29,8 @@ public class MessageApiClient implements ApiClient {
     }
 
     public Message modifyMessage(MessageRequest request, int messageId) throws JsonProcessingException {
-        String messageUrl = baseUrl + "/" + request.getConversationId() +
-                "/messages/" + messageId;
+        String messageUrl = baseUrl + "/" + request.getConversationId()
+                + "/messages/" + messageId;
         String token = request.getToken();
         ApiResponse response = sendPutRequestWithObjectAndToken(messageUrl, request, token);
         if (response.isSuccess()) {

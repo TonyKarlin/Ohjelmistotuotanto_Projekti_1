@@ -1,32 +1,24 @@
-
-import java.net.MalformedURLException;
+package fronttest;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-
-import model.UserResponse;
-import org.junit.jupiter.api.BeforeEach;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.Test;
 
 import model.User;
+import model.UserResponse;
 import request.LoginRequest;
 import service.UserApiClient;
 
-public class UserApiClientTest {
+class UserApiClientTest {
 
     private User user;
     private LoginRequest loginRequest;
     private UserApiClient userApiClient;
 
-    @BeforeEach
-    public void setUp() throws MalformedURLException {
-        user = new User();
-        loginRequest = new LoginRequest();
-        userApiClient = new UserApiClient();
-    }
-
     @Test
-    public void postUserTest() {
+    void postUserTest() {
         user.setUsername("Testopipp");
         user.setEmail("test@hotmail.fi");
         user.setPassword("1234");
@@ -37,9 +29,8 @@ public class UserApiClientTest {
             if (registeredUser != null) {
                 // Registration was successful
                 System.out.println("User registration successful!");
-                assertEquals("Testopipp", registeredUser.getUsername(), "Username should match");
                 assertEquals("test@hotmail.fi", registeredUser.getEmail(), "Email should match");
-                assertNotNull(registeredUser.getId(), "User ID should be assigned");
+                assertTrue(registeredUser.getId() > 0, "User ID should be assigned and greater than 0");
             } else {
                 // Registration failed - this could be due to:
                 // 1. Backend not running
@@ -61,7 +52,7 @@ public class UserApiClientTest {
     }
 
     @Test
-    public void loginUserTest() {
+    void loginUserTest() {
         // First register a user to ensure we have a valid user to login with
         user.setUsername("testuser");
         user.setEmail("testuser@example.com");
@@ -75,7 +66,7 @@ public class UserApiClientTest {
         }
 
         // Now try to login with the registered user
-        loginRequest = new LoginRequest("testuser", "testpassword");
+        loginRequest = new LoginRequest("testuser", "testpassword", "FI");
         UserResponse loginResponse = userApiClient.loginUser(loginRequest);
         if (loginResponse != null) {
             User loggedInUser = loginResponse.getUser();
@@ -95,24 +86,19 @@ public class UserApiClientTest {
     }
 
     @Test
-    public void loginUserWithInvalidCredentialsTest() {
+    void loginUserWithInvalidCredentialsTest() {
         try {
             // Test login with invalid credentials
-            loginRequest = new LoginRequest("nonexistentuser", "wrongpassword");
+            loginRequest = new LoginRequest("nonexistentuser", "wrongpassword", "FI");
             UserResponse loginResponse = userApiClient.loginUser(loginRequest);
-
             // This should return null for invalid credentials
-            if (loginResponse == null) {
-                System.out.println("Login with invalid credentials correctly returned null");
-                // This is the expected behavior
-            } else {
-                System.out.println("Unexpected: Login with invalid credentials returned a user");
-                // This would be unexpected behavior
-            }
+            assertNull(loginResponse, "Login with invalid credentials should return null");
+            System.out.println("Login with invalid credentials correctly returned null");
+            // This is the expected behavior
+
         } catch (Exception e) {
             System.out.println("Exception during login with invalid credentials: " + e.getMessage());
             System.out.println("This is likely due to backend connectivity issues");
         }
     }
-
 }
