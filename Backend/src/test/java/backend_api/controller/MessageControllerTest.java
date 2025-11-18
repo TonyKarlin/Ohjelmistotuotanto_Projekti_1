@@ -9,14 +9,14 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 
-import backend_api.DTOs.messages.MessageDTO;
 import backend_api.controller.messaging.MessageController;
+import backend_api.dto.messages.MessageDTO;
 import backend_api.entities.Conversation;
 import backend_api.entities.Message;
 import backend_api.entities.User;
 import backend_api.services.MessageService;
-import org.springframework.security.core.Authentication;
 
 public class MessageControllerTest {
 

@@ -1,21 +1,25 @@
 package backend_api.services;
 
-import backend_api.DTOs.conversations.ConversationRequest;
-import backend_api.DTOs.messages.SendMessageRequest;
-import backend_api.entities.*;
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.stereotype.Service;
+
+import backend_api.dto.messages.SendMessageRequest;
+import backend_api.entities.Conversation;
+import backend_api.entities.Message;
+import backend_api.entities.MessageContent;
+import backend_api.entities.User;
 import backend_api.repository.MessageRepository;
 import backend_api.utils.customexceptions.InvalidConversationRequestException;
 import backend_api.utils.customexceptions.MessageNotFoundException;
 import backend_api.utils.customexceptions.UnauthorizedActionException;
 import jakarta.transaction.Transactional;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional
 public class MessageService {
+
     private final MessageRepository messageRepository;
     private final ConversationService conversationService;
     private final UserService userService;
@@ -44,7 +48,6 @@ public class MessageService {
         return message;
     }
 
-
     public Message createMessage(SendMessageRequest request, Conversation conversation) {
         Message message = setNewMessage(request, conversation);
 
@@ -54,7 +57,6 @@ public class MessageService {
         }
         return message;
     }
-
 
     public Message sendMessage(SendMessageRequest request, User sender) {
         if (!request.conversationExists()) {
@@ -69,7 +71,6 @@ public class MessageService {
         return createAndSaveMessage(request, conversation);
     }
 
-
     private Message createAndSaveMessage(SendMessageRequest request, Conversation conversation) {
         // Validate that sender is part of the conversation
         User sender = userService.getUserOrThrow(request.getSenderId());
@@ -83,8 +84,8 @@ public class MessageService {
     }
 
     public Message editMessage(Long conversationId, Long messageId, Long userId, String newText) {
-        Message message = messageRepository.findById(messageId).orElseThrow(() ->
-                new MessageNotFoundException("Message not found with id: " + messageId));
+        Message message = messageRepository.findById(messageId).orElseThrow(()
+                -> new MessageNotFoundException("Message not found with id: " + messageId));
 
         if (!message.getSender().getId().equals(userId)) {
             throw new UnauthorizedActionException("You are not allowed to edit this message");
@@ -97,7 +98,6 @@ public class MessageService {
         message.setText(newText);
         return messageRepository.save(message);
     }
-
 
     public List<Message> getMessagesByConversationId(Long conversationId, User user) {
         // Varmistetaan että id on olemassa ja käytetään sitä
@@ -119,7 +119,6 @@ public class MessageService {
         }
         return messageRepository.findByIdAndConversationId(messageId, conversationId);
     }
-
 
     public void deleteMessage(Long userId, Long messageId, Long conversationId) {
         Message message = messageRepository.findById(messageId)

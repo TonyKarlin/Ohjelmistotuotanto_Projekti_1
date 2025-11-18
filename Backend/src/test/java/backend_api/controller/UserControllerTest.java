@@ -4,14 +4,13 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-
-import backend_api.DTOs.user.UserDTO;
-import backend_api.controller.users.UserController;
 import org.junit.jupiter.api.Test;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import org.springframework.http.ResponseEntity;
 
+import backend_api.controller.users.UserController;
+import backend_api.dto.user.UserDTO;
 import backend_api.entities.User;
 import backend_api.services.UserService;
 

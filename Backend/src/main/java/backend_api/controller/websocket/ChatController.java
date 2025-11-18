@@ -1,16 +1,20 @@
 package backend_api.controller.websocket;
 
-import backend_api.DTOs.messages.*;
-import backend_api.entities.Message;
-import backend_api.entities.User;
-import backend_api.services.MessageService;
-import backend_api.services.UserService;
+import java.security.Principal;
+import java.util.Optional;
+
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 
-import java.security.Principal;
-import java.util.Optional;
+import backend_api.dto.messages.DeleteMessageDTO;
+import backend_api.dto.messages.EditMessageDTO;
+import backend_api.dto.messages.MessageDTO;
+import backend_api.dto.messages.SendMessageRequest;
+import backend_api.entities.Message;
+import backend_api.entities.User;
+import backend_api.services.MessageService;
+import backend_api.services.UserService;
 
 @Controller
 public class ChatController {
@@ -52,7 +56,6 @@ public class ChatController {
 
         messagingTemplate.convertAndSend("/topic/conversations/" + request.getConversationId(), dto);
     }
-
 
     @MessageMapping("/chat.deleteMessage")
     public void deleteMessage(DeleteMessageDTO request) {

@@ -6,16 +6,16 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.Optional;
 
-import backend_api.DTOs.user.UpdateUserRequest;
-import backend_api.utils.customexceptions.InvalidUserException;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import backend_api.dto.user.UpdateUserRequest;
 import backend_api.entities.User;
 import backend_api.repository.UserRepository;
-import org.springframework.web.multipart.MultipartFile;
+import backend_api.utils.customexceptions.InvalidUserException;
 
 @Service
 public class UserService {
@@ -134,7 +134,6 @@ public class UserService {
         String filename = id + "_" + System.currentTimeMillis() + "_" + file.getOriginalFilename();
         File destination = new File(uploadDir + File.separator + filename);
         file.transferTo(destination);
-
 
         user.setProfilePicture(filename);
 

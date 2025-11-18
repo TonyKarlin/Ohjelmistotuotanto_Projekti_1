@@ -1,10 +1,9 @@
 package backend_api.controller.messaging;
 
-
-import backend_api.DTOs.messages.EditMessageTextRequest;
-import backend_api.DTOs.messages.MessageDTO;
-import backend_api.DTOs.messages.MessageResponse;
-import backend_api.DTOs.messages.SendMessageRequest;
+import backend_api.dto.messages.EditMessageTextRequest;
+import backend_api.dto.messages.MessageDTO;
+import backend_api.dto.messages.MessageResponse;
+import backend_api.dto.messages.SendMessageRequest;
 import backend_api.entities.Message;
 import backend_api.entities.User;
 import backend_api.services.MessageService;
@@ -20,12 +19,12 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/conversations/{conversationId}/messages")
 public class MessageController {
+
     private final MessageService messageService;
 
     public MessageController(MessageService messageService) {
         this.messageService = messageService;
     }
-
 
     @PostMapping
     public ResponseEntity<MessageDTO> sendMessage(
@@ -34,7 +33,6 @@ public class MessageController {
             Authentication authentication) {
 
         User authUser = (User) authentication.getPrincipal();
-
 
         request.setConversationId(conversationId);
         Message message = messageService.sendMessage(request, authUser);
@@ -68,8 +66,8 @@ public class MessageController {
 
     @GetMapping("/{messageId}")
     public ResponseEntity<MessageDTO> getMessageById(@PathVariable("conversationId") Long conversationId,
-                                                     @PathVariable("messageId") Long messageId,
-                                                     Authentication authentication) {
+            @PathVariable("messageId") Long messageId,
+            Authentication authentication) {
 
         User authUser = (User) authentication.getPrincipal();
         Optional<Message> messageOptional = messageService.getMessageByIdAndConversationId(messageId, conversationId, authUser);
@@ -83,9 +81,9 @@ public class MessageController {
 
     @PutMapping("/{messageId}")
     public ResponseEntity<?> editMessage(@PathVariable("messageId") Long messageId,
-                                         @PathVariable("conversationId") Long conversationId,
-                                         @RequestBody EditMessageTextRequest request,
-                                         Authentication authentication) {
+            @PathVariable("conversationId") Long conversationId,
+            @RequestBody EditMessageTextRequest request,
+            Authentication authentication) {
 
         User authUser = (User) authentication.getPrincipal();
         if (request.getText() == null || request.getText().trim().isEmpty()) {
@@ -96,11 +94,10 @@ public class MessageController {
         return ResponseEntity.ok(MessageDTO.fromMessageEntity(updatedMessage));
     }
 
-
     @DeleteMapping("/{messageId}")
     public ResponseEntity<MessageResponse> deleteMessage(@PathVariable("conversationId") Long conversationId,
-                                                         @PathVariable("messageId") Long messageId,
-                                                         Authentication authentication) {
+            @PathVariable("messageId") Long messageId,
+            Authentication authentication) {
 
         User authUser = (User) authentication.getPrincipal();
         messageService.deleteMessage(authUser.getId(), messageId, conversationId);
@@ -112,5 +109,3 @@ public class MessageController {
         return ResponseEntity.ok(response);
     }
 }
-
-

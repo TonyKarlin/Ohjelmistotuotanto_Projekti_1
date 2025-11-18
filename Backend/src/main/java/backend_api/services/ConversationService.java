@@ -1,7 +1,11 @@
 package backend_api.services;
 
-import backend_api.DTOs.conversations.ConversationRequest;
-import backend_api.DTOs.messages.SendMessageRequest;
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+
+import backend_api.dto.conversations.ConversationRequest;
+import backend_api.dto.messages.SendMessageRequest;
 import backend_api.entities.Conversation;
 import backend_api.entities.ConversationParticipant;
 import backend_api.entities.ConversationParticipantId;
@@ -9,17 +13,18 @@ import backend_api.entities.User;
 import backend_api.enums.ConversationType;
 import backend_api.enums.ParticipantRole;
 import backend_api.repository.ConversationRepository;
-import backend_api.utils.customexceptions.*;
+import backend_api.utils.customexceptions.ConversationNotFoundException;
+import backend_api.utils.customexceptions.InvalidConversationRequestException;
+import backend_api.utils.customexceptions.PrivateConversationException;
+import backend_api.utils.customexceptions.UnauthorizedActionException;
+import backend_api.utils.customexceptions.UserAlreadyParticipantException;
+import backend_api.utils.customexceptions.UserNotFoundException;
 import jakarta.transaction.Transactional;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 @Transactional
 public class ConversationService {
+
     private final ConversationRepository conversationRepository;
     private final UserService userService;
 
@@ -54,8 +59,8 @@ public class ConversationService {
     }
 
     public Conversation getConversationById(Long id) {
-        return conversationRepository.findById(id).orElseThrow(() ->
-                new ConversationNotFoundException("Conversation not found with id: " + id));
+        return conversationRepository.findById(id).orElseThrow(()
+                -> new ConversationNotFoundException("Conversation not found with id: " + id));
     }
 
     public List<Conversation> getConversationsByUserId(Long userId) {
@@ -67,8 +72,8 @@ public class ConversationService {
     }
 
     public Conversation updateConversation(Long conversationId, ConversationRequest request) {
-        Conversation conversation = conversationRepository.findById(conversationId).orElseThrow(() ->
-                new ConversationNotFoundException("Conversation not found with id: " + conversationId));
+        Conversation conversation = conversationRepository.findById(conversationId).orElseThrow(()
+                -> new ConversationNotFoundException("Conversation not found with id: " + conversationId));
 
         if (conversation.isPrivate()) {
             throw new PrivateConversationException("Cannot update a private conversation");
@@ -80,7 +85,6 @@ public class ConversationService {
         return conversationRepository.save(conversation);
     }
 
-
     public void addUserToConversation(Long conversationId, Long userId) {
         Conversation conversation = conversationRepository.findById(conversationId).orElse(null);
         if (conversation == null) {
@@ -91,8 +95,8 @@ public class ConversationService {
             throw new PrivateConversationException("Cannot add user to a private conversation");
         }
 
-        User user = userService.getUserById(userId).orElseThrow(() ->
-                new UserNotFoundException("User not found with id: " + userId));
+        User user = userService.getUserById(userId).orElseThrow(()
+                -> new UserNotFoundException("User not found with id: " + userId));
 
         if (isAlreadyParticipant(conversation, user)) {
             throw new UserAlreadyParticipantException("User is already a participant in the conversation");
@@ -127,24 +131,24 @@ public class ConversationService {
         }
 
         if (!conversation.isParticipant(userId)) {
-            throw new InvalidConversationRequestException("User with id " + userId +
-                    " is not a participant in the conversation " + conversationId);
+            throw new InvalidConversationRequestException("User with id " + userId
+                    + " is not a participant in the conversation " + conversationId);
         }
 
         if (conversation.isPrivate()) {
-            throw new PrivateConversationException("Cannot leave a private conversation. " +
-                    "Friends must be removed instead.");
+            throw new PrivateConversationException("Cannot leave a private conversation. "
+                    + "Friends must be removed instead.");
         }
 
-        boolean removed = conversation.getParticipants().removeIf(participant ->
-                participant.getUser().getId().equals(userId));
+        boolean removed = conversation.getParticipants().removeIf(participant
+                -> participant.getUser().getId().equals(userId));
 
         if (removed) {
             conversationRepository.save(conversation);
 
         } else {
-            throw new InvalidConversationRequestException("User with id " + userId +
-                    " cannot leave the conversation " + conversationId);
+            throw new InvalidConversationRequestException("User with id " + userId
+                    + " cannot leave the conversation " + conversationId);
         }
     }
 
@@ -167,7 +171,6 @@ public class ConversationService {
             request.getParticipantIds().add(request.getCreatorId());
         }
     }
-
 
     private Conversation createPrivateConversation(User user, User contactUser) {
         // Creates a private conversation between two users with both as admins
@@ -202,7 +205,6 @@ public class ConversationService {
             ParticipantRole role = user.getId().equals(creatorId) ? ParticipantRole.OWNER : ParticipantRole.MEMBER;
             createParticipant(conversation, user, role);
         }
-
 
         return conversationRepository.save(conversation);
     }
