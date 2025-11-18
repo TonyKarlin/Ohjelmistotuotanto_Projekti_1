@@ -191,6 +191,20 @@ All tests are executed automatically in the Jenkins pipeline, with results and c
 docker-compose up -d
 ```
 
+## SonarQube
+
+SonarQube analysis for both Backend and Frontend.
+
+```cmd
+cd .\Backend\
+sonar-scanner
+```
+
+```cmd
+cd .\Frontend\
+sonar-scanner
+```
+
 ## Future development
 
 - Implement live chatting and possible voice calls.
