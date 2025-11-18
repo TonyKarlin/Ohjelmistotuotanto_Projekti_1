@@ -1,6 +1,6 @@
 # File created using '.gitignore Generator' for Visual Studio Code: https://bit.ly/vscode-gig
-# Created by https://www.toptal.com/developers/gitignore/api/windows,visualstudiocode,dotenv,java,maven
-# Edit at https://www.toptal.com/developers/gitignore?templates=windows,visualstudiocode,dotenv,java,maven
+# Created by https://www.toptal.com/developers/gitignore/api/windows,visualstudiocode,maven,java,dotenv,sonar,sonarqube
+# Edit at https://www.toptal.com/developers/gitignore?templates=windows,visualstudiocode,maven,java,dotenv,sonar,sonarqube
 
 ### dotenv ###
 .env
@@ -38,10 +38,6 @@ pom.xml.releaseBackup
 pom.xml.versionsBackup
 pom.xml.next
 release.properties
-
-# Ignore build output folders for both modules
-Backend/target/
-Frontend/target/
 dependency-reduced-pom.xml
 buildNumber.properties
 .mvn/timing.properties
@@ -53,6 +49,23 @@ buildNumber.properties
 .project
 # JDT-specific (Eclipse Java Development Tools)
 .classpath
+
+### Sonar ###
+#Sonar generated dir
+/.sonar/
+
+### SonarQube ###
+# SonarQube ignore files.
+#
+# https://docs.sonarqube.org/display/SCAN/Analyzing+with+SonarQube+Scanner
+# Sonar Scanner working directories
+.sonar/
+.sonarqube/
+.scannerwork/
+
+# http://www.sonarlint.org/commandline/
+# SonarLint working directories, configuration files (including credentials)
+.sonarlint/
 
 ### VisualStudioCode ###
 .vscode/*
@@ -99,7 +112,7 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
-# End of https://www.toptal.com/developers/gitignore/api/windows,visualstudiocode,dotenv,java,maven
+# End of https://www.toptal.com/developers/gitignore/api/windows,visualstudiocode,maven,java,dotenv,sonar,sonarqube
 
 # Custom rules (everything added below won't be overriden by 'Generate .gitignore File' if you use 'Update' option)
 
