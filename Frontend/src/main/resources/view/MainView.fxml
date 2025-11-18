@@ -71,7 +71,7 @@
          <center>
             <ScrollPane fitToHeight="true" fitToWidth="true" BorderPane.alignment="CENTER">
                <content>
-                  <VBox fx:id="VBoxContentPane" alignment="TOP_CENTER" />
+                  <VBox fx:id="vBoxContentPane" alignment="TOP_CENTER" />
                </content>
                <BorderPane.margin>
                   <Insets />

@@ -7,12 +7,16 @@ import model.User;
 import request.ConversationRequest;
 import utils.ApiUrl;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class ConversationApiClient implements ApiClient {
 
     String baseUrl = ApiUrl.getApiUrl() + "/conversations";
     String stringResponse = ", Response: ";
+    private static final Logger logger = Logger.getLogger(ConversationApiClient.class.getName());
 
     public Conversation createConversation(ConversationRequest conversationRequest, String token) throws JsonProcessingException {
         String conversationUrl = baseUrl;
@@ -20,8 +24,13 @@ public class ConversationApiClient implements ApiClient {
         if (response.isSuccess()) {
             return objectMapper.readValue(response.body, Conversation.class);
         } else {
-            System.out.println("Failed to start conversation. Status: " + response.statusCode
-                    + stringResponse + response.body);
+            if (logger.isLoggable(Level.INFO)) {
+                logger.info(String.format(
+                        "Failed to start conversation. Status: %d, Response: %s",
+                        response.statusCode,
+                        response.body
+                ));
+            }
             return null;
         }
     }
@@ -32,8 +41,13 @@ public class ConversationApiClient implements ApiClient {
         if (response.isSuccess()) {
             return objectMapper.readValue(response.body, Conversation.class);
         }
-        System.out.println("Failed to change conversation name. Status: " + response.statusCode
-                + stringResponse + response.body);
+        if (logger.isLoggable(Level.INFO)) {
+            logger.info(String.format(
+                    "Failed to change conversation name. Status: %d, Response: %s",
+                    response.statusCode,
+                    response.body
+            ));
+        }
         return null;
     }
 
@@ -43,8 +57,13 @@ public class ConversationApiClient implements ApiClient {
         if (response.isSuccess()) {
             return true;
         } else {
-            System.out.println("Failed to add user to conversation. Status: " + response.statusCode
-                    + stringResponse + response.body);
+            if (logger.isLoggable(Level.INFO)) {
+                logger.info(String.format(
+                        "Failed to add user to conversation. Status: %d, Response: %s",
+                        response.statusCode,
+                        response.body
+                ));
+            }
             return false;
         }
     }
@@ -55,8 +74,13 @@ public class ConversationApiClient implements ApiClient {
         if (response.isSuccess()) {
             return true;
         } else {
-            System.out.println("Failed to leave conversation. Status: " + response.statusCode
-                    + stringResponse + response.body);
+            if (logger.isLoggable(Level.INFO)) {
+                logger.info(String.format(
+                        "Failed to leave conversation. Status: %d, Response: %s",
+                        response.statusCode,
+                        response.body
+                ));
+            }
             return false;
         }
     }
@@ -68,8 +92,13 @@ public class ConversationApiClient implements ApiClient {
         if (response.isSuccess()) {
             return true;
         } else {
-            System.out.println("Failed to delete conversation. Status: " + response.statusCode
-                    + stringResponse + response.body);
+            if (logger.isLoggable(Level.INFO)) {
+                logger.info(String.format(
+                        "Failed to delete conversation. Status: %d, Response: %s",
+                        response.statusCode,
+                        response.body
+                ));
+            }
         }
         return false;
     }
@@ -80,8 +109,13 @@ public class ConversationApiClient implements ApiClient {
         if (response.isSuccess()) {
             return true;
         } else {
-            System.out.println("Failed to remove User from conversation. Status: " + response.statusCode
-                    + stringResponse + response.body);
+            if (logger.isLoggable(Level.INFO)) {
+                logger.info(String.format(
+                        "Failed to remove User from conversation. Status: %d, Response: %s",
+                        response.statusCode,
+                        response.body
+                ));
+            }
             return false;
         }
     }
@@ -94,9 +128,14 @@ public class ConversationApiClient implements ApiClient {
             return objectMapper.readValue(response.body, new TypeReference<List<Conversation>>() {
             });
         } else {
-            System.out.println("Failed to get user conversations. Status: " + response.statusCode
-                    + stringResponse + response.body);
-            return null;
+            if (logger.isLoggable(Level.INFO)) {
+                logger.info(String.format(
+                        "Failed to get user conversations. Status: %d, Response: %s",
+                        response.statusCode,
+                        response.body
+                ));
+            }
+            return Collections.emptyList();
         }
 
     }
@@ -109,9 +148,14 @@ public class ConversationApiClient implements ApiClient {
             return objectMapper.readValue(response.body, new TypeReference<List<Conversation>>() {
             });
         } else {
-            System.out.println("Failed to get conversation by it's id. Status: " + response.statusCode
-                    + stringResponse + response.body);
-            return null;
+            if (logger.isLoggable(Level.INFO)) {
+                logger.info(String.format(
+                        "Failed to get conversation by its id. Status: %d, Response: %s",
+                        response.statusCode,
+                        response.body
+                ));
+            }
+            return Collections.emptyList();
         }
 
     }

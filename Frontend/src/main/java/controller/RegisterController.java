@@ -3,6 +3,7 @@ package controller;
 import java.io.IOException;
 import java.util.Locale;
 import java.util.ResourceBundle;
+import java.util.logging.Logger;
 
 import callback.LanguageChangeCallback;
 import controller.component.LanguageButtonController;
@@ -24,6 +25,7 @@ public class RegisterController implements LanguageChangeCallback {
 
     private UserApiClient userApiClient;
     private final UIAlert alert = new UIAlert();
+    private static final Logger logger = Logger.getLogger(RegisterController.class.getName());
 
 
     //Controller to set instances. Is called when changing to this view.
@@ -94,7 +96,7 @@ public class RegisterController implements LanguageChangeCallback {
             stage.setScene(new Scene(root));
             stage.setTitle(LanguageManager.getString("title"));
         } catch (IOException e) {
-            System.err.println("Failed to reload view with new language: " + e.getMessage());
+            logger.info("Failed to reload view with new language: " + e.getMessage());
         }
     }
 
@@ -119,35 +121,37 @@ public class RegisterController implements LanguageChangeCallback {
         String email = emailTextField.getText();
         String password = passwordField.getText();
         String repeatedPassword = repeatPasswordField.getText();
-       if (!checkTextFields(username, email, password)) {
+        if (!checkTextFields(username, email, password)) {
             return;
-       }
+        }
         if (!checkPassword(password, repeatedPassword)) {
             return;
         }
         try {
-            //creates user object from the user inputs
+
             Locale selectedLocale = languageButtonController.getSelectedLocale();
             String languageTag = selectedLocale.toLanguageTag();
             User user = new User(username, email, password);
             user.setLanguage(languageTag);
-            //Sends the user object to the server and creates another user from the backend response
-            User checkIfUserExist = userApiClient.registerUser(user);
-            //If response is not user information but response message, user is null so send this alert message
-            if (checkIfUserExist == null) {
-                alert.showErrorAlert(LanguageManager.getString("register_user_exists_title"), LanguageManager.getString("register_user_exists"));
-            } else {
-                // Registration successful, move to login view
-                try {
-                    alert.showSuccessAlert(LanguageManager.getString("register_success_title"), LanguageManager.getString("register_success"));
-                    moveToLoginView();
-                } catch (IOException e) {
-                    alert.showErrorAlert(LanguageManager.getString("register_error_title"), LanguageManager.getString("register_error"));
-                }
+            User createdUser = userApiClient.registerUser(user);
+            if (createdUser == null) {
+                alert.showErrorAlert(
+                        LanguageManager.getString("register_user_exists_title"),
+                        LanguageManager.getString("register_user_exists")
+                );
+                return;
             }
+            alert.showSuccessAlert(
+                    LanguageManager.getString("register_success_title"),
+                    LanguageManager.getString("register_success")
+            );
+            moveToLoginView();
 
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            alert.showErrorAlert(
+                    LanguageManager.getString("register_error_title"),
+                    LanguageManager.getString("register_error")
+            );
         }
     }
 

@@ -1,8 +1,10 @@
 package controller.component;
 
 import java.util.Locale;
+import java.util.logging.Logger;
 
 import callback.LanguageChangeCallback;
+import controller.ConversationSettingsController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -14,6 +16,8 @@ import utils.LanguageManager;
  * between different application languages.
  */
 public class LanguageButtonController {
+
+    private static final Logger logger = Logger.getLogger(LanguageButtonController.class.getName());
 
     @FXML
     private ComboBox<String> languageComboBox;
@@ -110,7 +114,7 @@ public class LanguageButtonController {
                 languageChangeCallback.onLanguageChanged(newLocale);
             }
 
-            System.out.println("Language changed to: " + selectedLanguage.getDisplayName());
+            logger.info("Language changed to: " + selectedLanguage.getDisplayName());
         }
     }
 

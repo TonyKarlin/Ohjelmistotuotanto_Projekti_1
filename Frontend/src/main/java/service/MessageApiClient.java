@@ -8,12 +8,16 @@ import model.User;
 import request.MessageRequest;
 import utils.ApiUrl;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class MessageApiClient implements ApiClient {
 
     String baseUrl = ApiUrl.getApiUrl() + "/conversations";
     String stringResponse = ", Response: ";
+    private static final Logger logger = Logger.getLogger(MessageApiClient.class.getName());
 
     public Message sendMessage(MessageRequest request) throws JsonProcessingException {
         String messageUrl = baseUrl + "/" + request.getConversationId() + "/messages";
@@ -22,8 +26,13 @@ public class MessageApiClient implements ApiClient {
         if ((response.isSuccess())) {
             return objectMapper.readValue(response.body, Message.class);
         } else {
-            System.out.println("Failed to Send a message. Status: "
-                    + response.statusCode + stringResponse + response.body);
+            if (logger.isLoggable(Level.INFO)) {
+                logger.info(String.format(
+                        "Failed to send a message. Status: %d, Response: %s",
+                        response.statusCode,
+                        response.body
+                ));
+            }
             return null;
         }
     }
@@ -36,8 +45,13 @@ public class MessageApiClient implements ApiClient {
         if (response.isSuccess()) {
             return objectMapper.readValue(response.body, Message.class);
         } else {
-            System.out.println("Failed to Modify  message. Status: "
-                    + response.statusCode + stringResponse + response.body);
+            if (logger.isLoggable(Level.INFO)) {
+                logger.info(String.format(
+                        "Failed to modify message. Status: %d, Response: %s",
+                        response.statusCode,
+                        response.body
+                ));
+            }
             return null;
         }
     }
@@ -50,9 +64,15 @@ public class MessageApiClient implements ApiClient {
             return objectMapper.readValue(response.body, new TypeReference<List<Message>>() {
             });
         } else {
-            System.out.println("Failed to get conversation: " + conversation.getId() + " "
-                    + "messages" + response.statusCode + stringResponse + response.body);
-            return null;
+            if (logger.isLoggable(Level.INFO)) {
+                logger.info(String.format(
+                        "Failed to get conversation %d messages. Status: %d, Response: %s",
+                        conversation.getId(),
+                        response.statusCode,
+                        response.body
+                ));
+            }
+            return Collections.emptyList();
         }
     }
 
@@ -62,8 +82,13 @@ public class MessageApiClient implements ApiClient {
         if ((response.isSuccess())) {
             return true;
         } else {
-            System.out.println("Failed to delete Message: "
-                    + response.statusCode + stringResponse + response.body);
+            if (logger.isLoggable(Level.INFO)) {
+                logger.info(String.format(
+                        "Failed to delete message. Status: %d, Response: %s",
+                        response.statusCode,
+                        response.body
+                ));
+            }
         }
         return false;
 

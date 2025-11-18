@@ -3,7 +3,9 @@ package controller.component;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.logging.Logger;
 
+import controller.ConversationSettingsController;
 import controller.MainViewController;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -22,23 +24,16 @@ import utils.ImageRounder;
 @Data
 public class MessageHBoxController {
 
-    private int id;
-    private int senderId;
+
     private int conversationId;
     private MainViewController parentController;
-    private ImageRounder imagerounder;
-
     private Message message;
-    private Conversation conversation;
+    private static final Logger logger = Logger.getLogger(MessageHBoxController.class.getName());
 
     public void setController(Message message, MainViewController parentController, Conversation conversation) {
         this.message = message;
         this.parentController = parentController;
-        this.conversation = conversation;
-        this.id = message.getId();
-        this.senderId = message.getSenderId();
         this.conversationId = conversation.getId();
-        imagerounder = new ImageRounder(userProfilePicture);
         setMessageInformation(message.getText(), message.getCreatedAt(), message.getSenderUsername());
         setTextInModifyField();
     }
@@ -103,14 +98,14 @@ public class MessageHBoxController {
     }
 
     @FXML
-    public void deleteMessage() throws IOException, InterruptedException {
+    public void deleteMessage() throws IOException {
         String token = parentController.getLoggedInUser().getToken();
         MessageApiClient client = new MessageApiClient();
         boolean success = client.deleteMessage(conversationId, message.getId(), token);
         if (success) {
             parentController.deleteMessageLocally(message);
         } else {
-            System.out.println("Message deletion failed");
+            logger.info("Message deletion failed");
         }
     }
 
@@ -125,7 +120,7 @@ public class MessageHBoxController {
             this.message = updatedMessage;
             setMessageInformation(message.getText(), message.getCreatedAt(), message.getSenderUsername());
         } else {
-            System.out.println("Message modification failed on server");
+            logger.info("Message modification failed on server");
         }
 
     }

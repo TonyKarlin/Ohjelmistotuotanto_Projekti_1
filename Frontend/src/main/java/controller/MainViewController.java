@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.ResourceBundle;
+import java.util.logging.Logger;
 
 import callback.ContactUpdateCallback;
 import callback.LanguageChangeCallback;
@@ -59,6 +60,7 @@ public class MainViewController implements ContactUpdateCallback, LanguageChange
     Button activeConversation;
     String languageBundle = "localization.LanguageBundle";
     String controllerString = "controller";
+    private static final Logger logger = Logger.getLogger(MainViewController.class.getName());
 
     // Sets the controller with user and API clients, initializes user info and lists
     public void setController(User loggedInUser, UserApiClient userApiClient) throws IOException, InterruptedException {
@@ -103,7 +105,7 @@ public class MainViewController implements ContactUpdateCallback, LanguageChange
     @FXML
     private BorderPane contentBorderPane;
     @FXML
-    private VBox VBoxContentPane;
+    private VBox vBoxContentPane;
     @FXML
     private VBox conversationVBox;
     @FXML
@@ -136,7 +138,7 @@ public class MainViewController implements ContactUpdateCallback, LanguageChange
         try {
             // Reload the view with the new language
             ResourceBundle bundle = ResourceBundle.getBundle(languageBundle, newLocale);
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/MainViewView.fxml"), bundle);
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/MainView.fxml"), bundle);
             Parent root = fxmlLoader.load();
 
             // Get the new controller and restore state
@@ -148,7 +150,7 @@ public class MainViewController implements ContactUpdateCallback, LanguageChange
             stage.setScene(new Scene(root));
             stage.setTitle(LanguageManager.getString("title"));
         } catch (IOException e) {
-            System.err.println("Failed to reload view with new language: " + e.getMessage());
+            logger.info("Failed to reload view with new language: " + e.getMessage());
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
             throw new IllegalStateException("Thread was interrupted while changing language", e);
@@ -194,7 +196,7 @@ public class MainViewController implements ContactUpdateCallback, LanguageChange
     public void openUserProfile(MouseEvent event) throws IOException {
         //Clears send message HBox in the bottom and main view
         contentBorderPane.setBottom(null);
-        VBoxContentPane.getChildren().clear();
+        vBoxContentPane.getChildren().clear();
         ResourceBundle bundle = ResourceBundle.getBundle(languageBundle, LanguageManager.getCurrentLocale());
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/userProfileView.fxml"), bundle);
         VBox userProfile = fxmlLoader.load();
@@ -202,7 +204,7 @@ public class MainViewController implements ContactUpdateCallback, LanguageChange
         //Pass user, userApiClient and this view controller instances to user profile view
         controller.setController(loggedInUser, this.userApiClient, this);
         // Adds the user profile to the VBox element
-        VBoxContentPane.getChildren().add(userProfile);
+        vBoxContentPane.getChildren().add(userProfile);
     }
 
     // Opens the add friends view in a modal window
@@ -213,7 +215,7 @@ public class MainViewController implements ContactUpdateCallback, LanguageChange
         Parent root = fxmlLoader.load();
         AddFriendsController controller = fxmlLoader.getController();
         //Pass instances to the view
-        controller.setController(loggedInUser, this.userApiClient, this.contactApiClient, this.contacts, this);
+        controller.setController(loggedInUser, this.userApiClient, this.contacts, this);
         Stage stage = new Stage();
         //Modality blocks all windows of this application
         stage.initModality(Modality.APPLICATION_MODAL);
@@ -270,7 +272,7 @@ public class MainViewController implements ContactUpdateCallback, LanguageChange
 
     public void openConversationSettings(Conversation conversation, ConversationHBoxController conversationHBoxController) throws IOException {
         contentBorderPane.setBottom(null);
-        VBoxContentPane.getChildren().clear();
+        vBoxContentPane.getChildren().clear();
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/conversationSettingsView.fxml"));
         ResourceBundle bundle = ResourceBundle.getBundle(languageBundle, LanguageManager.getCurrentLocale());
         fxmlLoader.setResources(bundle);
@@ -279,12 +281,12 @@ public class MainViewController implements ContactUpdateCallback, LanguageChange
         controller.setController(this.loggedInUser, conversation, this,
                 conversationHBoxController, contacts);
 
-        VBoxContentPane.getChildren().add(conversationSettings);
+        vBoxContentPane.getChildren().add(conversationSettings);
     }
 
     // Shows messages for a selected conversation
     public void showConversationMessages(Conversation conversation, Button conversationSettingsButton) throws IOException, InterruptedException {
-        VBoxContentPane.getChildren().clear();
+        vBoxContentPane.getChildren().clear();
         //If conversation is private don't show the conversation settings button
         if (activeConversation != null) {
             activeConversation.setVisible(false);
@@ -306,7 +308,7 @@ public class MainViewController implements ContactUpdateCallback, LanguageChange
                 MessageHBoxController controller = fxmlLoader.getController();
                 controller.setController(m, this, conversation);
                 messageHBox.getProperties().put(controllerString, controller);
-                VBoxContentPane.getChildren().add(messageHBox);
+                vBoxContentPane.getChildren().add(messageHBox);
             }
         }
         sendMessageComponent(conversation);
@@ -321,12 +323,12 @@ public class MainViewController implements ContactUpdateCallback, LanguageChange
         MessageHBoxController controller = fxmlLoader.getController();
         controller.setController(message, this, conversation);
         messageHBox.getProperties().put(controllerString, controller);
-        VBoxContentPane.getChildren().add(messageHBox);
+        vBoxContentPane.getChildren().add(messageHBox);
     }
 
     //This method called in the MessageHBoxController
     public void deleteMessageLocally(Message message) throws IOException {
-        VBoxContentPane.getChildren().removeIf(node -> {
+        vBoxContentPane.getChildren().removeIf(node -> {
             if (node instanceof HBox) {
                 Object controller = ((HBox) node).getProperties().get(controllerString);
                 if (controller instanceof MessageHBoxController msgController) {
@@ -367,7 +369,7 @@ public class MainViewController implements ContactUpdateCallback, LanguageChange
     @FXML
     public void openCreateGroupView() throws IOException {
         contentBorderPane.setBottom(null);
-        VBoxContentPane.getChildren().clear();
+        vBoxContentPane.getChildren().clear();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/createGroupConversationView.fxml"));
         ResourceBundle bundle = ResourceBundle.getBundle(languageBundle, LanguageManager.getCurrentLocale());
         loader.setResources(bundle);
@@ -375,7 +377,7 @@ public class MainViewController implements ContactUpdateCallback, LanguageChange
         CreateGroupController controller = loader.getController();
         controller.setController(contacts, loggedInUser, this);
         controller.setBundle(bundle);
-        VBoxContentPane.getChildren().add(createGroupVBox);
+        vBoxContentPane.getChildren().add(createGroupVBox);
     }
 
     @FXML
