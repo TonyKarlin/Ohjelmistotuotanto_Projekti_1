@@ -37,9 +37,6 @@ public class Contacts {
         this.updatedAt = createdAt;
     }
 
-    public Contacts() {
-    }
-
     // getterit ja setterit
     public void setId(Long id) {
         this.id = id;
