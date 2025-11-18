@@ -79,8 +79,7 @@ public class ContactHboxController {
     }
 
     @FXML
-    public void openContactProfile() throws IOException, InterruptedException {
-        // TODO: to be implemented, open the users profile
+    public void openContactProfile() {
         System.out.println("To be implemented");
     }
 
