@@ -3,6 +3,7 @@ package backend_api.services;
 import java.util.ArrayList;
 import java.util.List;
 
+import backend_api.utils.customexceptions.*;
 import org.springframework.stereotype.Service;
 
 import backend_api.dto.contacts.AcceptContactDTO;
@@ -14,10 +15,6 @@ import backend_api.entities.User;
 import backend_api.enums.ContactStatus;
 import backend_api.repository.ContactsRepository;
 import backend_api.repository.UserRepository;
-import backend_api.utils.customexceptions.ContactAlreadyExistsException;
-import backend_api.utils.customexceptions.InvalidContactRequestException;
-import backend_api.utils.customexceptions.InvalidStatusException;
-import backend_api.utils.customexceptions.UserNotFoundException;
 import jakarta.transaction.Transactional;
 
 @Service
@@ -27,6 +24,8 @@ public class ContactsService {
     private final ContactsRepository contactsRepository;
     private final UserRepository userRepository;
     private final ConversationService conversationService;
+    private static final String USER_NOT_FOUND = "User not found with id: ";
+    private static final String CONTACT_USER_NOT_FOUND = "Contact user not found with id: ";
 
     public ContactsService(ContactsRepository contactsRepository, UserRepository userRepository, ConversationService conversationService) {
         this.contactsRepository = contactsRepository;
@@ -92,9 +91,9 @@ public class ContactsService {
 
     public ContactResponseDTO addContact(Long userId, Long contactUserId) {
         User user = userRepository.findById(userId).orElseThrow(()
-                -> new UserNotFoundException("User not found with id: " + userId));
+                -> new UserNotFoundException(USER_NOT_FOUND + userId));
         User contactUser = userRepository.findById(contactUserId).orElseThrow(()
-                -> new UserNotFoundException("Contact user not found with id: " + contactUserId));
+                -> new UserNotFoundException(CONTACT_USER_NOT_FOUND + contactUserId));
 
         checkIfContactIsYourself(userId, contactUserId);
         checkForExistingContact(user, contactUser);
@@ -105,10 +104,10 @@ public class ContactsService {
 
     public AcceptContactDTO acceptContact(Long userId, Long contactUserId) {
         User user = userRepository.findById(userId).orElseThrow(()
-                -> new UserNotFoundException("User not found with id: " + userId));
+                -> new UserNotFoundException(USER_NOT_FOUND + userId));
 
         User contactUser = userRepository.findById(contactUserId).orElseThrow(()
-                -> new UserNotFoundException("Contact user not found with id: " + contactUserId));
+                -> new UserNotFoundException(CONTACT_USER_NOT_FOUND + contactUserId));
 
         Contacts contact = searchForIncomingRequest(user, contactUser);
 
@@ -123,39 +122,43 @@ public class ContactsService {
 
     public String deleteContact(Long userId, Long contactId) {
         User user = userRepository.findById(userId).orElseThrow(()
-                -> new UserNotFoundException("User not found with id: " + userId));
+                -> new UserNotFoundException(USER_NOT_FOUND + userId));
 
         User contactUser = userRepository.findById(contactId).orElseThrow(()
-                -> new UserNotFoundException("Contact user not found with id: " + contactId));
+                -> new UserNotFoundException(CONTACT_USER_NOT_FOUND + contactId));
 
         Contacts contact = searchForExistingContact(user, contactUser);
 
         String message;
-        if (contact.getStatus() == ContactStatus.PENDING) {
-            message = "Contact request declined";
-        } else if (contact.getStatus() == ContactStatus.ACCEPTED) {
-            message = "Contact removed";
-        } else {
-            throw new InvalidStatusException("Invalid contact status for declining/removing contact");
-        }
+        if (contact != null) {
+            if (contact.getStatus() == ContactStatus.PENDING) {
+                message = "Contact request declined";
+            } else if (contact.getStatus() == ContactStatus.ACCEPTED) {
+                message = "Contact removed";
+            } else {
+                throw new InvalidStatusException("Invalid contact status for declining/removing contact");
+            }
 
-        contactsRepository.delete(contact);
-        return message;
+
+            contactsRepository.delete(contact);
+            return message;
+        }
+        throw new ContactNotFoundException("Contact between " + user + " and " + contactUser + " not found.");
     }
 
     public List<Contacts> getContacts(Long userId) {
         User user = userRepository.findById(userId).orElseThrow(()
-                -> new UserNotFoundException("User not found with id: " + userId));
+                -> new UserNotFoundException(USER_NOT_FOUND + userId));
 
         return fetchAllContacts(user);
     }
 
     public ContactResponseDTO getContactByUserId(Long userId, Long contactId) {
         User user = userRepository.findById(userId).orElseThrow(()
-                -> new UserNotFoundException("User not found with id: " + userId));
+                -> new UserNotFoundException(USER_NOT_FOUND + userId));
 
         User contactUser = userRepository.findById(contactId).orElseThrow(()
-                -> new UserNotFoundException("User not found with id: " + contactId));
+                -> new UserNotFoundException(CONTACT_USER_NOT_FOUND + contactId));
 
         Contacts contact = searchForExistingContact(user, contactUser);
 
@@ -164,7 +167,7 @@ public class ContactsService {
 
     public List<ContactResponseDTO> getAcceptedContacts(Long userId) {
         User user = userRepository.findById(userId).orElseThrow(()
-                -> new UserNotFoundException("User not found with id: " + userId));
+                -> new UserNotFoundException(USER_NOT_FOUND + userId));
 
         List<Contacts> allContacts = fetchAllContacts(user);
 
@@ -183,7 +186,7 @@ public class ContactsService {
     // Only for the receiver of the contact request
     public List<ContactResponseDTO> getPendingContacts(Long userId) {
         User user = userRepository.findById(userId).orElseThrow(()
-                -> new UserNotFoundException("User not found with id: " + userId));
+                -> new UserNotFoundException(USER_NOT_FOUND + userId));
 
         List<Contacts> allContacts = fetchAllContacts(user);
 
@@ -202,7 +205,7 @@ public class ContactsService {
     // Only for the sender of the contact request
     public List<ContactResponseDTO> getSentRequests(Long userId) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new UserNotFoundException("User not found with id: " + userId));
+                .orElseThrow(() -> new UserNotFoundException(USER_NOT_FOUND + userId));
 
         List<Contacts> sentRequests = contactsRepository.findAllByUser(user).stream()
                 .filter(contact -> contact.getStatus() == ContactStatus.PENDING)
