@@ -58,7 +58,7 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody RegisterRequest request) {
+    public ResponseEntity<UserDTO> register(@RequestBody RegisterRequest request) {
 
         User user = new User(request.username(), request.password(), request.email());
         user.setProfilePicture("default.png");
@@ -116,7 +116,7 @@ public class UserController {
     }
 
     @PostMapping("/{id}/profile-picture")
-    public ResponseEntity<?> uploadProfilePicture(
+    public ResponseEntity<UserDTO> uploadProfilePicture(
             @PathVariable Long id,
             @RequestParam("file") MultipartFile file,
             Authentication authentication) throws IOException {
