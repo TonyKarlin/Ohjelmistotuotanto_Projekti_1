@@ -19,6 +19,7 @@ class UserApiClientTest {
     private UserApiClient userApiClient;
 
     @BeforeEach
+    @SuppressWarnings("unused")
     void setUp() {
         user = new User();
         userApiClient = new UserApiClient();
