@@ -136,7 +136,7 @@ public class MainViewController implements ContactUpdateCallback, LanguageChange
         try {
             // Reload the view with the new language
             ResourceBundle bundle = ResourceBundle.getBundle(languageBundle, newLocale);
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/MainViewView.fxml"), bundle);
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/MainView.fxml"), bundle);
             Parent root = fxmlLoader.load();
 
             // Get the new controller and restore state
