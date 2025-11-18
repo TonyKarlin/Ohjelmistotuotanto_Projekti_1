@@ -14,9 +14,6 @@ public class ConversationDTO {
     private LocalDateTime createdAt;
     private List<ParticipantDTO> participants;
 
-    public ConversationDTO() {
-    }
-
     public static ConversationDTO fromConversationEntity(Conversation conversation) {
         ConversationDTO dto = new ConversationDTO();
         dto.setId(conversation.getId());

@@ -16,9 +16,6 @@ public class ParticipantDTO {
         return dto;
     }
 
-    public ParticipantDTO() {
-    }
-
     public Long getUserId() {
         return userId;
     }

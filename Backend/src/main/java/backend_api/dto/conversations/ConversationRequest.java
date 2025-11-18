@@ -8,9 +8,6 @@ public class ConversationRequest {
     private List<Long> participantIds;
     private String name;   // Custom for Groups. Set to Receiver Username for Private
 
-    public ConversationRequest() {
-    }
-
     public Long getCreatorId() {
         return creatorId;
     }

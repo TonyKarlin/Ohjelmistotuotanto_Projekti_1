@@ -16,8 +16,6 @@ public class MessageDTO {
     private LocalDateTime createdAt;
     private List<MessageContentDTO> attachments;
 
-    public MessageDTO() {
-    }
 
     public static MessageDTO fromMessageEntity(Message message) {
         MessageDTO dto = new MessageDTO();

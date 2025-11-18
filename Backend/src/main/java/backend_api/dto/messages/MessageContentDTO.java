@@ -9,9 +9,6 @@ public class MessageContentDTO {
     private Long id;
     private String fileType;
 
-    public MessageContentDTO() {
-    }
-
     public static MessageContentDTO fromMessageContentEntity(MessageContent content) {
         MessageContentDTO dto = new MessageContentDTO();
         dto.setId(content.getId());
