@@ -1,24 +1,24 @@
 package service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.core.io.FileSystemResource;
-import org.springframework.http.MediaType;
-import org.springframework.web.reactive.function.BodyInserter;
-import org.springframework.web.reactive.function.BodyInserters;
-import org.springframework.web.reactive.function.client.WebClient;
-
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
-//This Interface can be used multiple Api client requests
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.http.MediaType;
+import org.springframework.web.reactive.function.BodyInserters;
+import org.springframework.web.reactive.function.client.WebClient;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+//This Interface can be used multiple Api client requests
 public interface ApiClient {
 
     ObjectMapper objectMapper = new ObjectMapper();
-
+    HttpClient httpClient = HttpClient.newHttpClient();
 
     //Post Method needs only a right url and object as parameters
     default ApiResponse sendPostRequest(String urlString, Object body) {
@@ -32,9 +32,8 @@ public interface ApiClient {
                     .uri(URI.create(urlString))
                     .header("Content-Type", "application/json")
                     .build();
-
             // Send the request and store the response body as a String
-            HttpResponse<String> response = HttpClient.newHttpClient()
+            HttpResponse<String> response = httpClient
                     .send(request, HttpResponse.BodyHandlers.ofString());
             //return api response that saves the response body and status code
             return new ApiResponse(response.statusCode(), response.body());
@@ -46,7 +45,7 @@ public interface ApiClient {
         }
     }
 
-    default ApiResponse sendPostRequestWithToken(String urlString, Object body, String token)  {
+    default ApiResponse sendPostRequestWithToken(String urlString, Object body, String token) {
         try {
             String requestBody = objectMapper.writeValueAsString(body);
             HttpRequest request = HttpRequest.newBuilder()
@@ -55,8 +54,7 @@ public interface ApiClient {
                     .header("Content-Type", "Application/json")
                     .header("Authorization", "Bearer " + token)
                     .build();
-
-            HttpResponse<String> response = HttpClient.newHttpClient()
+            HttpResponse<String> response = httpClient
                     .send(request, HttpResponse.BodyHandlers.ofString());
 
             return new ApiResponse(response.statusCode(), response.body());
@@ -77,7 +75,7 @@ public interface ApiClient {
                     .header("Authorization", "Bearer " + token)
                     .build();
 
-            HttpResponse<String> response = HttpClient.newHttpClient()
+            HttpResponse<String> response = httpClient
                     .send(request, HttpResponse.BodyHandlers.ofString());
             return new ApiResponse(response.statusCode(), response.body());
         } catch (InterruptedException e) {
@@ -87,7 +85,6 @@ public interface ApiClient {
             return new ApiResponse(503, "Service unavailable: " + e.getMessage());
         }
     }
-
 
     default ApiResponse sendPutRequestWithObjectAndToken(String urlString, Object body, String token) {
         try {
@@ -99,7 +96,7 @@ public interface ApiClient {
                     .header("Authorization", "Bearer " + token)
                     .build();
 
-            HttpResponse<String> response = HttpClient.newHttpClient()
+            HttpResponse<String> response = httpClient
                     .send(request, HttpResponse.BodyHandlers.ofString());
             return new ApiResponse(response.statusCode(), response.body());
         } catch (InterruptedException e) {
@@ -120,7 +117,7 @@ public interface ApiClient {
                     .header("Authorization", "Bearer " + token)
                     .build();
 
-            HttpResponse<String> response = HttpClient.newHttpClient()
+            HttpResponse<String> response = httpClient
                     .send(request, HttpResponse.BodyHandlers.ofString());
             return new ApiResponse(response.statusCode(), response.body());
         } catch (InterruptedException e) {
@@ -138,12 +135,11 @@ public interface ApiClient {
                     .uri(URI.create(urlString))
                     .header("Content-Type", "application/json")
                     .build();
-
-            HttpResponse<String> response = HttpClient.newHttpClient()
+            HttpResponse<String> response = httpClient
                     .send(request, HttpResponse.BodyHandlers.ofString());
 
             return new ApiResponse(response.statusCode(), response.body());
-        }catch (InterruptedException e) {
+        } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
             return new ApiResponse(499, "Request interrupted: " + e.getMessage());
         } catch (IOException e) {
@@ -151,9 +147,8 @@ public interface ApiClient {
         }
     }
 
-
     //Delete Method needs only right url and token
-    default ApiResponse sendDeleteRequestWithToken(String urlString, String token)  {
+    default ApiResponse sendDeleteRequestWithToken(String urlString, String token) {
         try {
             HttpRequest request = HttpRequest.newBuilder()
                     .DELETE()
@@ -161,10 +156,10 @@ public interface ApiClient {
                     .header("Authorization", "Bearer " + token)
                     .build();
 
-            HttpResponse<String> response = HttpClient.newHttpClient()
+            HttpResponse<String> response = httpClient
                     .send(request, HttpResponse.BodyHandlers.ofString());
             return new ApiResponse(response.statusCode(), response.body());
-        }catch (InterruptedException e) {
+        } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
             return new ApiResponse(499, "Request interrupted: " + e.getMessage());
         } catch (IOException e) {
@@ -174,17 +169,17 @@ public interface ApiClient {
     }
 
     //Delete Method without token
-    default ApiResponse sendDeleteRequestWithoutToken(String urlString)  {
+    default ApiResponse sendDeleteRequestWithoutToken(String urlString) {
         try {
             HttpRequest request = HttpRequest.newBuilder()
                     .DELETE()
                     .uri(URI.create(urlString))
                     .build();
 
-            HttpResponse<String> response = HttpClient.newHttpClient()
+            HttpResponse<String> response = httpClient
                     .send(request, HttpResponse.BodyHandlers.ofString());
             return new ApiResponse(response.statusCode(), response.body());
-        }catch (InterruptedException e) {
+        } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
             return new ApiResponse(499, "Request interrupted: " + e.getMessage());
         } catch (IOException e) {
@@ -193,7 +188,7 @@ public interface ApiClient {
 
     }
 
-    default ApiResponse sendFile(String urlString, File file, String token)  {
+    default ApiResponse sendFile(String urlString, File file, String token) {
         FileSystemResource fileResource = new FileSystemResource(file);
         String responseBody = WebClient.create()
                 .post()
@@ -209,4 +204,3 @@ public interface ApiClient {
 
     }
 }
-
