@@ -8,7 +8,9 @@ import model.User;
 import request.MessageRequest;
 import utils.ApiUrl;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class MessageApiClient implements ApiClient {
@@ -24,8 +26,13 @@ public class MessageApiClient implements ApiClient {
         if ((response.isSuccess())) {
             return objectMapper.readValue(response.body, Message.class);
         } else {
-            logger.info("Failed to Send a message. Status: "
-                    + response.statusCode + stringResponse + response.body);
+            if (logger.isLoggable(Level.INFO)) {
+                logger.info(String.format(
+                        "Failed to send a message. Status: %d, Response: %s",
+                        response.statusCode,
+                        response.body
+                ));
+            }
             return null;
         }
     }
@@ -38,8 +45,13 @@ public class MessageApiClient implements ApiClient {
         if (response.isSuccess()) {
             return objectMapper.readValue(response.body, Message.class);
         } else {
-            logger.info("Failed to Modify  message. Status: "
-                    + response.statusCode + stringResponse + response.body);
+            if (logger.isLoggable(Level.INFO)) {
+                logger.info(String.format(
+                        "Failed to modify message. Status: %d, Response: %s",
+                        response.statusCode,
+                        response.body
+                ));
+            }
             return null;
         }
     }
@@ -52,9 +64,15 @@ public class MessageApiClient implements ApiClient {
             return objectMapper.readValue(response.body, new TypeReference<List<Message>>() {
             });
         } else {
-            logger.info("Failed to get conversation: " + conversation.getId() + " "
-                    + "messages" + response.statusCode + stringResponse + response.body);
-            return null;
+            if (logger.isLoggable(Level.INFO)) {
+                logger.info(String.format(
+                        "Failed to get conversation %d messages. Status: %d, Response: %s",
+                        conversation.getId(),
+                        response.statusCode,
+                        response.body
+                ));
+            }
+            return Collections.emptyList();
         }
     }
 
@@ -64,8 +82,13 @@ public class MessageApiClient implements ApiClient {
         if ((response.isSuccess())) {
             return true;
         } else {
-            logger.info("Failed to delete Message: "
-                    + response.statusCode + stringResponse + response.body);
+            if (logger.isLoggable(Level.INFO)) {
+                logger.info(String.format(
+                        "Failed to delete message. Status: %d, Response: %s",
+                        response.statusCode,
+                        response.body
+                ));
+            }
         }
         return false;
 

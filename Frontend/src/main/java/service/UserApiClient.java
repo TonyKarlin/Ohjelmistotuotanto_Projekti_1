@@ -2,6 +2,7 @@ package service;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -26,8 +27,13 @@ public class UserApiClient implements ApiClient {
             if (response.isSuccess()) {
                 return objectMapper.readValue(response.body, User.class);
             } else {
-                logger.info("Failed to register user. Status: "
-                        + response.statusCode + stringResponse + response.body);
+                if (logger.isLoggable(Level.INFO)) {
+                    logger.info(String.format(
+                            "Failed to register user. Status: %d, Response: %s",
+                            response.statusCode,
+                            response.body
+                    ));
+                }
                 return null;
             }
         } catch (IOException e) {
@@ -43,8 +49,13 @@ public class UserApiClient implements ApiClient {
         if (response.isSuccess()) {
             return objectMapper.readValue(response.body, UserResponse.class);
         } else {
-            logger.info("Failed to Update user. Status: "
-                    + response.statusCode + stringResponse + response.body);
+            if (logger.isLoggable(Level.INFO)) {
+                logger.info(String.format(
+                        "Failed to update user. Status: %d, Response: %s",
+                        response.statusCode,
+                        response.body
+                ));
+            }
             return null;
         }
     }
@@ -57,8 +68,13 @@ public class UserApiClient implements ApiClient {
             if (response.isSuccess()) {
                 return objectMapper.readValue(response.body, User.class);
             } else {
-                logger.info("Failed to Update user profile picture. Status: "
-                        + response.statusCode + stringResponse + response.body);
+                if (logger.isLoggable(Level.INFO)) {
+                    logger.info(String.format(
+                            "Failed to update user profile picture. Status: %d, Response: %s",
+                            response.statusCode,
+                            response.body
+                    ));
+                }
                 return null;
             }
         } catch (JsonProcessingException e) {
@@ -72,8 +88,13 @@ public class UserApiClient implements ApiClient {
             if (response.isSuccess()) {
                 return objectMapper.readValue(response.body, UserResponse.class);
             } else {
-                logger.info("Failed to Login: "
-                        + response.statusCode + stringResponse + response.body);
+                if (logger.isLoggable(Level.INFO)) {
+                    logger.info(String.format(
+                            "Failed to login. Status: %d, Response: %s",
+                            response.statusCode,
+                            response.body
+                    ));
+                }
                 return null;
             }
         } catch (IOException e) {
@@ -88,8 +109,13 @@ public class UserApiClient implements ApiClient {
             if (response.isSuccess()) {
                 return objectMapper.readValue(response.body, User.class);
             } else {
-                logger.info("Failed to fetch a User. Status: "
-                        + response.statusCode + stringResponse + response.body);
+                if (logger.isLoggable(Level.INFO)) {
+                    logger.info(String.format(
+                            "Failed to fetch a user. Status: %d, Response: %s",
+                            response.statusCode,
+                            response.body
+                    ));
+                }
                 return null;
             }
         } catch (IOException e) {
