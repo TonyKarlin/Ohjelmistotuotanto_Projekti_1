@@ -142,6 +142,11 @@ Relational-Schema
 
 ![Use-case-diagram](docs/diagrams/project-usecase-diagram.png)
 
+## Activity Diagram
+
+Activity diagram of group creation.
+![act-diagram](docs/diagrams/project-activity-diagram.png)
+
 ## Jenkins CI/CD
 
 Jenkins is currently handled locally since the backend has not yet been integrated into a remote server, which we believe will be implemented in the next course.
