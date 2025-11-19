@@ -1,10 +1,14 @@
 package backend_api.controller;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import backend_api.dto.messages.SendMessageRequest;
+import backend_api.utils.customexceptions.BadMessageRequestException;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import org.springframework.http.HttpStatus;
@@ -18,41 +22,57 @@ import backend_api.entities.Message;
 import backend_api.entities.User;
 import backend_api.services.MessageService;
 
-public class MessageControllerTest {
+class MessageControllerTest {
 
-//    @Test
-//    void sendMessage() {
-//        MessageService service = mock(MessageService.class);
-//        MessageController controller = new MessageController(service);
-//
-//        Message mockMessage = new Message();
-//        mockMessage.setId(1L); // Setting Message ID to 1
-//
-//        backend_api.entities.User sender = new User(); // Creates a mock sender
-//        sender.setId(1L);                              // Cannot be null
-//        mockMessage.setSender(sender);
-//
-//        when(service.sendMessage(org.mockito.ArgumentMatchers.any())).thenReturn(mockMessage);
-//        ResponseEntity<MessageDTO> response = controller.sendMessage(new SendMessageRequest());
-//
-//        // Asserts
-//        assertEquals(HttpStatus.CREATED, response.getStatusCode(), "Expected HTTP status 201 Created");
-//        assertEquals(1L, response.getBody().getId(), "Expected message ID to be 1");
-//    }
-//
-//    @Test
-//    void sendMessage_Failure() {
-//        MessageService service = mock(MessageService.class);
-//        MessageController controller = new MessageController(service);
-//
-//        // Simulate failure in sending message
-//        when(service.sendMessage(org.mockito.ArgumentMatchers.any())).thenReturn(null);
-//        ResponseEntity<MessageDTO> response = controller.sendMessage(new SendMessageRequest());
-//
-//        // Asserts
-//        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode(), "Expected HTTP status 400 Bad Request");
-//        assertNull(response.getBody(), "Expected response body to be null");
-//    }
+    @Test
+    void testSendMessage() {
+        MessageService service = mock(MessageService.class);
+        Authentication auth = mock(Authentication.class);
+        MessageController controller = new MessageController(service);
+
+        Long conversationId = 1L;
+        SendMessageRequest request = new SendMessageRequest();
+        request.setText("Hello, World!");
+
+        User authUser = new User();
+        authUser.setId(99L);
+        when(auth.getPrincipal()).thenReturn(authUser);
+
+        Message mockMessage = new Message();
+        mockMessage.setId(1L);
+        mockMessage.setText("Hello, World!");
+        mockMessage.setSender(authUser);
+
+        when(service.sendMessage(request, authUser)).thenReturn(mockMessage);
+
+        ResponseEntity<MessageDTO> response = controller.sendMessage(conversationId, request, auth);
+
+        assertEquals(HttpStatus.CREATED, response.getStatusCode(), "Expected HTTP status 201 Created");
+        assertEquals(1L, Objects.requireNonNull(response.getBody()).getId(), "Expected message ID to be 1");
+        assertEquals("Hello, World!", response.getBody().getText(), "Expected message text to match");
+    }
+
+    private void invokeSendMessage(MessageController controller, Long conversationId, Authentication auth) {
+        controller.sendMessage(conversationId, new SendMessageRequest(), auth);
+    }
+
+    @Test
+    void testSendMessage_Failure() {
+        MessageService service = mock(MessageService.class);
+        Authentication auth = mock(Authentication.class);
+        MessageController controller = new MessageController(service);
+
+        Long conversationId = 1L;
+
+        when(service.sendMessage(org.mockito.ArgumentMatchers.any(), org.mockito.ArgumentMatchers.any())).thenReturn(null);
+
+        assertThrows(BadMessageRequestException.class, () ->
+                        invokeSendMessage(controller, conversationId, auth),
+                "Expected BadMessageRequestException to be thrown"
+        );
+    }
+
+
     @Test
     void getMessages() {
         MessageService service = mock(MessageService.class);

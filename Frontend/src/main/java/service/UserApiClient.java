@@ -2,6 +2,8 @@ package service;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 
@@ -17,6 +19,7 @@ public class UserApiClient implements ApiClient {
     String loginUrl = ApiUrl.getApiUrl() + "/users/login";
     String usersUrl = ApiUrl.getApiUrl() + "/users";
     String stringResponse = ", Response: ";
+    private static final Logger logger = Logger.getLogger(UserApiClient.class.getName());
 
     public User registerUser(User user) {
         try {
@@ -24,12 +27,17 @@ public class UserApiClient implements ApiClient {
             if (response.isSuccess()) {
                 return objectMapper.readValue(response.body, User.class);
             } else {
-                System.out.println("Failed to register user. Status: "
-                        + response.statusCode + stringResponse + response.body);
+                if (logger.isLoggable(Level.INFO)) {
+                    logger.info(String.format(
+                            "Failed to register user. Status: %d, Response: %s",
+                            response.statusCode,
+                            response.body
+                    ));
+                }
                 return null;
             }
         } catch (IOException e) {
-            throw new RuntimeException("Failed to register user", e);
+            throw new IllegalStateException("Failed to register user", e);
         }
     }
 
@@ -41,8 +49,13 @@ public class UserApiClient implements ApiClient {
         if (response.isSuccess()) {
             return objectMapper.readValue(response.body, UserResponse.class);
         } else {
-            System.out.println("Failed to Update user. Status: "
-                    + response.statusCode + stringResponse + response.body);
+            if (logger.isLoggable(Level.INFO)) {
+                logger.info(String.format(
+                        "Failed to update user. Status: %d, Response: %s",
+                        response.statusCode,
+                        response.body
+                ));
+            }
             return null;
         }
     }
@@ -55,12 +68,17 @@ public class UserApiClient implements ApiClient {
             if (response.isSuccess()) {
                 return objectMapper.readValue(response.body, User.class);
             } else {
-                System.out.println("Failed to Update user profile picture. Status: "
-                        + response.statusCode + stringResponse + response.body);
+                if (logger.isLoggable(Level.INFO)) {
+                    logger.info(String.format(
+                            "Failed to update user profile picture. Status: %d, Response: %s",
+                            response.statusCode,
+                            response.body
+                    ));
+                }
                 return null;
             }
         } catch (JsonProcessingException e) {
-            throw new RuntimeException("Failed to parse server response", e);
+            throw new IllegalStateException("Failed to parse server response", e);
         }
     }
 
@@ -70,12 +88,17 @@ public class UserApiClient implements ApiClient {
             if (response.isSuccess()) {
                 return objectMapper.readValue(response.body, UserResponse.class);
             } else {
-                System.out.println("Failed to Login: "
-                        + response.statusCode + stringResponse + response.body);
+                if (logger.isLoggable(Level.INFO)) {
+                    logger.info(String.format(
+                            "Failed to login. Status: %d, Response: %s",
+                            response.statusCode,
+                            response.body
+                    ));
+                }
                 return null;
             }
         } catch (IOException e) {
-            throw new RuntimeException("Failed to login", e);
+            throw new IllegalStateException("Failed to login", e);
         }
     }
 
@@ -86,12 +109,17 @@ public class UserApiClient implements ApiClient {
             if (response.isSuccess()) {
                 return objectMapper.readValue(response.body, User.class);
             } else {
-                System.out.println("Failed to fetch a User. Status: "
-                        + response.statusCode + stringResponse + response.body);
+                if (logger.isLoggable(Level.INFO)) {
+                    logger.info(String.format(
+                            "Failed to fetch a user. Status: %d, Response: %s",
+                            response.statusCode,
+                            response.body
+                    ));
+                }
                 return null;
             }
         } catch (IOException e) {
-            throw new RuntimeException("Failed to GET a user", e);
+            throw new IllegalStateException("Failed to GET a user", e);
         }
     }
 

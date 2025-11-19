@@ -1,6 +1,7 @@
 package controller.component;
 
 import java.io.IOException;
+import java.util.logging.Logger;
 
 import controller.ConversationSettingsController;
 import controller.CreateGroupController;
@@ -31,6 +32,7 @@ public class ContactHboxController {
     ConversationApiClient conversationApiClient;
     CreateGroupController createGroupController;
     ConversationSettingsController conversationSettingsController;
+    private static final Logger logger = Logger.getLogger(ContactHboxController.class.getName());
 
     public void setController(Contact contact, MainViewController parentController) {
         this.contact = contact;
@@ -80,7 +82,7 @@ public class ContactHboxController {
 
     @FXML
     public void openContactProfile() {
-        System.out.println("To be implemented");
+        logger.info("To be implemented");
     }
 
     public void addToConversation() throws IOException, InterruptedException {

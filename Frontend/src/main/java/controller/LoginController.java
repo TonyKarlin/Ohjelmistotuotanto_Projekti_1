@@ -3,6 +3,7 @@ package controller;
 import java.io.IOException;
 import java.util.Locale;
 import java.util.ResourceBundle;
+import java.util.logging.Logger;
 
 import callback.LanguageChangeCallback;
 import controller.component.LanguageButtonController;
@@ -29,8 +30,8 @@ public class LoginController implements LanguageChangeCallback {
     private UserApiClient userApiClient;
 
     private final UIAlert alert = new UIAlert();
-    private UserResponse loginResponse = new UserResponse();
     String languageBundle = "localization.LanguageBundle";
+    private static final Logger logger = Logger.getLogger(LoginController.class.getName());
 
     public void setController(UserApiClient userApiClient) {
         this.userApiClient = userApiClient;
@@ -87,7 +88,7 @@ public class LoginController implements LanguageChangeCallback {
             stage.setScene(new Scene(root));
             stage.setTitle(LanguageManager.getString("title"));
         } catch (IOException e) {
-            System.err.println("Failed to reload view with new language: " + e.getMessage());
+            logger.info("Failed to reload view with new language: " + e.getMessage());
         }
     }
 
@@ -114,7 +115,7 @@ public class LoginController implements LanguageChangeCallback {
         //Gets username and password from the text fields and calls the loginRequest method
         LoginRequest loginRequest = new LoginRequest(username, password, null);
         // Send the login request and save the result to a LoginResponse object
-        loginResponse = userApiClient.loginUser(loginRequest);
+        UserResponse loginResponse = userApiClient.loginUser(loginRequest);
         // If the login response is not null, extract the User and pass it to the next view
         if (loginResponse != null) {
             User user = loginResponse.getUser();

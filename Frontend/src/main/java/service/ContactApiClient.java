@@ -1,6 +1,9 @@
 package service;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -16,6 +19,7 @@ public class ContactApiClient implements ApiClient {
 
     String baseUrl = ApiUrl.getApiUrl() + "/contacts";
     String stringResponse = ", Response: ";
+    private static final Logger logger = Logger.getLogger(ContactApiClient.class.getName());
 
 
     // Get a list of ALL contacts PENDING and ACCEPTED
@@ -26,9 +30,14 @@ public class ContactApiClient implements ApiClient {
             return objectMapper.readValue(response.body, new TypeReference<List<Contact>>() {
             });
         } else {
-            System.out.println("Failed to get Contacts. Status: " + response.statusCode
-                    + stringResponse + response.body);
-            return null;
+            if (logger.isLoggable(Level.INFO)) {
+                logger.info(String.format(
+                        "Failed to get Contacts. Status: %d, Response: %s",
+                        response.statusCode,
+                        response.body
+                ));
+            }
+            return Collections.emptyList();
         }
     }
 
@@ -39,8 +48,13 @@ public class ContactApiClient implements ApiClient {
         if (response.isSuccess()) {
             return objectMapper.readValue(response.body, Contact.class);
         } else {
-            System.out.println("Failed to add contact. Status: " + response.statusCode
-                    + stringResponse + response.body);
+            if (logger.isLoggable(Level.INFO)) {
+                logger.info(String.format(
+                        "Failed to add contact. Status: %d, Response: %s",
+                        response.statusCode,
+                        response.body
+                ));
+            }
             return null;
         }
     }
@@ -53,8 +67,13 @@ public class ContactApiClient implements ApiClient {
             ContactResponse contactResponse = objectMapper.readValue(response.body, ContactResponse.class);
             return contactResponse.getContact();
         } else {
-            System.out.println("Failed to add contact. Status: " + response.statusCode
-                    + stringResponse + response.body);
+            if (logger.isLoggable(Level.INFO)) {
+                logger.info(String.format(
+                        "Failed to add contact. Status: %d, Response: %s",
+                        response.statusCode,
+                        response.body
+                ));
+            }
             return null;
         }
     }

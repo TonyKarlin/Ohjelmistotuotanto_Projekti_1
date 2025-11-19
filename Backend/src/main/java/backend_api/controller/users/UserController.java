@@ -58,13 +58,13 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody RegisterRequest request) {
+    public ResponseEntity<UserDTO> register(@RequestBody RegisterRequest request) {
 
-        User user = new User(request.getUsername(), request.getPassword(), request.getEmail());
+        User user = new User(request.username(), request.password(), request.email());
         user.setProfilePicture("default.png");
 
-        if (request.getLanguage() != null && !request.getLanguage().isEmpty()) {
-            user.setLanguage(request.getLanguage());
+        if (request.language() != null && !request.language().isEmpty()) {
+            user.setLanguage(request.language());
         } else {
             user.setLanguage("en");
         }
@@ -116,7 +116,7 @@ public class UserController {
     }
 
     @PostMapping("/{id}/profile-picture")
-    public ResponseEntity<?> uploadProfilePicture(
+    public ResponseEntity<UserDTO> uploadProfilePicture(
             @PathVariable Long id,
             @RequestParam("file") MultipartFile file,
             Authentication authentication) throws IOException {

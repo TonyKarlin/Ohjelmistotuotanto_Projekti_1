@@ -9,6 +9,10 @@ import java.util.ResourceBundle;
  */
 public class LanguageManager {
 
+    private LanguageManager() {
+        // hidden constructor
+    }
+
     private static Locale currentLocale = Locale.US;
     private static ResourceBundle bundle = null;
     private static String languageBundle = "localization.LanguageBundle";
