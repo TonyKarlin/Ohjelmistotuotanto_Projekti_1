@@ -37,7 +37,7 @@ public class UserApiClient implements ApiClient {
                 return null;
             }
         } catch (IOException e) {
-            throw new RuntimeException("Failed to register user", e);
+            throw new IllegalStateException("Failed to register user", e);
         }
     }
 
@@ -78,7 +78,7 @@ public class UserApiClient implements ApiClient {
                 return null;
             }
         } catch (JsonProcessingException e) {
-            throw new RuntimeException("Failed to parse server response", e);
+            throw new IllegalStateException("Failed to parse server response", e);
         }
     }
 
@@ -98,7 +98,7 @@ public class UserApiClient implements ApiClient {
                 return null;
             }
         } catch (IOException e) {
-            throw new RuntimeException("Failed to login", e);
+            throw new IllegalStateException("Failed to login", e);
         }
     }
 
@@ -119,7 +119,7 @@ public class UserApiClient implements ApiClient {
                 return null;
             }
         } catch (IOException e) {
-            throw new RuntimeException("Failed to GET a user", e);
+            throw new IllegalStateException("Failed to GET a user", e);
         }
     }
 

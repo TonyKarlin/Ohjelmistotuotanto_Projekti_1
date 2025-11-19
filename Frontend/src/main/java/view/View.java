@@ -16,7 +16,7 @@ import utils.LanguageManager;
 
 public class View extends Application {
 
-    UserApiClient userApiClient;
+    UserApiClient userApiClient = new UserApiClient();
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -32,13 +32,13 @@ public class View extends Application {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/loginView.fxml"), bundle);
             Parent root = fxmlLoader.load();
             LoginController controller = fxmlLoader.getController();
-            controller.setController(userApiClient = new UserApiClient());
+            controller.setController(userApiClient);
             stage.setTitle(LanguageManager.getString("title"));
             stage.setScene(new Scene(root));
             stage.show();
 
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new IllegalStateException("Unable to load the FXML layout.", e);
         }
     }
 }
