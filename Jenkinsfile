@@ -6,6 +6,7 @@ pipeline {
         DOCKERHUB_CREDENTIALS_ID = 'Docker_Hub'
         DOCKERHUB_REPO = 'joniheikk/project'
         DOCKER_IMAGE_TAG = 'latest'
+        SONARQUBE_SCANNER = 'SonarScanner'
     }
 
     stages {
@@ -73,6 +74,20 @@ pipeline {
                 archiveArtifacts artifacts: 'Backend/target/site/jacoco/**'
                 archiveArtifacts artifacts: 'Frontend/target/site/jacoco/**'
             }
+        }
+        stages {
+                stage('Checkout') {
+                    steps {
+                        checkout scm
+                    }
+                }
+                stage('SonarQube Analysis') {
+                    steps {
+                        withSonarQubeEnv('SonarQubeServer') { //
+                            bat "${tool env.SONARQUBE_SCANNER}/bin/sonar-scanner -Dsonar.projectKey=your_project_key -Dsonar.sources=src -Dsonar.host.url=http://your-sonarqube-server -Dsonar.login=your_token"
+                        }
+                    }
+                }
         }
         stage('Docker Compose Build & Push') {
             steps {
