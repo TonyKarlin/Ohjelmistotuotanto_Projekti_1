@@ -381,18 +381,60 @@ public class MainViewController implements ContactUpdateCallback, LanguageChange
     }
 
     @FXML
-    public void openFriendList() {
-        //To be implemented
+    public void openFriendList() throws IOException {
+
+        friendsList.getChildren().clear();
+
+        for (Contact contact : contacts) {
+            if ("ACCEPTED".equals(contact.getStatus())) {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/component/contactHBox.fxml"));
+                ResourceBundle bundle = ResourceBundle.getBundle(languageBundle, LanguageManager.getCurrentLocale());
+                loader.setResources(bundle);
+                HBox userContactsHbox = loader.load();
+                ContactHboxController controller = loader.getController();
+                controller.setController(contact, this);
+                controller.setUsername(contact.getContactUsername());
+                friendsList.getChildren().add(userContactsHbox);
+            }
+        }
+
     }
 
     @FXML
-    public void openPendingList() {
-        //To be implemented
+    public void openPendingList() throws IOException {
+
+        friendsList.getChildren().clear();
+
+        for (Contact contact : contacts) {
+            if ("PENDING".equals(contact.getStatus())) {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/component/contactHBox.fxml"));
+                ResourceBundle bundle = ResourceBundle.getBundle(languageBundle, LanguageManager.getCurrentLocale());
+                loader.setResources(bundle);
+                HBox userContactsHbox = loader.load();
+                ContactHboxController controller = loader.getController();
+                controller.setController(contact, this);
+                controller.setUsername(contact.getContactUsername());
+                friendsList.getChildren().add(userContactsHbox);
+            }
+        }
     }
 
     @FXML
-    public void openSentList() {
-        //To be implemented
+    public void openSentList() throws IOException {
+        friendsList.getChildren().clear();
+
+        for (Contact contact : contacts) {
+            if ("SENT".equals(contact.getStatus())) {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/component/contactHBox.fxml"));
+                ResourceBundle bundle = ResourceBundle.getBundle(languageBundle, LanguageManager.getCurrentLocale());
+                loader.setResources(bundle);
+                HBox userContactsHbox = loader.load();
+                ContactHboxController controller = loader.getController();
+                controller.setController(contact, this);
+                controller.setUsername(contact.getContactUsername());
+                friendsList.getChildren().add(userContactsHbox);
+            }
+        }
     }
 
     @Override
