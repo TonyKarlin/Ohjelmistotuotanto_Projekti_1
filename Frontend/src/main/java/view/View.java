@@ -10,6 +10,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.stage.WindowEvent;
 import service.UserApiClient;
 import utils.LanguageManager;
@@ -25,7 +26,7 @@ public class View extends Application {
                 Platform.exit();
                 System.exit(0);
             });
-
+            stage.initStyle(StageStyle.UNIFIED);
             // Load resource bundle for localization
             ResourceBundle bundle = ResourceBundle.getBundle("localization.LanguageBundle", LanguageManager.getCurrentLocale());
 
