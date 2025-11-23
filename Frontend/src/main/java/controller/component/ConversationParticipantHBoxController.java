@@ -1,5 +1,9 @@
 package controller.component;
 
+import java.io.IOException;
+import java.util.logging.Logger;
+
+import controller.ConversationSettingsController;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -13,9 +17,6 @@ import model.User;
 import request.ConversationRequest;
 import service.ConversationApiClient;
 
-import java.io.IOException;
-import java.util.List;
-
 public class ConversationParticipantHBoxController {
 
     ConversationParticipant participant;
@@ -25,6 +26,7 @@ public class ConversationParticipantHBoxController {
     HBox hbox;
     ListView<HBox> listView;
     ConversationApiClient conversationApiClient = new ConversationApiClient();
+    private static final Logger logger = Logger.getLogger(ConversationParticipantHBoxController.class.getName());
 
     public void setController(ConversationParticipant participant, Conversation conversation, User loggedInuser, HBox hbox, ListView<HBox> listView) {
         this.participant = participant;
@@ -36,7 +38,7 @@ public class ConversationParticipantHBoxController {
     }
 
     @FXML
-    private Button Remove;
+    private Button remove;
 
     @FXML
     private Circle contactUserStatus;
@@ -53,12 +55,12 @@ public class ConversationParticipantHBoxController {
 
     @FXML
     public void removeParticipantFromConversation() throws IOException, InterruptedException {
-        boolean success = conversationApiClient.removeUserFromConversation(participant.getUserId(),conversation.getId(), loggedInuser.getToken());
+        boolean success = conversationApiClient.removeUserFromConversation(participant.getUserId(), conversation.getId(), loggedInuser.getToken());
         if (success) {
             listView.getItems().remove(hbox);
             conversation.getParticipants().remove(participant);
         } else {
-            System.out.println("Failed to remove participant");
+            logger.info("Failed to remove participant");
         }
     }
 

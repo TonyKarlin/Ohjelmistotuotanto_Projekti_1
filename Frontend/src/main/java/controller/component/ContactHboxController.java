@@ -1,10 +1,11 @@
 package controller.component;
 
 import java.io.IOException;
+import java.util.logging.Logger;
 
-import controller.ChatDashboardController;
 import controller.ConversationSettingsController;
 import controller.CreateGroupController;
+import controller.MainViewController;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -18,12 +19,11 @@ import model.User;
 import service.ConversationApiClient;
 import utils.ImageRounder;
 
-
 @Data
 public class ContactHboxController {
 
     Contact contact;
-    ChatDashboardController parentController;
+    MainViewController parentController;
     ImageRounder imageRounder;
     Conversation conversation;
     User loggedInuser;
@@ -32,8 +32,9 @@ public class ContactHboxController {
     ConversationApiClient conversationApiClient;
     CreateGroupController createGroupController;
     ConversationSettingsController conversationSettingsController;
+    private static final Logger logger = Logger.getLogger(ContactHboxController.class.getName());
 
-    public void setController(Contact contact, ChatDashboardController parentController) {
+    public void setController(Contact contact, MainViewController parentController) {
         this.contact = contact;
         this.parentController = parentController;
         imageRounder = new ImageRounder(contactUserPicture);
@@ -71,7 +72,6 @@ public class ContactHboxController {
     private Button removeButton;
     //endregion
 
-
     public void setUsername(String username) {
         contactUsername.setText(username);
     }
@@ -81,9 +81,8 @@ public class ContactHboxController {
     }
 
     @FXML
-    public void openContactProfile() throws IOException, InterruptedException {
-        // TODO: to be implemented, open the users profile
-        System.out.println("To be implemented");
+    public void openContactProfile() {
+        logger.info("To be implemented");
     }
 
     public void addToConversation() throws IOException, InterruptedException {
@@ -93,7 +92,5 @@ public class ContactHboxController {
             createGroupController.handleSelectContact(contact, this);
         }
     }
-
-
 
 }

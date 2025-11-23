@@ -35,7 +35,7 @@ public class Message {
     public Message() {
     }
 
-    public Message(User sender, List<User> receivers, Conversation conversation, List<MessageContent> attachments) {
+    public Message(User sender, Conversation conversation, List<MessageContent> attachments) {
         this.sender = sender;
         this.conversation = conversation;
         this.attachments = attachments;

@@ -1,26 +1,33 @@
 package backend_api.controller.messaging;
 
+import java.util.List;
 
-import backend_api.DTOs.conversations.ConversationDTO;
-import backend_api.DTOs.conversations.ConversationParticipantResponse;
-import backend_api.DTOs.conversations.ConversationRequest;
-import backend_api.entities.Conversation;
-import backend_api.entities.User;
-import backend_api.enums.ParticipantRole;
-import backend_api.services.ConversationService;
-import backend_api.utils.customexceptions.InvalidConversationRequestException;
-import backend_api.utils.customexceptions.UnauthorizedActionException;
-import backend_api.utils.customexceptions.UserNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
+import backend_api.dto.conversations.ConversationDTO;
+import backend_api.dto.conversations.ConversationParticipantResponse;
+import backend_api.dto.conversations.ConversationRequest;
+import backend_api.entities.Conversation;
+import backend_api.entities.User;
+import backend_api.services.ConversationService;
+import backend_api.utils.customexceptions.UnauthorizedActionException;
+import backend_api.utils.customexceptions.UserNotFoundException;
 
 @RestController
 @RequestMapping("/api/conversations")
 public class ConversationController {
+
     private final ConversationService conversationService;
 
     public ConversationController(ConversationService conversationService) {
@@ -52,7 +59,6 @@ public class ConversationController {
         return ResponseEntity.ok(ConversationDTO.fromConversationEntity(conversation));
     }
 
-
     @GetMapping("/user/me")
     public ResponseEntity<List<ConversationDTO>> getMyConversations(Authentication authentication) {
         User authUser = (User) authentication.getPrincipal();
@@ -67,8 +73,8 @@ public class ConversationController {
 
     @PutMapping("/{conversationId}/update")
     public ResponseEntity<?> updateConversation(@PathVariable Long conversationId,
-                                                @RequestBody ConversationRequest request,
-                                                Authentication authentication) {
+            @RequestBody ConversationRequest request,
+            Authentication authentication) {
         User authUser = (User) authentication.getPrincipal();
         conversationService.validateOwnership(authUser, conversationId);
 
@@ -76,18 +82,16 @@ public class ConversationController {
         return ResponseEntity.ok(ConversationDTO.fromConversationEntity(updatedConversation));
     }
 
-
     @PutMapping("/{conversationId}/participants/{userId}")
     public ResponseEntity<ConversationParticipantResponse> addUserToConversation(@PathVariable Long conversationId,
-                                                                                 @PathVariable Long userId,
-                                                                                 Authentication authentication) {
+            @PathVariable Long userId,
+            Authentication authentication) {
 
         User authUser = (User) authentication.getPrincipal();
         Conversation conversation = conversationService.getConversationById(conversationId);
         if (!conversation.isParticipant(authUser.getId())) {
             throw new UnauthorizedActionException("User not a participant of the conversation");
         }
-
 
         conversationService.addUserToConversation(conversationId, userId);
         ConversationParticipantResponse message = new ConversationParticipantResponse(
@@ -97,7 +101,6 @@ public class ConversationController {
 
         return ResponseEntity.ok(message);
     }
-
 
     @DeleteMapping("/{conversationId}/participants/{userId}")
     public ResponseEntity<?> removeUserFromConversation(
@@ -124,17 +127,17 @@ public class ConversationController {
 
     @PatchMapping("/{conversationId}/leave")
     public ResponseEntity<?> leaveConversation(@PathVariable Long conversationId,
-                                               Authentication authentication) {
+            Authentication authentication) {
         User authUser = (User) authentication.getPrincipal();
         conversationService.leaveConversation(conversationId, authUser.getId());
 
-        return ResponseEntity.ok("User: " + authUser.getUsername() +
-                " has left the conversation (id): " + conversationId);
+        return ResponseEntity.ok("User: " + authUser.getUsername()
+                + " has left the conversation (id): " + conversationId);
     }
 
     @DeleteMapping("/{conversationId}")
     public ResponseEntity<?> deleteConversation(@PathVariable Long conversationId,
-                                                Authentication authentication) {
+            Authentication authentication) {
 
         User authUser = (User) authentication.getPrincipal();
         conversationService.validateOwnership(authUser, conversationId);

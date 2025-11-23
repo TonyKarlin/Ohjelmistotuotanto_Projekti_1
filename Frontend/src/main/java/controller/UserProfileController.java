@@ -1,13 +1,16 @@
 package controller;
 
+import java.io.File;
+import java.io.IOException;
+
 import javafx.event.ActionEvent;
-import javafx.scene.image.Image;
-import javafx.scene.input.MouseEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Circle;
 import model.User;
@@ -19,20 +22,18 @@ import utils.ImageRounder;
 import utils.LanguageManager;
 import utils.UIAlert;
 
-import java.io.File;
-
 public class UserProfileController {
 
     User loggedInUser;
     UserApiClient client;
-    ChatDashboardController parentController;
+    MainViewController parentController;
     UIAlert alert = new UIAlert();
     ImageRounder imageRounder;
     FileHandler fileHandler;
     UpdateUserRequest request;
     UserResponse userResponse;
 
-    public void setController(User loggedInUser, UserApiClient client, ChatDashboardController parentController) {
+    public void setController(User loggedInUser, UserApiClient client, MainViewController parentController) {
         this.loggedInUser = loggedInUser;
         this.client = client;
         this.parentController = parentController;
@@ -73,7 +74,7 @@ public class UserProfileController {
     }
 
     @FXML
-    public void changeInformation(ActionEvent event) {
+    public void changeInformation(ActionEvent event) throws IOException, InterruptedException {
         String newUsername = usernameTextField.getText();
         String newEmail = emailTextField.getText();
         String newPassword = passwordField.getText();
@@ -90,7 +91,7 @@ public class UserProfileController {
         if (userResponse == null) {
             alert.showErrorAlert(LanguageManager.getString("user_updated_failed_title"), LanguageManager.getString("user_updated_failed_message"));
         } else {
-            alert.showErrorAlert(LanguageManager.getString("register_success_title"), LanguageManager.getString("user_updated_successfully"));
+            alert.showSuccessAlert(LanguageManager.getString("register_success_title"), LanguageManager.getString("user_updated_successfully"));
             String token = userResponse.getToken();
             loggedInUser = userResponse.getUser();
             loggedInUser.setToken(token);
@@ -126,7 +127,7 @@ public class UserProfileController {
             return false;
         }
         if (password.length() < 6) {
-            alert.showErrorAlert(LanguageManager.getString("register_invalid_password_title"),LanguageManager.getString("register_invalid_password"));
+            alert.showErrorAlert(LanguageManager.getString("register_invalid_password_title"), LanguageManager.getString("register_invalid_password"));
             return false;
         }
         return true;
@@ -157,4 +158,3 @@ public class UserProfileController {
         userProfilePicture.setPreserveRatio(false);
     }
 }
-

@@ -2,7 +2,10 @@ package service;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
 
 import model.User;
 import model.UserResponse;
@@ -15,42 +18,45 @@ public class UserApiClient implements ApiClient {
     String registerUrl = ApiUrl.getApiUrl() + "/users/register";
     String loginUrl = ApiUrl.getApiUrl() + "/users/login";
     String usersUrl = ApiUrl.getApiUrl() + "/users";
-
-    public UserApiClient() throws MalformedURLException {
-
-    }
+    String stringResponse = ", Response: ";
+    private static final Logger logger = Logger.getLogger(UserApiClient.class.getName());
 
     public User registerUser(User user) {
         try {
             ApiResponse response = sendPostRequest(registerUrl, user);
             if (response.isSuccess()) {
-                System.out.println(response.body);
                 return objectMapper.readValue(response.body, User.class);
             } else {
-                System.out.println("Failed to register user. Status: "
-                        + response.statusCode + ", Response: " + response.body);
+                if (logger.isLoggable(Level.INFO)) {
+                    logger.info(String.format(
+                            "Failed to register user. Status: %d, Response: %s",
+                            response.statusCode,
+                            response.body
+                    ));
+                }
                 return null;
             }
-        } catch (IOException | InterruptedException e) {
-            throw new RuntimeException("Failed to register user", e);
+        } catch (IOException e) {
+            throw new IllegalStateException("Failed to register user", e);
         }
     }
 
-    public UserResponse updateUser(UpdateUserRequest request, User user) {
-        try {
-            String url = usersUrl + "/" + user.getId();
-            String token = user.getToken();
-            ApiResponse response = sendPutRequestWithObjectAndToken(url, request, token);
-            if (response.isSuccess()) {
-                System.out.println(response.body);
-                return objectMapper.readValue(response.body, UserResponse.class);
-            } else {
-                System.out.println("Failed to Update user. Status: "
-                        + response.statusCode + ", Response: " + response.body);
-                return null;
+    public UserResponse updateUser(UpdateUserRequest request, User user) throws IOException, InterruptedException {
+
+        String url = usersUrl + "/" + user.getId();
+        String token = user.getToken();
+        ApiResponse response = sendPutRequestWithObjectAndToken(url, request, token);
+        if (response.isSuccess()) {
+            return objectMapper.readValue(response.body, UserResponse.class);
+        } else {
+            if (logger.isLoggable(Level.INFO)) {
+                logger.info(String.format(
+                        "Failed to update user. Status: %d, Response: %s",
+                        response.statusCode,
+                        response.body
+                ));
             }
-        } catch (IOException | InterruptedException e) {
-            throw new RuntimeException("Failed to Update user", e);
+            return null;
         }
     }
 
@@ -60,17 +66,20 @@ public class UserApiClient implements ApiClient {
             String token = user.getToken();
             ApiResponse response = sendFile(url, file, token);
             if (response.isSuccess()) {
-                System.out.println(response.body);
                 return objectMapper.readValue(response.body, User.class);
             } else {
-                System.out.println("Failed to Update user profile picture. Status: "
-                        + response.statusCode + ", Response: " + response.body);
+                if (logger.isLoggable(Level.INFO)) {
+                    logger.info(String.format(
+                            "Failed to update user profile picture. Status: %d, Response: %s",
+                            response.statusCode,
+                            response.body
+                    ));
+                }
                 return null;
             }
-        } catch (IOException | InterruptedException e) {
-            throw new RuntimeException(e);
+        } catch (JsonProcessingException e) {
+            throw new IllegalStateException("Failed to parse server response", e);
         }
-
     }
 
     public UserResponse loginUser(LoginRequest loginRequest) {
@@ -79,12 +88,17 @@ public class UserApiClient implements ApiClient {
             if (response.isSuccess()) {
                 return objectMapper.readValue(response.body, UserResponse.class);
             } else {
-                System.out.println("Failed to Login: "
-                        + response.statusCode + ", Response: " + response.body);
+                if (logger.isLoggable(Level.INFO)) {
+                    logger.info(String.format(
+                            "Failed to login. Status: %d, Response: %s",
+                            response.statusCode,
+                            response.body
+                    ));
+                }
                 return null;
             }
-        } catch (IOException | InterruptedException e) {
-            throw new RuntimeException("Failed to login", e);
+        } catch (IOException e) {
+            throw new IllegalStateException("Failed to login", e);
         }
     }
 
@@ -93,15 +107,19 @@ public class UserApiClient implements ApiClient {
             String url = usersUrl + "/username/" + username;
             ApiResponse response = sendGetRequest(url, token);
             if (response.isSuccess()) {
-                System.out.println(response.body);
                 return objectMapper.readValue(response.body, User.class);
             } else {
-                System.out.println("Failed to fetch a User. Status: "
-                        + response.statusCode + ", Response: " + response.body);
+                if (logger.isLoggable(Level.INFO)) {
+                    logger.info(String.format(
+                            "Failed to fetch a user. Status: %d, Response: %s",
+                            response.statusCode,
+                            response.body
+                    ));
+                }
                 return null;
             }
-        } catch (IOException | InterruptedException e) {
-            throw new RuntimeException("Failed to GET a user", e);
+        } catch (IOException e) {
+            throw new IllegalStateException("Failed to GET a user", e);
         }
     }
 

@@ -28,7 +28,6 @@ public class AddFriendsController {
 
     public void setController(User loggedInuser,
             UserApiClient userApiClient,
-            ContactApiClient contactApiClient,
             List<Contact> contacts,
             ContactUpdateCallback contactUpdateCallback) {
 
@@ -48,7 +47,7 @@ public class AddFriendsController {
     private Button closeButton;
 
     @FXML
-    public void sendFriendRequest(ActionEvent event) {
+    public void sendFriendRequest(ActionEvent event) throws InterruptedException{
 
         String username = searchFriendTextField.getText().trim();
 
@@ -108,7 +107,7 @@ public class AddFriendsController {
             // Lastly update contacts
             updateContactsList(loggedInuser);
 
-        } catch (IOException | InterruptedException e) {
+        } catch (IOException e) {
             alert.showErrorAlert(LanguageManager.getString("error_sending") + e.getMessage(), username);
         }
     }

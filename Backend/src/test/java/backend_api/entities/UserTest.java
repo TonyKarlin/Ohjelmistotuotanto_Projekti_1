@@ -1,11 +1,12 @@
 package backend_api.entities;
 
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
-
 import java.time.LocalDateTime;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.junit.jupiter.api.Test;
 
 class UserTest {
 
@@ -73,7 +74,6 @@ class UserTest {
         user.setEmail("Test1234@test.com");
         assertEquals("Test1234@test.com", user.getEmail());
     }
-
 
     @Test
     void testCreatedAt() {

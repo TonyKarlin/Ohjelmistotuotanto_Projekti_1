@@ -9,7 +9,9 @@ public class ConversationParticipant {
     private String role;
     private int userId;
 
-    public ConversationParticipant() {}
+    public ConversationParticipant() {
+        // empty constructor for Jackson object mapper
+    }
 
     // Constructor for mapping a conversation participant
     public ConversationParticipant(int userId, String username, String role) {

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import java.util.*?>
+
+<VBox fx:id="createGroupVBox" alignment="CENTER" maxWidth="400.0" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.CreateGroupController">
+   <children>
+      <Label contentDisplay="CENTER" text="%create_group" textFill="#c9c9c9">
+         <VBox.margin>
+            <Insets bottom="20.0" left="50.0" right="50.0" />
+         </VBox.margin>
+         <font>
+            <Font name="System Bold" size="16.0" />
+         </font>
+      </Label>
+      <Label maxWidth="1.7976931348623157E308" text="%give_conversation_name" textFill="#c9c9c9">
+         <VBox.margin>
+            <Insets bottom="10.0" left="50.0" right="50.0" />
+         </VBox.margin>
+         <font>
+            <Font name="System Bold Italic" size="13.0" />
+         </font>
+      </Label>
+      <TextField fx:id="nameTextField">
+         <VBox.margin>
+            <Insets left="50.0" right="50.0" />
+         </VBox.margin>
+      </TextField>
+      <Button fx:id="createButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#createConversation" text="%create_button" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="13.0" />
+         </font>
+         <VBox.margin>
+            <Insets left="100.0" right="100.0" top="10.0" />
+         </VBox.margin>
+      </Button>
+      <ListView fx:id="contactList" fixedCellSize="80.0" maxHeight="400.0" maxWidth="400.0">
+         <VBox.margin>
+            <Insets top="10.0" />
+         </VBox.margin>
+      </ListView>
+   </children>
+</VBox>

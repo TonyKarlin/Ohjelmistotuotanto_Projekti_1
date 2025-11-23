@@ -1,7 +1,6 @@
 package request;
 
 import lombok.Data;
-import model.User;
 
 @Data
 public class MessageRequest {
@@ -13,8 +12,8 @@ public class MessageRequest {
     private int messageId;
     private String token;
 
-
-    public MessageRequest() {}
+    public MessageRequest() {
+    }
 
     public MessageRequest(String text, int conversationId, String token) {
         this.text = text;

@@ -16,6 +16,7 @@ Our project is designed to help users easily add contacts and chat with them.
   - Add users as contacts
   - Create conversations
   - Chat with your contacts
+  - Change language (EN, SWE, FI, JP, RU)
 
 - **Backend (Java / Spring Boot)**
   - User authentication and authorization
@@ -73,6 +74,7 @@ Jenkinsfile             # CI/CD pipeline configuration
 The frontend is built with Java and JavaFX that allows users to communicate with their contacts.
 
 #### Supported Languages
+
 - English (en)
 - Finnish (fi)
 - Russian (ru)
@@ -80,12 +82,15 @@ The frontend is built with Java and JavaFX that allows users to communicate with
 - Japanese (ja)
 
 #### Language Selection
+
 In the client:
+
 1. Open language selector from the top-left corner
 2. Choose your preferred language
 3. The interface updates instantly without restarting the client
 
 #### File Structure
+
 ```
 Frontend/
  └─ src/
@@ -98,9 +103,11 @@ Frontend/
             LanguageBundle_ru_RU.properties
             LanguageBundle_sv_SE.properties
 ```
+
 Each `.properties` file contains translated key-value pairs.
 
 #### Localization Resources
+
 - **Translators:** Initial translations for Finnish, Russian, Swedish, and Japanese were created using **AI tools**.
 - **Localization Tools:** Translations were handled manually during Sprint 5 using `.properties` files in the `Frontend/src/main/resources/localization/` directory.
 - **Encoding:** All localization files use **UTF-8** encoding to ensure correct rendering of non-Latin characters.
@@ -108,6 +115,7 @@ Each `.properties` file contains translated key-value pairs.
 #### Developers
 
 ##### Adding a new language
+
 1. Right-click `LanguageBundle` inside localization folder to add a new property file.
 2. Name it using the language and country code, e.g. ` _fr_FR`.
 3. Copy all the keys from existing file (e.g. `LanguageBundle_en_US.properties`) and translate the values.
@@ -120,11 +128,24 @@ Each `.properties` file contains translated key-value pairs.
 
 The backend of the project is built with Java and Spring Boot, using Maven as the build tool. It handles the business logic and data storage, using PostgreSQL as the primary database, and provides a RESTful API that the frontend client uses to make HTTP requests.
 
-## Database
+## Database Diagrams
 
-Initial database Schema in PostGreSQL.
+ER-diagram
 
-![database](docs/images/project-database.png)
+![ER-diagram](docs/diagrams/project-er-diagram.png)
+
+Relational-Schema
+
+![Relational-schema](docs/diagrams/project-relational-schema.png)
+
+## Use-case Diagram
+
+![Use-case-diagram](docs/diagrams/project-usecase-diagram.png)
+
+## Activity Diagram
+
+Activity diagram of group creation.
+![act-diagram](docs/diagrams/project-activity-diagram.png)
 
 ## Jenkins CI/CD
 
@@ -173,11 +194,24 @@ All tests are executed automatically in the Jenkins pipeline, with results and c
 docker-compose up -d
 ```
 
+## SonarQube
+
+SonarQube analysis for both Backend and Frontend.
+
+```cmd
+cd .\Backend\
+sonar-scanner
+```
+
+```cmd
+cd .\Frontend\
+sonar-scanner
+```
+
 ## Future development
 
 - Implement live chatting and possible voice calls.
 - Public walls where any user can join by a specific topic and chat about.
-- Localization (multiple language options).
 - Calendar for planning events and meetings.
 - Pinning messages.
 - Live Notifications for alerts etc.

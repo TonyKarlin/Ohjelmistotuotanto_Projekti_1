@@ -42,6 +42,6 @@
             <Insets top="5.0" />
          </padding>
       </Label>
-      <Button fx:id="Remove" mnemonicParsing="false" onAction="#removeParticipantFromConversation" text="%remove" />
+      <Button fx:id="remove" mnemonicParsing="false" onAction="#removeParticipantFromConversation" text="%remove" />
    </children>
 </HBox>

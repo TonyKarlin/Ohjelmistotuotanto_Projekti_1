@@ -1,12 +1,11 @@
 package utils;
 
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Circle;
 
 public class ImageRounder {
-    ImageView imageView;
 
+    ImageView imageView;
 
     public ImageRounder(ImageView imageView) {
         this.imageView = imageView;

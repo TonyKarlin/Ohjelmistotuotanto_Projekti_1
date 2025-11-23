@@ -39,7 +39,8 @@
   -fx-scale-y: 1.05;
 }
 
-.check-box {}
+.check-box {
+}
 .check-box:hover {
   -fx-cursor: hand;
   -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.5), 10, 0, 4, 4);
@@ -48,7 +49,8 @@
   -fx-color: rgb(99, 101, 220);
 }
 
-.clickable-label {}
+.clickable-label {
+}
 .clickable-label:hover {
   -fx-cursor: hand;
   -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.5), 10, 0, 4, 4);
@@ -63,7 +65,8 @@
   -fx-border-width: 2px;
 }
 
-.statusCircle {}
+.statusCircle {
+}
 .statusCircle:hover {
   -fx-cursor: hand;
   -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.5), 10, 0, 4, 4);
@@ -186,7 +189,6 @@
   -fx-background-color: transparent;
 }
 
-
 .ContactView {
 }
 .ContactView:hover {
@@ -194,4 +196,9 @@
   -fx-border-color: rgb(99, 101, 220);
   -fx-border-width: 2px;
   -fx-border-radius: 10px;
+}
+
+#languageComboBox {
+  -fx-color: #555;
+  -fx-text-fill: rgb(99, 101, 220);
 }

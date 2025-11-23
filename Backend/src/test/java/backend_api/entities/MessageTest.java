@@ -19,7 +19,7 @@ class MessageTest {
         attachments.add(content);
 
 
-        Message message = new Message(user, null, conversation, attachments);
+        Message message = new Message(user, conversation, attachments);
 
         message.setSender(user);
         message.setConversation(conversation);

@@ -50,7 +50,7 @@
          <VBox.margin>
             <Insets left="50.0" right="50.0" />
          </VBox.margin></TextField>
-      <Button fx:id="ChangeNameButton" mnemonicParsing="false" onAction="#changeConversationName" text="%change" textFill="WHITE">
+      <Button fx:id="changeNameButton" mnemonicParsing="false" onAction="#changeConversationName" text="%change" textFill="WHITE">
          <VBox.margin>
             <Insets bottom="20.0" left="100.0" right="100.0" top="10.0" />
          </VBox.margin>

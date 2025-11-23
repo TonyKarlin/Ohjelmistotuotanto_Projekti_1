@@ -9,15 +9,20 @@ import java.util.ResourceBundle;
  */
 public class LanguageManager {
 
+    private LanguageManager() {
+        // hidden constructor
+    }
+
     private static Locale currentLocale = Locale.US;
     private static ResourceBundle bundle = null;
+    private static String languageBundle = "localization.LanguageBundle";
 
     /**
      * Gets the resource bundle, initializing it if needed
      */
     private static ResourceBundle getBundle() {
         if (bundle == null) {
-            bundle = ResourceBundle.getBundle("localization.LanguageBundle", currentLocale);
+            bundle = ResourceBundle.getBundle(languageBundle, currentLocale);
         }
         return bundle;
     }
@@ -43,7 +48,7 @@ public class LanguageManager {
      */
     public static void setLocale(Locale locale) {
         currentLocale = locale;
-        bundle = ResourceBundle.getBundle("localization.LanguageBundle", currentLocale);
+        bundle = ResourceBundle.getBundle(languageBundle, currentLocale);
     }
 
     /**
@@ -59,6 +64,6 @@ public class LanguageManager {
      * Reloads the resource bundle (useful after locale change)
      */
     public static void reload() {
-        bundle = ResourceBundle.getBundle("localization.LanguageBundle", currentLocale);
+        bundle = ResourceBundle.getBundle(languageBundle, currentLocale);
     }
 }

@@ -8,17 +8,17 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.Optional;
 
-import backend_api.DTOs.user.UserWithTokenDTO;
 import backend_api.utils.customexceptions.UnauthorizedActionException;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
-import backend_api.DTOs.user.UpdateUserRequest;
-import backend_api.DTOs.user.UserDTO;
-import backend_api.DTOs.user.LoginRequest;
-import backend_api.DTOs.user.RegisterRequest;
+import backend_api.dto.user.LoginRequest;
+import backend_api.dto.user.RegisterRequest;
+import backend_api.dto.user.UpdateUserRequest;
+import backend_api.dto.user.UserDTO;
+import backend_api.dto.user.UserWithTokenDTO;
 import backend_api.entities.User;
 import backend_api.services.UserService;
 import backend_api.utils.JwtUtil;
@@ -58,10 +58,17 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody RegisterRequest request) {
+    public ResponseEntity<UserDTO> register(@RequestBody RegisterRequest request) {
 
-        User user = new User(request.getUsername(), request.getPassword(), request.getEmail());
+        User user = new User(request.username(), request.password(), request.email());
         user.setProfilePicture("default.png");
+
+        if (request.language() != null && !request.language().isEmpty()) {
+            user.setLanguage(request.language());
+        } else {
+            user.setLanguage("en");
+        }
+
         User savedUser = userService.register(user);
         return ResponseEntity.ok(new UserDTO(savedUser));
     }
@@ -70,6 +77,11 @@ public class UserController {
     public ResponseEntity<UserWithTokenDTO> login(@RequestBody LoginRequest request) {
         User user = userService.login(request.getUsername(), request.getPassword())
                 .orElseThrow(() -> new UnauthorizedActionException("Invalid username or password"));
+
+        if (request.getLanguage() != null && !request.getLanguage().isEmpty()) {
+            user.setLanguage(request.getLanguage());
+            userService.save(user);
+        }
 
         String token = JwtUtil.generateToken(user.getUsername());
         UserWithTokenDTO response = new UserWithTokenDTO(
@@ -104,7 +116,7 @@ public class UserController {
     }
 
     @PostMapping("/{id}/profile-picture")
-    public ResponseEntity<?> uploadProfilePicture(
+    public ResponseEntity<UserDTO> uploadProfilePicture(
             @PathVariable Long id,
             @RequestParam("file") MultipartFile file,
             Authentication authentication) throws IOException {
@@ -119,7 +131,6 @@ public class UserController {
         return ResponseEntity.ok(new UserDTO(user));
     }
 
-
     @GetMapping("/profile-picture/{filename}")
     public ResponseEntity<Resource> getProfilePicture(@PathVariable String filename) throws IOException {
         Path filePath = Paths.get(new File(".").getCanonicalPath(), "uploads", filename);
@@ -130,4 +141,3 @@ public class UserController {
                 .body(resource);
     }
 }
-

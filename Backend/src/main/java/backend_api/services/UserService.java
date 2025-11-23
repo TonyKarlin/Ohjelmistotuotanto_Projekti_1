@@ -6,16 +6,16 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.Optional;
 
-import backend_api.DTOs.user.UpdateUserRequest;
-import backend_api.utils.customexceptions.InvalidUserException;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import backend_api.dto.user.UpdateUserRequest;
 import backend_api.entities.User;
 import backend_api.repository.UserRepository;
-import org.springframework.web.multipart.MultipartFile;
+import backend_api.utils.customexceptions.InvalidUserException;
 
 @Service
 public class UserService {
@@ -101,6 +101,10 @@ public class UserService {
             user.setPassword(encodePassword(request.getPassword()));
         }
 
+        if (request.getLanguage() != null && !request.getLanguage().isBlank()) {
+            user.setLanguage(request.getLanguage());
+        }
+
         return userRepository.save(user);
     }
 
@@ -131,7 +135,6 @@ public class UserService {
         File destination = new File(uploadDir + File.separator + filename);
         file.transferTo(destination);
 
-
         user.setProfilePicture(filename);
 
         return userRepository.save(user);
@@ -147,5 +150,9 @@ public class UserService {
 
     public String encodePassword(String rawPassword) {
         return passwordEncoder.encode(rawPassword);
+    }
+
+    public User save(User user) {
+        return userRepository.save(user);
     }
 }

@@ -16,7 +16,9 @@ public class Conversation {
     private String createdAt;
     private List<ConversationParticipant> participants;
 
-    //Empty construct for Object mapper
-    public Conversation() {}
+
+    public Conversation() {
+        //Empty construct for Object mapper
+    }
 
 }

@@ -10,6 +10,8 @@ public class MessageAttachment {
     private String fileType;
     private int messageId;
 
-    //Empty construct for Object mapper
-    public MessageAttachment() {}
+
+    public MessageAttachment() {
+        //Empty construct for Object mapper
+    }
 }
