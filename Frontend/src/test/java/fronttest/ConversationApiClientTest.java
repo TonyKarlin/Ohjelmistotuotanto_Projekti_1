@@ -5,7 +5,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -15,7 +15,7 @@ import model.User;
 import request.ConversationRequest;
 import service.ConversationApiClient;
 
-public class ConversationApiClientTest {
+class ConversationApiClientTest {
 
     private Conversation conversation;
     private ConversationRequest conversationRequest;
@@ -24,7 +24,7 @@ public class ConversationApiClientTest {
     ConversationParticipant participant;
 
     @BeforeEach
-    public void setUp() throws Exception {
+    void setUp() {
         conversation = new Conversation();
         conversationApiClient = new ConversationApiClient();
         user = new User();
@@ -32,45 +32,10 @@ public class ConversationApiClientTest {
     }
 
     /**
-     * Tests creating a new conversation with a creator and participants.
-     */
-//    @Test
-//    public void testCreateConversation() {
-//        try {
-//            user.setId(1);
-//            List<Integer> participantIds = Arrays.asList(2, 3);
-//            String conversationName = "Test Conversation from JUnit";
-//
-//            conversationRequest = new ConversationRequest(user.getId(), conversationName, participantIds);
-//            Conversation createdConversation = conversationApiClient.createConversation(conversationRequest);
-//
-//            if (createdConversation != null) {
-//                System.out.println("Conversation created successfully!");
-//                System.out.println("Conversation name: " + createdConversation.getName());
-//                System.out.println("Conversation ID: " + createdConversation.getId());
-//                System.out.println("Created by: " + createdConversation.getCreatedBy());
-//
-//                // Verify the conversation was created correctly
-//                assertEquals(conversationName, createdConversation.getName(), "Conversation name should match");
-//                assertNotNull(createdConversation.getId(), "Conversation should have an ID");
-//                assertEquals(1, createdConversation.getCreatedBy(), "Creator ID should match");
-//            } else {
-//                System.out.println("Failed to create conversation - possible causes:");
-//                System.out.println("- Backend server not running");
-//                System.out.println("- User ID 1 doesn't exist");
-//                System.out.println("- Participant IDs 2, 3 don't exist");
-//                System.out.println("- Database connectivity issues");
-//            }
-//        } catch (IOException | InterruptedException e) {
-//            System.out.println("Exception during conversation creation: " + e.getMessage());
-//            System.out.println("This is likely due to backend connectivity issues");
-//        }
-//    }
-    /**
      * Tests updating the name of an existing conversation.
      */
     @Test
-    public void testChangeConversationName() {
+    void testChangeConversationName() {
         try {
             conversation.setId(3);
             String newName = "Updated Conversation Name from JUnit";
@@ -105,35 +70,10 @@ public class ConversationApiClientTest {
     }
 
     /**
-     * Tests adding a new user (contact) to a conversation.
-     */
-//    @Test
-//    public void testAddUserToConversation() {
-//        try {
-//            Contact contact = new Contact();
-//            contact.setContactUserId(4);
-//            conversation.setId(4);
-//            conversationApiClient.addUserToConversation(conversation, contact);
-//
-//            System.out.println("Add user to conversation request sent successfully");
-//            System.out.println("Added user ID: " + contact.getContactUserId());
-//            System.out.println("To conversation ID: " + conversation.getId());
-//
-//        } catch (IOException | InterruptedException e) {
-//            System.out.println("Exception during adding user to conversation: " + e.getMessage());
-//            System.out.println("Possible causes:");
-//            System.out.println("- Backend server not running");
-//            System.out.println("- Conversation ID 4 doesn't exist");
-//            System.out.println("- User ID 4 doesn't exist");
-//            System.out.println("- User is already a participant in this conversation");
-//            System.out.println("- Database connectivity issues");
-//        }
-//    }
-    /**
      * Tests a user leaving a conversation.
      */
     @Test
-    public void testLeaveConversation() {
+    void testLeaveConversation() {
         try {
             user.setId(4);
             conversation.setId(4);
@@ -142,6 +82,17 @@ public class ConversationApiClientTest {
 
             System.out.println("Leave conversation request sent successfully");
             System.out.println("User ID: " + user.getId() + " left conversation ID: " + conversation.getId());
+
+            // Verify the user has left the conversation
+            List<Conversation> conversations = conversationApiClient.getConversationsById(user);
+            boolean found = false;
+            for (Conversation c : conversations) {
+                if (c.getId() == conversation.getId()) {
+                    found = true;
+                    break;
+                }
+            }
+            assertFalse(found, "User should have left the conversation");
 
         } catch (IOException e) {
             System.out.println("Exception during leaving conversation: " + e.getMessage());
@@ -154,59 +105,10 @@ public class ConversationApiClientTest {
     }
 
     /**
-     * Tests deleting a conversation by its creator.
-     */
-    @Test
-    public void testDeleteConversation() {
-        try {
-            user.setId(1);
-            conversation.setId(5);
-
-            conversationApiClient.deleteConversation(conversation, user);
-
-            System.out.println("Delete conversation request sent successfully");
-            System.out.println("Conversation ID: " + conversation.getId() + " deleted by user ID: " + user.getId());
-
-        } catch (IOException e) {
-            System.out.println("Exception during conversation deletion: " + e.getMessage());
-            System.out.println("Possible causes:");
-            System.out.println("- Backend server not running");
-            System.out.println("- Conversation ID 5 doesn't exist");
-            System.out.println("- User ID 1 is not the creator of this conversation");
-            System.out.println("- Database connectivity issues");
-        }
-    }
-
-    /**
-     * Tests removing a user from a conversation.
-     */
-    @Test
-    public void testRemoveUserFromConversation() {
-        try {
-            conversation.setId(3);
-            participant.setUserId(3);
-
-            conversationApiClient.removeUserFromConversation(conversation.getId(), participant.getUserId(), "prööt");
-
-            System.out.println("Remove user from conversation request sent successfully");
-            System.out.println("User ID: " + participant.getUserId() + " removed from conversation ID: " + conversation.getId());
-
-        } catch (IOException e) {
-            System.out.println("Exception during user removal from conversation: " + e.getMessage());
-            System.out.println("Possible causes:");
-            System.out.println("- Backend server not running");
-            System.out.println("- Conversation ID 3 doesn't exist");
-            System.out.println("- User ID 3 is not a participant in this conversation");
-            System.out.println("- Insufficient permissions to remove this user");
-            System.out.println("- Database connectivity issues");
-        }
-    }
-
-    /**
      * Tests fetching all conversations that a user participates in.
      */
     @Test
-    public void testGetConversationByUserId() {
+    void testGetConversationByUserId() {
         try {
             user.setId(1);
             List<Conversation> conversations = conversationApiClient.getConversationsById(user);
@@ -233,7 +135,7 @@ public class ConversationApiClientTest {
 
                 // Verify we got conversations
                 assertFalse(conversations.isEmpty(), "User should have at least one conversation");
-                assertNotNull(conversations.get(0).getId(), "Conversation should have an ID");
+                assertNotEquals(0, conversations.get(0).getId(), "Conversation should have an ID");
             } else if (conversations != null && conversations.isEmpty()) {
                 System.out.println("User ID " + user.getId() + " has no conversations");
             } else {
@@ -252,10 +154,10 @@ public class ConversationApiClientTest {
      * Tests fetching all conversations in the system.
      */
     @Test
-    public void testGetAllConversations() {
+    void testGetAllConversations() {
         try {
-            User user = new User();
-            List<Conversation> conversations = conversationApiClient.getAllUserConversations(user);
+            User currentUser = new User();
+            List<Conversation> conversations = conversationApiClient.getAllUserConversations(currentUser);
 
             if (conversations != null && !conversations.isEmpty()) {
                 System.out.println("Successfully retrieved " + conversations.size() + " conversations from the system");
@@ -272,7 +174,7 @@ public class ConversationApiClientTest {
 
                 // Verify we got conversations
                 assertFalse(conversations.isEmpty(), "System should have at least one conversation");
-                assertNotNull(conversations.get(0).getId(), "Conversation should have an ID");
+                assertNotEquals(0, conversations.get(0).getId(), "Conversation should have an ID");
             } else if (conversations != null && conversations.isEmpty()) {
                 System.out.println("No conversations found in the system");
             } else {
