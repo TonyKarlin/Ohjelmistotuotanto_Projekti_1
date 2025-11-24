@@ -60,6 +60,7 @@ public class MainViewController implements ContactUpdateCallback, LanguageChange
     Button activeConversation;
     String languageBundle = "localization.LanguageBundle";
     String controllerString = "controller";
+    private static final String CONTACT_HBOX_FXML = "/component/contactHBox.fxml";
     private static final Logger logger = Logger.getLogger(MainViewController.class.getName());
 
     // Sets the controller with user and API clients, initializes user info and lists
@@ -365,7 +366,7 @@ public class MainViewController implements ContactUpdateCallback, LanguageChange
     public void addFriendsToFriendsList() throws IOException {
         for (Contact contact : contacts) {
             if ("ACCEPTED".equals(contact.getStatus())) {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/component/contactHBox.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource(CONTACT_HBOX_FXML));
                 ResourceBundle bundle = ResourceBundle.getBundle(languageBundle, LanguageManager.getCurrentLocale());
                 loader.setResources(bundle);
                 HBox userContactsHbox = loader.load();
@@ -398,7 +399,7 @@ public class MainViewController implements ContactUpdateCallback, LanguageChange
 
         for (Contact contact : contacts) {
             if ("ACCEPTED".equals(contact.getStatus())) {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/component/contactHBox.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource(CONTACT_HBOX_FXML));
                 ResourceBundle bundle = ResourceBundle.getBundle(languageBundle, LanguageManager.getCurrentLocale());
                 loader.setResources(bundle);
                 HBox userContactsHbox = loader.load();
@@ -418,7 +419,7 @@ public class MainViewController implements ContactUpdateCallback, LanguageChange
 
         for (Contact contact : contacts) {
             if ("PENDING".equals(contact.getStatus())) {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/component/contactHBox.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource(CONTACT_HBOX_FXML));
                 ResourceBundle bundle = ResourceBundle.getBundle(languageBundle, LanguageManager.getCurrentLocale());
                 loader.setResources(bundle);
                 HBox userContactsHbox = loader.load();
@@ -436,7 +437,7 @@ public class MainViewController implements ContactUpdateCallback, LanguageChange
 
         for (Contact contact : contacts) {
             if ("SENT".equals(contact.getStatus())) {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/component/contactHBox.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource(CONTACT_HBOX_FXML));
                 ResourceBundle bundle = ResourceBundle.getBundle(languageBundle, LanguageManager.getCurrentLocale());
                 loader.setResources(bundle);
                 HBox userContactsHbox = loader.load();
