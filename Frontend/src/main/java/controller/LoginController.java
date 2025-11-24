@@ -9,6 +9,7 @@ import callback.LanguageChangeCallback;
 import controller.component.LanguageButtonController;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.NodeOrientation;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -77,6 +78,11 @@ public class LoginController implements LanguageChangeCallback {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/loginView.fxml"), bundle);
             Parent root = fxmlLoader.load();
 
+            // Apply RTL orientation if needed
+            if (LanguageManager.isRTL()) {
+                root.setNodeOrientation(NodeOrientation.RIGHT_TO_LEFT);
+            }
+
             // Get the new controller and restore state
             LoginController newController = fxmlLoader.getController();
             newController.setController(this.userApiClient);
@@ -97,6 +103,12 @@ public class LoginController implements LanguageChangeCallback {
         ResourceBundle bundle = ResourceBundle.getBundle(languageBundle, LanguageManager.getCurrentLocale());
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/registerView.fxml"), bundle);
         Parent root = fxmlLoader.load();
+
+        // Apply RTL orientation if needed
+        if (LanguageManager.isRTL()) {
+            root.setNodeOrientation(NodeOrientation.RIGHT_TO_LEFT);
+        }
+
         RegisterController controller = fxmlLoader.getController();
         controller.setController(this.userApiClient);
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -142,6 +154,12 @@ public class LoginController implements LanguageChangeCallback {
         ResourceBundle bundle = ResourceBundle.getBundle(languageBundle, LanguageManager.getCurrentLocale());
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/mainView.fxml"), bundle);
         Parent root = fxmlLoader.load();
+
+        // Apply RTL orientation if needed
+        if (LanguageManager.isRTL()) {
+            root.setNodeOrientation(NodeOrientation.RIGHT_TO_LEFT);
+        }
+
         MainViewController controller = fxmlLoader.getController();
         Stage stage = new Stage();
         stage.setTitle(LanguageManager.getString("title"));

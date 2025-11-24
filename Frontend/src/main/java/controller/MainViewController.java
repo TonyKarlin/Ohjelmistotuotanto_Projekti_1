@@ -141,6 +141,11 @@ public class MainViewController implements ContactUpdateCallback, LanguageChange
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/MainView.fxml"), bundle);
             Parent root = fxmlLoader.load();
 
+            // Apply RTL orientation if needed
+            if (LanguageManager.isRTL()) {
+                root.setNodeOrientation(javafx.geometry.NodeOrientation.RIGHT_TO_LEFT);
+            }
+
             // Get the new controller and restore state
             MainViewController newController = fxmlLoader.getController();
             newController.setController(this.loggedInUser, this.userApiClient);
@@ -231,6 +236,12 @@ public class MainViewController implements ContactUpdateCallback, LanguageChange
         ResourceBundle bundle = ResourceBundle.getBundle(languageBundle, LanguageManager.getCurrentLocale());
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/loginView.fxml"), bundle);
         Parent root = fxmlLoader.load();
+
+        // Apply RTL orientation if needed
+        if (LanguageManager.isRTL()) {
+            root.setNodeOrientation(javafx.geometry.NodeOrientation.RIGHT_TO_LEFT);
+        }
+
         Stage stage = new Stage();
         stage.setTitle(LanguageManager.getString("title"));
         stage.setScene(new Scene(root));

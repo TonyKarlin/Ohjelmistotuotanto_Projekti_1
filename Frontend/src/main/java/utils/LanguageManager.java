@@ -1,12 +1,10 @@
 package utils;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-/**
- * Manages language/locale for the application. Provides centralized access to
- * localized strings.
- */
 public class LanguageManager {
 
     private LanguageManager() {
@@ -16,6 +14,8 @@ public class LanguageManager {
     private static Locale currentLocale = Locale.US;
     private static ResourceBundle bundle = null;
     private static String languageBundle = "localization.LanguageBundle";
+
+    private static final List<String> RTL_LANGUAGES = Arrays.asList("ja");
 
     /**
      * Gets the resource bundle, initializing it if needed
@@ -65,5 +65,14 @@ public class LanguageManager {
      */
     public static void reload() {
         bundle = ResourceBundle.getBundle(languageBundle, currentLocale);
+    }
+
+    /**
+     * Checks if the current locale requires right-to-left orientation
+     *
+     * @return true if RTL is needed, false otherwise
+     */
+    public static boolean isRTL() {
+        return RTL_LANGUAGES.contains(currentLocale.getLanguage());
     }
 }

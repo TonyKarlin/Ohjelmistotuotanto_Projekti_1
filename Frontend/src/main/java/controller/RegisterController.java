@@ -9,6 +9,7 @@ import callback.LanguageChangeCallback;
 import controller.component.LanguageButtonController;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.NodeOrientation;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -26,7 +27,6 @@ public class RegisterController implements LanguageChangeCallback {
     private UserApiClient userApiClient;
     private final UIAlert alert = new UIAlert();
     private static final Logger logger = Logger.getLogger(RegisterController.class.getName());
-
 
     //Controller to set instances. Is called when changing to this view.
     public void setController(UserApiClient userApiClient) {
@@ -83,6 +83,11 @@ public class RegisterController implements LanguageChangeCallback {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/registerView.fxml"), bundle);
             Parent root = fxmlLoader.load();
 
+            // Apply RTL orientation if needed
+            if (LanguageManager.isRTL()) {
+                root.setNodeOrientation(NodeOrientation.RIGHT_TO_LEFT);
+            }
+
             // Get the new controller and restore state
             RegisterController newController = fxmlLoader.getController();
             newController.setController(this.userApiClient);
@@ -106,6 +111,12 @@ public class RegisterController implements LanguageChangeCallback {
         ResourceBundle bundle = ResourceBundle.getBundle("localization.LanguageBundle", LanguageManager.getCurrentLocale());
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/loginView.fxml"), bundle);
         Parent root = fxmlLoader.load();
+
+        // Apply RTL orientation if needed
+        if (LanguageManager.isRTL()) {
+            root.setNodeOrientation(NodeOrientation.RIGHT_TO_LEFT);
+        }
+
         LoginController controller = fxmlLoader.getController();
         // pass the userApiClient instance back to login view
         controller.setController(this.userApiClient);

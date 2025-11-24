@@ -7,6 +7,7 @@ import controller.LoginController;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.NodeOrientation;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -32,6 +33,9 @@ public class View extends Application {
 
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/loginView.fxml"), bundle);
             Parent root = fxmlLoader.load();
+            if (LanguageManager.isRTL()) {
+                root.setNodeOrientation(NodeOrientation.RIGHT_TO_LEFT);
+            }
             LoginController controller = fxmlLoader.getController();
             controller.setController(userApiClient);
             stage.setTitle(LanguageManager.getString("title"));
