@@ -362,10 +362,12 @@ public class MainViewController implements ContactUpdateCallback, LanguageChange
         contentBorderPane.setBottom(sendMessageHBox);
     }
 
-    // Adds accepted friends to the friends list UI
-    public void addFriendsToFriendsList() throws IOException {
+    // Loads and displays contacts filtered by status
+    private void loadContactsByStatus(String status) throws IOException {
+        friendsList.getChildren().clear();
+
         for (Contact contact : contacts) {
-            if ("ACCEPTED".equals(contact.getStatus())) {
+            if (status.equals(contact.getStatus())) {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource(CONTACT_HBOX_FXML));
                 ResourceBundle bundle = ResourceBundle.getBundle(languageBundle, LanguageManager.getCurrentLocale());
                 loader.setResources(bundle);
@@ -376,6 +378,11 @@ public class MainViewController implements ContactUpdateCallback, LanguageChange
                 friendsList.getChildren().add(userContactsHbox);
             }
         }
+    }
+
+    // Adds accepted friends to the friends list UI
+    public void addFriendsToFriendsList() throws IOException {
+        loadContactsByStatus("ACCEPTED");
     }
 
     @FXML
@@ -394,59 +401,17 @@ public class MainViewController implements ContactUpdateCallback, LanguageChange
 
     @FXML
     public void openFriendList() throws IOException {
-
-        friendsList.getChildren().clear();
-
-        for (Contact contact : contacts) {
-            if ("ACCEPTED".equals(contact.getStatus())) {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource(CONTACT_HBOX_FXML));
-                ResourceBundle bundle = ResourceBundle.getBundle(languageBundle, LanguageManager.getCurrentLocale());
-                loader.setResources(bundle);
-                HBox userContactsHbox = loader.load();
-                ContactHboxController controller = loader.getController();
-                controller.setController(contact, this);
-                controller.setUsername(contact.getContactUsername());
-                friendsList.getChildren().add(userContactsHbox);
-            }
-        }
-
+        loadContactsByStatus("ACCEPTED");
     }
 
     @FXML
     public void openPendingList() throws IOException {
-
-        friendsList.getChildren().clear();
-
-        for (Contact contact : contacts) {
-            if ("PENDING".equals(contact.getStatus())) {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource(CONTACT_HBOX_FXML));
-                ResourceBundle bundle = ResourceBundle.getBundle(languageBundle, LanguageManager.getCurrentLocale());
-                loader.setResources(bundle);
-                HBox userContactsHbox = loader.load();
-                ContactHboxController controller = loader.getController();
-                controller.setController(contact, this);
-                controller.setUsername(contact.getContactUsername());
-                friendsList.getChildren().add(userContactsHbox);
-            }
-        }
+        loadContactsByStatus("PENDING");
     }
 
     @FXML
     public void openSentList() throws IOException {
-        friendsList.getChildren().clear();
-
-        for (Contact contact : contacts) {
-            if ("SENT".equals(contact.getStatus())) {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource(CONTACT_HBOX_FXML));
-                ResourceBundle bundle = ResourceBundle.getBundle(languageBundle, LanguageManager.getCurrentLocale());
-                loader.setResources(bundle);
-                HBox userContactsHbox = loader.load();
-                ContactHboxController controller = loader.getController();
-                controller.setController(contact, this);
-                controller.setUsername(contact.getContactUsername());
-                friendsList.getChildren().add(userContactsHbox);
-            }
-        }
+        loadContactsByStatus("SENT");
     }
 
     @Override
