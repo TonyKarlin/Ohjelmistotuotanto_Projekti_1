@@ -12,7 +12,7 @@
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="CENTER" maxWidth="400.0" styleClass="userProfile" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.UserProfileController">
+<VBox fx:id="profileRoot" alignment="CENTER" maxWidth="400.0" styleClass="userProfile" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.UserProfileController">
    <children>
       <Label alignment="CENTER" contentDisplay="CENTER" maxWidth="600.0" text="%profile_change_info" textAlignment="CENTER" textFill="#d3d3d3">
          <font>

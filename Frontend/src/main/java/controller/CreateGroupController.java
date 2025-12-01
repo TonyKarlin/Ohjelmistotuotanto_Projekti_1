@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import controller.component.ContactHboxController;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -13,12 +14,14 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import lombok.Data;
 import model.Contact;
 import model.Conversation;
 import model.User;
 import request.ConversationRequest;
 import service.ConversationApiClient;
+import utils.GlobalEventHandler;
 import utils.LanguageManager;
 
 @Data
@@ -37,6 +40,17 @@ public class CreateGroupController {
         this.parentController = parentController;
         addContactsToList();
     }
+
+    @FXML
+    public void initialize() {
+        createGroupVBox.setFocusTraversable(true);
+        Platform.runLater(() -> createGroupVBox.requestFocus());
+
+        GlobalEventHandler.addObservableEventListener(createGroupVBox, createButton);
+    }
+
+    @FXML
+    private VBox createGroupVBox;
 
     @FXML
     private Button createButton;

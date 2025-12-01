@@ -7,6 +7,7 @@ import java.util.logging.Logger;
 
 import callback.LanguageChangeCallback;
 import controller.component.LanguageButtonController;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.NodeOrientation;
@@ -18,11 +19,13 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import model.User;
 import model.UserResponse;
 import request.LoginRequest;
 import service.UserApiClient;
+import utils.GlobalEventHandler;
 import utils.LanguageManager;
 import utils.UIAlert;
 
@@ -37,6 +40,10 @@ public class LoginController implements LanguageChangeCallback {
     public void setController(UserApiClient userApiClient) {
         this.userApiClient = userApiClient;
     }
+
+
+    @FXML
+    private StackPane loginRoot;
 
     @FXML
     private Button loginButton;
@@ -58,9 +65,17 @@ public class LoginController implements LanguageChangeCallback {
      */
     @FXML
     public void initialize() {
+        loginRoot.setFocusTraversable(true);
+        Platform.runLater(() -> loginRoot.requestFocus());
+
         if (languageButtonController != null) {
             languageButtonController.setLanguageChangeCallback(this);
         }
+
+//        GlobalEventHandler.addObservableEventListener(userNameTextField, loginButton);
+//        GlobalEventHandler.addObservableEventListener(passwordTextField, loginButton);
+
+        GlobalEventHandler.addObservableEventListener(loginRoot, loginButton);
     }
 
     /**

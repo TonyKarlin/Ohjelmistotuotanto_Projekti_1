@@ -12,6 +12,7 @@ import model.Message;
 import model.User;
 import request.MessageRequest;
 import service.MessageApiClient;
+import utils.GlobalEventHandler;
 
 public class SendMessageHBoxController {
 
@@ -24,6 +25,11 @@ public class SendMessageHBoxController {
         this.conversation = conversation;
         this.loggedInUser = loggedInUser;
         this.parentController = parentController;
+    }
+
+    @FXML
+    public void initialize() {
+        GlobalEventHandler.setButtonEventHandler(sendMessageTextField, sendMessageButton);
     }
 
     @FXML
@@ -49,5 +55,7 @@ public class SendMessageHBoxController {
         sendMessageTextField.clear();
 
     }
+
+
 
 }

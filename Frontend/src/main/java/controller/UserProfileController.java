@@ -3,6 +3,7 @@ package controller;
 import java.io.File;
 import java.io.IOException;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -12,15 +13,13 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
 import model.User;
 import model.UserResponse;
 import request.UpdateUserRequest;
 import service.UserApiClient;
-import utils.FileHandler;
-import utils.ImageRounder;
-import utils.LanguageManager;
-import utils.UIAlert;
+import utils.*;
 
 public class UserProfileController {
 
@@ -40,7 +39,17 @@ public class UserProfileController {
         addUserInformation(loggedInUser);
     }
 
+    @FXML
+    public void initialize() {
+        profileRoot.setFocusTraversable(true);
+        Platform.runLater(() -> profileRoot.requestFocus());
+
+        GlobalEventHandler.addObservableEventListener(profileRoot, changeInformationButton);
+    }
+
     //region FXML-injected UI components
+    @FXML
+    private VBox profileRoot;
     @FXML
     private Circle awayStatus;
     @FXML

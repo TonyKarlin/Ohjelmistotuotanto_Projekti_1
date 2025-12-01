@@ -14,6 +14,7 @@ import model.User;
 import request.ContactRequest;
 import service.ContactApiClient;
 import service.UserApiClient;
+import utils.GlobalEventHandler;
 import utils.LanguageManager;
 import utils.UIAlert;
 
@@ -35,6 +36,11 @@ public class AddFriendsController {
         this.userApiClient = userApiClient;
         this.contacts = contacts;
         this.contactUpdateCallback = contactUpdateCallback;
+    }
+
+    @FXML
+    public void initialize() {
+        GlobalEventHandler.setButtonEventHandler(searchFriendTextField, friendRequestButton);
     }
 
     @FXML

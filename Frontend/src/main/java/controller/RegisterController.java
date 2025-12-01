@@ -7,18 +7,22 @@ import java.util.logging.Logger;
 
 import callback.LanguageChangeCallback;
 import controller.component.LanguageButtonController;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.NodeOrientation;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import model.User;
 import service.UserApiClient;
+import utils.GlobalEventHandler;
 import utils.LanguageManager;
 import utils.UIAlert;
 
@@ -33,7 +37,15 @@ public class RegisterController implements LanguageChangeCallback {
         this.userApiClient = userApiClient;
     }
 
+    public RegisterController() {
+
+
+    }
+
     //region FXML-injected UI components
+    @FXML
+    private StackPane registerRoot;
+
     @FXML
     private TextField emailTextField;
 
@@ -61,9 +73,13 @@ public class RegisterController implements LanguageChangeCallback {
      */
     @FXML
     public void initialize() {
+        registerRoot.setFocusTraversable(true);
+        Platform.runLater(() -> registerRoot.requestFocus());
+
         if (languageButtonController != null) {
             languageButtonController.setLanguageChangeCallback(this);
         }
+        GlobalEventHandler.addObservableEventListener(registerRoot, registerButton);
     }
 
     /**
