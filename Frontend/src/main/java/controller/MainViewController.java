@@ -6,6 +6,7 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 import callback.ContactUpdateCallback;
 import callback.LanguageChangeCallback;
@@ -17,6 +18,7 @@ import controller.component.SendMessageHBoxController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.NodeOrientation;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -60,6 +62,8 @@ public class MainViewController implements ContactUpdateCallback, LanguageChange
     Button activeConversation;
     String languageBundle = "localization.LanguageBundle";
     String controllerString = "controller";
+    String privateGroup = "PRIVATE";
+    String acceptContact = "ACCEPT";
     private static final String CONTACT_HBOX_FXML = "/component/contactHBox.fxml";
     private static final Logger logger = Logger.getLogger(MainViewController.class.getName());
 
@@ -93,6 +97,10 @@ public class MainViewController implements ContactUpdateCallback, LanguageChange
     private Label loggedInUsername;
     @FXML
     private Label messageLabel;
+    @FXML
+    private Label noConversationLabel;
+    @FXML
+    private Label noRequestLabel;
     @FXML
     private Button messageOptionsButton;
     @FXML
@@ -144,7 +152,7 @@ public class MainViewController implements ContactUpdateCallback, LanguageChange
 
             // Apply RTL orientation if needed
             if (LanguageManager.isRTL()) {
-                root.setNodeOrientation(javafx.geometry.NodeOrientation.RIGHT_TO_LEFT);
+                root.setNodeOrientation(NodeOrientation.RIGHT_TO_LEFT);
             }
 
             // Get the new controller and restore state
@@ -240,7 +248,7 @@ public class MainViewController implements ContactUpdateCallback, LanguageChange
 
         // Apply RTL orientation if needed
         if (LanguageManager.isRTL()) {
-            root.setNodeOrientation(javafx.geometry.NodeOrientation.RIGHT_TO_LEFT);
+            root.setNodeOrientation(NodeOrientation.RIGHT_TO_LEFT);
         }
 
         Stage stage = new Stage();
@@ -263,21 +271,34 @@ public class MainViewController implements ContactUpdateCallback, LanguageChange
 
     @FXML
     public void openPrivateConversations() throws IOException {
-        addConversations("PRIVATE");
+        addConversations(privateGroup);
     }
 
     // Adds conversation components to the UI
     public void addConversations(String groupType) throws IOException {
         conversationVBox.getChildren().clear();
-        for (Conversation c : conversations) {
-            if (Objects.equals(c.getType(), groupType)) {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/component/conversationHBox.fxml"));
-                ResourceBundle bundle = ResourceBundle.getBundle(languageBundle, LanguageManager.getCurrentLocale());
-                loader.setResources(bundle);
-                HBox userConversationHBox = loader.load();
-                ConversationHBoxController controller = loader.getController();
-                controller.setController(c, this, loggedInUser);
-                conversationVBox.getChildren().add(userConversationHBox);
+
+        List<Conversation> filtered = conversations.stream()
+                .filter(c -> Objects.equals(c.getType(), groupType))
+                .collect(Collectors.toList());
+
+        ResourceBundle bundle = ResourceBundle.getBundle(languageBundle, LanguageManager.getCurrentLocale());
+
+        if (filtered.isEmpty()) {
+            String labelKey = groupType.equals(privateGroup) ? "no_private_conversations" : "no_group_conversations";
+            conversationVBox.getChildren().add(noConversationLabel);
+            noConversationLabel.setText(bundle.getString(labelKey));
+        } else {
+            for (Conversation c : conversations) {
+                if (Objects.equals(c.getType(), groupType)) {
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/component/conversationHBox.fxml"));
+                    bundle = ResourceBundle.getBundle(languageBundle, LanguageManager.getCurrentLocale());
+                    loader.setResources(bundle);
+                    HBox userConversationHBox = loader.load();
+                    ConversationHBoxController controller = loader.getController();
+                    controller.setController(c, this, loggedInUser);
+                    conversationVBox.getChildren().add(userConversationHBox);
+                }
             }
         }
     }
@@ -366,23 +387,41 @@ public class MainViewController implements ContactUpdateCallback, LanguageChange
     private void loadContactsByStatus(String status) throws IOException {
         friendsList.getChildren().clear();
 
-        for (Contact contact : contacts) {
-            if (status.equals(contact.getStatus())) {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource(CONTACT_HBOX_FXML));
-                ResourceBundle bundle = ResourceBundle.getBundle(languageBundle, LanguageManager.getCurrentLocale());
-                loader.setResources(bundle);
-                HBox userContactsHbox = loader.load();
-                ContactHboxController controller = loader.getController();
-                controller.setController(contact, this);
-                controller.setUsername(contact.getContactUsername());
-                friendsList.getChildren().add(userContactsHbox);
+        List<Contact> filtered = contacts.stream()
+                .filter(c -> Objects.equals(c.getStatus(), status))
+                .collect(Collectors.toList());
+
+        ResourceBundle bundle = ResourceBundle.getBundle(languageBundle, LanguageManager.getCurrentLocale());
+
+        String labelKey = switch (status) {
+            case "ACCEPTED" -> "no_accepted_contacts";
+            case "PENDING" -> "no_pending_contacts";
+            case "SENT" -> "no_sent_contacts";
+            default -> "no_contacts";
+        };
+
+        if (filtered.isEmpty()) {
+            friendsList.getChildren().add(noRequestLabel);
+            noRequestLabel.setText(bundle.getString(labelKey));
+        } else {
+            for (Contact contact : contacts) {
+                if (status.equals(contact.getStatus())) {
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource(CONTACT_HBOX_FXML));
+                    bundle = ResourceBundle.getBundle(languageBundle, LanguageManager.getCurrentLocale());
+                    loader.setResources(bundle);
+                    HBox userContactsHbox = loader.load();
+                    ContactHboxController controller = loader.getController();
+                    controller.setController(contact, this);
+                    controller.setUsername(contact.getContactUsername());
+                    friendsList.getChildren().add(userContactsHbox);
+                }
             }
         }
     }
 
     // Adds accepted friends to the friends list UI
     public void addFriendsToFriendsList() throws IOException {
-        loadContactsByStatus("ACCEPTED");
+        loadContactsByStatus(acceptContact);
     }
 
     @FXML
@@ -401,7 +440,7 @@ public class MainViewController implements ContactUpdateCallback, LanguageChange
 
     @FXML
     public void openFriendList() throws IOException {
-        loadContactsByStatus("ACCEPTED");
+        loadContactsByStatus(acceptContact);
     }
 
     @FXML
