@@ -10,15 +10,14 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
-<?import java.util.*?>
 
-<HBox alignment="CENTER" fillHeight="false" prefWidth="100.0" styleClass="ContactView" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.component.ConversationHBoxController">
+<HBox alignment="CENTER" fillHeight="false" onMouseClicked="#openMessages" prefWidth="100.0" styleClass="ContactView" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.component.ConversationHBoxController">
    <children>
       <StackPane fx:id="contactContent1" prefHeight="62.0" prefWidth="60.0">
          <children>
             <AnchorPane prefHeight="60.0" prefWidth="60.0">
                <children>
-                  <ImageView fx:id="conversationProfilePicture" fitHeight="50.0" fitWidth="50.0" layoutY="10.0" onMouseClicked="#openMessages" pickOnBounds="true" preserveRatio="true" styleClass="ImageView">
+                  <ImageView fx:id="conversationProfilePicture" fitHeight="50.0" fitWidth="50.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../img/img_2.png" />
                      </image>

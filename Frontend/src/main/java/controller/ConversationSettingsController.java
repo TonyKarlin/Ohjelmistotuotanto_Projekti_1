@@ -91,6 +91,8 @@ public class ConversationSettingsController {
             conversationHBoxController.setConversationInformation(updatedconversation);
             this.conversation = updatedconversation;
             setConversationName(conversation.getName());
+            parentController.conversations = parentController.getUserConversations();
+            parentController.addConversations("GROUP");
         } else {
             logger.log(Level.WARNING, "Failed to change conversation name");
         }
