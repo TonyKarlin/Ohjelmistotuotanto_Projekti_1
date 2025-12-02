@@ -12,6 +12,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import lombok.Data;
@@ -29,6 +30,7 @@ public class MessageHBoxController {
     private MainViewController parentController;
     private Message message;
     private static final Logger logger = Logger.getLogger(MessageHBoxController.class.getName());
+    ImageRounder imageRounder;
 
     public void setController(Message message, MainViewController parentController, Conversation conversation) {
         this.message = message;
@@ -89,6 +91,11 @@ public class MessageHBoxController {
         senderUsernameLabel.setText(senderUsername);
         String formattedTime = formatTime(createdAt);
         messageTimeLabel.setText(formattedTime);
+        Image senderProfilePicture = new Image(message.getSenderProfilePicture());
+        userProfilePicture.setImage(senderProfilePicture);
+        imageRounder = new ImageRounder(userProfilePicture);
+        userProfilePicture.setImage(senderProfilePicture);
+        userProfilePicture.setPreserveRatio(false);
     }
 
     public String formatTime(String createdAt) {

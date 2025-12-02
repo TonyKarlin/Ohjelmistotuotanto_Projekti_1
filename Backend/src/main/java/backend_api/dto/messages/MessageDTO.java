@@ -14,6 +14,7 @@ public class MessageDTO {
     private String senderUsername;
     private String text;
     private LocalDateTime createdAt;
+    private String senderProfilePicture;
     private List<MessageContentDTO> attachments;
 
 
@@ -24,6 +25,15 @@ public class MessageDTO {
         dto.setSenderUsername(message.getSender().getUsername());
         dto.setText(message.getText());
         dto.setCreatedAt(message.getCreatedAt());
+
+        String profilePicture = message.getSender().getProfilePicture();
+        if (profilePicture == null || profilePicture.isEmpty()) {
+            profilePicture = "http://localhost:8081/uploads/default.png";
+        } else if (!profilePicture.startsWith("http")) {
+            profilePicture = "http://localhost:8081/uploads/" + profilePicture;
+        }
+
+        dto.setSenderProfilePicture(profilePicture);
         dto.setAttachments(message.getContent().stream()
                 .map(MessageContentDTO::fromMessageContentEntity)
                 .toList());
@@ -69,6 +79,14 @@ public class MessageDTO {
 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public void setSenderProfilePicture(String senderProfilePicture) {
+        this.senderProfilePicture = senderProfilePicture;
+    }
+
+    public String getSenderProfilePicture() {
+        return senderProfilePicture;
     }
 
     public List<MessageContentDTO> getAttachments() {
