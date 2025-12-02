@@ -63,6 +63,7 @@ public class MainViewController implements ContactUpdateCallback, LanguageChange
     String languageBundle = "localization.LanguageBundle";
     String controllerString = "controller";
     String privateGroup = "PRIVATE";
+    String privateGroup = "PRIVATE";
     String acceptContact = "ACCEPT";
     private static final String CONTACT_HBOX_FXML = "/component/contactHBox.fxml";
     private static final Logger logger = Logger.getLogger(MainViewController.class.getName());
@@ -152,7 +153,7 @@ public class MainViewController implements ContactUpdateCallback, LanguageChange
 
             // Apply RTL orientation if needed
             if (LanguageManager.isRTL()) {
-                root.setNodeOrientation(NodeOrientation.RIGHT_TO_LEFT);
+                root.setNodeOrientation(javafx.geometry.NodeOrientation.RIGHT_TO_LEFT);
             }
 
             // Get the new controller and restore state
