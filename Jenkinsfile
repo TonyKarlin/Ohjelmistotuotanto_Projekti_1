@@ -85,6 +85,8 @@ pipeline {
                     -Dsonar.java.binaries=Backend/target/classes ^
                     -Dsonar.host.url=%SONAR_HOST_URL% ^
                     -Dsonar.login=%SONAR_TOKEN%
+                    -Dsonar.coverage.jacoco.xmlReportPaths=Backend/target/site/jacoco/jacoco.xml
+                    -Dsonar.junit.reportPaths=Backend/target/surefire-reports
                     """
                 }
             }
