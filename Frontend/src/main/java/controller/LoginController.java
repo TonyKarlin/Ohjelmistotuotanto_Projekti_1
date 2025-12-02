@@ -41,7 +41,6 @@ public class LoginController implements LanguageChangeCallback {
         this.userApiClient = userApiClient;
     }
 
-
     @FXML
     private StackPane loginRoot;
 
@@ -71,9 +70,6 @@ public class LoginController implements LanguageChangeCallback {
         if (languageButtonController != null) {
             languageButtonController.setLanguageChangeCallback(this);
         }
-
-//        GlobalEventHandler.addObservableEventListener(userNameTextField, loginButton);
-//        GlobalEventHandler.addObservableEventListener(passwordTextField, loginButton);
 
         GlobalEventHandler.addObservableEventListener(loginRoot, loginButton);
     }

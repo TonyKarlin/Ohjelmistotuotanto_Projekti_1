@@ -7,6 +7,11 @@ import javafx.scene.input.KeyEvent;
 
 public class GlobalEventHandler {
 
+    private GlobalEventHandler() {
+
+        // Private constructor to hide the implicit public one
+    }
+
     public static void setButtonEventHandler(Node element, Button btn) {
         element.addEventHandler(KeyEvent.KEY_PRESSED, event -> {
             if (event.getCode() == KeyCode.ENTER) {
@@ -17,9 +22,10 @@ public class GlobalEventHandler {
     }
 
     public static void addObservableEventListener(Node element, Button btn) {
-        System.out.println(element);
         element.focusedProperty().addListener(((observable, oldValue, newValue) -> {
-            if (newValue) setButtonEventHandler(element, btn);
+            if (Boolean.TRUE.equals(newValue)) {
+                setButtonEventHandler(element, btn);
+            }
         }));
     }
 }
