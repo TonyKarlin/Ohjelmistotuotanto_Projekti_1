@@ -80,7 +80,7 @@ pipeline {
                 withSonarQubeEnv('SonarQubeServer') {
                     bat """
                     "${tool 'SonarScanner'}\\bin\\sonar-scanner.bat" ^
-                    -Dsonar.projectKey=backend_project_key ^
+                    -Dsonar.projectKey=otp-prochat-backend ^
                     -Dsonar.sources=Backend/src ^
                     -Dsonar.java.binaries=Backend/target/classes ^
                     -Dsonar.host.url=%SONAR_HOST_URL% ^
@@ -94,7 +94,7 @@ pipeline {
                 withSonarQubeEnv('SonarQubeServer') {
                     bat """
                     "${tool 'SonarScanner'}\\bin\\sonar-scanner.bat" ^
-                    -Dsonar.projectKey=frontend_project_key ^
+                    -Dsonar.projectKey=otp-prochat-frontend ^
                     -Dsonar.sources=Frontend/src ^
                     -Dsonar.java.binaries=Frontend/target/classes ^
                     -Dsonar.host.url=%SONAR_HOST_URL% ^
