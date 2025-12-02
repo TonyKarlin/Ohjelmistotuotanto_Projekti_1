@@ -2,6 +2,8 @@ package fronttest;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -17,6 +19,7 @@ import service.ConversationApiClient;
 
 class ConversationApiClientTest {
 
+    private static final Logger logger = Logger.getLogger(ConversationApiClientTest.class.getName());
     private Conversation conversation;
     private ConversationRequest conversationRequest;
     private ConversationApiClient conversationApiClient;
@@ -44,28 +47,28 @@ class ConversationApiClientTest {
             Conversation updatedConversation = conversationApiClient.changeConversationName(conversationRequest);
 
             if (updatedConversation != null) {
-                System.out.println("Conversation name updated successfully!");
-                System.out.println("New name: " + updatedConversation.getName());
-                System.out.println("Conversation ID: " + updatedConversation.getId());
-                System.out.println("Participants:");
+                logger.info("Conversation name updated successfully!");
+                logger.log(Level.INFO, "New name: {0}", updatedConversation.getName());
+                logger.log(Level.INFO, "Conversation ID: {0}", updatedConversation.getId());
+                logger.info("Participants:");
 
                 for (ConversationParticipant p : updatedConversation.getParticipants()) {
-                    System.out.println("  - User ID: " + p.getUserId() + ", Username: " + p.getUsername());
+                    logger.log(Level.INFO, "  - User ID: {0}, Username: {1}", new Object[]{p.getUserId(), p.getUsername()});
                 }
 
                 // Verify the name was updated
                 assertEquals(newName, updatedConversation.getName(), "Conversation name should be updated");
                 assertEquals(3, updatedConversation.getId(), "Conversation ID should remain the same");
             } else {
-                System.out.println("Failed to update conversation name - possible causes:");
-                System.out.println("- Backend server not running");
-                System.out.println("- Conversation ID 3 doesn't exist");
-                System.out.println("- User doesn't have permission to update this conversation");
-                System.out.println("- Database connectivity issues");
+                logger.warning("Failed to update conversation name - possible causes:");
+                logger.warning("- Backend server not running");
+                logger.warning("- Conversation ID 3 doesn't exist");
+                logger.warning("- User doesn't have permission to update this conversation");
+                logger.warning("- Database connectivity issues");
             }
         } catch (IOException e) {
-            System.out.println("Exception during conversation name update: " + e.getMessage());
-            System.out.println("This is likely due to backend connectivity issues");
+            logger.log(Level.SEVERE, "Exception during conversation name update: {0}", e.getMessage());
+            logger.severe("This is likely due to backend connectivity issues");
         }
     }
 
@@ -80,8 +83,8 @@ class ConversationApiClientTest {
 
             conversationApiClient.leaveConversation(conversation, user);
 
-            System.out.println("Leave conversation request sent successfully");
-            System.out.println("User ID: " + user.getId() + " left conversation ID: " + conversation.getId());
+            logger.info("Leave conversation request sent successfully");
+            logger.log(Level.INFO, "User ID: {0} left conversation ID: {1}", new Object[]{user.getId(), conversation.getId()});
 
             // Verify the user has left the conversation
             List<Conversation> conversations = conversationApiClient.getConversationsById(user);
@@ -95,12 +98,12 @@ class ConversationApiClientTest {
             assertFalse(found, "User should have left the conversation");
 
         } catch (IOException e) {
-            System.out.println("Exception during leaving conversation: " + e.getMessage());
-            System.out.println("Possible causes:");
-            System.out.println("- Backend server not running");
-            System.out.println("- Conversation ID 4 doesn't exist");
-            System.out.println("- User ID 4 is not a participant in this conversation");
-            System.out.println("- Database connectivity issues");
+            logger.log(Level.SEVERE, "Exception during leaving conversation: {0}", e.getMessage());
+            logger.severe("Possible causes:");
+            logger.severe("- Backend server not running");
+            logger.severe("- Conversation ID 4 doesn't exist");
+            logger.severe("- User ID 4 is not a participant in this conversation");
+            logger.severe("- Database connectivity issues");
         }
     }
 
@@ -114,39 +117,37 @@ class ConversationApiClientTest {
             List<Conversation> conversations = conversationApiClient.getConversationsById(user);
 
             if (conversations != null && !conversations.isEmpty()) {
-                System.out.println("Successfully retrieved " + conversations.size() + " conversations for user ID: " + user.getId());
+                logger.log(Level.INFO, "Successfully retrieved {0} conversations for user ID: {1}", new Object[]{conversations.size(), user.getId()});
 
                 for (Conversation c : conversations) {
-                    System.out.println("--- Conversation Details ---");
-                    System.out.println("Conversation ID: " + c.getId());
-                    System.out.println("Conversation Type: " + c.getType());
-                    System.out.println("Conversation Name: " + c.getName());
-                    System.out.println("Created By: " + c.getCreatedBy());
-                    System.out.println("Created At: " + c.getCreatedAt());
-                    System.out.println("Participants:");
+                    logger.info("--- Conversation Details ---");
+                    logger.log(Level.INFO, "Conversation ID: {0}", c.getId());
+                    logger.log(Level.INFO, "Conversation Type: {0}", c.getType());
+                    logger.log(Level.INFO, "Conversation Name: {0}", c.getName());
+                    logger.log(Level.INFO, "Created By: {0}", c.getCreatedBy());
+                    logger.log(Level.INFO, "Created At: {0}", c.getCreatedAt());
+                    logger.info("Participants:");
 
                     for (ConversationParticipant u : c.getParticipants()) {
-                        System.out.println("  - User ID: " + u.getUserId()
-                                + ", Username: " + u.getUsername()
-                                + ", Role: " + u.getRole());
+                        logger.log(Level.INFO, "  - User ID: {0}, Username: {1}, Role: {2}", new Object[]{u.getUserId(), u.getUsername(), u.getRole()});
                     }
-                    System.out.println();
+                    logger.info("");
                 }
 
                 // Verify we got conversations
                 assertFalse(conversations.isEmpty(), "User should have at least one conversation");
                 assertNotEquals(0, conversations.get(0).getId(), "Conversation should have an ID");
             } else if (conversations != null && conversations.isEmpty()) {
-                System.out.println("User ID " + user.getId() + " has no conversations");
+                logger.log(Level.INFO, "User ID {0} has no conversations", user.getId());
             } else {
-                System.out.println("Failed to retrieve conversations - possible causes:");
-                System.out.println("- Backend server not running");
-                System.out.println("- User ID 1 doesn't exist");
-                System.out.println("- Database connectivity issues");
+                logger.warning("Failed to retrieve conversations - possible causes:");
+                logger.warning("- Backend server not running");
+                logger.warning("- User ID 1 doesn't exist");
+                logger.warning("- Database connectivity issues");
             }
         } catch (IOException e) {
-            System.out.println("Exception during conversation retrieval: " + e.getMessage());
-            System.out.println("This is likely due to backend connectivity issues");
+            logger.log(Level.SEVERE, "Exception during conversation retrieval: {0}", e.getMessage());
+            logger.severe("This is likely due to backend connectivity issues");
         }
     }
 
@@ -160,32 +161,32 @@ class ConversationApiClientTest {
             List<Conversation> conversations = conversationApiClient.getAllUserConversations(currentUser);
 
             if (conversations != null && !conversations.isEmpty()) {
-                System.out.println("Successfully retrieved " + conversations.size() + " conversations from the system");
+                logger.log(Level.INFO, "Successfully retrieved {0} conversations from the system", conversations.size());
 
                 for (Conversation c : conversations) {
-                    System.out.println("--- Conversation Summary ---");
-                    System.out.println("Conversation ID: " + c.getId());
-                    System.out.println("Conversation Type: " + c.getType());
-                    System.out.println("Conversation Name: " + c.getName());
-                    System.out.println("Created By: " + c.getCreatedBy());
-                    System.out.println("Created At: " + c.getCreatedAt());
-                    System.out.println();
+                    logger.info("--- Conversation Summary ---");
+                    logger.log(Level.INFO, "Conversation ID: {0}", c.getId());
+                    logger.log(Level.INFO, "Conversation Type: {0}", c.getType());
+                    logger.log(Level.INFO, "Conversation Name: {0}", c.getName());
+                    logger.log(Level.INFO, "Created By: {0}", c.getCreatedBy());
+                    logger.log(Level.INFO, "Created At: {0}", c.getCreatedAt());
+                    logger.info("");
                 }
 
                 // Verify we got conversations
                 assertFalse(conversations.isEmpty(), "System should have at least one conversation");
                 assertNotEquals(0, conversations.get(0).getId(), "Conversation should have an ID");
             } else if (conversations != null && conversations.isEmpty()) {
-                System.out.println("No conversations found in the system");
+                logger.info("No conversations found in the system");
             } else {
-                System.out.println("Failed to retrieve all conversations - possible causes:");
-                System.out.println("- Backend server not running");
-                System.out.println("- Database connectivity issues");
-                System.out.println("- API endpoint not accessible");
+                logger.warning("Failed to retrieve all conversations - possible causes:");
+                logger.warning("- Backend server not running");
+                logger.warning("- Database connectivity issues");
+                logger.warning("- API endpoint not accessible");
             }
         } catch (IOException e) {
-            System.out.println("Exception during all conversations retrieval: " + e.getMessage());
-            System.out.println("This is likely due to backend connectivity issues");
+            logger.log(Level.SEVERE, "Exception during all conversations retrieval: {0}", e.getMessage());
+            logger.severe("This is likely due to backend connectivity issues");
         }
     }
 }
