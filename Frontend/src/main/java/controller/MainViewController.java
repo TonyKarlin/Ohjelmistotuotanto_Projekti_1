@@ -36,10 +36,7 @@ import javafx.scene.shape.Circle;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import model.Contact;
-import model.Conversation;
-import model.Message;
-import model.User;
+import model.*;
 import service.ContactApiClient;
 import service.ConversationApiClient;
 import service.MessageApiClient;
@@ -64,6 +61,7 @@ public class MainViewController implements ContactUpdateCallback, LanguageChange
     String controllerString = "controller";
     String privateGroup = "PRIVATE";
     String acceptContact = "ACCEPTED";
+    String groupString ="GROUP";
     private static final String CONTACT_HBOX_FXML = "/component/contactHBox.fxml";
     private static final Logger logger = Logger.getLogger(MainViewController.class.getName());
 
@@ -74,7 +72,7 @@ public class MainViewController implements ContactUpdateCallback, LanguageChange
         setUserInformation();
         this.conversations = getUserConversations();
         this.contacts = getUserContacts();
-        addConversations("PRIVATE");
+        addConversations(privateGroup);
         addFriendsToFriendsList();
     }
 
@@ -196,8 +194,9 @@ public class MainViewController implements ContactUpdateCallback, LanguageChange
     }
 
     // Retrieves all conversations for the user
-    public List<Conversation> getUserConversations() throws IOException, InterruptedException {
+    public List<Conversation> getUserConversations() throws IOException  {
         return conversationApiClient.getAllUserConversations(loggedInUser);
+
     }
 
     // Retrieves all contacts for the user
@@ -266,7 +265,7 @@ public class MainViewController implements ContactUpdateCallback, LanguageChange
 
     @FXML
     public void openGroupConversations() throws IOException {
-        addConversations("GROUP");
+        addConversations(groupString);
     }
 
     @FXML
@@ -317,6 +316,8 @@ public class MainViewController implements ContactUpdateCallback, LanguageChange
         vBoxContentPane.getChildren().add(conversationSettings);
     }
 
+
+
     // Shows messages for a selected conversation
     public void showConversationMessages(Conversation conversation, Button conversationSettingsButton) throws IOException, InterruptedException {
         vBoxContentPane.getChildren().clear();
@@ -324,13 +325,15 @@ public class MainViewController implements ContactUpdateCallback, LanguageChange
         if (activeConversation != null) {
             activeConversation.setVisible(false);
         }
-        if (Objects.equals(conversation.getType(), "GROUP")) {
+        if (Objects.equals(conversation.getType(), groupString)) {
             activeConversation = conversationSettingsButton;
             activeConversation.setVisible(true);
         } else {
             activeConversation = null;
             conversationSettingsButton.setVisible(false);
         }
+        Label activeConversationTitleLabel = createConversationNameLabel(conversation, loggedInUser.getId());
+        vBoxContentPane.getChildren().add(activeConversationTitleLabel);
         List<Message> messages = messageApiClient.getConversationMessages(conversation, this.loggedInUser);
         if (messages != null && !messages.isEmpty()) {
             for (Message m : messages) {
@@ -345,6 +348,24 @@ public class MainViewController implements ContactUpdateCallback, LanguageChange
             }
         }
         sendMessageComponent(conversation);
+    }
+
+    public Label createConversationNameLabel(Conversation conversation, int loggedInUserId) {
+        Label conversationLabel = new Label();
+        if (groupString.equals(conversation.getType())) {
+            conversationLabel.setText(conversation.getName());
+        } else if (privateGroup.equals(conversation.getType())) {
+            String friendName = conversation.getParticipants().stream()
+                    .filter(p -> p.getUserId() != loggedInUserId)
+                    .map(ConversationParticipant::getUsername)
+                    .findFirst()
+                    .orElse("Private Chat");
+            conversationLabel.setText(friendName);
+        } else {
+            conversationLabel.setText("Conversation");
+        }
+        conversationLabel.setStyle("-fx-font-size: 16px; -fx-text-fill: #c3c3c3; -fx-font-weight: bold; -fx-padding: 10 0 10 0;");
+        return conversationLabel;
     }
 
     //This method called in the SendMessageHBoXController to show the message locally
