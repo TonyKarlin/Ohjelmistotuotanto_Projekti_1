@@ -22,6 +22,8 @@ class ConversationApiClientTest {
     private static final Logger logger = Logger.getLogger(ConversationApiClientTest.class.getName());
     private static final String BACKEND_SERVER_NOT_RUNNING = "- Backend server not running";
     private static final String DATABASE_CONNECTIVITY_ISSUES = "- Database connectivity issues";
+    private static final String CONVERSATION_ID = "Conversation ID: {0}";
+    private static final String BACKEND_CONNECTIVITY_ISSUES = "This is likely due to backend connectivity issues";
     private Conversation conversation;
     private ConversationRequest conversationRequest;
     private ConversationApiClient conversationApiClient;
@@ -51,7 +53,7 @@ class ConversationApiClientTest {
             if (updatedConversation != null) {
                 logger.info("Conversation name updated successfully!");
                 logger.log(Level.INFO, "New name: {0}", updatedConversation.getName());
-                logger.log(Level.INFO, "Conversation ID: {0}", updatedConversation.getId());
+                logger.log(Level.INFO, CONVERSATION_ID, updatedConversation.getId());
                 logger.info("Participants:");
 
                 for (ConversationParticipant p : updatedConversation.getParticipants()) {
@@ -70,7 +72,7 @@ class ConversationApiClientTest {
             }
         } catch (IOException e) {
             logger.log(Level.SEVERE, "Exception during conversation name update: {0}", e.getMessage());
-            logger.severe("This is likely due to backend connectivity issues");
+            logger.severe(BACKEND_CONNECTIVITY_ISSUES);
         }
     }
 
@@ -123,7 +125,7 @@ class ConversationApiClientTest {
 
                 for (Conversation c : conversations) {
                     logger.info("--- Conversation Details ---");
-                    logger.log(Level.INFO, "Conversation ID: {0}", c.getId());
+                    logger.log(Level.INFO, CONVERSATION_ID, c.getId());
                     logger.log(Level.INFO, "Conversation Type: {0}", c.getType());
                     logger.log(Level.INFO, "Conversation Name: {0}", c.getName());
                     logger.log(Level.INFO, "Created By: {0}", c.getCreatedBy());
@@ -149,7 +151,7 @@ class ConversationApiClientTest {
             }
         } catch (IOException e) {
             logger.log(Level.SEVERE, "Exception during conversation retrieval: {0}", e.getMessage());
-            logger.severe("This is likely due to backend connectivity issues");
+            logger.severe(BACKEND_CONNECTIVITY_ISSUES);
         }
     }
 
@@ -167,7 +169,7 @@ class ConversationApiClientTest {
 
                 for (Conversation c : conversations) {
                     logger.info("--- Conversation Summary ---");
-                    logger.log(Level.INFO, "Conversation ID: {0}", c.getId());
+                    logger.log(Level.INFO, CONVERSATION_ID, c.getId());
                     logger.log(Level.INFO, "Conversation Type: {0}", c.getType());
                     logger.log(Level.INFO, "Conversation Name: {0}", c.getName());
                     logger.log(Level.INFO, "Created By: {0}", c.getCreatedBy());
@@ -188,7 +190,7 @@ class ConversationApiClientTest {
             }
         } catch (IOException e) {
             logger.log(Level.SEVERE, "Exception during all conversations retrieval: {0}", e.getMessage());
-            logger.severe("This is likely due to backend connectivity issues");
+            logger.severe(BACKEND_CONNECTIVITY_ISSUES);
         }
     }
 }
