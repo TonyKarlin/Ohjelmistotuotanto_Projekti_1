@@ -81,7 +81,7 @@ pipeline {
                     bat """
                     "${tool 'SonarScanner'}\\bin\\sonar-scanner.bat" ^
                     -Dsonar.projectKey=your_project_key ^
-                    -Dsonar.sources=src ^
+                    -Dsonar.sources=Backend/src ^
                     -Dsonar.host.url=%SONAR_HOST_URL% ^
                     -Dsonar.login=%SONAR_TOKEN%
                     """
