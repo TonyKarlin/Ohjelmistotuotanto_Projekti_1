@@ -63,8 +63,7 @@ public class MainViewController implements ContactUpdateCallback, LanguageChange
     String languageBundle = "localization.LanguageBundle";
     String controllerString = "controller";
     String privateGroup = "PRIVATE";
-    String privateGroup = "PRIVATE";
-    String acceptContact = "ACCEPT";
+    String acceptContact = "ACCEPTED";
     private static final String CONTACT_HBOX_FXML = "/component/contactHBox.fxml";
     private static final Logger logger = Logger.getLogger(MainViewController.class.getName());
 
