@@ -19,12 +19,14 @@ import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import model.Contact;
 import model.Conversation;
 import model.ConversationParticipant;
 import model.User;
 import request.ConversationRequest;
 import service.ConversationApiClient;
+import utils.GlobalEventHandler;
 import utils.LanguageManager;
 import utils.UIAlert;
 
@@ -53,6 +55,11 @@ public class ConversationSettingsController {
         checkOwnerPermissions();
         showParticipantsInAGroup();
         setConversationName(conversation.getName());
+    }
+
+    @FXML
+    public void initialize() {
+        GlobalEventHandler.setButtonEventHandler(nameTextField, changeNameButton);
     }
 
     //region
