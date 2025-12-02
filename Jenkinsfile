@@ -78,7 +78,13 @@ pipeline {
         stage('SonarQube Analysis') {
             steps {
                 withSonarQubeEnv('SonarQubeServer') {
-                    bat "${tool env.SONARQUBE_SCANNER}/bin/sonar-scanner -Dsonar.projectKey=your_project_key -Dsonar.sources=src -Dsonar.host.url=http://your-sonarqube-server -Dsonar.login=your_token"
+                    bat """
+                    "${tool 'SonarScanner'}\\bin\\sonar-scanner.bat" ^
+                    -Dsonar.projectKey=your_project_key ^
+                    -Dsonar.sources=src ^
+                    -Dsonar.host.url=%SONAR_HOST_URL% ^
+                    -Dsonar.login=%SONAR_TOKEN%
+                    """
                 }
             }
         }
