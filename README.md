@@ -27,53 +27,61 @@ Our project is designed to help users easily add contacts and chat with them.
 
 ## Rough Project Structure
 
-```project-structure
-Backend/ # Java Spring Boot backend
+```bash
+Backend/                # Java Spring Boot backend
 ├─ database/            # Database initialization
-├─ http-requests/       # HTTP request snippets for manual testing -
-├─ src/                 # (VS Code REST Client, Postman, curl)
+├─ http-requests/       # HTTP request snippets for manual testing - Rest files
+├─ src/
 │ ├─ main/
 │ │ ├─ java/
 │ │ │ └─ backend_api/
 │ │ │  ├─ controller/    # REST & WebSocket controllers
-│ │ │  ├─ DTOs/          # Data Transfer Objects for users, messages, conversations
+│ │ │  ├─ dto/           # Data Transfer Objects for users, messages, conversations
 │ │ │  ├─ entities/      # Database entities
 │ │ │  ├─ repository/    # Spring Data repositories
 │ │ │  ├─ services/      # Business logic services
 │ │ │  └─ utils/         # Utilities (JWT, exception handling, etc.)
 │ │ └─ resources/
 │ │ └─ application.properties
-│ └─ test/              # Unit and integration tests
+│ └─ test/               # Unit and integration tests
 ├─ Dockerfile
-└─ pom.xml
+├─ pom.xml
+└─ sonar-project.properties
+```
 
-Frontend/ # JavaFX client
+```bash
+Frontend/               # JavaFX client
 ├─ src/
 │ ├─ main/
 │ │ ├─ java/
+│ │ │ ├─ application/   # Main.java
 │ │ │ ├─ controller/    # UI controllers
-│ │ │ ├─ view/          # JavaFX views (FXML files)
+│ │ │ ├─ callback/      # Callbacks (contactslist & language updating)
 │ │ │ ├─ model/         # Domain models (User, Message, Contact, Conversation)
-│ │ │ └─ service/       # API clients to interact with backend
+│ │ │ ├─ service/       # API clients to interact with backend
+│ │ │ ├─ utils/         # API url, handlers, utilities
+│ │ │ └─ view/          # JavaFX view class
 │ │ └─ resources/       # FXML files, CSS, images
 │ └─ test/              # Client tests
 ├─ Dockerfile
-└─ pom.xml
+├─ pom.xml
+└─ sonar-project.properties
+```
 
-docs/ # Project documentation (plans, database diagrams, sprint reports)
-├─ images/
+```bash
+docs/                   # Project documentation (plans, diagrams, sprint reports)
+├─ diagrams/
 ├─ project-initialization/
-└─ sprint-documentation/
-
-docker-compose.yml      # Orchestrates frontend, backend, and database containers
-Jenkinsfile             # CI/CD pipeline configuration
+├─ sonarqube-results/
+├─ sprint-documentation/
+└─ testing/
 ```
 
 ## Frontend
 
 The frontend is built with Java and JavaFX that allows users to communicate with their contacts.
 
-#### Supported Languages
+### Supported Languages
 
 - English (en)
 - Finnish (fi)
@@ -91,7 +99,7 @@ In the client:
 
 #### File Structure
 
-```
+```bash
 Frontend/
  └─ src/
     └─ main/
@@ -117,7 +125,7 @@ Each `.properties` file contains translated key-value pairs.
 ##### Adding a new language
 
 1. Right-click `LanguageBundle` inside localization folder to add a new property file.
-2. Name it using the language and country code, e.g. ` _fr_FR`.
+2. Name it using the language and country code, e.g. `_fr_FR`.
 3. Copy all the keys from existing file (e.g. `LanguageBundle_en_US.properties`) and translate the values.
 4. Add the new language option to the **LanguageController** class: `src/main/java/controller/component/LanguageButtonController.java` (around line 59).
 5. Test that all UI components update dynamically and text renders correctly.
@@ -128,24 +136,25 @@ Each `.properties` file contains translated key-value pairs.
 
 The backend of the project is built with Java and Spring Boot, using Maven as the build tool. It handles the business logic and data storage, using PostgreSQL as the primary database, and provides a RESTful API that the frontend client uses to make HTTP requests.
 
-## Database Diagrams
+## Diagrams
 
-ER-diagram
+Diagrams can be found in the [docs/diagrams](docs/diagrams) folder.
 
-![ER-diagram](docs/diagrams/project-er-diagram.png)
+- ER-diagram
+- Relational-schema
+- Usecase-diagram
+- Activity-diagram
+- Class-diagram(s)
+- Sequence-diagram
+- Deployment-diagram(s)
 
-Relational-Schema
+`Production` deployment diagram.
 
-![Relational-schema](docs/diagrams/project-relational-schema.png)
+![production](docs/diagrams/09-project-deployment-diagram-production.png)
 
-## Use-case Diagram
+`Development` deployment diagram.
 
-![Use-case-diagram](docs/diagrams/project-usecase-diagram.png)
-
-## Activity Diagram
-
-Activity diagram of group creation.
-![act-diagram](docs/diagrams/project-activity-diagram.png)
+![development](docs/diagrams/08-project-deployment-diagram-development.png)
 
 ## Jenkins CI/CD
 
