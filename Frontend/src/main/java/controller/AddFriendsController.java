@@ -8,6 +8,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import model.Contact;
 import model.User;
@@ -41,7 +42,11 @@ public class AddFriendsController {
     @FXML
     public void initialize() {
         GlobalEventHandler.setButtonEventHandler(searchFriendTextField, friendRequestButton);
+        GlobalEventHandler.addExitEventHandler(addFriendsRoot);
     }
+
+    @FXML
+    private BorderPane addFriendsRoot;
 
     @FXML
     private Button friendRequestButton;
