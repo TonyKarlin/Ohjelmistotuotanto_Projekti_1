@@ -99,7 +99,8 @@ pipeline {
                     -Dsonar.sources=Frontend/src ^
                     -Dsonar.java.binaries=Frontend/target/classes ^
                     -Dsonar.host.url=%SONAR_HOST_URL% ^
-                    -Dsonar.login=%SONAR_TOKEN%
+                    -Dsonar.login=%SONAR_TOKEN% ^
+                    -Dsonar.coverage.jacoco.xmlReportPaths=Frontend/target/site/jacoco/jacoco.xml
                     """
                 }
             }
