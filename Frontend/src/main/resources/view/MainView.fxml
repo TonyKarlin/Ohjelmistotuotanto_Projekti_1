@@ -11,7 +11,6 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-<?import java.util.*?>
 
 <BorderPane prefHeight="674.0" prefWidth="982.0" styleClass="parent" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainViewController">
    <top>
@@ -81,7 +80,7 @@
       </BorderPane>
    </center>
    <left>
-      <VBox alignment="CENTER_LEFT" maxWidth="500.0" prefWidth="225.0" BorderPane.alignment="CENTER">
+      <VBox alignment="CENTER" maxWidth="500.0" prefWidth="225.0" BorderPane.alignment="CENTER">
          <children>
             <HBox alignment="CENTER" fillHeight="false" maxHeight="1.7976931348623157E308" styleClass="VBox">
                <VBox.margin>
@@ -145,7 +144,14 @@
                         <Insets top="10.0" />
                      </VBox.margin>
                      <content>
-                        <VBox fx:id="conversationVBox" alignment="TOP_CENTER" />
+                        <VBox fx:id="conversationVBox" alignment="TOP_CENTER">
+                           <children>
+                              <Label fx:id="noConversationLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="46.0" prefWidth="212.0" text="No conversation" textAlignment="CENTER" textFill="#c3c3c3">
+                                 <font>
+                                    <Font name="System Bold" size="15.0" />
+                                 </font>
+                              </Label>
+                           </children></VBox>
                      </content>
                   </ScrollPane>
                </children>
@@ -219,7 +225,14 @@
             </Separator>
             <ScrollPane>
                <content>
-                  <VBox fx:id="friendsList" alignment="TOP_CENTER" />
+                  <VBox fx:id="friendsList" alignment="TOP_CENTER">
+                     <children>
+                        <Label fx:id="noRequestLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="46.0" prefWidth="219.0" text="No requests" textAlignment="CENTER" textFill="#c3c3c3">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Label>
+                     </children></VBox>
                </content>
             </ScrollPane>
          </children>
