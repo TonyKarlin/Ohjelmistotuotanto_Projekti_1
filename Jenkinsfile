@@ -89,7 +89,6 @@ pipeline {
                 }
             }
         }
-
         stage('SonarQube Analysis-Frontend') {
             steps {
                 withSonarQubeEnv('SonarQubeServer') {
@@ -97,6 +96,7 @@ pipeline {
                     "${tool 'SonarScanner'}\\bin\\sonar-scanner.bat" ^
                     -Dsonar.projectKey=frontend_project_key ^
                     -Dsonar.sources=Frontend/src ^
+                    -Dsonar.java.binaries=Frontend/target/classes ^
                     -Dsonar.host.url=%SONAR_HOST_URL% ^
                     -Dsonar.login=%SONAR_TOKEN%
                     """
