@@ -17,6 +17,7 @@ public class Message {
     private String senderUsername;
     private String text;
     private String createdAt;
+    private String senderProfilePicture;
 
     @JsonProperty("attachments")
     private List<MessageAttachment> messageAttachments;
