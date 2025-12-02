@@ -75,13 +75,28 @@ pipeline {
                 archiveArtifacts artifacts: 'Frontend/target/site/jacoco/**'
             }
         }
-        stage('SonarQube Analysis') {
+        stage('SonarQube Analysis-Backend') {
             steps {
                 withSonarQubeEnv('SonarQubeServer') {
                     bat """
                     "${tool 'SonarScanner'}\\bin\\sonar-scanner.bat" ^
-                    -Dsonar.projectKey=your_project_key ^
+                    -Dsonar.projectKey=backend_project_key ^
                     -Dsonar.sources=Backend/src ^
+                    -Dsonar.java.binaries=Backend/target/classes ^
+                    -Dsonar.host.url=%SONAR_HOST_URL% ^
+                    -Dsonar.login=%SONAR_TOKEN%
+                    """
+                }
+            }
+        }
+
+        stage('SonarQube Analysis-Frontend') {
+            steps {
+                withSonarQubeEnv('SonarQubeServer') {
+                    bat """
+                    "${tool 'SonarScanner'}\\bin\\sonar-scanner.bat" ^
+                    -Dsonar.projectKey=frontend_project_key ^
+                    -Dsonar.sources=Frontend/src ^
                     -Dsonar.host.url=%SONAR_HOST_URL% ^
                     -Dsonar.login=%SONAR_TOKEN%
                     """
