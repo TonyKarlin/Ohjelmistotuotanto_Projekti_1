@@ -20,6 +20,8 @@ import service.ConversationApiClient;
 class ConversationApiClientTest {
 
     private static final Logger logger = Logger.getLogger(ConversationApiClientTest.class.getName());
+    private static final String BACKEND_SERVER_NOT_RUNNING = "- Backend server not running";
+    private static final String DATABASE_CONNECTIVITY_ISSUES = "- Database connectivity issues";
     private Conversation conversation;
     private ConversationRequest conversationRequest;
     private ConversationApiClient conversationApiClient;
@@ -61,10 +63,10 @@ class ConversationApiClientTest {
                 assertEquals(3, updatedConversation.getId(), "Conversation ID should remain the same");
             } else {
                 logger.warning("Failed to update conversation name - possible causes:");
-                logger.warning("- Backend server not running");
+                logger.warning(BACKEND_SERVER_NOT_RUNNING);
                 logger.warning("- Conversation ID 3 doesn't exist");
                 logger.warning("- User doesn't have permission to update this conversation");
-                logger.warning("- Database connectivity issues");
+                logger.warning(DATABASE_CONNECTIVITY_ISSUES);
             }
         } catch (IOException e) {
             logger.log(Level.SEVERE, "Exception during conversation name update: {0}", e.getMessage());
@@ -100,10 +102,10 @@ class ConversationApiClientTest {
         } catch (IOException e) {
             logger.log(Level.SEVERE, "Exception during leaving conversation: {0}", e.getMessage());
             logger.severe("Possible causes:");
-            logger.severe("- Backend server not running");
+            logger.severe(BACKEND_SERVER_NOT_RUNNING);
             logger.severe("- Conversation ID 4 doesn't exist");
             logger.severe("- User ID 4 is not a participant in this conversation");
-            logger.severe("- Database connectivity issues");
+            logger.severe(DATABASE_CONNECTIVITY_ISSUES);
         }
     }
 
@@ -141,9 +143,9 @@ class ConversationApiClientTest {
                 logger.log(Level.INFO, "User ID {0} has no conversations", user.getId());
             } else {
                 logger.warning("Failed to retrieve conversations - possible causes:");
-                logger.warning("- Backend server not running");
+                logger.warning(BACKEND_SERVER_NOT_RUNNING);
                 logger.warning("- User ID 1 doesn't exist");
-                logger.warning("- Database connectivity issues");
+                logger.warning(DATABASE_CONNECTIVITY_ISSUES);
             }
         } catch (IOException e) {
             logger.log(Level.SEVERE, "Exception during conversation retrieval: {0}", e.getMessage());
@@ -180,8 +182,8 @@ class ConversationApiClientTest {
                 logger.info("No conversations found in the system");
             } else {
                 logger.warning("Failed to retrieve all conversations - possible causes:");
-                logger.warning("- Backend server not running");
-                logger.warning("- Database connectivity issues");
+                logger.warning(BACKEND_SERVER_NOT_RUNNING);
+                logger.warning(DATABASE_CONNECTIVITY_ISSUES);
                 logger.warning("- API endpoint not accessible");
             }
         } catch (IOException e) {
