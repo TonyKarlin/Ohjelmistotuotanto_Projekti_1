@@ -1,5 +1,14 @@
 package utils;
 
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.BooleanSupplier;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+
 import javafx.application.Platform;
 import javafx.event.Event;
 import javafx.scene.Scene;
@@ -9,15 +18,6 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.robot.Robot;
 import javafx.stage.Stage;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.function.BooleanSupplier;
-
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 
 class GlobalEventHandlerTest {
 
@@ -116,19 +116,21 @@ class GlobalEventHandlerTest {
         assertTrue(closed.get(), "Stage should be closed on ESC");
     }
 
-
     private static void waitForFxEvents() {
         CountDownLatch latch = new CountDownLatch(1);
         Platform.runLater(latch::countDown);
         try {
             latch.await(300, TimeUnit.MILLISECONDS);
-        } catch (InterruptedException ignored) {}
+        } catch (InterruptedException ignored) {
+            Thread.currentThread().interrupt();
+        }
     }
-
 
     private static void waitFor(BooleanSupplier condition) {
         for (int i = 0; i < 20; i++) {
-            if (condition.getAsBoolean()) return;
+            if (condition.getAsBoolean()) {
+                return;
+            }
             waitForFxEvents();
         }
         throw new RuntimeException("Condition not met in time");
