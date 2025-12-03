@@ -23,6 +23,13 @@ class GlobalEventHandlerTest {
 
     private static final AtomicBoolean started = new AtomicBoolean(false);
 
+    private static class FxTimeoutException extends RuntimeException {
+
+        public FxTimeoutException(String message) {
+            super(message);
+        }
+    }
+
     @BeforeAll
     static void initWithPlatformStartup() throws Exception {
         if (!started.getAndSet(true)) {
@@ -30,7 +37,7 @@ class GlobalEventHandlerTest {
             Platform.startup(latch::countDown);
 
             if (!latch.await(5, TimeUnit.SECONDS)) {
-                throw new RuntimeException("Timed out initializing JavaFX (Platform.startup)");
+                throw new FxTimeoutException("Timed out initializing JavaFX (Platform.startup)");
             }
         }
     }
@@ -121,7 +128,7 @@ class GlobalEventHandlerTest {
         Platform.runLater(latch::countDown);
         try {
             if (!latch.await(300, TimeUnit.MILLISECONDS)) {
-                throw new RuntimeException("Timed out waiting for FX event");
+                throw new FxTimeoutException("Timed out waiting for FX event");
             }
         } catch (InterruptedException ignored) {
             Thread.currentThread().interrupt();
@@ -135,6 +142,6 @@ class GlobalEventHandlerTest {
             }
             waitForFxEvents();
         }
-        throw new RuntimeException("Condition not met in time");
+        throw new FxTimeoutException("Condition not met in time");
     }
 }
