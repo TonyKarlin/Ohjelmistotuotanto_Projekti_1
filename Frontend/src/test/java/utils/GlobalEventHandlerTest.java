@@ -120,7 +120,9 @@ class GlobalEventHandlerTest {
         CountDownLatch latch = new CountDownLatch(1);
         Platform.runLater(latch::countDown);
         try {
-            latch.await(300, TimeUnit.MILLISECONDS);
+            if (!latch.await(300, TimeUnit.MILLISECONDS)) {
+                throw new RuntimeException("Timed out waiting for FX event");
+            }
         } catch (InterruptedException ignored) {
             Thread.currentThread().interrupt();
         }
