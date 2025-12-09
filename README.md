@@ -161,15 +161,16 @@ Jenkins is currently handled locally since the backend has not yet been integrat
 ```mermaid
 flowchart TD
   subgraph "Jenkins Pipeline"
-    A[Checkout Source Code] --> B[Build Backend]
+    A[Start<br>Checkout] --> B[Build Backend]
     B --> C[Start Backend]
     C --> D[Build Frontend]
-    D --> E[Run Frontend & Backend Tests]
-    E --> F[Generate Code Coverage Reports]
+    D --> E[Test Frontend<br>and Backend]
+    E --> F[Code Coverage<br>Frontend & Backend]
     F --> G[Publish Test Results]
-    G --> H[Archive Coverage Reports]
-    H --> I[Build & Push Docker Images]
-    I --> J[Deploy with Docker Compose]
+    G --> H[Archive Coverage Report]
+    H --> I[SonarQube Analysis<br>Backend & Frontend]
+    I --> J[Docker Compose<br>Build & Push]
+    J --> K[End]
   end
 ```
 
