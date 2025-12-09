@@ -138,7 +138,7 @@ The backend of the project is built with Java and Spring Boot, using Maven as th
 
 ## Diagrams
 
-Diagrams can be found in the [docs/diagrams](docs/diagrams) folder.
+Diagrams can be found in the [docs/diagrams](docs/diagrams) folder. The folder contains the following diagrams:
 
 - ER-diagram
 - Relational-schema
@@ -148,13 +148,9 @@ Diagrams can be found in the [docs/diagrams](docs/diagrams) folder.
 - Sequence-diagram
 - Deployment-diagram(s)
 
-`Production` deployment diagram.
+`Use case diagram`.
 
-![production](docs/diagrams/09-project-deployment-diagram-production.png)
-
-`Development` deployment diagram.
-
-![development](docs/diagrams/08-project-deployment-diagram-development.png)
+![use-case](docs/diagrams/03-project-usecase-diagram.png)
 
 ## Jenkins CI/CD
 
