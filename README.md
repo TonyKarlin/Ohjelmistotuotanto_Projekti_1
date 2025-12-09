@@ -204,6 +204,8 @@ docker-compose up -d
 
 SonarQube analysis for both Backend and Frontend.
 
+![sonarqube-result](docs/quality-assurance/sonarqube-results-jenkinspipeline.png)
+
 ```cmd
 cd .\Backend\
 sonar-scanner
