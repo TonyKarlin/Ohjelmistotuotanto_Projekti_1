@@ -154,7 +154,7 @@ Diagrams can be found in the [docs/diagrams](docs/diagrams) folder. The folder c
 
 ## Jenkins CI/CD
 
-Jenkins is currently handled locally since the backend has not yet been integrated into a remote server, which we believe will be implemented in the next course.
+Jenkins is currently handled locally since the backend has not yet been integrated into a remote server.
 
 ### General flow of the pipeline
 
@@ -205,6 +205,8 @@ docker-compose up -d
 SonarQube analysis for both Backend and Frontend.
 
 ![sonarqube-result](docs/quality-assurance/sonarqube-results-jenkinspipeline.png)
+
+SonarQube code analysis is executed through the Jenkins pipeline, but you can also run it locally after cloning the repository. To do so, navigate to the respective directories and execute the following commands:
 
 ```cmd
 cd .\Backend\
