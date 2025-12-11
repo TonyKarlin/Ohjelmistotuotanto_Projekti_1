@@ -72,9 +72,8 @@ Frontend/               # JavaFX client
 docs/                   # Project documentation (plans, diagrams, sprint reports)
 ├─ diagrams/
 ├─ project-initialization/
-├─ sonarqube-results/
-├─ sprint-documentation/
-└─ testing/
+├─ quality-assurance/
+└─ sprint-documentation/
 ```
 
 ## Frontend
@@ -206,7 +205,7 @@ SonarQube analysis for both Backend and Frontend.
 
 ![sonarqube-result](docs/quality-assurance/sonarqube-results-jenkinspipeline.png)
 
-SonarQube code analysis is executed through the Jenkins pipeline, but you can also run it locally after cloning the repository. To do so, navigate to the respective directories and execute the following commands:
+SonarQube code analysis is executed through the Jenkins pipeline, but you can also run it locally after cloning the repository. To do so, navigate to the respective directories and execute the following commands after having a SonarQube instance running:
 
 ```cmd
 cd .\Backend\
